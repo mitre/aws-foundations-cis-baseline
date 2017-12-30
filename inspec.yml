@@ -7,7 +7,7 @@ license: Apache-2.0
 summary: An InSpec Compliance Profile
 version: 0.1.0
 
-depends:
-  - name: inspec-aws-resources
-    git: https://github.com/aaronlippold/inspec-aws.git
-    # path: ../inspec-aws
+# depends:
+#   - name: inspec-aws-resources
+#     git: https://github.com/aaronlippold/inspec-aws.git
+#     # path: ../inspec-aws
