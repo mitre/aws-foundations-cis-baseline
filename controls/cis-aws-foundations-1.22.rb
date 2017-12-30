@@ -67,7 +67,5 @@ AWS incidents, and save it locally as /tmp/TrustPolicy.json:
  'aws iam attach-role-policy --policy-arn <iam_policy_arn> --role-name
 <_aws_support_iam_role_>
 
-
-
 "
 end

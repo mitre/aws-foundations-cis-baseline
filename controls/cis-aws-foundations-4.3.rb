@@ -52,8 +52,6 @@ http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/SettingLogRete
 * Click Create Log Flow
 * Click on CloudWatch Logs Group
 
-
-
 'NOTE: Setting the filter to 'Reject' will dramatically reduce the logging data
 accumulation for this recommendation and provide sufficient information for the
 purposes of breach detection, research and remediation. However, during periods

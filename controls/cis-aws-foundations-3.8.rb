@@ -37,8 +37,6 @@ contains the following:
 
 ''filterPattern': '{ ($.eventSource = s3.amazonaws.com) &'><sns_topic_arn> _
 
-
-
 '
 "
   tag "fix": "Perform the following to setup the metric filter, alarm, SNS

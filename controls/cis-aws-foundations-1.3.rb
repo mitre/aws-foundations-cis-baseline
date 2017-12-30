@@ -52,8 +52,6 @@ ensure the corresponding access_key_n_last_used_date is less than 90 days ago."
 
 * Click on Make Inactive for credentials that have not been used in 90 Days
 
-
-
 * As an IAM User
 
 * Click on Make Inactive or Delete for credentials which have not been used in

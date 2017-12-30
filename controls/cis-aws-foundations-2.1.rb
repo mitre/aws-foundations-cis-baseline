@@ -42,8 +42,6 @@ https://console.aws.amazon.com/cloudtrail
 
 * Ensure Apply trail to all regions is set to Yes
 
-
-
 'Via CLI
 
 ' aws cloudtrail describe-trails

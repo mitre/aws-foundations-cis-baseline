@@ -79,8 +79,6 @@ _<policy_arn>_
 
  'aws iam detach-role-policy --role-name _<iam_role>_ --policy-arn _<policy_arn>_
 
-
-
 '
 "
 end

@@ -58,8 +58,6 @@ aws iam get-credential-report --query 'Content' --output text | base64 -d"
 
 * Click on Make Inactive for keys that have not been rotated in 90 Days
 
-
-
 * As an IAM User
 
 * Click on Make Inactive or Delete for keys which have not been rotated or used

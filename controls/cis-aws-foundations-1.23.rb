@@ -74,8 +74,6 @@ audit:
 * Click on Delete for keys that were created at the same time as the user
 profile but have not been used.
 
-
-
 * As an IAM User
 
 * Click on Delete for keys that were created at the same time as the user
