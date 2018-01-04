@@ -48,4 +48,10 @@ Management Account Settings)
 
 'Note: All commands starting with 'aws iam update-account-password-policy' can
 be combined into a single command."
+
+  describe aws_iam_password_policy do
+    its('requires_uppercase_characters?') { should be true }
+  end
 end
+
+

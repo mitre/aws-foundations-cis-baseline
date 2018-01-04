@@ -72,4 +72,13 @@ in 90 Days
 'aws iam update-access-key
 aws iam create-access-key
 aws iam delete-access-key"
+
+  aws_iam_access_keys.where(active: true).entries.each do |key|
+    describe key.username do
+      context key do
+        its('last_used_days_ago') { should cmp < 90 }
+      end
+    end
+  end
+
 end

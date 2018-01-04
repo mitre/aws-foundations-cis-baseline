@@ -7,3 +7,39 @@
 # having to adjust the core profile.
 
 # === PROFILE USER EDIT ===
+aws_account_id : 484747447281
+cloudwatch_alarm_1_metric_name : test_testmetric_1
+cloudwatch_alarm_1_name : test-test-alarm-01
+cloudwatch_alarm_1_namespace : test_YourNamespace_1
+ec2_ami_id_centos : ami-02e98f78
+ec2_ami_id_debian : ami-cb4b94dd
+ec2_instance_centos_id : i-0d5a782c9b26a6e42
+ec2_instance_debian_id : i-048250a95a781c9a7
+ec2_instance_has_role_id : i-0d5a782c9b26a6e42
+ec2_instance_no_role_id : i-048250a95a781c9a7
+ec2_instance_recall_hit_id : i-048250a95a781c9a7
+ec2_instance_recall_hit_name : test.alpha
+ec2_instance_recall_miss : i-06b4bc106e0d03dfd
+ec2_instance_type_t2_micro_id : i-048250a95a781c9a7
+ec2_instance_type_t2_small_id : i-0d5a782c9b26a6e42
+ec2_security_group_allow_all_group_id : sg-ebb0629f
+ec2_security_group_alpha_group_id : sg-588d5f2c
+ec2_security_group_default_group_id : sg-5f6e922b
+ec2_security_group_default_vpc_id : vpc-934762eb
+iam_access_key_recall_hit : AKIAJDRYBX6HYM55P5IQ
+iam_access_key_recall_miss : AKIAFAKEFAKEFAKEFAKE
+iam_user_has_console_password : test.has_console_password
+iam_user_no_mfa_enabled : test.no_mfa_enabled
+iam_user_recall_hit : test.recall_hit
+iam_user_recall_miss : test.recall_miss
+iam_user_with_access_key : test.with_access_key
+iam_user_without_access_key : test.without_access_key
+log_metric_filter_1_log_group_name : test_lmf_lg_1
+log_metric_filter_1_metric_name : test_testmetric_1
+log_metric_filter_1_name : test_lmf
+log_metric_filter_2_log_group_name : test_lmf_lg_2
+log_metric_filter_2_name : test_lmf
+s3_bucket_name : aws-demo-s3-bucket-a2784c55361a87eb
+sns_topic_no_subscription_arn : arn:aws:sns:us-east-1:484747447281:test-test-topic-02
+sns_topic_recall_hit_arn : arn:aws:sns:us-east-1:484747447281:test-test-topic-01
+sns_topic_with_subscription_arn : arn:aws:sns:us-east-1:484747447281:test-test-topic-01

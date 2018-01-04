@@ -2,7 +2,7 @@ control "cis-aws-foundations-1.1" do
   title "Avoid the use of the 'root' account"
   desc  "The 'root' account has unrestricted access to all resources in the AWS
 account. It is highly recommended that the use of this account be avoided."
-  impact 0.5
+  impact 0.4
   tag "rationale": "The 'root' account is the most privileged AWS account.
 Minimizing the use of this account and adopting the principle of least
 privilege for access management will reduce the risk of accidental changes and
@@ -29,4 +29,19 @@ required, such as requesting a penetration test or creating a CloudFront
 private key."
   tag "fix": "Follow the remediation instructions of the Ensure IAM policies
 are attached only to groups or roles recommendation"
+
+  aws_cloudwatch_alarm(
+    metric: 'my-metric-name',
+    metric_namespace: 'my-metric-namespace',
+  ) do
+    it { should exist }
+  end
+
+  describe aws_cloudwatch_log_metric_filter(
+    filter_name: 'my-filter',
+    log_group_name: 'my-log-group'
+  ) do
+    it { should exist }
+  end
+
 end

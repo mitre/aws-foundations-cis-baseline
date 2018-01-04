@@ -6,7 +6,7 @@ top of a user name and password. With MFA enabled, when a user signs in to an
 AWS website, they will be prompted for their user name and password as well as
 for an authentication code from their AWS MFA device. It is recommended that
 MFA be enabled for all accounts that have a console password."
-  impact 0.5
+  impact 0.4
   tag "rationale": "Enabling MFA provides increased security for console access
 as it requires the authenticating principal to possess a device that emits a
 time-sensitive key and have knowledge of a credential."
@@ -118,4 +118,12 @@ enrollment before active enforcement on existing AWS accounts.
 
 'How to Delegate Management of Multi-Factor Authentication to AWS IAM Users
 [http://blogs.aws.amazon.com/security/post/Tx2SJJYE082KBUK/How-to-Delegate-Management-of-Multi-Factor-Authentication-to-AWS-IAM-Users]"
+
+  describe aws_iam_root_user do
+    it { should have_mfa_enabled }
+  end
+  describe aws_iam_users.where(has_console_password?: true).where(has_mfa_enabled?: false) do
+    it { should_not exist }
+  end
+
 end
