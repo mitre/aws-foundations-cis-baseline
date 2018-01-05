@@ -3,7 +3,7 @@ control "cis-aws-foundations-1.11" do
   desc  "IAM password policies can require passwords to be rotated or expired
 after a given number of days. It is recommended that the password policy expire
 passwords after 90 days or less."
-  impact 0.5
+  impact 0.4
   tag "rationale": "Reducing the password lifetime increases account resiliency
 against brute force login attempts. Additionally, requiring regular password
 changes help in the following scenarios:
@@ -57,4 +57,9 @@ Management Account Settings)
 
 'Note: All commands starting with 'aws iam update-account-password-policy' can
 be combined into a single command."
+
+  describe aws_iam_password_policy do
+    its('expires_passwords?') { should be true }
+    its('max_password_age') { should cmp <=90 }
+  end
 end
