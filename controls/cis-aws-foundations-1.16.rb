@@ -78,4 +78,12 @@ https://console.aws.amazon.com/iam/ [https://console.aws.amazon.com/iam/].
 
 '
 "
+  aws_iam_users.entries.each do |user|
+    describe user.user_name do
+      context user do
+        its('attached_user_policies') { should_not exist }
+        its('user_policies') { should_not exist }
+      end
+    end
+  end
 end
