@@ -3,7 +3,7 @@ control "cis-aws-foundations-1.12" do
   desc  "The root account is the most privileged user in an AWS account. AWS
 Access Keys provide programmatic access to a given AWS account. It is
 recommended that all access keys associated with the root account be removed."
-  impact 0.5
+  impact 0.4
   tag "rationale": "Removing access keys associated with the root account
 limits vectors by which the account can be compromised. Additionally, removing
 the root access keys encourages the creation and use of role based accounts
@@ -55,7 +55,8 @@ Credentials from the drop down list
 
 * Click on Make Inactive - (Temporarily disable Key - may be needed again)
 * Click Delete - (Deleted keys cannot be recovered)
-
-
 "
+  describe aws_iam_root_user do
+    its('access_key_count') { should eq 0 }
+  end
 end

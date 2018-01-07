@@ -33,5 +33,19 @@ control "cis-aws-foundations-1.1" do
       private key."
 
   tag "fix": "Follow the remediation instructions of the Ensure IAM policies
-      are attached only to groups or roles recommendation"
+are attached only to groups or roles recommendation"
+
+  aws_cloudwatch_alarm(
+    metric: 'my-metric-name',
+    metric_namespace: 'my-metric-namespace',
+  ) do
+    it { should exist }
+  end
+
+  describe aws_cloudwatch_log_metric_filter(
+    filter_name: 'my-filter',
+    log_group_name: 'my-log-group'
+  ) do
+    it { should exist }
+  end
 end

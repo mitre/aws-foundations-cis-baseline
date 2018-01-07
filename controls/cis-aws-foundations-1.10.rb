@@ -46,4 +46,9 @@ Management Account Settings)
 
 'Note: All commands starting with 'aws iam update-account-password-policy' can
 be combined into a single command."
+
+  describe aws_iam_password_policy do
+    its('prevents_password_reuse?') { should be true }
+    its('number_of_passwords_to_remember') { should eq 24 }
+  end
 end

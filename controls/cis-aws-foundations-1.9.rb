@@ -47,4 +47,8 @@ Management Account Settings)
 
 'Note: All commands starting with 'aws iam update-account-password-policy' can
 be combined into a single command."
+
+  describe aws_iam_password_policy do
+    its('minimum_password_length') { should cmp >=14 }
+  end
 end

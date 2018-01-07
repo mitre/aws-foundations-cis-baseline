@@ -4,7 +4,7 @@ control "cis-aws-foundations-1.3" do
 credentials, such as passwords or access keys. It is recommended that all
 credentials that have been unused in 90 or greater days be removed or
 deactivated."
-  impact 0.5
+  impact 0.4
   tag "rationale": "Disabling or removing unnecessary credentials will reduce
 the window of opportunity for credentials associated with a compromised or
 abandoned account to be used."
@@ -56,7 +56,17 @@ ensure the corresponding access_key_n_last_used_date is less than 90 days ago."
 
 * Click on Make Inactive or Delete for credentials which have not been used in
 90 Days
-
-
 "
+  describe aws_iam_users.where(has_console_password?: true).where{last_used_days_ago > 90} do
+    it { should_not exist }
+  end
+  
+  aws_iam_access_keys.where(active: true).entries.each do |key|
+    describe key.username do
+      context key do
+        its('last_used_days_ago') { should cmp < 90 }
+      end
+    end
+  end
+
 end

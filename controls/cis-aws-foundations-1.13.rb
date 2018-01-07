@@ -12,7 +12,7 @@ device used is NOT a personal device, but rather a dedicated mobile device
 any individual personal devices. ('non-personal virtual MFA') This lessens the
 risks of losing access to the MFA due to device loss, device trade-in or if the
 individual owning the device is no longer employed at the company."
-  impact 0.5
+  impact 0.4
   tag "rationale": "Enabling MFA provides increased security for console access
 as it requires the authenticating principal to possess a device that emits a
 time-sensitive key and have knowledge of a credential."
@@ -84,4 +84,7 @@ one-time password that currently appears in the virtual MFA device. Wait up to
 second one-time password into the Authentication Code 2 box. Choose Active
 Virtual MFA.
 "
+  describe aws_iam_root_user do
+    its('has_mfa_enabled?') { should be true }
+  end
 end
