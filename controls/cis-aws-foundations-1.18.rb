@@ -1,3 +1,27 @@
+IAM_MANAGER_ROLE_NAME= attribute(
+  'iam_manager_role_name',
+  description: 'iam manager role name',
+  default: "iam_manager_role_name"
+)
+
+IAM_MASTER_ROLE_NAME= attribute(
+  'iam_master_role_name',
+  description: 'iam master role name',
+  default: "iam_master_role_name"
+)
+
+IAM_MANAGER_POLICY= attribute(
+  'iam_manager_policy',
+  description: 'iam manager policy',
+  default: "iam_manager_policy"
+)
+
+IAM_MASTER_POLICY= attribute(
+  'iam_master_policy',
+  description: 'iam master policy',
+  default: "iam_master_policy"
+)
+
 control "cis-aws-foundations-1.18" do
   title "Ensure IAM Master and IAM Manager roles are active"
   desc  "Ensure IAM Master and IAM Manager roles are in place for IAM
@@ -64,7 +88,7 @@ Examine the permissions associated with each of these roles:
 The _<iam_master_role_name>_ role should include the following Actions with an
 Allow effect:
 
-iam: AttachRolePolicy
+iam:AttachRolePolicy
 iam:CreateGroup
 iam:CreatePolicy
 iam:CreatePolicyVersion
@@ -502,4 +526,142 @@ _<assume_iam_manager_role_policy> _--policy-document
 ' }
 
 '}"
+
+master_allow_actions=  [
+    "iam:CreateGroup",
+    "iam:CreatePolicy",
+    "iam:CreatePolicyVersion",
+    "iam:CreateRole",
+    "iam:CreateUser",
+    "iam:DeleteGroup",
+    "iam:DeletePolicy",
+    "iam:DeletePolicyVersion",
+    "iam:DeleteRole",
+    "iam:DeleteRolePolicy",
+    "iam:DeleteUser",
+    "iam:PutRolePolicy",
+    "iam:GetPolicy",
+    "iam:GetPolicyVersion",
+    "iam:GetRole",
+    "iam:GetRolePolicy",
+    "iam:GetUser",
+    "iam:GetUserPolicy",
+    "iam:ListEntitiesForPolicy",
+    "iam:ListGroupPolicies",
+    "iam:ListGroups",
+    "iam:ListGroupsForUser",
+    "iam:ListPolicies",
+    "iam:ListPoliciesGrantingServiceAccess",
+    "iam:ListPolicyVersions",
+    "iam:ListRolePolicies",
+    "iam:ListAttachedGroupPolicies",
+    "iam:ListAttachedRolePolicies",
+    "iam:ListAttachedUserPolicies",
+    "iam:ListRoles",
+    "iam:ListUsers"
+]
+
+master_deny_actions= [
+    "iam:AddUserToGroup",
+    "iam:AttachGroupPolicy",
+    "iam:DeleteGroupPolicy",
+    "iam:DeleteUserPolicy",
+    "iam:DetachGroupPolicy",
+    "iam:DetachRolePolicy",
+    "iam:DetachUserPolicy",
+    "iam:PutGroupPolicy",
+    "iam:PutUserPolicy",
+    "iam:RemoveUserFromGroup",
+    "iam:UpdateGroup",
+    "iam:UpdateAssumeRolePolicy",
+    "iam:UpdateUser"
+]
+manager_allow_actions=  [
+    "iam:AddUserToGroup",
+    "iam:AttachGroupPolicy",
+    "iam:DeleteGroupPolicy",
+    "iam:DeleteUserPolicy",
+    "iam:DetachGroupPolicy",
+    "iam:DetachRolePolicy",
+    "iam:DetachUserPolicy",
+    "iam:PutGroupPolicy",
+    "iam:PutUserPolicy",
+    "iam:RemoveUserFromGroup",
+    "iam:UpdateGroup",
+    "iam:UpdateAssumeRolePolicy",
+    "iam:UpdateUser",
+    "iam:GetPolicy",
+    "iam:GetPolicyVersion",
+    "iam:GetRole",
+    "iam:GetRolePolicy",
+    "iam:GetUser",
+    "iam:GetUserPolicy",
+    "iam:ListEntitiesForPolicy",
+    "iam:ListGroupPolicies",
+    "iam:ListGroups",
+    "iam:ListGroupsForUser",
+    "iam:ListPolicies",
+    "iam:ListPoliciesGrantingServiceAccess",
+    "iam:ListPolicyVersions",
+    "iam:ListRolePolicies",
+    "iam:ListAttachedGroupPolicies",
+    "iam:ListAttachedRolePolicies",
+    "iam:ListAttachedUserPolicies",
+    "iam:ListRoles",
+    "iam:ListUsers"
+]
+
+manager_deny_actions= [
+    "iam:CreateGroup",
+    "iam:CreatePolicy",
+    "iam:CreatePolicyVersion",
+    "iam:CreateRole",
+    "iam:CreateUser",
+    "iam:DeleteGroup",
+    "iam:DeletePolicy",
+    "iam:DeletePolicyVersion",
+    "iam:DeleteRole",
+    "iam:DeleteRolePolicy",
+    "iam:DeleteUser",
+    "iam:PutRolePolicy"
+]
+
+mfa_condition = {
+                    "Bool": {
+                        "aws:MultiFactorAuthPresent": "true"
+                    }
+                } 
+
+  describe aws_iam_policy(IAM_MASTER_POLICY).where(Effect: "Allow") do
+    its("Action") { should match_array master_allow_actions}
+    its("Condition") { should be mfa_condition }
+  end
+
+  describe aws_iam_policy(IAM_MASTER_POLICY).where(Effect: "Deny") do
+    its("Action") { should match_array master_deny_actions}
+    its("Condition") { should be mfa_condition }
+  end
+
+  describe aws_iam_role(IAM_MASTER_ROLE_NAME) do
+    it { should exist }
+    its('policies') { should include IAM_MASTER_POLICY}
+    its('assumable') { should be true}
+  end
+
+  describe aws_iam_policy(IAM_MANAGER_POLICY).where(Effect: "Allow") do
+    its("Action") { should match_array manager_allow_actions}
+    its("Condition") { should be mfa_condition }
+  end
+
+  describe aws_iam_policy(IAM_MANAGER_POLICY).where(Effect: "Deny") do
+    its("Action") { should match_array manager_deny_actions}
+    its("Condition") { should be mfa_condition }
+  end
+
+  describe aws_iam_role(IAM_MANAGER_ROLE_NAME) do
+    it { should exist }
+    its('policies') { should include IAM_MANAGER_POLICY}
+    its('assumable') { should be true}\
+  ]
+  end
 end
