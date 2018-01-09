@@ -82,4 +82,13 @@ profile but have not been used.
 'Via CLI
 
 'aws iam delete-access-key"
+
+  aws_iam_access_keys.entries.each do |key|
+    describe key.username do
+      context key do
+        its('last_used_days_ago') { should_not be_nil }
+      end
+    end
+  end
+
 end

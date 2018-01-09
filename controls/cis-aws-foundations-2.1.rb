@@ -77,4 +77,8 @@ global logging
 'aws cloudtrail create-trail --name _<trail_name>_ --bucket-name
 _<s3_bucket_for_cloudtrail>_ --is-multi-region-trail
 aws cloudtrail update-trail --name _<trail_name>_ --is-multi-region-trail"
+
+  describe aws_cloud_trails.where(IsMultiRegionTrail: true).entries do
+    it { should_not be_empty}
+  end
 end

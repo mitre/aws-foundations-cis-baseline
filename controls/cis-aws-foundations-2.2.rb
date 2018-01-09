@@ -62,4 +62,12 @@ running the following command:
 
 'aws cloudtrail validate-logs --trail-arn _<trail_arn>_ --start-time
 _<start_time>_ --end-time _<end_time>_"
+
+  aws_cloudtrails.entries do |trail|
+    describe trail.Name do
+      context trail do
+        its('LogFileValidationEnabled') { should be true}
+      end
+    end
+  end
 end

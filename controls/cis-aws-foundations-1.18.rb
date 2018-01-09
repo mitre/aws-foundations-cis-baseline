@@ -661,7 +661,6 @@ mfa_condition = {
   describe aws_iam_role(IAM_MANAGER_ROLE_NAME) do
     it { should exist }
     its('policies') { should include IAM_MANAGER_POLICY}
-    its('assumable') { should be true}\
-  ]
+    its('assumable') { should be true}
   end
 end
