@@ -77,7 +77,7 @@ row identifies the grantee and the permissions granted.
 * If the Edit bucket policy button is present, click it.
 * Remove any Statement having an Effect set to Allow and a Principal set to *."
 
-  aws_cloudtrails.S3BucketName.uniq do |bucket|
+  aws_cloudtrail_trails.s3_bucket_name.uniq.each do |bucket|
     describe aws_s3_bucket( name: bucket ) do
       its('permissions.everyone') { should be_empty}
       its('permissions.authUsers') { should be_empty}

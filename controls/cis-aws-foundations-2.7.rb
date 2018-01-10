@@ -8,7 +8,7 @@ uses Hardware Security Modules (HSMs) to protect the security of encryption
 keys. CloudTrail logs can be configured to leverage server side encryption
 (SSE) and KMS customer created master keys (CMK) to further protect CloudTrail
 logs. It is recommended that CloudTrail be configured to use SSE-KMS."
-  impact 0.5
+  impact 0.7
   tag "rationale": "Configuring CloudTrail to use SSE-KMS provides additional
 confidentiality controls on log data as a given user must have S3 read
 permission on the corresponding log bucket and must be granted decrypt
@@ -73,4 +73,12 @@ permissions on the specified KMS key to decrypt log files.
 <_cloudtrail_kms_key_>
 aws kms put-key-policy --key-id <_cloudtrail_kms_key_> --policy
 <_cloudtrail_kms_key_policy_>"
+
+  aws_cloudtrail_trails.entries.each do |trail|
+    describe trail.name do
+      context trail do
+        its('kms_key_id') { should_not be_nil}
+      end
+    end
+  end
 end

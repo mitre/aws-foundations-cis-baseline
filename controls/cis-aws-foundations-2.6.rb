@@ -55,4 +55,11 @@ https://console.aws.amazon.com/s3 [https://console.aws.amazon.com/s3].
 
 
 * Click Save"
+
+
+  aws_cloudtrail_trails.s3_bucket_name.uniq.each do |bucket|
+    describe aws_s3_bucket( name: bucket ) do
+      it{ should be_logging_enabled }
+    end
+  end
 end
