@@ -91,9 +91,6 @@ https://console.aws.amazon.com/cloudtrail/
 --cloudwatch-logs-log-group-arn _<cloudtrail_log_group_arn>_
 --cloudwatch-logs-role-arn _<__cloudtrail_cloudwatchLogs_role_arn>_"
 
-CloudWatchLogsLogGroupArn
-
-
   aws_cloudtrail_trails.entries.each do |trail|
     describe trail.name do
       context trail do
@@ -103,3 +100,5 @@ CloudWatchLogsLogGroupArn
     end
   end
 end
+
+

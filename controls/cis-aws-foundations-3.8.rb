@@ -63,4 +63,29 @@ _<s3_bucket_policy_changes_metric>_ --statistic Sum --period 300 --threshold 1
 --comparison-operator GreaterThanOrEqualToThreshold --evaluation-periods 1
 --namespace 'CISBenchmark' --alarm-actions <sns_topic_arn>
 "
+  pattern = '{ ($.eventSource = s3.amazonaws.com) && (($.eventName = PutBucketAcl) || ($.eventName = PutBucketPolicy) || ($.eventName = PutBucketCors) || ($.eventName = PutBucketLifecycle) || ($.eventName = PutBucketReplication) || ($.eventName = DeleteBucketPolicy) || ($.eventName = DeleteBucketCors) || ($.eventName = DeleteBucketLifecycle) || ($.eventName = DeleteBucketReplication)) }'
+
+  describe aws_cloudwatch_log_metric_filter(pattern: pattern) do
+    it { should exist}
+  end
+
+  metric_name = aws_cloudwatch_log_metric_filter(pattern: pattern).metric_name
+  metric_namespace = aws_cloudwatch_log_metric_filter(pattern: pattern).metric_namespace
+  unless metric_name.nil? && metric_namespace.nil?
+    describe aws_cloudwatch_alarm(
+      metric_name: metric_name,
+      metric_namespace: metric_namespace ) do
+      it { should exist }
+      its ('alarm_actions') { should_not be_empty}
+    end
+
+    aws_cloudwatch_alarm(
+      metric_name: metric_name,
+      metric_namespace: metric_namespace).alarm_actions.each do |sns|
+      describe aws_sns_topic(sns) do
+        it { should exist }
+        its('confirmed_subscription_count') { should_not be_zero }
+      end
+    end
+  end
 end
