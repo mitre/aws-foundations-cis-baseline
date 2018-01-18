@@ -101,4 +101,31 @@ _<unauthorized_api_calls_metric>_ --statistic Sum --period 300 --threshold 1
 
 NOTE: set the period and threshold to values that fit your organization.
 "
+
+  pattern = '{ ($.errorCode = "*UnauthorizedOperation") || ($.errorCode = "AccessDenied*") }'
+
+  describe aws_cloudwatch_log_metric_filter(pattern: pattern) do
+    it { should exist}
+  end
+
+  metric_name = aws_cloudwatch_log_metric_filter(pattern: pattern).metric_name
+  metric_namespace = aws_cloudwatch_log_metric_filter(pattern: pattern).metric_namespace
+  unless metric_name.nil? && metric_namespace.nil?
+    describe aws_cloudwatch_alarm(
+      metric_name: metric_name,
+      metric_namespace: metric_namespace ) do
+      it { should exist }
+      its ('alarm_actions') { should_not be_empty}
+    end
+
+    aws_cloudwatch_alarm(
+      metric_name: metric_name,
+      metric_namespace: metric_namespace).alarm_actions.each do |sns|
+      describe aws_sns_topic(sns) do
+        it { should exist }
+        its('confirmed_subscription_count') { should_not be_zero }
+      end
+    end
+  end
+
 end

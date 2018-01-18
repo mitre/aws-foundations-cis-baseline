@@ -76,4 +76,15 @@ row identifies the grantee and the permissions granted.
 * Click Save to save the ACL.
 * If the Edit bucket policy button is present, click it.
 * Remove any Statement having an Effect set to Allow and a Principal set to *."
+
+  aws_cloudtrail_trails.s3_bucket_name.uniq.each do |bucket|
+    describe aws_s3_bucket( bucket_name: bucket ) do
+      its('permissions.everyone') { should be_empty}
+      its('permissions.authUsers') { should be_empty}
+    end
+
+    describe aws_s3_bucket_policy( bucket_name: bucket ) do
+      it { should_not have_statement_allow_all }
+    end 
+  end
 end

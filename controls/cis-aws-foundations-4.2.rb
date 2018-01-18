@@ -44,4 +44,10 @@ https://console.aws.amazon.com/vpc/home
 * Identify the rules to be removed
 * Click the x in the Remove column
 * Click Save"
+
+  aws_ec2_security_groups.group_ids.each do |group_id|
+    describe aws_ec2_security_group(group_id) do
+      it { should_not be_open_on_port(3389) }
+    end
+  end
 end

@@ -68,4 +68,9 @@ AWS incidents, and save it locally as /tmp/TrustPolicy.json:
 <_aws_support_iam_role_>
 
 "
+
+  describe aws_iam_policy('AWSSupportAccess') do
+    it{ should be_attached }
+  end
+
 end

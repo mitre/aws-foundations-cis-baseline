@@ -1,3 +1,15 @@
+AWS_ACCESS_INSTANCE_NAME= attribute(
+  'aws_access_instance_name',
+  description: 'aws access instance name',
+  default: "aws_access_instance_name"
+)
+
+AWS_ACCESS_INSTANCE_ROLE= attribute(
+  'aws_access_instance_role',
+  description: 'aws access instance name',
+  default: "aws_access_instance_role"
+)
+
 control "cis-aws-foundations-1.21" do
   title "Ensure IAM instance roles are used for AWS resource access from
 instances"
@@ -6,7 +18,7 @@ AWS keys into AWS API calls or by assigning the instance to a role which has an
 appropriate permissions policy for the required access. 'AWS Access' means
 accessing the APIs of AWS in order to access AWS resources or manage AWS
 account resources."
-  impact 0.5
+  impact 0.7
   tag "rationale": "AWS IAM roles reduce the risks associated with sharing and
 rotating credentials that can be used outside of AWS itself. If credentials are
 compromised, they can be used from outside of the the AWS account they give
@@ -80,4 +92,32 @@ instance role. Dependencies on dynamically assigned public IP addresses are a
 bad practice and, if possible, you may wish to rebuild the instance with a new
 elastic IP address and make the investment to remediate affected systems while
 assigning the system to a role."
+
+  describe aws_ec2_instance(name: AWS_ACCESS_INSTANCE_NAME) do
+    its('roles') { should include AWS_ACCESS_INSTANCE_ROLE }
+  end
 end
+
+
+# TEST =  [{"Sid"=>"", "Effect"=>"Allow", "Principal"=>{"Service"=>"ec2.amazonaws.com"}, "Action"=>"sts:AssumeRole"}]
+#   describe aws_ec2_instance(name: AWS_ACCESS_INSTANCE_NAME) do
+#     its('roles') { should include AWS_ACCESS_INSTANCE_ROLE }
+#     its('assume') { should cmp TEST }
+#   end
+
+
+# AWS_ACCESS_INSTANCE_NAME= attribute(
+#   'aws_access_instance_name',
+#   description: 'aws access instance name',
+#   default: "test.alpha"
+# )
+
+# AWS_ACCESS_INSTANCE_ROLE= attribute(
+#   'aws_access_instance_role',
+#   description: 'aws access instance name',
+#   default: "aws_access_instance_role"
+# )
+
+
+
+

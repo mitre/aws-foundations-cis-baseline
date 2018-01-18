@@ -90,4 +90,15 @@ https://console.aws.amazon.com/cloudtrail/
 'aws cloudtrail update-trail --name _<trail_name>_
 --cloudwatch-logs-log-group-arn _<cloudtrail_log_group_arn>_
 --cloudwatch-logs-role-arn _<__cloudtrail_cloudwatchLogs_role_arn>_"
+
+  aws_cloudtrail_trails.entries.each do |trail|
+    describe trail.name do
+      context trail do
+        its('cloud_watch_logs_log_group_arn') { should_not be_nil}
+        its('status.latest_cloud_watch_logs_delivery_time') { should cmp > Time.now - 86400 }
+      end
+    end
+  end
 end
+
+

@@ -75,6 +75,6 @@ from the hardware MFA device.
 "
 
   describe aws_iam_root_user do
-    its('virtual_mfa?') { should be false }
+    its('has_virtual_mfa_devices?') { should be false }
   end
 end

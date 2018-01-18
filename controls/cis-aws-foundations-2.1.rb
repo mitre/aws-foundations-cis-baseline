@@ -71,10 +71,14 @@ global logging
 * Click the edit icon (pencil) next to Apply trail to all regions
 * Click Yes
 * Click Save
-
+`
 'Via CLI
 
 'aws cloudtrail create-trail --name _<trail_name>_ --bucket-name
 _<s3_bucket_for_cloudtrail>_ --is-multi-region-trail
 aws cloudtrail update-trail --name _<trail_name>_ --is-multi-region-trail"
+
+  describe aws_cloudtrail_trails.where(is_multi_region_trail: true) do
+    it { should exist }
+  end
 end
