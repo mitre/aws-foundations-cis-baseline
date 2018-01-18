@@ -52,13 +52,10 @@ https://console.aws.amazon.com/s3 [https://console.aws.amazon.com/s3].
 * Click on Enabled checkbox
 * Select Target Bucket from list
 * Enter a Target Prefix
-
-
 * Click Save"
 
-
   aws_cloudtrail_trails.s3_bucket_name.uniq.each do |bucket|
-    describe aws_s3_bucket( name: bucket ) do
+    describe aws_s3_bucket( bucket_name: bucket ) do
       it{ should be_logging_enabled }
     end
   end
