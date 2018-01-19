@@ -119,9 +119,6 @@ enrollment before active enforcement on existing AWS accounts.
 'How to Delegate Management of Multi-Factor Authentication to AWS IAM Users
 [http://blogs.aws.amazon.com/security/post/Tx2SJJYE082KBUK/How-to-Delegate-Management-of-Multi-Factor-Authentication-to-AWS-IAM-Users]"
 
-  describe aws_iam_root_user do
-    it { should have_mfa_enabled }
-  end
   describe aws_iam_users.where(has_console_password?: true).where(has_mfa_enabled?: false) do
     it { should_not exist }
   end

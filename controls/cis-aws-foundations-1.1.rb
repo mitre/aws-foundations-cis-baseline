@@ -30,18 +30,29 @@ private key."
   tag "fix": "Follow the remediation instructions of the Ensure IAM policies
 are attached only to groups or roles recommendation"
 
-  aws_cloudwatch_alarm(
-    metric: 'my-metric-name',
-    metric_namespace: 'my-metric-namespace',
-  ) do
-    it { should exist }
+  pattern = '{ $.userIdentity.type = "Root" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != "AwsServiceEvent" }'
+
+  describe aws_cloudwatch_log_metric_filter(pattern: pattern) do
+    it { should exist}
   end
 
-  describe aws_cloudwatch_log_metric_filter(
-    filter_name: 'my-filter',
-    log_group_name: 'my-log-group'
-  ) do
-    it { should exist }
-  end
+  metric_name = aws_cloudwatch_log_metric_filter(pattern: pattern).metric_name
+  metric_namespace = aws_cloudwatch_log_metric_filter(pattern: pattern).metric_namespace
+  unless metric_name.nil? && metric_namespace.nil?
+    describe aws_cloudwatch_alarm(
+      metric_name: metric_name,
+      metric_namespace: metric_namespace ) do
+      it { should exist }
+      its ('alarm_actions') { should_not be_empty}
+    end
 
+    aws_cloudwatch_alarm(
+      metric_name: metric_name,
+      metric_namespace: metric_namespace).alarm_actions.each do |sns|
+      describe aws_sns_topic(sns) do
+        it { should exist }
+        its('confirmed_subscription_count') { should_not be_zero }
+      end
+    end
+  end
 end
