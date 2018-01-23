@@ -57,11 +57,6 @@ Credentials from the drop down list
 * Click Delete - (Deleted keys cannot be recovered)
 "
   describe aws_iam_root_user do
-    its('access_key_count') { should eq 0 }
+    it { should_not have_access_key }
   end
-
-  # Change to below code after PR #198 is merged
-  # describe aws_iam_root_user do
-  #   it { should_not have_access_key }
-  # end
 end
