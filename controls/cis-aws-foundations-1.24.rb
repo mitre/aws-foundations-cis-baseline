@@ -81,4 +81,11 @@ _<policy_arn>_
 
 '
 "
+
+  aws_iam_policies.policy_names.each do |policy|
+    describe aws_iam_policy(policy).where(effect:'Allow') do
+      its('action') { should_not include '*' }
+      its('resource') { should_not include '*' }
+    end
+  end
 end

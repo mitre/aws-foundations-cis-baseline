@@ -54,7 +54,9 @@ https://console.aws.amazon.com/iam [https://console.aws.amazon.com/iam].
 
 'aws kms enable-key-rotation --key-id _<kms_key_id>_
 "
-  describe aws_kms_keys.where(KeyRotationEnabled: false) do
-    it { should_not exist }
+  aws_kms_keys.key_arns.each do |key|
+    describe aws_kms_key(key) do
+      it { should be_rotation_enabled }
+    end
   end
 end

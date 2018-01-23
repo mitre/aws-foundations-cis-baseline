@@ -94,29 +94,9 @@ elastic IP address and make the investment to remediate affected systems while
 assigning the system to a role."
 
   describe aws_ec2_instance(name: AWS_ACCESS_INSTANCE_NAME) do
-    its('roles') { should include AWS_ACCESS_INSTANCE_ROLE }
+    it { should have_roles }
   end
 end
-
-
-# TEST =  [{"Sid"=>"", "Effect"=>"Allow", "Principal"=>{"Service"=>"ec2.amazonaws.com"}, "Action"=>"sts:AssumeRole"}]
-#   describe aws_ec2_instance(name: AWS_ACCESS_INSTANCE_NAME) do
-#     its('roles') { should include AWS_ACCESS_INSTANCE_ROLE }
-#     its('assume') { should cmp TEST }
-#   end
-
-
-# AWS_ACCESS_INSTANCE_NAME= attribute(
-#   'aws_access_instance_name',
-#   description: 'aws access instance name',
-#   default: "test.alpha"
-# )
-
-# AWS_ACCESS_INSTANCE_ROLE= attribute(
-#   'aws_access_instance_role',
-#   description: 'aws access instance name',
-#   default: "aws_access_instance_role"
-# )
 
 
 

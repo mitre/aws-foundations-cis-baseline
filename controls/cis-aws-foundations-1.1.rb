@@ -18,12 +18,9 @@ usage of 'root' account recommendation in the Monitoring section of this
 benchmark to receive notifications of root account usage. Additionally,
 executing the following commands will provide ad-hoc means for determining the
 last time the root account was used:
-
 'aws iam generate-credential-report
-
 'aws iam get-credential-report --query 'Content' --output text | base64 -d |
 cut -d, -f1,5,11,16 | grep -B1 '<root_account>'
-
 'Note: there are a few conditions under which the use of the root account is
 required, such as requesting a penetration test or creating a CloudFront
 private key."

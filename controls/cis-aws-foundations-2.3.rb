@@ -77,14 +77,16 @@ row identifies the grantee and the permissions granted.
 * If the Edit bucket policy button is present, click it.
 * Remove any Statement having an Effect set to Allow and a Principal set to *."
 
-  aws_cloudtrail_trails.s3_bucket_name.uniq.each do |bucket|
-    describe aws_s3_bucket( bucket_name: bucket ) do
-      its('permissions.everyone') { should be_empty}
-      its('permissions.authUsers') { should be_empty}
+  aws_cloudtrail_trails.trail_arns.each do |trail|
+    describe aws_s3_bucket(aws_cloudtrail_trail(trail).s3_bucket_name) do
+      it { should_not be_public }
     end
-
-    describe aws_s3_bucket_policy( bucket_name: bucket ) do
-      it { should_not have_statement_allow_all }
-    end 
   end
+
+  # Use this after skeletal aws_cloudtrail_trails is enhanced to expose s3_bucket_name
+  # aws_cloudtrail_trails.s3_bucket_name.uniq.each do |bucket|
+  #   describe aws_s3_bucket( bucket ) do
+  #     it{ should_not be_public }
+  #   end
+  # end
 end
