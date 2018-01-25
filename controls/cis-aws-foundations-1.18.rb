@@ -632,35 +632,35 @@ mfa_condition = {
                     }
                 } 
 
-  describe aws_iam_policy(IAM_MASTER_POLICY).where(Effect: "Allow") do
-    its("Action") { should match_array master_allow_actions}
-    its("Condition") { should be mfa_condition }
-  end
+  # describe aws_iam_policy(IAM_MASTER_POLICY).where(Effect: "Allow") do
+  #   its("Action") { should match_array master_allow_actions}
+  #   its("Condition") { should be mfa_condition }
+  # end
 
-  describe aws_iam_policy(IAM_MASTER_POLICY).where(Effect: "Deny") do
-    its("Action") { should match_array master_deny_actions}
-    its("Condition") { should be mfa_condition }
-  end
+  # describe aws_iam_policy(IAM_MASTER_POLICY).where(Effect: "Deny") do
+  #   its("Action") { should match_array master_deny_actions}
+  #   its("Condition") { should be mfa_condition }
+  # end
 
-  describe aws_iam_role(IAM_MASTER_ROLE_NAME) do
-    it { should exist }
-    its('policies') { should include IAM_MASTER_POLICY}
-    its('assumable') { should be true}
-  end
+  # describe aws_iam_role(IAM_MASTER_ROLE_NAME) do
+  #   it { should exist }
+  #   its('policies') { should include IAM_MASTER_POLICY}
+  #   its('assumable') { should be true}
+  # end
 
-  describe aws_iam_policy(IAM_MANAGER_POLICY).where(Effect: "Allow") do
-    its("Action") { should match_array manager_allow_actions}
-    its("Condition") { should be mfa_condition }
-  end
+  # describe aws_iam_policy(IAM_MANAGER_POLICY).where(Effect: "Allow") do
+  #   its("Action") { should match_array manager_allow_actions}
+  #   its("Condition") { should be mfa_condition }
+  # end
 
-  describe aws_iam_policy(IAM_MANAGER_POLICY).where(Effect: "Deny") do
-    its("Action") { should match_array manager_deny_actions}
-    its("Condition") { should be mfa_condition }
-  end
+  # describe aws_iam_policy(IAM_MANAGER_POLICY).where(Effect: "Deny") do
+  #   its("Action") { should match_array manager_deny_actions}
+  #   its("Condition") { should be mfa_condition }
+  # end
 
-  describe aws_iam_role(IAM_MANAGER_ROLE_NAME) do
-    it { should exist }
-    its('policies') { should include IAM_MANAGER_POLICY}
-    its('assumable') { should be true}
-  end
+  # describe aws_iam_role(IAM_MANAGER_ROLE_NAME) do
+  #   it { should exist }
+  #   its('policies') { should include IAM_MANAGER_POLICY}
+  #   its('assumable') { should be true}
+  # end
 end

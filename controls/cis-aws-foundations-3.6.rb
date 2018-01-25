@@ -63,7 +63,7 @@ created in step 1 and an SNS topic created in step 2
 <sns_topic_arn>
 "
 
-  pattern = '{ ($.eventName = ConsoleLogin) && ($.errorMessage = \"Failed authentication\") }'
+  pattern = "{ ($.eventName = ConsoleLogin) && ($.errorMessage = \"Failed authentication\") }"
 
   describe aws_cloudwatch_log_metric_filter(pattern: pattern) do
     it { should exist}

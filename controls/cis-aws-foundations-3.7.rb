@@ -65,7 +65,7 @@ created in step 1 and an SNS topic created in step 2
 "
 
 
-  pattern = '{($.eventSource = kms.amazonaws.com) && (($.eventName=DisableKey)||($.eventName=ScheduleKeyDeletion))} }'
+  pattern = "{ ($.eventSource = kms.amazonaws.com) && (($.eventName = DisableKey) || ($.eventName = ScheduleKeyDeletion)) }"
 
   describe aws_cloudwatch_log_metric_filter(pattern: pattern) do
     it { should exist}

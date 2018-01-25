@@ -56,7 +56,7 @@ https://console.aws.amazon.com/s3 [https://console.aws.amazon.com/s3].
 
   aws_cloudtrail_trails.trail_arns.each do |trail|
     describe aws_s3_bucket(aws_cloudtrail_trail(trail).s3_bucket_name) do
-      it { should be_logging_enabled }
+      it { should have_access_logging_enabled }
     end
   end
 

@@ -62,7 +62,7 @@ created in step 1 and an SNS topic created in step 2
 --evaluation-periods 1 --namespace 'CISBenchmark' --alarm-actions
 <sns_topic_arn>
 "
-  pattern = '{($.eventSource = config.amazonaws.com) && (($.eventName=StopConfigurationRecorder)||($.eventName=DeleteDeliveryChannel)||($.eventName=PutDeliveryChannel)||($.eventName=PutConfigurationRecorder))}'
+  pattern = "{ ($.eventSource = config.amazonaws.com) && (($.eventName=StopConfigurationRecorder)||($.eventName=DeleteDeliveryChannel)||($.eventName=PutDeliveryChannel)||($.eventName=PutConfigurationRecorder))}"
 
   describe aws_cloudwatch_log_metric_filter(pattern: pattern) do
     it { should exist}

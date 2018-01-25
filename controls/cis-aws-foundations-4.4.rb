@@ -99,10 +99,10 @@ region:
 groups rules for all VPCs in all regions, edit this field to add text similar
 to 'DO NOT USE. DO NOT ADD RULES'"
 
-  aws_vpc.list.each do |vpc|
-    describe aws_ec2_security_group(group_name: 'default', vpc_id: vpc) do
-      its('ingress_rules') { should be_empty}
-      its('egress_rules') { should be_empty}
-    end
-  end
+  # aws_vpc.list.each do |vpc|
+  #   describe aws_ec2_security_group(group_name: 'default', vpc_id: vpc) do
+  #     its('ingress_rules') { should be_empty}
+  #     its('egress_rules') { should be_empty}
+  #   end
+  # end
 end

@@ -1,14 +1,22 @@
-AWS_ACCESS_INSTANCE_NAME= attribute(
-  'aws_access_instance_name',
-  description: 'aws access instance name',
-  default: "aws_access_instance_name"
-)
+# AWS_ACCESS_INSTANCE_NAME= attribute(
+#   'aws_access_instance_name',
+#   description: 'aws access instance name',
+#   default: "aws_access_instance_name"
+# )
 
-AWS_ACCESS_INSTANCE_ROLE= attribute(
-  'aws_access_instance_role',
-  description: 'aws access instance name',
-  default: "aws_access_instance_role"
-)
+
+
+fixtures = {}
+[
+  'ec2_instance_has_role_id',
+].each do |fixture_name|
+  fixtures[fixture_name] = attribute(
+    fixture_name,
+    default: "default.#{fixture_name}",
+    description: 'See ../build/ec2.tf',
+  )
+end
+
 
 control "cis-aws-foundations-1.21" do
   title "Ensure IAM instance roles are used for AWS resource access from
@@ -93,7 +101,7 @@ bad practice and, if possible, you may wish to rebuild the instance with a new
 elastic IP address and make the investment to remediate affected systems while
 assigning the system to a role."
 
-  describe aws_ec2_instance(name: AWS_ACCESS_INSTANCE_NAME) do
+  describe aws_ec2_instance(fixtures['ec2_instance_has_role_id']) do
     it { should have_roles }
   end
 end
