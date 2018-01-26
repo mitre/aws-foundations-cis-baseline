@@ -76,7 +76,8 @@ aws iam delete-access-key"
   aws_iam_access_keys.where(active: true).entries.each do |key|
     describe key.username do
       context key do
-        its('last_used_days_ago') { should cmp <= 90 }
+        its('created_days_ago') { should cmp <= 90 }
+        its('ever_used') { should be true}
       end
     end
   end
