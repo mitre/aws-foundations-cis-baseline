@@ -527,103 +527,106 @@ _<assume_iam_manager_role_policy> _--policy-document
 
 '}"
 
-master_allow_actions=  [
-    "iam:CreateGroup",
-    "iam:CreatePolicy",
-    "iam:CreatePolicyVersion",
-    "iam:CreateRole",
-    "iam:CreateUser",
-    "iam:DeleteGroup",
-    "iam:DeletePolicy",
-    "iam:DeletePolicyVersion",
-    "iam:DeleteRole",
-    "iam:DeleteRolePolicy",
-    "iam:DeleteUser",
-    "iam:PutRolePolicy",
-    "iam:GetPolicy",
-    "iam:GetPolicyVersion",
-    "iam:GetRole",
-    "iam:GetRolePolicy",
-    "iam:GetUser",
-    "iam:GetUserPolicy",
-    "iam:ListEntitiesForPolicy",
-    "iam:ListGroupPolicies",
-    "iam:ListGroups",
-    "iam:ListGroupsForUser",
-    "iam:ListPolicies",
-    "iam:ListPoliciesGrantingServiceAccess",
-    "iam:ListPolicyVersions",
-    "iam:ListRolePolicies",
-    "iam:ListAttachedGroupPolicies",
-    "iam:ListAttachedRolePolicies",
-    "iam:ListAttachedUserPolicies",
-    "iam:ListRoles",
-    "iam:ListUsers"
-]
+master_allow_actions=  
+  [
+    "iam:AddUserToGroup",
+   "iam:AttachGroupPolicy",
+   "iam:DeleteGroupPolicy",
+   "iam:DeleteUserPolicy",
+   "iam:DetachGroupPolicy",
+   "iam:DetachRolePolicy",
+   "iam:DetachUserPolicy",
+   "iam:PutGroupPolicy",
+   "iam:PutUserPolicy",
+   "iam:RemoveUserFromGroup",
+   "iam:UpdateGroup",
+   "iam:UpdateAssumeRolePolicy",
+   "iam:UpdateUser",
+   "iam:GetPolicy",
+   "iam:GetPolicyVersion",
+   "iam:GetRole",
+   "iam:GetRolePolicy",
+   "iam:GetUser",
+   "iam:GetUserPolicy",
+   "iam:ListEntitiesForPolicy",
+   "iam:ListGroupPolicies",
+   "iam:ListGroups",
+   "iam:ListGroupsForUser",
+   "iam:ListPolicies",
+   "iam:ListPoliciesGrantingServiceAccess",
+   "iam:ListPolicyVersions",
+   "iam:ListRolePolicies",
+   "iam:ListAttachedGroupPolicies",
+   "iam:ListAttachedRolePolicies",
+   "iam:ListAttachedUserPolicies",
+   "iam:ListRoles",
+   "iam:ListUsers"
+  ]
 
-master_deny_actions= [
-    "iam:AddUserToGroup",
-    "iam:AttachGroupPolicy",
-    "iam:DeleteGroupPolicy",
-    "iam:DeleteUserPolicy",
-    "iam:DetachGroupPolicy",
-    "iam:DetachRolePolicy",
-    "iam:DetachUserPolicy",
-    "iam:PutGroupPolicy",
-    "iam:PutUserPolicy",
-    "iam:RemoveUserFromGroup",
-    "iam:UpdateGroup",
-    "iam:UpdateAssumeRolePolicy",
-    "iam:UpdateUser"
-]
+master_deny_actions= 
+  [
+    "iam:CreateGroup",
+   "iam:CreatePolicy",
+   "iam:CreatePolicyVersion",
+   "iam:CreateRole",
+   "iam:CreateUser",
+   "iam:DeleteGroup",
+   "iam:DeletePolicy",
+   "iam:DeletePolicyVersion",
+   "iam:DeleteRole",
+   "iam:DeleteRolePolicy",
+   "iam:DeleteUser",
+   "iam:PutRolePolicy"
+  ]
+
 manager_allow_actions=  [
-    "iam:AddUserToGroup",
-    "iam:AttachGroupPolicy",
-    "iam:DeleteGroupPolicy",
-    "iam:DeleteUserPolicy",
-    "iam:DetachGroupPolicy",
-    "iam:DetachRolePolicy",
-    "iam:DetachUserPolicy",
-    "iam:PutGroupPolicy",
-    "iam:PutUserPolicy",
-    "iam:RemoveUserFromGroup",
-    "iam:UpdateGroup",
-    "iam:UpdateAssumeRolePolicy",
-    "iam:UpdateUser",
-    "iam:GetPolicy",
-    "iam:GetPolicyVersion",
-    "iam:GetRole",
-    "iam:GetRolePolicy",
-    "iam:GetUser",
-    "iam:GetUserPolicy",
-    "iam:ListEntitiesForPolicy",
-    "iam:ListGroupPolicies",
-    "iam:ListGroups",
-    "iam:ListGroupsForUser",
-    "iam:ListPolicies",
-    "iam:ListPoliciesGrantingServiceAccess",
-    "iam:ListPolicyVersions",
-    "iam:ListRolePolicies",
-    "iam:ListAttachedGroupPolicies",
-    "iam:ListAttachedRolePolicies",
-    "iam:ListAttachedUserPolicies",
-    "iam:ListRoles",
-    "iam:ListUsers"
+"iam:CreateGroup",
+ "iam:CreatePolicy",
+ "iam:CreatePolicyVersion",
+ "iam:CreateRole",
+ "iam:CreateUser",
+ "iam:DeleteGroup",
+ "iam:DeletePolicy",
+ "iam:DeletePolicyVersion",
+ "iam:DeleteRole",
+ "iam:DeleteRolePolicy",
+ "iam:DeleteUser",
+ "iam:PutRolePolicy",
+ "iam:GetPolicy",
+ "iam:GetPolicyVersion",
+ "iam:GetRole",
+ "iam:GetRolePolicy",
+ "iam:GetUser",
+ "iam:GetUserPolicy",
+ "iam:ListEntitiesForPolicy",
+ "iam:ListGroupPolicies",
+ "iam:ListGroups",
+ "iam:ListGroupsForUser",
+ "iam:ListPolicies",
+ "iam:ListPoliciesGrantingServiceAccess",
+ "iam:ListPolicyVersions",
+ "iam:ListRolePolicies",
+ "iam:ListAttachedGroupPolicies",
+ "iam:ListAttachedRolePolicies",
+ "iam:ListAttachedUserPolicies",
+ "iam:ListRoles",
+ "iam:ListUsers"
 ]
 
 manager_deny_actions= [
-    "iam:CreateGroup",
-    "iam:CreatePolicy",
-    "iam:CreatePolicyVersion",
-    "iam:CreateRole",
-    "iam:CreateUser",
-    "iam:DeleteGroup",
-    "iam:DeletePolicy",
-    "iam:DeletePolicyVersion",
-    "iam:DeleteRole",
-    "iam:DeleteRolePolicy",
-    "iam:DeleteUser",
-    "iam:PutRolePolicy"
+ "iam:AddUserToGroup",
+ "iam:AttachGroupPolicy",
+ "iam:DeleteGroupPolicy",
+ "iam:DeleteUserPolicy",
+ "iam:DetachGroupPolicy",
+ "iam:DetachRolePolicy",
+ "iam:DetachUserPolicy",
+ "iam:PutGroupPolicy",
+ "iam:PutUserPolicy",
+ "iam:RemoveUserFromGroup",
+ "iam:UpdateGroup",
+ "iam:UpdateAssumeRolePolicy",
+ "iam:UpdateUser"
 ]
 
 mfa_condition = {
@@ -632,15 +635,14 @@ mfa_condition = {
                     }
                 } 
 
-  # describe aws_iam_policy(IAM_MASTER_POLICY).where(Effect: "Allow") do
-  #   its("Action") { should match_array master_allow_actions}
-  #   its("Condition") { should be mfa_condition }
-  # end
+  describe aws_iam_policy(IAM_MASTER_POLICY).where(Effect: "Allow") do
+    its("actions.flatten") { should match_array master_allow_actions}
+    its("conditions.flatten") { should include mfa_condition }
+  end
 
-  # describe aws_iam_policy(IAM_MASTER_POLICY).where(Effect: "Deny") do
-  #   its("Action") { should match_array master_deny_actions}
-  #   its("Condition") { should be mfa_condition }
-  # end
+  describe aws_iam_policy(IAM_MASTER_POLICY).where(Effect: "Deny") do
+    its("actions.flatten") { should match_array master_deny_actions}
+  end
 
   # describe aws_iam_role(IAM_MASTER_ROLE_NAME) do
   #   it { should exist }
@@ -648,16 +650,20 @@ mfa_condition = {
   #   its('assumable') { should be true}
   # end
 
-  # describe aws_iam_policy(IAM_MANAGER_POLICY).where(Effect: "Allow") do
-  #   its("Action") { should match_array manager_allow_actions}
-  #   its("Condition") { should be mfa_condition }
-  # end
+
+  describe aws_iam_policy(IAM_MANAGER_POLICY).where(Effect: "Allow") do
+    its("actions.flatten") { should match_array manager_allow_actions}
+    its("conditions.flatten") { should include mfa_condition }
+  end
 
   # describe aws_iam_policy(IAM_MANAGER_POLICY).where(Effect: "Deny") do
   #   its("Action") { should match_array manager_deny_actions}
   #   its("Condition") { should be mfa_condition }
   # end
 
+  describe aws_iam_policy(IAM_MANAGER_POLICY).where(Effect: "Deny") do
+    its("actions.flatten") { should match_array manager_deny_actions}
+  end
   # describe aws_iam_role(IAM_MANAGER_ROLE_NAME) do
   #   it { should exist }
   #   its('policies') { should include IAM_MANAGER_POLICY}
