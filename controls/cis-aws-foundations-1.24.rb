@@ -83,7 +83,7 @@ _<policy_arn>_
 "
 
   aws_iam_policies.policy_names.each do |policy|
-    unless !aws_iam_policy(policy).attached?
+    if aws_iam_policy(policy).attached?
       describe aws_iam_policy(policy).document.where(Effect:'Allow') do
         its('actions.flatten') { should_not include '*' }
         its('resources.flatten') { should_not include '*' }

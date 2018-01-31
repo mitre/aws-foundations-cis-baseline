@@ -61,10 +61,9 @@ operation of an already running environment.
 
 '
 "
-
-  # aws_vpc.list.each do |vpc|
-  #   describe aws_vpc(vpc) do
-  #     it { should be_flow_logs_enabled}
-  #   end
-  # end
+  aws_vpcs.vpc_ids.each do |vpc|
+    describe aws_vpc(vpc) do
+      it { should be_flow_logs_enabled}
+    end
+  end
 end

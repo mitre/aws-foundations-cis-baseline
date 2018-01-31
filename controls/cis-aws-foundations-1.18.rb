@@ -637,12 +637,12 @@ mfa_condition = {
                 } 
 
 
-  describe aws_iam_inline_policy(IAM_MASTER_POLICY).where(Effect: "Allow") do
+  describe aws_iam_policy(IAM_MASTER_POLICY).document.where(Effect: "Allow") do
     its("actions.flatten") { should match_array master_allow_actions}
     its("conditions") { should include mfa_condition }
   end
 
-  describe aws_iam_policy(IAM_MASTER_POLICY).where(Effect: "Deny") do
+  describe aws_iam_policy(IAM_MASTER_POLICY).document.where(Effect: "Deny") do
     its("actions.flatten") { should match_array master_deny_actions}
   end
 
@@ -650,12 +650,12 @@ mfa_condition = {
     it { should be_attached_to_role(IAM_MASTER_ROLE_NAME) }
   end
 
-  describe aws_iam_policy(IAM_MANAGER_POLICY).where(Effect: "Allow") do
+  describe aws_iam_policy(IAM_MANAGER_POLICY).document.where(Effect: "Allow") do
     its("actions.flatten") { should match_array manager_allow_actions}
     its("conditions") { should include mfa_condition }
   end
 
-  describe aws_iam_policy(IAM_MANAGER_POLICY).where(Effect: "Deny") do
+  describe aws_iam_policy(IAM_MANAGER_POLICY).document.where(Effect: "Deny") do
     its("actions.flatten") { should match_array manager_deny_actions}
   end
 

@@ -11,8 +11,10 @@ unintended disclosure of highly privileged credentials."
   tag "cis_rid": "1.1"
   tag "cis_level": 1
   tag "cis_control_number": ""
-  tag "nist": ""
+  tag "csc_control": [["5.1"], "6.0"]
+  tag "nist": ["AC-6 (9)", 4]
   tag "cce_id": ""
+
   tag "check": "Implement the Ensure a log metric filter and alarm exist for
 usage of 'root' account recommendation in the Monitoring section of this
 benchmark to receive notifications of root account usage. Additionally,
