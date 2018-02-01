@@ -1,3 +1,9 @@
+AWS_REGION= attribute(
+  'aws_region',
+  description: 'default aws region',
+  default: "us-east-1"
+)
+
 control "cis-aws-foundations-2.5" do
   title "Ensure AWS Config is enabled in all regions"
   desc  "AWS Config is a web service that performs configuration management of
@@ -50,4 +56,31 @@ in 1 region only
 'API Call:
 
 'aws configservice start-configuration-recorder"
+
+  regions = [
+    'us-east-1',
+    'us-east-2',
+    'us-west-1',
+    'us-west-2',
+  ]
+
+  regions.each do |region|
+    ENV['AWS_REGION'] = region
+
+    describe aws_config_recorder do
+      it { should exist }
+      it { should be_recording }
+      it { should be_all_supported }
+      it { should have_include_global_resource_types }
+    end
+
+    describe aws_config_delivery_channel do
+      it { should exist }
+      its('s3_bucket_name') { should_not be_nil }
+      its('sns_topic_arn') { should_not be_nil }
+    end
+  end
+
+  # reset to default region
+  ENV['AWS_REGION'] = AWS_REGION
 end

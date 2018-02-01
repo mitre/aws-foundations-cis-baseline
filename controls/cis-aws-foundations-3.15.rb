@@ -55,5 +55,31 @@ https://console.aws.amazon.com/sns/ [https://console.aws.amazon.com/sns/]
 * Click Actions
 * Click Delete Subscriptions"
 
+sns_list = [
+  "arn:aws:sns:us-east-1:484747447281:cis-test-topic-01",
+   "arn:aws:sns:us-east-1:484747447281:cis-test-topic-02",
+   "arn:aws:sns:us-east-1:484747447281:config-topic",
+   "arn:aws:sns:us-east-1:484747447281:config-topic-test",
+   "arn:aws:sns:us-east-1:484747447281:rxman-metric_sns",
+   "arn:aws:sns:us-east-1:484747447281:rxman-test-topic-01",
+   "arn:aws:sns:us-east-1:484747447281:rxman-test-topic-02",
+   "arn:aws:sns:us-east-1:484747447281:test_sns"
+  ]
 
+  describe aws_sns_topics do
+    its('topic_arns') { should match_array sns_list}
+  end
+  aws_sns_topics.topic_arns.each do |topic|
+    describe aws_sns_topic(topic) do
+      its('owner') { should_not be_nil }
+      its('region') { should_not be_nil }
+    end
+    aws_sns_topic(topic).subscriptions.each do |subscription|
+      describe aws_sns_subscription(subscription) do
+        its('endpoint') { should_not be_nil }
+        its('protocol') { should_not be_nil }
+        its('owner') { should_not be_nil }
+      end
+    end
+  end
 end
