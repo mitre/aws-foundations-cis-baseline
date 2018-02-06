@@ -4,7 +4,7 @@ control "cis-aws-foundations-1.16" do
 resources. IAM policies are the means by which privileges are granted to users,
 groups, or roles. It is recommended that IAM policies be applied directly to
 groups and roles but not users."
-  impact 0.5
+  impact 0.4
   tag "rationale": "Assigning privileges at the group or role level reduces the
 complexity of access management as the number of users grow. Reducing access
 management complexity may in-turn reduce opportunity for a principal to
@@ -12,8 +12,9 @@ inadvertently receive or retain excessive privileges."
   tag "cis_impact": ""
   tag "cis_rid": "1.16"
   tag "cis_level": 1
-  tag "cis_control_number": ""
-  tag "nist": ""
+  tag "severity": "low"
+  tag "csc_control": ""
+  tag "nist": ["AC-6(7)", "Rev_4"]
   tag "cce_id": "CCE-78912-3"
   tag "check": "Perform the following to determine if policies are attached
 directly to users:

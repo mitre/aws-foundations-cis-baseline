@@ -5,14 +5,15 @@ CloudTrail Logs to CloudWatch Logs and establishing corresponding metric
 filters and alarms. Security Groups are a stateful packet filter that controls
 ingress and egress traffic within a VPC. It is recommended that a metric filter
 and alarm be established changes to Security Groups."
-  impact 0.5
+  impact 0.7
   tag "rationale": "Monitoring changes to security group will help ensure that
 resources and services are not unintentionally exposed."
   tag "cis_impact": ""
   tag "cis_rid": "3.10"
   tag "cis_level": 2
-  tag "cis_control_number": ""
-  tag "nist": ""
+  tag "severity": "high"
+  tag "csc_control": ""
+  tag "nist": ["SI-4(5)", "Rev_4"]
   tag "cce_id": "CCE-79195-4"
   tag "check": "Perform the following to determine if the account is configured
 as prescribed: 1. Identify the log group name configured for use with

@@ -7,7 +7,7 @@ to grant _least privilege_--that is, granting only the permissions required to
 perform a task. Determine what users need to do and then craft policies for
 them that let the users perform _only_ those tasks, instead of allowing full
 administrative privileges."
-  impact 0.5
+  impact 0.4
   tag "rationale": "It's more secure to start with a minimum set of permissions
 and grant additional permissions as necessary, rather than starting with
 permissions that are too lenient and then trying to tighten them later.
@@ -21,8 +21,9 @@ over  'Resource': '*' should be removed."
   tag "cis_impact": ""
   tag "cis_rid": "1.24"
   tag "cis_level": 1
-  tag "cis_control_number": ""
-  tag "nist": ""
+  tag "severity": "low"
+  tag "csc_control": ""
+  tag "nist": ["AC-6", "Rev_4"]
   tag "cce_id": "CCE-78912-3"
   tag "check": "Perform the following to determine what policies are created:
 

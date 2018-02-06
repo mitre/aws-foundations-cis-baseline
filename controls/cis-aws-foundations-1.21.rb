@@ -42,8 +42,9 @@ individuals who no longer work for the organization owning the credentials."
   tag "cis_impact": ""
   tag "cis_rid": "1.21"
   tag "cis_level": 2
-  tag "cis_control_number": ""
-  tag "nist": ""
+  tag "severity": "high"
+  tag "csc_control": [["16.14"], "6.0"]
+  tag "nist": ["SC-28", "Rev_4"]
   tag "cce_id": ""
   tag "check": "Whether an Instance Is Associated With a Role
 

@@ -9,14 +9,15 @@ updates to notify their subscribers about, they can publish a message to the
 topic - which immediately triggers Amazon SNS to deliver the message to all
 applicable subscribers. It is recommended that the list of subscribers to given
 topics be periodically reviewed for appropriateness."
-  impact 0.5
+  impact 0.4
   tag "rationale": "Reviewing subscriber topics will help ensure that only
 expected recipients receive information published to SNS topics."
   tag "cis_impact": ""
   tag "cis_rid": "3.15"
   tag "cis_level": 1
-  tag "cis_control_number": ""
-  tag "nist": ""
+  tag "severity": "low"
+  tag "csc_control": ""
+  tag "nist": ["AC-6", "Rev_4"]
   tag "cce_id": ""
   tag "check": "Perform the following to ensure appropriate subscribers:
 

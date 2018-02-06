@@ -11,7 +11,7 @@ may arise where that individual is unavailable. Email contact details should
 point to a mail alias which forwards email to multiple individuals within the
 organisation; where feasible, phone contact details should point to a PABX hunt
 group or other call-forwarding system."
-  impact 0.5
+  impact 0.4
   tag "rationale": "If an AWS account is observed to be behaving in a
 prohibited or suspicious manner, AWS will attempt to contact the account owner
 by email and phone using the contact details listed. If this is unsuccessful
@@ -26,8 +26,9 @@ aliases and PABX hunt groups."
   tag "cis_impact": ""
   tag "cis_rid": "1.19"
   tag "cis_level": 1
-  tag "cis_control_number": ""
-  tag "nist": ""
+  tag "severity": "low"
+  tag "csc_control": ""
+  tag "nist": ["IA-4", "Rev_4"]
   tag "cce_id": ""
   tag "check": "This activity can only be performed via the AWS Console, with a
 user who has permission to read and write Billing information

@@ -7,15 +7,16 @@ that is used to perform cryptographic operations such as encryption and
 decryption. Automated key rotation currently retains all prior backing keys so
 that decryption of encrypted data can take place transparently. It is
 recommended that CMK key rotation be enabled."
-  impact 0.5
+  impact 0.7
   tag "rationale": "Rotating encryption keys helps reduce the potential impact
 of a compromised key as data encrypted with a new key cannot be accessed with a
 previous key that may have been exposed."
   tag "cis_impact": ""
   tag "cis_rid": "2.8"
   tag "cis_level": 2
-  tag "cis_control_number": ""
-  tag "nist": ""
+  tag "severity": "high"
+  tag "csc_control": ""
+  tag "nist": ["SC-12", "Rev_4"]
   tag "cce_id": "CCE-78920-6"
   tag "check": "Via the Management Console:
 

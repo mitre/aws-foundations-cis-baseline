@@ -11,8 +11,9 @@ abandoned account to be used."
   tag "cis_impact": ""
   tag "cis_rid": "1.3"
   tag "cis_level": 1
-  tag "cis_control_number": ""
-  tag "nist": ""
+  tag "severity": "low"
+  tag "csc_control": [["16.6"], "6.0"]
+  tag "nist": ["IA-4", "Rev_4"]
   tag "cce_id": "CCE-78900-8"
   tag "check": "Perform the following to determine if unused credentials exist:
 

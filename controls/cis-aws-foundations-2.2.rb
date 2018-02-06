@@ -5,14 +5,15 @@ containing a hash of each log that CloudTrail writes to S3. These digest files
 can be used to determine whether a log file was changed, deleted, or unchanged
 after CloudTrail delivered the log. It is recommended that file validation be
 enabled on all CloudTrails."
-  impact 0.5
+  impact 0.7
   tag "rationale": "Enabling log file validation will provide additional
 integrity checking of CloudTrail logs."
   tag "cis_impact": ""
   tag "cis_rid": "2.2"
   tag "cis_level": 2
-  tag "cis_control_number": ""
-  tag "nist": ""
+  tag "severity": "high"
+  tag "csc_control": [["6.3"], "6.0"]
+  tag "nist": ["PS-4", "Rev_4"]
   tag "cce_id": "CCE-78914-9"
   tag "check": "Perform the following on each trail to determine if log file
 validation is enabled:

@@ -21,7 +21,7 @@ by systems in the environment. Even if the VPC flow logging recommendation in
 this benchmark is not adopted as a permanent security measure, it should be
 used during any period of discovery and engineering for least privileged
 security groups."
-  impact 0.5
+  impact 0.7
   tag "rationale": "Configuring all VPC default security groups to restrict all
 traffic will encourage least privilege security group development and mindful
 placement of AWS resources into security groups which will in-turn reduce the
@@ -34,8 +34,9 @@ is know to be breach free will reveal the current pattern of ports being used
 for each instance to communicate successfully."
   tag "cis_rid": "4.4"
   tag "cis_level": 2
-  tag "cis_control_number": ""
-  tag "nist": ""
+  tag "severity": "high"
+  tag "csc_control": [["9.2"], "6.0"]
+  tag "nist": ["SC-7(5)", "Rev_4"]
   tag "cce_id": "CCE-79201-0"
   tag "check": "Perform the following to determine if the account is configured
 as prescribed:

@@ -3,15 +3,16 @@ control "cis-aws-foundations-1.20" do
   desc  "AWS provides customers with the option of specifying the contact
 information for account's security team. It is recommended that this
 information be provided."
-  impact 0.5
+  impact 0.4
   tag "rationale": "Specifying security-specific contact information will help
 ensure that security advisories sent by AWS reach the team in your organization
 that is best equipped to respond to them."
   tag "cis_impact": ""
   tag "cis_rid": "1.20"
   tag "cis_level": 1
-  tag "cis_control_number": ""
-  tag "nist": ""
+  tag "severity": "low"
+  tag "csc_control": ""
+  tag "nist": ["IA-4", "Rev_4"]
   tag "cce_id": "CCE-79200-2"
   tag "check": "Perform the following in the AWS Management Console to
 determine if security contact information is present:

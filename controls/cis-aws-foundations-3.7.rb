@@ -6,14 +6,15 @@ CloudTrail Logs to CloudWatch Logs and establishing corresponding metric
 filters and alarms. It is recommended that a metric filter and alarm be
 established for customer created CMKs which have changed state to disabled or
 scheduled deletion."
-  impact 0.5
+  impact 0.7
   tag "rationale": "Data encrypted with disabled or deleted keys will no longer
 be accessible."
   tag "cis_impact": ""
   tag "cis_rid": "3.7"
   tag "cis_level": 2
-  tag "cis_control_number": ""
-  tag "nist": ""
+  tag "severity": "high"
+  tag "csc_control": ""
+  tag "nist": ["SI-4(5)", "Rev_4"]
   tag "cce_id": "CCE-79192-1"
   tag "check": "Perform the following to determine if the account is configured
 as prescribed: 1. Identify the log group name configured for use with

@@ -5,7 +5,7 @@ every event or hourly ongoing activity which incurs cost in an AWS account.
 These records are aggregated into CSV files of hourly records, and written to
 an S3 bucket. A CSV (Comma Separated Values) file of billing records is written
 at least every 24 hours; writing of files is often more frequent."
-  impact 0.5
+  impact 0.4
   tag "rationale": "Detailed Billing records can be used as an overview of AWS
 activity across the whole of an account, in addition to per-Region CloudTrail,
 Config and other service-specific JSON-based logs. Billing records can be
@@ -20,8 +20,9 @@ occurring in."
   tag "cis_impact": ""
   tag "cis_rid": "1.17"
   tag "cis_level": 1
-  tag "cis_control_number": ""
-  tag "nist": ""
+  tag "severity": "low"
+  tag "csc_control": ""
+  tag "nist": ["AU-12", "Rev_4"]
   tag "cce_id": ""
   tag "check": "There is currently no AWS CLI support for this operation, so it
 is necessary to use the Management Console.

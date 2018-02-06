@@ -20,8 +20,9 @@ personal.
   tag "cis_impact": ""
   tag "cis_rid": "1.11"
   tag "cis_level": 1
-  tag "cis_control_number": ""
-  tag "nist": ""
+  tag "severity": "low"
+  tag "csc_control": ""
+  tag "nist": ["IA-5(1)", "Rev_4"]
   tag "cce_id": "CCE-78909-9"
   tag "check": "Perform the following to ensure the password policy is
 configured as prescribed:

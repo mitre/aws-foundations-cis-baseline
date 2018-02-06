@@ -6,14 +6,15 @@ CloudTrail Logs to CloudWatch Logs and establishing corresponding metric
 filters and alarms. It is recommended that a metric filter and alarm be
 established for console logins that are not protected by multi-factor
 authentication (MFA)."
-  impact 0.5
+  impact 0.4
   tag "rationale": "Monitoring for single-factor console logins will increase
 visibility into accounts that are not protected by MFA."
   tag "cis_impact": ""
   tag "cis_rid": "3.2"
   tag "cis_level": 1
-  tag "cis_control_number": ""
-  tag "nist": ""
+  tag "severity": "low"
+  tag "csc_control": [["5.5"], "6.0"]
+  tag "nist": ["AU-2", "Rev_4"]
   tag "cce_id": "CCE-79187-1"
   tag "check": "Perform the following to determine if the account is configured
 as prescribed: 1. Identify the log group name configured for use with

@@ -6,14 +6,15 @@ filters and alarms. It is possible to have more than 1 VPC within an account,
 in addition it is also possible to create a peer connection between 2 VPCs
 enabling network traffic to route between VPCs. It is recommended that a metric
 filter and alarm be established for changes made to VPCs."
-  impact 0.5
+  impact 0.4
   tag "rationale": "Monitoring changes to IAM policies will help ensure
 authentication and authorization controls remain intact."
   tag "cis_impact": ""
   tag "cis_rid": "3.14"
   tag "cis_level": 1
-  tag "cis_control_number": ""
-  tag "nist": ""
+  tag "severity": "low"
+  tag "csc_control": ""
+  tag "nist": ["SI-4(5)", "Rev_4"]
   tag "cce_id": "CCE-79199-6"
   tag "check": "Perform the following to determine if the account is configured
 as prescribed: 1. Identify the log group name configured for use with

@@ -4,15 +4,16 @@ control "cis-aws-foundations-4.5" do
 updated to establish any connections between the peered VPCs. These routes can
 be as specific as desired - even peering a VPC to only a single host on the
 other side of the connection."
-  impact 0.5
+  impact 0.7
   tag "rationale": "Being highly selective in peering routing tables is a very
 effective way of minimizing the impact of breach as resources outside of these
 routes are inaccessible to the peered VPC."
   tag "cis_impact": ""
   tag "cis_rid": "4.5"
   tag "cis_level": 2
-  tag "cis_control_number": ""
-  tag "nist": ""
+  tag "severity": "high"
+  tag "csc_control": ""
+  tag "nist": ["SC-7", "Rev_4"]
   tag "cce_id": ""
   tag "check": "Review routing tables of peered VPCs for whether they route all
 subnets of each VPC and whether that is necessary to accomplish the intended
@@ -45,4 +46,14 @@ compliant route:
 'aws ec2 create-route --route-table-id _<route_table_id>_
 --destination-cidr-block _<compliant_destination_CIDR>_
 --vpc-peering-connection-id _<peering_connection_id>_"
+
+  # aws_route_tables.route_table_ids.each do |route_table_id|
+  #   aws_route_table(route_table_id).routes.each do |route|
+  #     next unless route.key?(:vpc_peering_connection_id)
+  #       describe route do
+  #         its([:destination_cidr_block]) { should_not be nil}
+  #       end
+  #     end
+  #   end
+  # end
 end

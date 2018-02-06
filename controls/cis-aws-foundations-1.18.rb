@@ -10,6 +10,30 @@ IAM_MASTER_ROLE_NAME= attribute(
   default: "iam_master_role_name"
 )
 
+IAM_MANAGER_USER_NAME= attribute(
+  'iam_manager_user_name',
+  description: 'iam manager user name',
+  default: "iam_manager_user_name"
+)
+
+IAM_MASTER_USER_NAME= attribute(
+  'iam_master_user_name',
+  description: 'iam master user name',
+  default: "iam_master_user_name"
+)
+
+IAM_MANAGER_GROUP_NAME= attribute(
+  'iam_manager_group_name',
+  description: 'iam manager group name',
+  default: "iam_manager_group_name"
+)
+
+IAM_MASTER_GROUP_NAME= attribute(
+  'iam_master_group_name',
+  description: 'iam master group name',
+  default: "test-role-group"
+)
+
 IAM_MANAGER_POLICY= attribute(
   'iam_manager_policy',
   description: 'iam manager policy',
@@ -20,6 +44,18 @@ IAM_MASTER_POLICY= attribute(
   'iam_master_policy',
   description: 'iam master policy',
   default: "iam_master_policy"
+)
+
+IAM_MANAGER_ASSUME_POLICY= attribute(
+  'iam_manager_assume_policy',
+  description: 'iam manager assume policy',
+  default: "iam_manager_assume_policy"
+)
+
+IAM_MASTER_ASSUME_POLICY= attribute(
+  'iam_master_assume_policy',
+  description: 'iam master assume policy',
+  default: "iam_master_assume_policy"
 )
 
 control "cis-aws-foundations-1.18" do
@@ -37,7 +73,7 @@ also be assigned to EC2 instances and Lambda functions.
 Control over IAM, which is also defined and mediated by a number of
 fine-grained permissions, should be divided between a number of roles, such
 that no individual user in a production account has full control over IAM."
-  impact 0.5
+  impact 0.4
   tag "rationale": "IAM is the principal point of control for service
 configuration access, and 'control over IAM' means 'control over the
 configuration of all other assets in the AWS account'. Therefore it is
@@ -66,8 +102,9 @@ manner, in order for a user to gain access to a permission."
   tag "cis_impact": ""
   tag "cis_rid": "1.18"
   tag "cis_level": 1
-  tag "cis_control_number": ""
-  tag "nist": ""
+  tag "severity": "low"
+  tag "csc_control": ""
+  tag "nist": ["AC-6(7)", "Rev_4"]
   tag "cce_id": ""
   tag "check": "Using the Amazon unified CLI, from a user or role which has the
 iam:ListRoles and iam:GetRolePolicy permissions:
@@ -650,8 +687,24 @@ mfa_condition = {
     it { should be_attached_to_role(IAM_MASTER_ROLE_NAME) }
   end
 
+  describe aws_iam_role(IAM_MASTER_ROLE_NAME).assume_role_policy_document.where(Action: "sts:AssumeRole") do
+    its("effects") { should match_array ["Allow"]}
+    its("principals.to_s") { should match ":user/#{IAM_MASTER_USER_NAME}"}
+  end
+
+  describe aws_iam_policy(IAM_MASTER_ASSUME_POLICY).document.where(Action: "sts:AssumeRole") do
+    its("effects") { should match_array ["Allow"]}
+    its("resources.first") { should match ":role/#{IAM_MASTER_ROLE_NAME}" }
+  end
+
+  describe aws_iam_group(IAM_MASTER_GROUP_NAME) do
+    its('attached_policies') { should include IAM_MASTER_ASSUME_POLICY }
+    its('users') { should include IAM_MASTER_USER_NAME }
+  end
+
+
   describe aws_iam_policy(IAM_MANAGER_POLICY).document.where(Effect: "Allow") do
-    its("actions.flatten") { should match_array manager_allow_actions}
+    its("actions") { should match_array manager_allow_actions}
     its("conditions") { should include mfa_condition }
   end
 
@@ -659,7 +712,22 @@ mfa_condition = {
     its("actions.flatten") { should match_array manager_deny_actions}
   end
 
-  describe aws_iam_policy(IAM_MASTER_POLICY) do
+  describe aws_iam_policy(IAM_MANAGER_POLICY) do
     it { should be_attached_to_role(IAM_MANAGER_ROLE_NAME) }
+  end
+
+  describe aws_iam_role(IAM_MANAGER_ROLE_NAME).assume_role_policy_document.where(Action: "sts:AssumeRole") do
+    its("effects") { should match_array ["Allow"]}
+    its("principals.to_s") { should match ":user/#{IAM_MANAGER_USER_NAME}"}
+  end
+
+  describe aws_iam_policy(IAM_MANAGER_ASSUME_POLICY).document.where(Action: "sts:AssumeRole") do
+    its("effects") { should match_array ["Allow"]}
+    its("resources.first") { should match ":role/#{IAM_MANAGER_ROLE_NAME}" }
+  end
+
+  describe aws_iam_group(IAM_MANAGER_GROUP_NAME) do
+    its('attached_policies') { should include IAM_MANAGER_ASSUME_POLICY }
+    its('users') { should include IAM_MANAGER_USER_NAME }
   end
 end

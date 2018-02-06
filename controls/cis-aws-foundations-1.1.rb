@@ -10,9 +10,9 @@ unintended disclosure of highly privileged credentials."
   tag "cis_impact": ""
   tag "cis_rid": "1.1"
   tag "cis_level": 1
-  tag "cis_control_number": ""
+  tag "severity": "low"
   tag "csc_control": [["5.1"], "6.0"]
-  tag "nist": ["AC-6 (9)", 4]
+  tag "nist": ["AC-6 (9)", "Rev_4"]
   tag "cce_id": ""
 
   tag "check": "Implement the Ensure a log metric filter and alarm exist for

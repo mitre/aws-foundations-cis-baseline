@@ -6,14 +6,15 @@ CloudTrail Logs to CloudWatch Logs and establishing corresponding metric
 filters and alarms. NACLs are used as a stateless packet filter to control
 ingress and egress traffic for subnets within a VPC. It is recommended that a
 metric filter and alarm be established for changes made to NACLs."
-  impact 0.5
+  impact 0.7
   tag "rationale": "Monitoring changes to NACLs will help ensure that AWS
 resources and services are not unintentionally exposed."
   tag "cis_impact": ""
   tag "cis_rid": "3.11"
   tag "cis_level": 2
-  tag "cis_control_number": ""
-  tag "nist": ""
+  tag "severity": "high"
+  tag "csc_control": ""
+  tag "nist": ["SI-4(5)", "Rev_4"]
   tag "cce_id": "CCE-79196-2"
   tag "check": "Perform the following to determine if the account is configured
 as prescribed: 1. Identify the log group name configured for use with

@@ -3,7 +3,7 @@ control "cis-aws-foundations-1.15" do
   desc  "The AWS support portal allows account owners to establish security
 questions that can be used to authenticate individuals calling AWS customer
 service for support. It is recommended that security questions be established."
-  impact 0.5
+  impact 0.4
   tag "rationale": "When creating a new AWS account, a default super user is
 automatically created. This account is referred to as the 'root' account. It is
 recommended that the use of this account be limited and highly controlled.
@@ -14,8 +14,9 @@ login access."
   tag "cis_impact": ""
   tag "cis_rid": "1.15"
   tag "cis_level": 1
+  tag "severity": "low"
   tag "cis_control_number": ""
-  tag "nist": ""
+  tag "nist": ["UM", "Rev_4"]
   tag "cce_id": ""
   tag "check": "Perform the following in the AWS Management Console:
 

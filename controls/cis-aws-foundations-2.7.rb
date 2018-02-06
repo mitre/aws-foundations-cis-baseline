@@ -17,8 +17,9 @@ permission by the CMK policy."
 https://aws.amazon.com/kms/pricing/ for more information."
   tag "cis_rid": "2.7"
   tag "cis_level": 2
-  tag "cis_control_number": ""
-  tag "nist": ""
+  tag "severity": "high"
+  tag "csc_control": [["13.1"], "6.0"]
+  tag "nist": ["UM", "Rev_4"]
   tag "cce_id": "CCE-78919-8"
   tag "check": "Perform the following to determine if CloudTrail is configured
 to use SSE-KMS:

@@ -16,7 +16,7 @@ be sent to CloudWatch Logs.
 being captured, monitored, and appropriately alarmed on. CloudWatch Logs is a
 native way to accomplish this using AWS services but does not preclude the use
 of an alternate solution."
-  impact 0.5
+  impact 0.4
   tag "rationale": "Sending CloudTrail logs to CloudWatch Logs will facilitate
 real-time and historic activity logging based on user, API, resource, and IP
 address, and provides opportunity to establish alarms and notifications for
@@ -35,8 +35,9 @@ retention periods:
 http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/SettingLogRetention.html"
   tag "cis_rid": "2.4"
   tag "cis_level": 1
-  tag "cis_control_number": ""
-  tag "nist": ""
+  tag "severity": "low"
+  tag "csc_control": [["6.6", "14.6"], "6.0"]
+  tag "nist": ["SI-4(2)", "AU-2", "Rev_4"]
   tag "cce_id": "CCE-78916-4"
   tag "check": "Perform the following to ensure CloudTrail is configured as
 prescribed:

@@ -4,7 +4,7 @@ control "cis-aws-foundations-3.1" do
 CloudTrail Logs to CloudWatch Logs and establishing corresponding metric
 filters and alarms. It is recommended that a metric filter and alarm be
 established for unauthorized API calls."
-  impact 0.5
+  impact 0.4
   tag "rationale": "Monitoring unauthorized API calls will help reveal
 application errors and may reduce time to detect malicious activity."
   tag "cis_impact": "This alert may be triggered by normal read-only console
@@ -20,8 +20,9 @@ the system - any additional access given should be reviewed for alignment with
 the original limited IAM user intent."
   tag "cis_rid": "3.1"
   tag "cis_level": 1
-  tag "cis_control_number": ""
-  tag "nist": ""
+  tag "severity": "low"
+  tag "csc_control": ""
+  tag "nist": ["SI-4(5)", "Rev_4"]
   tag "cce_id": "CCE-79186-3"
   tag "check": "Perform the following to determine if the account is configured
 as prescribed:
@@ -104,9 +105,9 @@ NOTE: set the period and threshold to values that fit your organization.
 
   pattern = '{ ($.errorCode = "*UnauthorizedOperation") || ($.errorCode = "AccessDenied*") }'
 
-  describe aws_cloudwatch_log_metric_filter(pattern: pattern) do
-    it { should exist}
-  end
+    describe aws_cloudwatch_log_metric_filter(pattern: pattern) do
+      it { should exist}
+    end
 
   metric_name = aws_cloudwatch_log_metric_filter(pattern: pattern).metric_name
   metric_namespace = aws_cloudwatch_log_metric_filter(pattern: pattern).metric_namespace

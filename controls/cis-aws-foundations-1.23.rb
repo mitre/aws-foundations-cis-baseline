@@ -5,7 +5,7 @@ that have a console password"
 This results in many access keys being generated unnecessarily. In addition to
 unnecessary credentials, it also generates unnecessary management work in
 auditing and rotating these keys."
-  impact 0.5
+  impact 0.4
   tag "rationale": "Requiring that additional steps be taken by the user after
 their profile has been created will give a stronger indication of intent that
 access keys are [a] necessary for their work and [b] once the access key is
@@ -18,8 +18,9 @@ separate step from user creation."
   tag "cis_impact": ""
   tag "cis_rid": "1.23"
   tag "cis_level": 1
-  tag "cis_control_number": ""
-  tag "nist": ""
+  tag "severity": "low"
+  tag "csc_control": ""
+  tag "nist": ["UM", "Rev_4"]
   tag "cce_id": ""
   tag "check": "Perform the following to determine if access keys are rotated
 as prescribed:

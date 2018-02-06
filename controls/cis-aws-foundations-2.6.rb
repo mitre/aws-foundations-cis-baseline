@@ -5,7 +5,7 @@ for each request made to your S3 bucket. An access log record contains details
 about the request, such as the request type, the resources specified in the
 request worked, and the time and date the request was processed. It is
 recommended that bucket access logging be enabled on the CloudTrail S3 bucket."
-  impact 0.5
+  impact 0.4
   tag "rationale": "By enabling S3 bucket logging on target S3 buckets, it is
 possible to capture all events which may affect objects within an target
 buckets. Configuring logs to be placed in a separate bucket allows access to
@@ -14,8 +14,9 @@ workflows."
   tag "cis_impact": ""
   tag "cis_rid": "2.6"
   tag "cis_level": 1
-  tag "cis_control_number": ""
-  tag "nist": ""
+  tag "severity": "low"
+  tag "csc_control": [["14.6"], "6.0"]
+  tag "nist": ["AU-2", "Rev_4"]
   tag "cce_id": "CCE-78918-0"
   tag "check": "Perform the following ensure the CloudTrail S3 bucket has
 access logging is enabled:

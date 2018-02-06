@@ -5,7 +5,7 @@ Support"
 notification and response, as well as technical support and customer services.
 Create an IAM Role to allow authorized users to manage incidents with AWS
 Support."
-  impact 0.5
+  impact 0.4
   tag "rationale": "By implementing least privilege for access control, an IAM
 Role will require an appropriate IAM Policy to allow Support Center Access in
 order to manage Incidents with AWS Support."
@@ -20,8 +20,9 @@ Monthly charges for the Business and Enterprise support plans are based on each
 month's AWS usage charges, subject to a monthly minimum, billed in advance."
   tag "cis_rid": "1.22"
   tag "cis_level": 1
-  tag "cis_control_number": ""
-  tag "nist": ""
+  tag "severity": "low"
+  tag "csc_control": ""
+  tag "nist": ["IR-7", "Rev_4"]
   tag "cce_id": ""
   tag "check": "Using the Amazon unified command line interface:
 
