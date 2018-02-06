@@ -72,14 +72,14 @@ sns_list = [
   end
   aws_sns_topics.topic_arns.each do |topic|
     describe aws_sns_topic(topic) do
-      its('owner') { should_not be_nil }
-      its('region') { should_not be_nil }
+      its('owner') { should_not be_nil } #verify with attributes
+      its('region') { should_not be_nil } #verify with attributes
     end
     aws_sns_topic(topic).subscriptions.each do |subscription|
       describe aws_sns_subscription(subscription) do
-        its('endpoint') { should_not be_nil }
-        its('protocol') { should_not be_nil }
-        its('owner') { should_not be_nil }
+        its('endpoint') { should_not be_nil } #verify with attributes
+        its('protocol') { should_not be_nil } #verify with attributes
+        its('owner') { should_not be_nil } #verify with attributes
       end
     end
   end

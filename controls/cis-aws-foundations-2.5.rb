@@ -77,8 +77,8 @@ in 1 region only
 
     describe aws_config_delivery_channel do
       it { should exist }
-      its('s3_bucket_name') { should_not be_nil }
-      its('sns_topic_arn') { should_not be_nil }
+      its('s3_bucket_name') { should_not be_nil } #verify with attributes
+      its('sns_topic_arn') { should_not be_nil } #verify with attributes
     end
   end
 

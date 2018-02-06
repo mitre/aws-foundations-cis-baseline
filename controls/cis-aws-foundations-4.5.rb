@@ -47,13 +47,12 @@ compliant route:
 --destination-cidr-block _<compliant_destination_CIDR>_
 --vpc-peering-connection-id _<peering_connection_id>_"
 
-  # aws_route_tables.route_table_ids.each do |route_table_id|
-  #   aws_route_table(route_table_id).routes.each do |route|
-  #     next unless route.key?(:vpc_peering_connection_id)
-  #       describe route do
-  #         its([:destination_cidr_block]) { should_not be nil}
-  #       end
-  #     end
-  #   end
-  # end
+  aws_route_tables.route_table_ids.each do |route_table_id|
+    aws_route_table(route_table_id).routes.each do |route|
+      next unless route.key?(:vpc_peering_connection_id)
+      describe route do
+        its([:destination_cidr_block]) { should_not be nil} #verify with attributes
+      end
+    end
+  end
 end
