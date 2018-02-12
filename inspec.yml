@@ -8,4 +8,4 @@ summary: An InSpec Compliance Profile
 version: 0.1.0
 depends:
   - name: aws-resource-pack
-    git: https://github.com/aaronlippold/inspec-aws.git
+    git: https://github.com/chef/inspec-aws.git
