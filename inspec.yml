@@ -1,10 +1,11 @@
-name: cis-aws-foundations-baseline 
-title: cis-aws-foundations-baseline 
+name: cis-aws-foundations-baseline
+title: cis-aws-foundations-baseline
 maintainer: The Authors
 copyright: The Authors
 copyright_email: you@example.com
 license: Apache-2.0
 summary: An InSpec Compliance Profile
 version: 0.1.0
+depends:
   - name: aws-resource-pack
-    git: https://github.com/chef/inspec-aws.git
+    git: https://github.com/aaronlippold/inspec-aws.git
