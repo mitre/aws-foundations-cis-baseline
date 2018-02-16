@@ -58,6 +58,6 @@ https://console.aws.amazon.com/iam [https://console.aws.amazon.com/iam].
   aws_kms_keys.key_arns.each do |key|
     describe aws_kms_key(key) do
       it { should be_rotation_enabled }
-    end
+    end if aws_kms_key(key).enabled?
   end
 end

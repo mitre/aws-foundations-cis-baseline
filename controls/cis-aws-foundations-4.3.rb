@@ -66,5 +66,15 @@ operation of an already running environment.
     describe aws_vpc(vpc) do
       it { should be_flow_logs_enabled}
     end
+    describe.one do
+      aws_vpc(vpc).flow_logs.each do |flow_log|
+        describe "flow log settings" do
+          subject { flow_log }
+          its('traffic_type') { should cmp 'REJECT'}
+        end
+      end
+    end
   end
 end
+
+

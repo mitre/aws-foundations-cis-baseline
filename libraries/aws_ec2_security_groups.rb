@@ -27,6 +27,7 @@ class AwsEc2SecurityGroups < Inspec.resource(1)
         .add_accessor(:entries)
         .add(:exists?) { |x| !x.entries.empty? }
         .add(:group_ids, field: :group_id)
+        .add(:group_name, field: :group_name)
   filter.connect(self, :access_key_data)
 
   def access_key_data

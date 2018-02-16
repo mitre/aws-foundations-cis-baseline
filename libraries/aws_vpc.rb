@@ -27,6 +27,7 @@ class AwsVpc < Inspec.resource(1)
     backend = AwsVpc::BackendFactory.create
     filter = { name: "resource-id", values: [@vpc_id],}
     resp = backend.describe_flow_logs({filter: [filter]})
+    resp.flow_logs
   end
 
   def flow_logs_enabled?
