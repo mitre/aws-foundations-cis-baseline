@@ -22,40 +22,16 @@ IAM_MASTER_USER_NAME= attribute(
   default: "iam_master_user_name"
 )
 
-IAM_MANAGER_GROUP_NAME= attribute(
-  'iam_manager_group_name',
-  description: 'iam manager group name',
-  default: "iam_manager_group_name"
-)
-
-IAM_MASTER_GROUP_NAME= attribute(
-  'iam_master_group_name',
-  description: 'iam master group name',
-  default: "test-role-group"
-)
-
-IAM_MANAGER_POLICY= attribute(
-  'iam_manager_policy',
+IAM_MANAGER_POLICY_NAME= attribute(
+  'iam_manager_policy_name',
   description: 'iam manager policy',
   default: "iam_manager_policy"
 )
 
-IAM_MASTER_POLICY= attribute(
-  'iam_master_policy',
+IAM_MASTER_POLICY_NAME= attribute(
+  'iam_master_policy_name',
   description: 'iam master policy',
   default: "iam_master_policy"
-)
-
-IAM_MANAGER_ASSUME_POLICY= attribute(
-  'iam_manager_assume_policy',
-  description: 'iam manager assume policy',
-  default: "iam_manager_assume_policy"
-)
-
-IAM_MASTER_ASSUME_POLICY= attribute(
-  'iam_master_assume_policy',
-  description: 'iam master assume policy',
-  default: "iam_master_assume_policy"
 )
 
 control "cis-aws-foundations-1.18" do
@@ -675,105 +651,53 @@ mfa_condition = {
 
   describe "Master Policy Allow Actions " do
     subject { master_allow_actions }
-    it { should be_in aws_iam_policy('dev-IAM-MANAGER-POLICY').document.where(Effect: "Allow").actions.flatten }
+    it { should_not be_empty }
+    it { should be_in aws_iam_policy(IAM_MASTER_POLICY_NAME).document.where(Effect: "Allow").actions.flatten }
   end
 
   describe "Master Policy Deny Actions " do
     subject { master_deny_actions }
-    it { should be_in aws_iam_policy('dev-IAM-MANAGER-POLICY').document.where(Effect: "Deny").actions.flatten}
+    it { should_not be_empty }
+    it { should be_in aws_iam_policy(IAM_MASTER_POLICY_NAME).document.where(Effect: "Deny").actions.flatten}
   end
 
-  describe aws_iam_policy('dev-IAM-MANAGER-POLICY') do
-    it { should be_attached_to_role('dev-iam-master-role') }
+  describe aws_iam_policy(IAM_MASTER_POLICY_NAME) do
+    it { should be_attached_to_role(IAM_MASTER_ROLE_NAME) }
   end
 
-  describe aws_iam_role('dev-iam-master-role').assume_role_policy_document do
+  describe aws_iam_role(IAM_MASTER_ROLE_NAME).assume_role_policy_document do
+    its('actions') { should_not be_empty }
     its('actions') { should be_in ['sts:AssumeRole','sts:AssumeRoleWithSAML','sts:AssumeRoleWithWebIdentity'] }
   end
 
-  describe aws_iam_role('dev-iam-master-role').assume_role_policy_document.where(Action: "sts:AssumeRole").where(Effect: "Allow") do
+  describe aws_iam_role(IAM_MASTER_ROLE_NAME).assume_role_policy_document.where(Action: "sts:AssumeRole").where(Effect: "Allow") do
     its("principals.to_s") { should match ":user/#{IAM_MASTER_USER_NAME}"}
     its("principals.to_s") { should_not match ":user/#{IAM_MANAGER_USER_NAME}"}
+  end if aws_iam_role(IAM_MANAGER_ROLE_NAME).assume_role_policy_document.where(Action: "sts:AssumeRole").exists?
+
+  describe "Manager Policy Allow Actions " do
+    subject { manager_allow_actions }
+    it { should_not be_empty }
+    it { should be_in aws_iam_policy(IAM_MANAGER_POLICY_NAME).document.where(Effect: "Allow").actions.flatten }
   end
 
-  describe "Master Policy Allow Actions " do
-    subject { master_allow_actions }
-    it { should be_in aws_iam_policy('dev-IAM-MANAGER-POLICY').document.where(Effect: "Allow").actions.flatten }
+  describe "Manager Policy Deny Actions " do
+    subject { manager_deny_actions }
+    it { should_not be_empty }
+    it { should be_in aws_iam_policy(IAM_MANAGER_POLICY_NAME).document.where(Effect: "Deny").actions.flatten}
   end
 
-  describe "Master Policy Deny Actions " do
-    subject { master_deny_actions }
-    it { should be_in aws_iam_policy('dev-IAM-MANAGER-POLICY').document.where(Effect: "Deny").actions.flatten}
+  describe aws_iam_policy(IAM_MANAGER_POLICY_NAME) do
+    it { should be_attached_to_role(IAM_MANAGER_ROLE_NAME) }
   end
 
-  describe aws_iam_policy('dev-IAM-MANAGER-POLICY') do
-    it { should be_attached_to_role('dev-iam-master-role') }
-  end
-
-  describe aws_iam_role('dev-iam-master-role').assume_role_policy_document do
+  describe aws_iam_role(IAM_MANAGER_ROLE_NAME).assume_role_policy_document do
+    its('actions') { should_not be_empty }
     its('actions') { should be_in ['sts:AssumeRole','sts:AssumeRoleWithSAML','sts:AssumeRoleWithWebIdentity'] }
   end
 
-  describe aws_iam_role('dev-iam-master-role').assume_role_policy_document.where(Action: "sts:AssumeRole").where(Effect: "Allow") do
-    its("principals.to_s") { should match ":user/#{IAM_MASTER_USER_NAME}"}
-    its("principals.to_s") { should_not match ":user/#{IAM_MANAGER_USER_NAME}"}
-  end
-
-  # describe aws_iam_policy(IAM_MASTER_POLICY).document.where(Effect: "Allow") do
-  #   its("actions.flatten") { should match_array master_allow_actions}
-  #   its("conditions") { should include mfa_condition }
-  # end
-
-  # describe aws_iam_policy(IAM_MASTER_POLICY).document.where(Effect: "Deny") do
-  #   its("actions.flatten") { should match_array master_deny_actions}
-  # end
-
-  # describe aws_iam_policy(IAM_MASTER_POLICY) do
-  #   it { should be_attached_to_role(IAM_MASTER_ROLE_NAME) }
-  # end
-
-  # describe aws_iam_role(IAM_MASTER_ROLE_NAME).assume_role_policy_document.where(Action: "sts:AssumeRole") do
-  #   its("effects") { should match_array ["Allow"]}
-  #   its("principals.to_s") { should match ":user/#{IAM_MASTER_USER_NAME}"}
-  # end
-
-  # describe aws_iam_policy(IAM_MASTER_ASSUME_POLICY).document.where(Action: "sts:AssumeRole") do
-  #   its("effects") { should match_array ["Allow"]}
-  #   its("resources.to_s") { should match ":role/#{IAM_MASTER_ROLE_NAME}" }
-  #   its("resources.to_s") { should_not match ":role/#{IAM_MANAGER_ROLE_NAME}" }
-  # end
-
-  # describe aws_iam_group(IAM_MASTER_GROUP_NAME) do
-  #   its('attached_policies') { should include IAM_MASTER_ASSUME_POLICY }
-  #   its('users') { should include IAM_MASTER_USER_NAME }
-  # end
-
-
-  # describe aws_iam_policy(IAM_MANAGER_POLICY).document.where(Effect: "Allow") do
-  #   its("actions") { should match_array manager_allow_actions}
-  #   its("conditions") { should include mfa_condition }
-  # end
-
-  # describe aws_iam_policy(IAM_MANAGER_POLICY).document.where(Effect: "Deny") do
-  #   its("actions.flatten") { should match_array manager_deny_actions}
-  # end
-
-  # describe aws_iam_policy(IAM_MANAGER_POLICY) do
-  #   it { should be_attached_to_role(IAM_MANAGER_ROLE_NAME) }
-  # end
-
-  # describe aws_iam_role(IAM_MANAGER_ROLE_NAME).assume_role_policy_document.where(Action: "sts:AssumeRole") do
-  #   its("effects") { should match_array ["Allow"]}
-  #   its("principals.to_s") { should match ":user/#{IAM_MANAGER_USER_NAME}"}
-  # end
-
-  # describe aws_iam_policy(IAM_MANAGER_ASSUME_POLICY).document.where(Action: "sts:AssumeRole") do
-  #   its("effects") { should match_array ["Allow"]}
-  #   its("resources.first") { should match ":role/#{IAM_MANAGER_ROLE_NAME}" }
-  # end
-
-  # describe aws_iam_group(IAM_MANAGER_GROUP_NAME) do
-  #   its('attached_policies') { should include IAM_MANAGER_ASSUME_POLICY }
-  #   its('users') { should include IAM_MANAGER_USER_NAME }
-  # end
+  describe aws_iam_role(IAM_MANAGER_ROLE_NAME).assume_role_policy_document.where(Action: "sts:AssumeRole").where(Effect: "Allow") do
+    its("principals.to_s") { should match ":user/#{IAM_MANAGER_USER_NAME}"}
+    its("principals.to_s") { should_not match ":user/#{IAM_MASTER_USER_NAME}"}
+  end if aws_iam_role(IAM_MANAGER_ROLE_NAME).assume_role_policy_document.where(Action: "sts:AssumeRole").exists?
 end

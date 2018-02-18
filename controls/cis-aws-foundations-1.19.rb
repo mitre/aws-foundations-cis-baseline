@@ -56,4 +56,8 @@ Management console at https://console.aws.amazon.com/billing/home#/.
 * To edit your contact information, under Contact Information, choose Edit.
 * For the fields that you want to change, type your updated information, and
 then choose Update."
+
+  describe "Control has to be tested manually" do
+    skip
+  end
 end

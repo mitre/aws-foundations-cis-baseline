@@ -82,13 +82,19 @@ _<policy_arn>_
 
 '
 "
+# the following implementation covers cases where 'Action' and 'Resource' param of the
+# policy json is defined as an array or string
+# if recoded please confirm that it tests both cases
 
   aws_iam_policies.policy_names.each do |policy|
-    if aws_iam_policy(policy).attached?
-      describe aws_iam_policy(policy).document.where(Effect:'Allow') do
-        its('actions.flatten') { should_not include '*' }
-        its('resources.flatten') { should_not include '*' }
-      end
-    end
+    describe "Attached Policies #{policy} allows full '*:*' privileges?" do
+      subject {
+        aws_iam_policy(policy).document.where(Effect:'Allow').actions.flatten.include?("*") and
+        aws_iam_policy(policy).document.where(Effect:'Allow').resources.flatten.include?("*")
+      }
+      it { should be false }
+    end if aws_iam_policy(policy).attached?
   end
 end
+
+

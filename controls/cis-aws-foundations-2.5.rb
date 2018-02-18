@@ -1,7 +1,18 @@
+CONFIG_SERVICE_REGIONS= attribute(
+  'config_service_regions',
+  description: 'default aws region',
+  default: [
+    'us-east-1',
+    'us-east-2',
+    'us-west-1',
+    'us-west-2',
+  ]
+)
+
 AWS_REGION= attribute(
   'aws_region',
   description: 'default aws region',
-  default: "us-east-1"
+  default: 'us-east-1'
 )
 
 control "cis-aws-foundations-2.5" do
@@ -58,14 +69,7 @@ in 1 region only
 
 'aws configservice start-configuration-recorder"
 
-  regions = [
-    'us-east-1',
-    'us-east-2',
-    'us-west-1',
-    'us-west-2',
-  ]
-
-  regions.each do |region|
+  CONFIG_SERVICE_REGIONS.each do |region|
     ENV['AWS_REGION'] = region
 
     describe aws_config_recorder do

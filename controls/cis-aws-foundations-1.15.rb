@@ -47,4 +47,8 @@ Information page, configure three security challenge questions.
 
 * Click Update when complete
 * Place Questions and Answers and place in a secure physical location"
+
+  describe "Control has to be tested manually" do
+    skip
+  end
 end

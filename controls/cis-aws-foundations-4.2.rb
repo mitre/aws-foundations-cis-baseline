@@ -48,7 +48,7 @@ https://console.aws.amazon.com/vpc/home
 
   aws_ec2_security_groups.group_ids.each do |group_id|
     describe aws_ec2_security_group(group_id) do
-      it { should_not be_open_on_port(3389) }
+      it { should_not be_open_to_all_on_port(3389) }
     end
   end
 end

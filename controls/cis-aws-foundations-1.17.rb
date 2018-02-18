@@ -82,4 +82,8 @@ Wait >24 hours, and examine your designated S3 bucket to verify that files with
 names of the form (eg) <AWS account
 number>-<aws-billing-detailed-line-items-with-resources-and-tags-yyyy-mm>.csv.zip
 are being generated."
+
+  describe "Control has to be tested manually" do
+    skip
+  end
 end

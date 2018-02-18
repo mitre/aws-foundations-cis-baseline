@@ -31,4 +31,8 @@ security contact information:
 
 'Note: Consider specifying an internal email distribution list to ensure emails
 are regularly monitored by more than one individual."
+
+  describe "Control has to be tested manually" do
+    skip
+  end
 end
