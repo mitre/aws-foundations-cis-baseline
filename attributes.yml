@@ -1,3 +1,14 @@
+# encoding: utf-8
+#
+# This is an example of an attributes file that can be passed to the profile
+# to override the defaults of the attributes defined in each of the tests.
+# You can use this to automatically adjust your tests when using automation or
+# progromatic deployment or validation of differnt deployment patterns without
+# having to adjust the core profile.
+
+# The followiing attributes must be set to accepted/documented values which is 
+# then verified by the applicable controls.
+
  # description: 'default aws region',
 aws_region: 
   default: 'us-east-1'
@@ -20,7 +31,7 @@ iam_manager_policy_name: "iam_manager_policy"
 # description: 'iam master policy',
 iam_master_policy_name: "iam_master_policy"
 
-# description: 'aws access instance name',
+# description: 'aws actions performing instance ids',
 aws_actions_performing_instance_ids: ["aws_access_instance_id"]
 
 # description: 'Config service list and settings in all relevant regions',
