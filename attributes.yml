@@ -1,0 +1,71 @@
+ # description: 'default aws region',
+aws_region: 
+  default: 'us-east-1'
+
+# description: 'iam manager role name',
+iam_manager_role_name: "iam_manager_role_name"
+
+# description: 'iam master role name',
+iam_master_role_name: "iam_master_role_name"
+
+# description: 'iam manager user name',
+iam_manager_user_name: "iam_manager_user_name"
+
+# description: 'iam master user name',
+iam_master_user_name: "iam_master_user_name"
+
+# description: 'iam manager policy',
+iam_manager_policy_name: "iam_manager_policy"
+
+# description: 'iam master policy',
+iam_master_policy_name: "iam_master_policy"
+
+# description: 'aws access instance name',
+aws_actions_performing_instance_ids: ["aws_access_instance_id"]
+
+# description: 'Config service list and settings in all relevant regions',
+config_service: {
+          "us-east-1": {
+              "s3_bucket_name": "s3_bucket_name_value",
+              "sns_topic_arn": "sns_topic_arn_value"
+          },
+          "us-east-2": {
+              "s3_bucket_name":  "s3_bucket_name_value",
+              "sns_topic_arn": "sns_topic_arn_value"
+          },
+          "us-west-1": {
+              "s3_bucket_name":  "s3_bucket_name_value",
+              "sns_topic_arn": "sns_topic_arn_value"
+          },
+          "us-west-2": {
+              "s3_bucket_name":  "s3_bucket_name_value",
+              "sns_topic_arn": "sns_topic_arn_value"
+          }
+        }
+
+# description: 'SNS topics list and details in all relevant regions',
+sns_topics: {
+            "topic_arn1" => {
+              "owner" => "owner_value",
+              "region" => "region_value",
+            },
+            "topic_arn2" => {
+              "owner" => "owner_value",
+              "region" => "region_value",
+            }
+          }
+
+# description: 'SNS subscription list and details in all relevant regions',
+sns_subscriptions: {
+          "subscription_arn1": {
+              "endpoint": "endpoint_value",
+              "owner": "owner_value",
+              "protocol": "protocol_vale"
+          },
+          "subscription_arn2": {
+              "endpoint": "endpoint_value",
+              "owner": "owner_value",
+              "protocol": "protocol_vale"
+          },
+      }
+
