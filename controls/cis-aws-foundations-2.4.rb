@@ -92,6 +92,10 @@ https://console.aws.amazon.com/cloudtrail/
 --cloudwatch-logs-log-group-arn _<cloudtrail_log_group_arn>_
 --cloudwatch-logs-role-arn _<__cloudtrail_cloudwatchLogs_role_arn>_"
 
+  describe aws_cloudtrail_trails do
+    it { should exist }
+  end
+  
   aws_cloudtrail_trails.trail_arns.each do |trail|
     describe aws_cloudtrail_trail(trail) do
       its('cloud_watch_logs_log_group_arn') { should_not be_nil}

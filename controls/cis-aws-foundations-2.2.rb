@@ -64,6 +64,10 @@ running the following command:
 'aws cloudtrail validate-logs --trail-arn _<trail_arn>_ --start-time
 _<start_time>_ --end-time _<end_time>_"
 
+  describe aws_cloudtrail_trails do
+    it { should exist }
+  end
+  
   aws_cloudtrail_trails.trail_arns.each do |trail|
     describe aws_cloudtrail_trail(trail) do
       it { should be_log_file_validation_enabled }

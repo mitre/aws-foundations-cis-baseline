@@ -55,6 +55,10 @@ https://console.aws.amazon.com/s3 [https://console.aws.amazon.com/s3].
 * Enter a Target Prefix
 * Click Save"
 
+  describe aws_cloudtrail_trails do
+    it { should exist }
+  end
+  
   aws_cloudtrail_trails.trail_arns.each do |trail|
     describe aws_s3_bucket(aws_cloudtrail_trail(trail).s3_bucket_name) do
       it { should have_access_logging_enabled }

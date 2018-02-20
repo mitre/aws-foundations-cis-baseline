@@ -65,35 +65,39 @@ _<s3_bucket_policy_changes_metric>_ --statistic Sum --period 300 --threshold 1
 --namespace 'CISBenchmark' --alarm-actions <sns_topic_arn>
 "
 
+  describe aws_cloudtrail_trails do
+    it { should exist }
+  end
+  
+  describe.one do
+    aws_cloudtrail_trails.trail_arns.each do |trail|
+      trail_log_group_name = aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.scan( /log-group:(.+):/ ).last.first unless aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.nil?
 
-  aws_cloudtrail_trails.trail_arns.each do |trail|
-    trail_log_group_name = aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.scan( /log-group:(.+):/ ).last.first
+      pattern = '{ ($.eventSource = s3.amazonaws.com) && (($.eventName = PutBucketAcl) || ($.eventName = PutBucketPolicy) || ($.eventName = PutBucketCors) || ($.eventName = PutBucketLifecycle) || ($.eventName = PutBucketReplication) || ($.eventName = DeleteBucketPolicy) || ($.eventName = DeleteBucketCors) || ($.eventName = DeleteBucketLifecycle) || ($.eventName = DeleteBucketReplication)) }'
 
-    pattern = '{ ($.eventSource = s3.amazonaws.com) && (($.eventName = PutBucketAcl) || ($.eventName = PutBucketPolicy) || ($.eventName = PutBucketCors) || ($.eventName = PutBucketLifecycle) || ($.eventName = PutBucketReplication) || ($.eventName = DeleteBucketPolicy) || ($.eventName = DeleteBucketCors) || ($.eventName = DeleteBucketLifecycle) || ($.eventName = DeleteBucketReplication)) }'
-
-    describe aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name) do
-      it { should exist}
-    end
-
-    metric_name = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name).metric_name
-    metric_namespace = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name).metric_namespace
-    unless metric_name.nil? && metric_namespace.nil?
-      describe aws_cloudwatch_alarm(
-        metric_name: metric_name,
-        metric_namespace: metric_namespace ) do
-        it { should exist }
-        its ('alarm_actions') { should_not be_empty}
+      describe aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name) do
+        it { should exist}
       end
 
-      aws_cloudwatch_alarm(
-        metric_name: metric_name,
-        metric_namespace: metric_namespace).alarm_actions.each do |sns|
-        describe aws_sns_topic(sns) do
+      metric_name = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name).metric_name
+      metric_namespace = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name).metric_namespace
+      unless metric_name.nil? && metric_namespace.nil?
+        describe aws_cloudwatch_alarm(
+          metric_name: metric_name,
+          metric_namespace: metric_namespace ) do
           it { should exist }
-          its('confirmed_subscription_count') { should_not be_zero }
+          its ('alarm_actions') { should_not be_empty}
+        end
+
+        aws_cloudwatch_alarm(
+          metric_name: metric_name,
+          metric_namespace: metric_namespace).alarm_actions.each do |sns|
+          describe aws_sns_topic(sns) do
+            it { should exist }
+            its('confirmed_subscription_count') { should_not be_zero }
+          end
         end
       end
     end
   end
 end
-

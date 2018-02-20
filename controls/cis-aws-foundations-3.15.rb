@@ -17,15 +17,15 @@ SNS_SUBSCRIPTIONS= attribute(
   'sns_subscriptions',
   description: 'SNS subscription list and details',
   default: {
-            "subscription_arn1": {
-                "endpoint": "endpoint_value",
-                "owner": "owner_value",
-                "protocol": "protocol_vale"
+            "subscription_arn1"=> {
+                "endpoint"=> "endpoint_value",
+                "owner"=> "owner_value",
+                "protocol"=> "protocol_vale"
             },
-            "subscription_arn2": {
-                "endpoint": "endpoint_value",
-                "owner": "owner_value",
-                "protocol": "protocol_vale"
+            "subscription_arn2"=> {
+                "endpoint"=> "endpoint_value",
+                "owner"=> "owner_value",
+                "protocol"=> "protocol_vale"
             },
         }
 )

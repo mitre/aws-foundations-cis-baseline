@@ -75,6 +75,10 @@ permissions on the specified KMS key to decrypt log files.
 aws kms put-key-policy --key-id <_cloudtrail_kms_key_> --policy
 <_cloudtrail_kms_key_policy_>"
 
+  describe aws_cloudtrail_trails do
+    it { should exist }
+  end
+  
   aws_cloudtrail_trails.trail_arns.each do |trail|
     describe aws_cloudtrail_trail(trail) do
       its('kms_key_id') { should_not be_nil}

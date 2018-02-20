@@ -2,21 +2,21 @@ CONFIG_SERVICE= attribute(
   'config_service',
   description: 'Config service settings',
   default: {
-            "us-east-1": {
-                "s3_bucket_name": "s3_bucket_name_value",
-                "sns_topic_arn": "sns_topic_arn_value"
+            "us-east-1"=> {
+                "s3_bucket_name"=> "s3_bucket_name_value",
+                "sns_topic_arn"=> "sns_topic_arn_value"
             },
-            "us-east-2": {
-                "s3_bucket_name":  "s3_bucket_name_value",
-                "sns_topic_arn": "sns_topic_arn_value"
+            "us-east-2"=> {
+                "s3_bucket_name"=>  "s3_bucket_name_value",
+                "sns_topic_arn"=> "sns_topic_arn_value"
             },
-            "us-west-1": {
-                "s3_bucket_name":  "s3_bucket_name_value",
-                "sns_topic_arn": "sns_topic_arn_value"
+            "us-west-1"=> {
+                "s3_bucket_name"=>  "s3_bucket_name_value",
+                "sns_topic_arn"=> "sns_topic_arn_value"
             },
-            "us-west-2": {
-                "s3_bucket_name":  "s3_bucket_name_value",
-                "sns_topic_arn": "sns_topic_arn_value"
+            "us-west-2"=> {
+                "s3_bucket_name"=>  "s3_bucket_name_value",
+                "sns_topic_arn"=> "sns_topic_arn_value"
             }
           }
 
