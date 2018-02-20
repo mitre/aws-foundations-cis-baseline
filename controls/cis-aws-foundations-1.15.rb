@@ -16,7 +16,7 @@ login access."
   tag "cis_level": 1
   tag "severity": "low"
   tag "cis_control_number": ""
-  tag "nist": ["UM", "Rev_4"]
+  tag "nist": ["IA-2", "Rev_4"]
   tag "cce_id": ""
   tag "check": "Perform the following in the AWS Management Console:
 

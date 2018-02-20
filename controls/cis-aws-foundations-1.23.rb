@@ -20,7 +20,7 @@ separate step from user creation."
   tag "cis_level": 1
   tag "severity": "low"
   tag "csc_control": ""
-  tag "nist": ["UM", "Rev_4"]
+  tag "nist": ["AC-6", "Rev_4"]
   tag "cce_id": ""
   tag "check": "Perform the following to determine if access keys are rotated
 as prescribed:

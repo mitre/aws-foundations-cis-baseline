@@ -13,7 +13,7 @@ to ensure that administrators currently relying on an existing ingress from
   tag "cis_level": 1
   tag "severity": "low"
   tag "cis_control_number": ""
-  tag "nist": ["UM", "Rev_4"]
+  tag "nist": ["SC-7(5)", "Rev_4"]
   tag "cce_id": ""
   tag "check": "Perform the following to determine if the account is configured
 as prescribed:

@@ -25,7 +25,7 @@ http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/SettingLogRete
   tag "cis_level": 2
   tag "severity": "high"
   tag "cis_control_number": ""
-  tag "nist": ["UM", "Rev_4"]
+  tag "nist": ["SI-4(4)", "Rev_4"]
   tag "cce_id": "CCE-79202-8"
   tag "check": "Perform the following to determine if VPC Flow logs is enabled:
 
