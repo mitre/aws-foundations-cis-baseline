@@ -1,3 +1,43 @@
+SNS_TOPICS= attribute(
+  'sns_topics',
+  description: 'SNS topics list and details',
+  default: {
+              "topic_arn1" => {
+                "owner" => "owner_value",
+                "region" => "region_value",
+              },
+              "topic_arn2" => {
+                "owner" => "owner_value",
+                "region" => "region_value",
+              }
+            }
+)
+
+SNS_SUBSCRIPTIONS= attribute(
+  'sns_subscriptions',
+  description: 'SNS subscription list and details',
+  default: {
+            "subscription_arn1": {
+                "endpoint": "endpoint_value",
+                "owner": "owner_value",
+                "protocol": "protocol_vale"
+            },
+            "subscription_arn2": {
+                "endpoint": "endpoint_value",
+                "owner": "owner_value",
+                "protocol": "protocol_vale"
+            },
+        }
+)
+
+AWS_REGION= attribute(
+  'aws_region',
+  description: 'default aws region',
+  default: 'us-east-1'
+)
+
+sns_list = 
+
 control "cis-aws-foundations-3.15" do
   title "Ensure appropriate subscribers to each SNS topic"
   desc  "AWS Simple Notification Service (SNS) is a web service that can
@@ -56,25 +96,30 @@ https://console.aws.amazon.com/sns/ [https://console.aws.amazon.com/sns/]
 * Click Actions
 * Click Delete Subscriptions"
 
-sns_list = [
-  "arn:aws:sns:us-east-1:484747447281:cis-config-sns",
-   "arn:aws:sns:us-east-1:484747447281:cis-metric-sns",
+  aws_regions = [
+    "us-east-1",
+    "us-east-2",
+    "us-west-1",
+    "us-west-2"
   ]
 
-  describe aws_sns_topics do
-    its('topic_arns') { should match_array sns_list}
-  end
-  aws_sns_topics.topic_arns.each do |topic|
-    describe aws_sns_topic(topic) do
-      its('owner') { should_not be_nil } #verify with attributes
-      its('region') { should_not be_nil } #verify with attributes
-    end
-    aws_sns_topic(topic).subscriptions.each do |subscription|
-      describe aws_sns_subscription(subscription) do
-        its('endpoint') { should_not be_nil } #verify with attributes
-        its('protocol') { should_not be_nil } #verify with attributes
-        its('owner') { should_not be_nil } #verify with attributes
+  aws_regions.each do |region|
+    ENV['AWS_REGION'] = region
+
+    aws_sns_topics.topic_arns.each do |topic|
+      describe aws_sns_topic(topic) do
+        its('owner') { should cmp SNS_TOPICS[topic]['owner'] } #verify with attributes
+        its('region') { should cmp SNS_TOPICS[topic]['region'] } #verify with attributes
+      end
+      aws_sns_topic(topic).subscriptions.each do |subscription|
+        describe aws_sns_subscription(subscription) do
+          its('endpoint') { should cmp SNS_SUBSCRIPTIONS[subscription]['endpoint'] } #verify with attributes
+          its('protocol') { should cmp SNS_SUBSCRIPTIONS[subscription]['protocol'] } #verify with attributes
+          its('owner') { should cmp SNS_SUBSCRIPTIONS[subscription]['owner'] } #verify with attributes
+        end
       end
     end
   end
+  # reset to default region
+  ENV['AWS_REGION'] = AWS_REGION
 end

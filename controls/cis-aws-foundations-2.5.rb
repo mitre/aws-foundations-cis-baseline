@@ -1,12 +1,25 @@
-CONFIG_SERVICE_REGIONS= attribute(
-  'config_service_regions',
-  description: 'default aws region',
-  default: [
-    'us-east-1',
-    'us-east-2',
-    'us-west-1',
-    'us-west-2',
-  ]
+CONFIG_SERVICE= attribute(
+  'config_service',
+  description: 'Config service settings',
+  default: {
+            "us-east-1": {
+                "s3_bucket_name": "s3_bucket_name_value",
+                "sns_topic_arn": "sns_topic_arn_value"
+            },
+            "us-east-2": {
+                "s3_bucket_name":  "s3_bucket_name_value",
+                "sns_topic_arn": "sns_topic_arn_value"
+            },
+            "us-west-1": {
+                "s3_bucket_name":  "s3_bucket_name_value",
+                "sns_topic_arn": "sns_topic_arn_value"
+            },
+            "us-west-2": {
+                "s3_bucket_name":  "s3_bucket_name_value",
+                "sns_topic_arn": "sns_topic_arn_value"
+            }
+          }
+
 )
 
 AWS_REGION= attribute(
@@ -69,7 +82,7 @@ in 1 region only
 
 'aws configservice start-configuration-recorder"
 
-  CONFIG_SERVICE_REGIONS.each do |region|
+  CONFIG_SERVICE.keys.each do |region|
     ENV['AWS_REGION'] = region
 
     describe aws_config_recorder do
@@ -81,8 +94,8 @@ in 1 region only
 
     describe aws_config_delivery_channel do
       it { should exist }
-      its('s3_bucket_name') { should_not be_nil } #verify with attributes
-      its('sns_topic_arn') { should_not be_nil } #verify with attributes
+      its('s3_bucket_name') { should cmp CONFIG_SERVICE[region]['s3_bucket_name'] } #verify with attributes
+      its('sns_topic_arn') { should cmp CONFIG_SERVICE[region]['sns_topic_arn'] } #verify with attributes
     end
   end
 
