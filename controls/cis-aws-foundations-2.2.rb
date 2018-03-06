@@ -13,7 +13,7 @@ integrity checking of CloudTrail logs."
   tag "cis_level": 2
   tag "severity": "high"
   tag "csc_control": [["6.3"], "6.0"]
-  tag "nist": ["PS-4", "Rev_4"]
+  tag "nist": ["AU-4", "Rev_4"]
   tag "cce_id": "CCE-78914-9"
   tag "check": "Perform the following on each trail to determine if log file
 validation is enabled:
