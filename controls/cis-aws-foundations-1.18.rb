@@ -49,7 +49,7 @@ also be assigned to EC2 instances and Lambda functions.
 Control over IAM, which is also defined and mediated by a number of
 fine-grained permissions, should be divided between a number of roles, such
 that no individual user in a production account has full control over IAM."
-  impact 0.4
+  impact 0.3
   tag "rationale": "IAM is the principal point of control for service
 configuration access, and 'control over IAM' means 'control over the
 configuration of all other assets in the AWS account'. Therefore it is

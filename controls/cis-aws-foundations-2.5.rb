@@ -36,7 +36,7 @@ recorded information includes the configuration item (AWS resource),
 relationships between configuration items (AWS resources), any configuration
 changes between resources. It is recommended to enable AWS Config be enabled in
 all regions."
-  impact 0.4
+  impact 0.3
   tag "rationale": "The AWS configuration item history captured by AWS Config
 enables security analysis, resource change tracking, and compliance auditing."
   tag "cis_impact": ""

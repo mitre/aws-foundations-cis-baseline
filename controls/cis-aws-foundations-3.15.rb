@@ -49,7 +49,7 @@ updates to notify their subscribers about, they can publish a message to the
 topic - which immediately triggers Amazon SNS to deliver the message to all
 applicable subscribers. It is recommended that the list of subscribers to given
 topics be periodically reviewed for appropriateness."
-  impact 0.4
+  impact 0.3
   tag "rationale": "Reviewing subscriber topics will help ensure that only
 expected recipients receive information published to SNS topics."
   tag "cis_impact": ""

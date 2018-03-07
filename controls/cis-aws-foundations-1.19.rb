@@ -11,7 +11,7 @@ may arise where that individual is unavailable. Email contact details should
 point to a mail alias which forwards email to multiple individuals within the
 organisation; where feasible, phone contact details should point to a PABX hunt
 group or other call-forwarding system."
-  impact 0.4
+  impact 0.3
   tag "rationale": "If an AWS account is observed to be behaving in a
 prohibited or suspicious manner, AWS will attempt to contact the account owner
 by email and phone using the contact details listed. If this is unsuccessful

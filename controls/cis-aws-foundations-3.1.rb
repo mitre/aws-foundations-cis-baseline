@@ -4,7 +4,7 @@ control "cis-aws-foundations-3.1" do
 CloudTrail Logs to CloudWatch Logs and establishing corresponding metric
 filters and alarms. It is recommended that a metric filter and alarm be
 established for unauthorized API calls."
-  impact 0.4
+  impact 0.3
   tag "rationale": "Monitoring unauthorized API calls will help reveal
 application errors and may reduce time to detect malicious activity."
   tag "cis_impact": "This alert may be triggered by normal read-only console

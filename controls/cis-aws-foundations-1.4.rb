@@ -6,7 +6,7 @@ their own access keys to make programmatic calls to AWS from the AWS Command
 Line Interface (AWS CLI), Tools for Windows PowerShell, the AWS SDKs, or direct
 HTTP calls using the APIs for individual AWS services. It is recommended that
 all access keys be regularly rotated."
-  impact 0.4
+  impact 0.3
   tag "rationale": "Rotating access keys will reduce the window of opportunity
 for an access key that is associated with a compromised or terminated account
 to be used.

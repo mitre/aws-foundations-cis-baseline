@@ -5,7 +5,7 @@ Support"
 notification and response, as well as technical support and customer services.
 Create an IAM Role to allow authorized users to manage incidents with AWS
 Support."
-  impact 0.4
+  impact 0.3
   tag "rationale": "By implementing least privilege for access control, an IAM
 Role will require an appropriate IAM Policy to allow Support Center Access in
 order to manage Incidents with AWS Support."

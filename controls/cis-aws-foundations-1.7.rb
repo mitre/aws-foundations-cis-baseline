@@ -4,7 +4,7 @@ control "cis-aws-foundations-1.7" do
 requirements. IAM password policies can be used to ensure password are
 comprised of different character sets. It is recommended that the password
 policy require at least one symbol."
-  impact 0.4
+  impact 0.3
   tag "rationale": "Setting a password complexity policy increases account
 resiliency against brute force login attempts."
   tag "cis_impact": ""

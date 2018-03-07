@@ -4,7 +4,7 @@ control "cis-aws-foundations-3.3" do
 CloudTrail Logs to CloudWatch Logs and establishing corresponding metric
 filters and alarms. It is recommended that a metric filter and alarm be
 established for root login attempts."
-  impact 0.4
+  impact 0.3
   tag "rationale": "Monitoring for root account logins will provide visibility
 into the use of a fully privileged account and an opportunity to reduce the use
 of it."

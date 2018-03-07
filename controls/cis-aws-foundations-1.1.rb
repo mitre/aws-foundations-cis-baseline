@@ -2,7 +2,7 @@ control "cis-aws-foundations-1.1" do
   title "Avoid the use of the 'root' account"
   desc  "The 'root' account has unrestricted access to all resources in the AWS
 account. It is highly recommended that the use of this account be avoided."
-  impact 0.4
+  impact 0.3
   tag "rationale": "The 'root' account is the most privileged AWS account.
 Minimizing the use of this account and adopting the principle of least
 privilege for access management will reduce the risk of accidental changes and

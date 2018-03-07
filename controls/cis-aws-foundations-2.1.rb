@@ -7,7 +7,7 @@ the API caller, the request parameters, and the response elements returned by
 the AWS service. CloudTrail provides a history of AWS API calls for an account,
 including API calls made via the Management Console, SDKs, command line tools,
 and higher-level AWS services (such as CloudFormation)."
-  impact 0.4
+  impact 0.3
   tag "rationale": "The AWS API call history produced by CloudTrail enables
 security analysis, resource change tracking, and compliance auditing.
 Additionally, ensuring that a multi-regions trail exists will ensure that

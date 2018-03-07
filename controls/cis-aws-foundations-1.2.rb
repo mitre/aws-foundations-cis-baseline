@@ -6,7 +6,7 @@ top of a user name and password. With MFA enabled, when a user signs in to an
 AWS website, they will be prompted for their user name and password as well as
 for an authentication code from their AWS MFA device. It is recommended that
 MFA be enabled for all accounts that have a console password."
-  impact 0.4
+  impact 0.3
   tag "rationale": "Enabling MFA provides increased security for console access
 as it requires the authenticating principal to possess a device that emits a
 time-sensitive key and have knowledge of a credential."

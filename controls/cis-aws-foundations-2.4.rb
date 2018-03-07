@@ -16,7 +16,7 @@ be sent to CloudWatch Logs.
 being captured, monitored, and appropriately alarmed on. CloudWatch Logs is a
 native way to accomplish this using AWS services but does not preclude the use
 of an alternate solution."
-  impact 0.4
+  impact 0.3
   tag "rationale": "Sending CloudTrail logs to CloudWatch Logs will facilitate
 real-time and historic activity logging based on user, API, resource, and IP
 address, and provides opportunity to establish alarms and notifications for

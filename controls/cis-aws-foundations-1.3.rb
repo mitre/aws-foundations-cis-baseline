@@ -4,7 +4,7 @@ control "cis-aws-foundations-1.3" do
 credentials, such as passwords or access keys. It is recommended that all
 credentials that have been unused in 90 or greater days be removed or
 deactivated."
-  impact 0.4
+  impact 0.3
   tag "rationale": "Disabling or removing unnecessary credentials will reduce
 the window of opportunity for credentials associated with a compromised or
 abandoned account to be used."

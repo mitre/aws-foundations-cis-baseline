@@ -5,7 +5,7 @@ that have a console password"
 This results in many access keys being generated unnecessarily. In addition to
 unnecessary credentials, it also generates unnecessary management work in
 auditing and rotating these keys."
-  impact 0.4
+  impact 0.3
   tag "rationale": "Requiring that additional steps be taken by the user after
 their profile has been created will give a stronger indication of intent that
 access keys are [a] necessary for their work and [b] once the access key is
