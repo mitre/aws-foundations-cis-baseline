@@ -61,6 +61,6 @@ be combined into a single command."
 
   describe aws_iam_password_policy do
     its('expires_passwords?') { should be true }
-    its('max_password_age') { should cmp <=60 }
+    its('max_password_age') { should cmp <=90 }
   end
 end
