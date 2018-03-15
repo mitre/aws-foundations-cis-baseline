@@ -50,6 +50,6 @@ Management Account Settings)
 be combined into a single command."
 
   describe aws_iam_password_policy do
-    its('minimum_password_length') { should cmp >=14 }
+    its('minimum_password_length') { should cmp >=12 }
   end
 end
