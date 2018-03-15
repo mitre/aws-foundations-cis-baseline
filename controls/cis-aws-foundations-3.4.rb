@@ -4,7 +4,7 @@ control "cis-aws-foundations-3.4" do
 CloudTrail Logs to CloudWatch Logs and establishing corresponding metric
 filters and alarms. It is recommended that a metric filter and alarm be
 established changes made to Identity and Access Management (IAM) policies."
-  impact 0.4
+  impact 0.3
   tag "rationale": "Monitoring changes to IAM policies will help ensure
 authentication and authorization controls remain intact."
   tag "cis_impact": ""

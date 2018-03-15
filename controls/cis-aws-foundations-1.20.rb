@@ -3,7 +3,7 @@ control "cis-aws-foundations-1.20" do
   desc  "AWS provides customers with the option of specifying the contact
 information for account's security team. It is recommended that this
 information be provided."
-  impact 0.4
+  impact 0.3
   tag "rationale": "Specifying security-specific contact information will help
 ensure that security advisories sent by AWS reach the team in your organization
 that is best equipped to respond to them."

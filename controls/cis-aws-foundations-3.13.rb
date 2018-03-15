@@ -5,7 +5,7 @@ CloudTrail Logs to CloudWatch Logs and establishing corresponding metric
 filters and alarms. Routing tables are used to route network traffic between
 subnets and to network gateways. It is recommended that a metric filter and
 alarm be established for changes to route tables."
-  impact 0.4
+  impact 0.3
   tag "rationale": "Monitoring changes to route tables will help ensure that
 all VPC traffic flows through an expected path."
   tag "cis_impact": ""

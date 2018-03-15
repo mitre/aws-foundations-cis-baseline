@@ -5,7 +5,7 @@ configuration changes"
 CloudTrail Logs to CloudWatch Logs and establishing corresponding metric
 filters and alarms. It is recommended that a metric filter and alarm be
 established for detecting changes to CloudTrail's configurations."
-  impact 0.4
+  impact 0.3
   tag "rationale": "Monitoring changes to CloudTrail's configuration will help
 ensure sustained visibility to activities performed in the AWS account."
   tag "cis_impact": ""

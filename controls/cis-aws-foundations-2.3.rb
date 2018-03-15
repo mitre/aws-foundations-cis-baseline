@@ -4,7 +4,7 @@ control "cis-aws-foundations-2.3" do
 These logs file are stored in an S3 bucket. It is recommended that the bucket
 policy or access control list (ACL) applied to the S3 bucket that CloudTrail
 logs to prevents public access to the CloudTrail logs."
-  impact 0.4
+  impact 0.3
   tag "rationale": "Allowing public access to CloudTrail log content may aid an
 adversary in identifying weaknesses in the affected account's use or
 configuration."

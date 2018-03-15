@@ -4,7 +4,7 @@ control "cis-aws-foundations-1.9" do
 requirements. IAM password policies can be used to ensure password are at least
 a given length. It is recommended that the password policy require a minimum
 password length 14."
-  impact 0.4
+  impact 0.3
   tag "rationale": "Setting a password complexity policy increases account
 resiliency against brute force login attempts."
   tag "cis_impact": ""

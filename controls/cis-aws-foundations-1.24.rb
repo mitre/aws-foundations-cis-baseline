@@ -7,7 +7,7 @@ to grant _least privilege_--that is, granting only the permissions required to
 perform a task. Determine what users need to do and then craft policies for
 them that let the users perform _only_ those tasks, instead of allowing full
 administrative privileges."
-  impact 0.4
+  impact 0.3
   tag "rationale": "It's more secure to start with a minimum set of permissions
 and grant additional permissions as necessary, rather than starting with
 permissions that are too lenient and then trying to tighten them later.

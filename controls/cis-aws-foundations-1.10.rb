@@ -3,7 +3,7 @@ control "cis-aws-foundations-1.10" do
   desc  "IAM password policies can prevent the reuse of a given password by the
 same user. It is recommended that the password policy prevent the reuse of
 passwords."
-  impact 0.4
+  impact 0.3
   tag "rationale": "Preventing password reuse increases account resiliency
 against brute force login attempts."
   tag "cis_impact": ""

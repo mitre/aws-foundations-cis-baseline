@@ -6,7 +6,7 @@ CloudTrail Logs to CloudWatch Logs and establishing corresponding metric
 filters and alarms. Network gateways are required to send/receive traffic to a
 destination outside of a VPC. It is recommended that a metric filter and alarm
 be established for changes to network gateways."
-  impact 0.4
+  impact 0.3
   tag "rationale": "Monitoring changes to network gateways will help ensure
 that all ingress/egress traffic traverses the VPC border via a controlled path."
   tag "cis_impact": ""

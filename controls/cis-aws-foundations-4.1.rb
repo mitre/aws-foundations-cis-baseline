@@ -3,7 +3,7 @@ control "cis-aws-foundations-4.1" do
   desc  "Security groups provide stateful filtering of ingress/egress network
 traffic to AWS resources. It is recommended that no security group allows
 unrestricted ingress access to port 22."
-  impact 0.4
+  impact 0.3
   tag "rationale": "Removing unfettered connectivity to remote console
 services, such as SSH, reduces a server's exposure to risk."
   tag "cis_impact": "For updating an existing environment, care should be taken
