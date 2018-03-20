@@ -6,8 +6,17 @@
 # progromatic deployment or validation of differnt deployment patterns without
 # having to adjust the core profile.
 
-# The followiing attributes must be set to accepted/documented values which is 
+# The followiing attributes must be set to accepted/documented values which is
 # then verified by the applicable controls.
+
+# default aws key age (1.4)
+aws_key_age: 90
+
+# Make the password length (1.9)
+pwd_length: 14
+
+# make the aws_cred_age an attribute (1.11)
+aws_cred_age: 90
 
 # description: 'default aws region',
 aws_region: 'us-east-1'
@@ -34,40 +43,39 @@ iam_master_policy_name: "iam_master_policy"
 aws_actions_performing_instance_ids: ["aws_access_instance_id"]
 
 # description: 'Config service list and settings in all relevant regions',
-config_service: 
-    us-east-1: 
+config_service:
+    us-east-1:
       s3_bucket_name: "s3_bucket_name_value"
       sns_topic_arn: "sns_topic_arn_value"
-    us-east-2: 
+    us-east-2:
       s3_bucket_name:  "s3_bucket_name_value"
       sns_topic_arn: "sns_topic_arn_value"
-    us-west-1: 
+    us-west-1:
       s3_bucket_name:  "s3_bucket_name_value"
       sns_topic_arn: "sns_topic_arn_value"
-    us-west-2: 
+    us-west-2:
       s3_bucket_name:  "s3_bucket_name_value"
       sns_topic_arn: "sns_topic_arn_value"
 
 
 # description: 'SNS topics list and details in all relevant regions',
-sns_topics: 
-    topic_arn1 : 
+sns_topics:
+    topic_arn1 :
       owner : "owner_value"
       region : "region_value"
     topic_arn2 :
       owner : "owner_value"
       region : "region_value"
-    
-  
+
+
 
 # description: 'SNS subscription list and details in all relevant regions',
-sns_subscriptions: 
-    subscription_arn1: 
+sns_subscriptions:
+    subscription_arn1:
       endpoint: "endpoint_value"
       owner: "owner_value"
       protocol: "protocol_value"
-    subscription_arn2: 
+    subscription_arn2:
       endpoint: "endpoint_value"
       owner: "owner_value"
       protocol: "protocol_value"
-

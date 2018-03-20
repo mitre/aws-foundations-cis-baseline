@@ -42,7 +42,6 @@ enables security analysis, resource change tracking, and compliance auditing."
   tag "cis_impact": ""
   tag "cis_rid": "2.5"
   tag "cis_level": 1
-  tag "severity": "low"
   tag "csc_control": [["1.1", "1.3", "1.4", "5.2", "11.1", "11.3", "14.6"], "6.0"]
   tag "nist": ["CM-8(3)", "CM-8(2)", "CM-8", "AC-6(7)", "CM-6(1)", "CM-6(2)", "AU-2", "Rev_4"]
   tag "cce_id": "CCE-78917-2"

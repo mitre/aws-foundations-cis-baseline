@@ -12,7 +12,6 @@ resources and services are not unintentionally exposed."
   tag "cis_impact": ""
   tag "cis_rid": "3.11"
   tag "cis_level": 2
-  tag "severity": "high"
   tag "csc_control": ""
   tag "nist": ["SI-4(5)", "Rev_4"]
   tag "cce_id": "CCE-79196-2"
@@ -98,7 +97,7 @@ created in step 1 and an SNS topic created in step 2
   describe aws_cloudtrail_trails do
     it { should exist }
   end
-  
+
   describe.one do
     aws_cloudtrail_trails.trail_arns.each do |trail|
       trail_log_group_name = aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.scan( /log-group:(.+):/ ).last.first unless aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.nil?
@@ -116,7 +115,7 @@ created in step 1 and an SNS topic created in step 2
           metric_name: metric_name,
           metric_namespace: metric_namespace ) do
           it { should exist }
-          its ('alarm_actions') { should_not be_empty}
+          its ('alarm_actions') { should_not be_empty }
         end
 
         aws_cloudwatch_alarm(
@@ -131,4 +130,3 @@ created in step 1 and an SNS topic created in step 2
     end
   end
 end
-

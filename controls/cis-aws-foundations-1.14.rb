@@ -21,7 +21,6 @@ http://onlinenoram.gemalto.com/ [http://onlinenoram.gemalto.com/]"
   tag "cis_impact": ""
   tag "cis_rid": "1.14"
   tag "cis_level": 2
-  tag "severity": "high"
   tag "csc_control": [["5.6", "11.4", "12.6", "16.11"], "6.0"]
   tag "nist": ["IA-2(1)","SC-23", "Rev_4"]
   tag "cce_id": "CCE-78911-5"

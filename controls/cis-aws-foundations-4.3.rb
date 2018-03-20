@@ -23,7 +23,6 @@ retention periods:
 http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/SettingLogRetention.html"
   tag "cis_rid": "4.3"
   tag "cis_level": 2
-  tag "severity": "high"
   tag "cis_control_number": ""
   tag "nist": ["SI-4(4)", "Rev_4"]
   tag "cce_id": "CCE-79202-8"
@@ -64,17 +63,15 @@ operation of an already running environment.
 "
   aws_vpcs.vpc_ids.each do |vpc|
     describe aws_vpc(vpc) do
-      it { should be_flow_logs_enabled}
+      it { should be_flow_logs_enabled }
     end
     describe.one do
       aws_vpc(vpc).flow_logs.each do |flow_log|
         describe "flow log settings" do
           subject { flow_log }
-          its('traffic_type') { should cmp 'REJECT'}
+          its('traffic_type') { should cmp 'REJECT' }
         end
       end
     end
   end
 end
-
-

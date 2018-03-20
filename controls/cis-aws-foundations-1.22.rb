@@ -20,7 +20,6 @@ Monthly charges for the Business and Enterprise support plans are based on each
 month's AWS usage charges, subject to a monthly minimum, billed in advance."
   tag "cis_rid": "1.22"
   tag "cis_level": 1
-  tag "severity": "low"
   tag "csc_control": ""
   tag "nist": ["IR-7", "Rev_4"]
   tag "cce_id": ""

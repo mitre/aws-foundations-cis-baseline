@@ -34,7 +34,6 @@ is know to be breach free will reveal the current pattern of ports being used
 for each instance to communicate successfully."
   tag "cis_rid": "4.4"
   tag "cis_level": 2
-  tag "severity": "high"
   tag "csc_control": [["9.2"], "6.0"]
   tag "nist": ["SC-7(5)", "Rev_4"]
   tag "cce_id": "CCE-79201-0"
@@ -102,8 +101,8 @@ to 'DO NOT USE. DO NOT ADD RULES'"
 
   aws_vpcs.vpc_ids.each do |vpc|
     describe aws_ec2_security_group(group_name: 'default', vpc_id: vpc) do
-      its('ingress_rules') { should be_empty}
-      its('egress_rules') { should be_empty}
+      its('ingress_rules') { should be_empty }
+      its('egress_rules') { should be_empty }
     end
   end
 end

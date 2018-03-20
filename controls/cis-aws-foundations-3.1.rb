@@ -20,7 +20,6 @@ the system - any additional access given should be reviewed for alignment with
 the original limited IAM user intent."
   tag "cis_rid": "3.1"
   tag "cis_level": 1
-  tag "severity": "low"
   tag "csc_control": ""
   tag "nist": ["SI-4(5)", "Rev_4"]
   tag "cce_id": "CCE-79186-3"
@@ -106,7 +105,7 @@ NOTE: set the period and threshold to values that fit your organization.
   describe aws_cloudtrail_trails do
     it { should exist }
   end
-  
+
   describe.one do
     aws_cloudtrail_trails.trail_arns.each do |trail|
       trail_log_group_name = aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.scan( /log-group:(.+):/ ).last.first unless aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.nil?
@@ -124,7 +123,7 @@ NOTE: set the period and threshold to values that fit your organization.
           metric_name: metric_name,
           metric_namespace: metric_namespace ) do
           it { should exist }
-          its ('alarm_actions') { should_not be_empty}
+          its ('alarm_actions') { should_not be_empty }
         end
 
         aws_cloudwatch_alarm(
@@ -139,4 +138,3 @@ NOTE: set the period and threshold to values that fit your organization.
     end
   end
 end
-

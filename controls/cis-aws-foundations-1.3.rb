@@ -11,7 +11,6 @@ abandoned account to be used."
   tag "cis_impact": ""
   tag "cis_rid": "1.3"
   tag "cis_level": 1
-  tag "severity": "low"
   tag "csc_control": [["16.6"], "6.0"]
   tag "nist": ["IA-4", "Rev_4"]
   tag "cce_id": "CCE-78900-8"
