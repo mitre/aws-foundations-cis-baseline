@@ -17,7 +17,6 @@ permission by the CMK policy."
 https://aws.amazon.com/kms/pricing/ for more information."
   tag "cis_rid": "2.7"
   tag "cis_level": 2
-  tag "severity": "high"
   tag "csc_control": [["13.1"], "6.0"]
   tag "nist": ["AU-9", "Rev_4"]
   tag "cce_id": "CCE-78919-8"
@@ -78,7 +77,7 @@ aws kms put-key-policy --key-id <_cloudtrail_kms_key_> --policy
   describe aws_cloudtrail_trails do
     it { should exist }
   end
-  
+
   aws_cloudtrail_trails.trail_arns.each do |trail|
     describe aws_cloudtrail_trail(trail) do
       its('kms_key_id') { should_not be_nil}

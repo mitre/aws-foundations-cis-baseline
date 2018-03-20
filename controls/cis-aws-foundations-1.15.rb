@@ -14,7 +14,6 @@ login access."
   tag "cis_impact": ""
   tag "cis_rid": "1.15"
   tag "cis_level": 1
-  tag "severity": "low"
   tag "cis_control_number": ""
   tag "nist": ["IA-2", "Rev_4"]
   tag "cce_id": ""

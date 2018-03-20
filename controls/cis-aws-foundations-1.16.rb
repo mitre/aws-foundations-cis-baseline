@@ -12,7 +12,6 @@ inadvertently receive or retain excessive privileges."
   tag "cis_impact": ""
   tag "cis_rid": "1.16"
   tag "cis_level": 1
-  tag "severity": "low"
   tag "csc_control": ""
   tag "nist": ["AC-6(7)", "Rev_4"]
   tag "cce_id": "CCE-78912-3"

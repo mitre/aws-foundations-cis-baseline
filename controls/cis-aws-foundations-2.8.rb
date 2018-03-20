@@ -14,7 +14,6 @@ previous key that may have been exposed."
   tag "cis_impact": ""
   tag "cis_rid": "2.8"
   tag "cis_level": 2
-  tag "severity": "high"
   tag "csc_control": ""
   tag "nist": ["SC-12", "Rev_4"]
   tag "cce_id": "CCE-78920-6"

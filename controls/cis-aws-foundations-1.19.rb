@@ -26,7 +26,6 @@ aliases and PABX hunt groups."
   tag "cis_impact": ""
   tag "cis_rid": "1.19"
   tag "cis_level": 1
-  tag "severity": "low"
   tag "csc_control": ""
   tag "nist": ["IA-4", "Rev_4"]
   tag "cce_id": ""

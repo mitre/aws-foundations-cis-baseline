@@ -14,7 +14,6 @@ workflows."
   tag "cis_impact": ""
   tag "cis_rid": "2.6"
   tag "cis_level": 1
-  tag "severity": "low"
   tag "csc_control": [["14.6"], "6.0"]
   tag "nist": ["AU-2", "Rev_4"]
   tag "cce_id": "CCE-78918-0"
@@ -58,7 +57,7 @@ https://console.aws.amazon.com/s3 [https://console.aws.amazon.com/s3].
   describe aws_cloudtrail_trails do
     it { should exist }
   end
-  
+
   aws_cloudtrail_trails.trail_arns.each do |trail|
     describe aws_s3_bucket(aws_cloudtrail_trail(trail).s3_bucket_name) do
       it { should have_access_logging_enabled }

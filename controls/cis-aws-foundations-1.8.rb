@@ -10,7 +10,6 @@ resiliency against brute force login attempts."
   tag "cis_impact": ""
   tag "cis_rid": "1.8"
   tag "cis_level": 1
-  tag "severity": "low"
   tag "csc_control": ""
   tag "nist": ["IA-5(1)", "Rev_4"]
   tag "cce_id": "CCE-78906-5"

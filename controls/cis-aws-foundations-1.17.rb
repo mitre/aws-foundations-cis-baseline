@@ -20,7 +20,6 @@ occurring in."
   tag "cis_impact": ""
   tag "cis_rid": "1.17"
   tag "cis_level": 1
-  tag "severity": "low"
   tag "csc_control": ""
   tag "nist": ["AU-12", "Rev_4"]
   tag "cce_id": ""

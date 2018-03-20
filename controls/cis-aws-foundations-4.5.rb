@@ -11,7 +11,6 @@ routes are inaccessible to the peered VPC."
   tag "cis_impact": ""
   tag "cis_rid": "4.5"
   tag "cis_level": 2
-  tag "severity": "high"
   tag "csc_control": ""
   tag "nist": ["SC-7", "Rev_4"]
   tag "cce_id": ""
@@ -51,7 +50,7 @@ compliant route:
     aws_route_table(route_table_id).routes.each do |route|
       next unless route.key?(:vpc_peering_connection_id)
       describe route do
-        its([:destination_cidr_block]) { should_not be nil} #verify with attributes
+        its([:destination_cidr_block]) { should_not be nil } #verify with attributes
       end
     end
   end

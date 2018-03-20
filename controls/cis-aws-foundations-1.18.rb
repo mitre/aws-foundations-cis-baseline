@@ -78,7 +78,6 @@ manner, in order for a user to gain access to a permission."
   tag "cis_impact": ""
   tag "cis_rid": "1.18"
   tag "cis_level": 1
-  tag "severity": "low"
   tag "csc_control": ""
   tag "nist": ["AC-6(7)", "Rev_4"]
   tag "cce_id": ""
@@ -647,7 +646,7 @@ mfa_condition = {
                     "Bool": {
                         "aws:MultiFactorAuthPresent": "true"
                     }
-                } 
+                }
 
   describe "Master Policy Allow Actions " do
     subject { master_allow_actions }

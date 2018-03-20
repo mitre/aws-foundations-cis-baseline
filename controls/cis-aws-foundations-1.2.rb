@@ -13,7 +13,6 @@ time-sensitive key and have knowledge of a credential."
   tag "cis_impact": ""
   tag "cis_rid": "1.2"
   tag "cis_level": 1
-  tag "severity": "low"
   tag "csc_control": [["5.6", "11.4", "12.6", "16.11"], "6.0"]
   tag "nist": ["IA-2(1)","SC-23", "Rev_4"]
   tag "cce_id": "CCE-78901-6"

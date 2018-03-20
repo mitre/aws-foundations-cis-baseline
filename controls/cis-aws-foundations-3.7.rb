@@ -12,7 +12,6 @@ be accessible."
   tag "cis_impact": ""
   tag "cis_rid": "3.7"
   tag "cis_level": 2
-  tag "severity": "high"
   tag "csc_control": ""
   tag "nist": ["SI-4(5)", "Rev_4"]
   tag "cce_id": "CCE-79192-1"
@@ -68,7 +67,7 @@ created in step 1 and an SNS topic created in step 2
   describe aws_cloudtrail_trails do
     it { should exist }
   end
-  
+
   describe.one do
     aws_cloudtrail_trails.trail_arns.each do |trail|
       trail_log_group_name = aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.scan( /log-group:(.+):/ ).last.first unless aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.nil?
@@ -76,7 +75,7 @@ created in step 1 and an SNS topic created in step 2
       pattern = "{ ($.eventSource = kms.amazonaws.com) && (($.eventName = DisableKey) || ($.eventName = ScheduleKeyDeletion)) }"
 
       describe aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name) do
-        it { should exist}
+        it { should exist }
       end
 
       metric_name = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name).metric_name
@@ -101,4 +100,3 @@ created in step 1 and an SNS topic created in step 2
     end
   end
 end
-

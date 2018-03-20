@@ -35,7 +35,6 @@ retention periods:
 http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/SettingLogRetention.html"
   tag "cis_rid": "2.4"
   tag "cis_level": 1
-  tag "severity": "low"
   tag "csc_control": [["6.6", "14.6"], "6.0"]
   tag "nist": ["SI-4(2)", "AU-2", "Rev_4"]
   tag "cce_id": "CCE-78916-4"
@@ -95,7 +94,7 @@ https://console.aws.amazon.com/cloudtrail/
   describe aws_cloudtrail_trails do
     it { should exist }
   end
-  
+
   aws_cloudtrail_trails.trail_arns.each do |trail|
     describe aws_cloudtrail_trail(trail) do
       its('cloud_watch_logs_log_group_arn') { should_not be_nil}
@@ -103,5 +102,3 @@ https://console.aws.amazon.com/cloudtrail/
     end
   end
 end
-
-
