@@ -36,7 +36,7 @@ AWS_REGION= attribute(
   default: 'us-east-1'
 )
 
-sns_list = 
+sns_list =
 
 control "cis-aws-foundations-3.15" do
   title "Ensure appropriate subscribers to each SNS topic"
@@ -55,7 +55,6 @@ expected recipients receive information published to SNS topics."
   tag "cis_impact": ""
   tag "cis_rid": "3.15"
   tag "cis_level": 1
-  tag "severity": "low"
   tag "csc_control": ""
   tag "nist": ["AC-6", "Rev_4"]
   tag "cce_id": ""

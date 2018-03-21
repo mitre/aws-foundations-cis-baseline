@@ -96,5 +96,3 @@ _<policy_arn>_
     end if aws_iam_policy(policy).attached?
   end
 end
-
-

@@ -11,7 +11,6 @@ to ensure that administrators currently relying on an existing ingress from
 0.0.0.0/0 have access to ports 22 and/or 3389 through another security group."
   tag "cis_rid": "4.2"
   tag "cis_level": 1
-  tag "severity": "low"
   tag "cis_control_number": ""
   tag "nist": ["SC-7(5)", "Rev_4"]
   tag "cce_id": ""

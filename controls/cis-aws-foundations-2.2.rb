@@ -11,7 +11,6 @@ integrity checking of CloudTrail logs."
   tag "cis_impact": ""
   tag "cis_rid": "2.2"
   tag "cis_level": 2
-  tag "severity": "high"
   tag "csc_control": [["6.3"], "6.0"]
   tag "nist": ["AU-4", "Rev_4"]
   tag "cce_id": "CCE-78914-9"
@@ -67,13 +66,10 @@ _<start_time>_ --end-time _<end_time>_"
   describe aws_cloudtrail_trails do
     it { should exist }
   end
-  
+
   aws_cloudtrail_trails.trail_arns.each do |trail|
     describe aws_cloudtrail_trail(trail) do
       it { should be_log_file_validation_enabled }
     end
   end
 end
-
-
-

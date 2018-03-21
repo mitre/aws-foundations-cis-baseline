@@ -1,5 +1,11 @@
+AWS_KEY_AGE = attribute(
+  'aws_key_age',
+  description: 'The maximum allowed key age',
+  default: 90 # in days
+)
+
 control "cis-aws-foundations-1.4" do
-  title "Ensure access keys are rotated every 90 days or less"
+  title "Ensure access keys are rotated every #{AWS_KEY_AGE} days or less"
   desc  "Access keys consist of an access key ID and secret access key, which
 are used to sign programmatic requests that you make to AWS. AWS users need
 their own access keys to make programmatic calls to AWS from the AWS Command
@@ -16,7 +22,6 @@ old key which might have been lost, cracked, or stolen."
   tag "cis_impact": ""
   tag "cis_rid": "1.4"
   tag "cis_level": 1
-  tag "severity": "low"
   tag "csc_control": ""
   tag "nist": ["IA-5(1)", "Rev_4"]
   tag "cce_id": "CCE-78902-4"
@@ -37,7 +42,7 @@ users within an AWS Account - open this file
 * access_key_X_last_used_date
 
 
-* Ensure all active keys have been rotated within 90 days
+* Ensure all active keys have been rotated within #{AWS_KEY_AGE} days
 
 * Ensure all active keys have been used since last rotation
 
@@ -57,12 +62,12 @@ aws iam get-credential-report --query 'Content' --output text | base64 -d"
 
 * As an Administrator
 
-* Click on Make Inactive for keys that have not been rotated in 90 Days
+* Click on Make Inactive for keys that have not been rotated in #{AWS_KEY_AGE} Days
 
 * As an IAM User
 
 * Click on Make Inactive or Delete for keys which have not been rotated or used
-in 90 Days
+in the last #{AWS_KEY_AGE} days
 
 
 * Click on Create Access Key
@@ -77,8 +82,8 @@ aws iam delete-access-key"
   aws_iam_access_keys.where(active: true).entries.each do |key|
     describe key.username do
       context key do
-        its('created_days_ago') { should cmp <= 90 }
-        its('ever_used') { should be true}
+        its('created_days_ago') { should cmp <= AWS_KEY_AGE }
+        its('ever_used') { should be true }
       end
     end
   end

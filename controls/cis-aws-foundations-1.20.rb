@@ -10,7 +10,6 @@ that is best equipped to respond to them."
   tag "cis_impact": ""
   tag "cis_rid": "1.20"
   tag "cis_level": 1
-  tag "severity": "low"
   tag "csc_control": ""
   tag "nist": ["IA-4", "Rev_4"]
   tag "cce_id": "CCE-79200-2"

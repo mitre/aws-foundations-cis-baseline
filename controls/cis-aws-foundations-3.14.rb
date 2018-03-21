@@ -12,7 +12,6 @@ authentication and authorization controls remain intact."
   tag "cis_impact": ""
   tag "cis_rid": "3.14"
   tag "cis_level": 1
-  tag "severity": "low"
   tag "csc_control": ""
   tag "nist": ["SI-4(5)", "Rev_4"]
   tag "cce_id": "CCE-79199-6"
@@ -104,7 +103,7 @@ created in step 1 and an SNS topic created in step 2
   describe aws_cloudtrail_trails do
     it { should exist }
   end
-  
+
   describe.one do
     aws_cloudtrail_trails.trail_arns.each do |trail|
       trail_log_group_name = aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.scan( /log-group:(.+):/ ).last.first unless aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.nil?
@@ -112,7 +111,7 @@ created in step 1 and an SNS topic created in step 2
       pattern = '{ ($.eventName = CreateVpc) || ($.eventName = DeleteVpc) || ($.eventName = ModifyVpcAttribute) || ($.eventName = AcceptVpcPeeringConnection) || ($.eventName = CreateVpcPeeringConnection) || ($.eventName = DeleteVpcPeeringConnection) || ($.eventName = RejectVpcPeeringConnection) || ($.eventName = AttachClassicLinkVpc) || ($.eventName = DetachClassicLinkVpc) || ($.eventName = DisableVpcClassicLink) || ($.eventName = EnableVpcClassicLink) }'
 
       describe aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name) do
-        it { should exist}
+        it { should exist }
       end
 
       metric_name = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name).metric_name
@@ -122,7 +121,7 @@ created in step 1 and an SNS topic created in step 2
           metric_name: metric_name,
           metric_namespace: metric_namespace ) do
           it { should exist }
-          its ('alarm_actions') { should_not be_empty}
+          its ('alarm_actions') { should_not be_empty }
         end
 
         aws_cloudwatch_alarm(

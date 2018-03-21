@@ -19,7 +19,6 @@ for more information on these features:
 * http://docs.aws.amazon.com/AmazonS3/latest/dev/object-lifecycle-mgmt.html"
   tag "cis_rid": "2.1"
   tag "cis_level": 1
-  tag "severity": "low"
   tag "csc_control": [["14.6"], "6.0"]
   tag "nist": ["AU-2", "Rev_4"]
   tag "cce_id": "CCE-78913-1"
