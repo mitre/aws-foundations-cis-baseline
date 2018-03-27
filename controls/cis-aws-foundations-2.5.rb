@@ -1,4 +1,4 @@
-CONFIG_SERVICE= attribute(
+CONFIG_SERVICE = attribute(
   'config_service',
   description: 'Config service settings',
   default: {
@@ -22,7 +22,7 @@ CONFIG_SERVICE= attribute(
 
 )
 
-AWS_REGION= attribute(
+AWS_REGION = attribute(
   'aws_region',
   description: 'default aws region',
   default: 'us-east-1'

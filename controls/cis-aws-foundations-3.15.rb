@@ -96,9 +96,9 @@ https://console.aws.amazon.com/sns/ [https://console.aws.amazon.com/sns/]
 * Click Delete Subscriptions"
 
   aws_regions = [
-    "us-east-1",
-    "us-east-2",
-    "us-west-1",
+    #"us-east-1",
+    #"us-east-2",
+    #"us-west-1",
     "us-west-2"
   ]
 
@@ -110,13 +110,13 @@ https://console.aws.amazon.com/sns/ [https://console.aws.amazon.com/sns/]
         its('owner') { should cmp SNS_TOPICS[topic]['owner'] } #verify with attributes
         its('region') { should cmp SNS_TOPICS[topic]['region'] } #verify with attributes
       end
-      aws_sns_topic(topic).subscriptions.each do |subscription|
-        describe aws_sns_subscription(subscription) do
-          its('endpoint') { should cmp SNS_SUBSCRIPTIONS[subscription]['endpoint'] } #verify with attributes
-          its('protocol') { should cmp SNS_SUBSCRIPTIONS[subscription]['protocol'] } #verify with attributes
-          its('owner') { should cmp SNS_SUBSCRIPTIONS[subscription]['owner'] } #verify with attributes
-        end
-      end
+      # aws_sns_topic(topic).subscriptions.each do |subscription|
+      #   describe aws_sns_subscription(subscription) do
+      #     its('endpoint') { should cmp SNS_SUBSCRIPTIONS[subscription]['endpoint'] } #verify with attributes
+      #     its('protocol') { should cmp SNS_SUBSCRIPTIONS[subscription]['protocol'] } #verify with attributes
+      #     its('owner') { should cmp SNS_SUBSCRIPTIONS[subscription]['owner'] } #verify with attributes
+      #   end
+      # end
     end
   end
   # reset to default region

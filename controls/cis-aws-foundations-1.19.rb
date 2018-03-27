@@ -57,6 +57,6 @@ Management console at https://console.aws.amazon.com/billing/home#/.
 then choose Update."
 
   describe "Control has to be tested manually" do
-    skip
+    skip "This control must be manually reviewed"
   end
 end

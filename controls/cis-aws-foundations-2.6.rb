@@ -1,3 +1,9 @@
+EXCEPTION_BUCKET_LIST = attribute(
+  'exception_bucket_list',
+  description: 'list of buckets exempted from inspection',
+  default: ["entservicesops-ct"]
+)
+
 control "cis-aws-foundations-2.6" do
   title "Ensure S3 bucket access logging is enabled on the CloudTrail S3 bucket"
   desc  "S3 Bucket Access Logging generates a log that contains access records
@@ -59,6 +65,7 @@ https://console.aws.amazon.com/s3 [https://console.aws.amazon.com/s3].
   end
 
   aws_cloudtrail_trails.trail_arns.each do |trail|
+    next if EXCEPTION_BUCKET_LIST.include?(aws_cloudtrail_trail(trail).s3_bucket_name)
     describe aws_s3_bucket(aws_cloudtrail_trail(trail).s3_bucket_name) do
       it { should have_access_logging_enabled }
     end
