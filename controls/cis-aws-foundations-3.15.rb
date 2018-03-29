@@ -30,13 +30,22 @@ SNS_SUBSCRIPTIONS= attribute(
         }
 )
 
-AWS_REGION= attribute(
-  'aws_region',
+DEFAULT_AWS_REGION = attribute(
+  'default_aws_region',
   description: 'default aws region',
   default: 'us-east-1'
 )
 
-sns_list =
+AWS_REGIONS = attribute(
+  'aws_regions',
+  description: 'all aws regions to be inspected',
+  default: [
+    "us-east-1",
+    "us-east-2",
+    "us-west-1",
+    "us-west-2"
+  ]
+)
 
 control "cis-aws-foundations-3.15" do
   title "Ensure appropriate subscribers to each SNS topic"
@@ -95,14 +104,7 @@ https://console.aws.amazon.com/sns/ [https://console.aws.amazon.com/sns/]
 * Click Actions
 * Click Delete Subscriptions"
 
-  aws_regions = [
-    "us-east-1",
-    "us-east-2",
-    "us-west-1",
-    "us-west-2"
-  ]
-
-  aws_regions.each do |region|
+  AWS_REGIONS.each do |region|
     ENV['AWS_REGION'] = region
 
     aws_sns_topics.topic_arns.each do |topic|
@@ -112,6 +114,7 @@ https://console.aws.amazon.com/sns/ [https://console.aws.amazon.com/sns/]
       end
       aws_sns_topic(topic).subscriptions.each do |subscription|
         describe aws_sns_subscription(subscription) do
+          its('arn') { should_not cmp 'PendingConfirmation' }
           its('endpoint') { should cmp SNS_SUBSCRIPTIONS[subscription]['endpoint'] } #verify with attributes
           its('protocol') { should cmp SNS_SUBSCRIPTIONS[subscription]['protocol'] } #verify with attributes
           its('owner') { should cmp SNS_SUBSCRIPTIONS[subscription]['owner'] } #verify with attributes
@@ -120,5 +123,5 @@ https://console.aws.amazon.com/sns/ [https://console.aws.amazon.com/sns/]
     end
   end
   # reset to default region
-  ENV['AWS_REGION'] = AWS_REGION
+  ENV['AWS_REGION'] = DEFAULT_AWS_REGION
 end
