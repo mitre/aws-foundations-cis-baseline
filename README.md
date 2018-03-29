@@ -104,6 +104,22 @@ sns_subscriptions:
 ```
 
 
+## Generate Attributes
+
+The repo includes a script : generate_attributes.rb to generate part of the attributes required for the profile.
+The script will inspect aws regions: us-east-1, us-east-2, us-west-1, us-west-2 to generate the following attributes to STDOUT.
+
+```
+- config_delivery_channels
+- sns_topics
+- sns_subscriptions
+```
+The generated attributes __must be reviewed carefully__ and can be placed in the atttributes yaml file required for the inspec run.
+
+Usage:
+```
+  ruby generate_attributes.rb
+```
 ## Usage
 
 InSpec makes it easy to run your tests wherever you need. More options listed here: [InSpec cli](http://inspec.io/docs/reference/cli/)

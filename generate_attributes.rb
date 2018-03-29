@@ -2,9 +2,14 @@
 require 'yaml'
 require 'rubygems'; require 'json';
 
-attributes_file = YAML.load_file(ARGF.argv[0])
+aws_regions = [
+    "us-east-1",
+    "us-east-2",
+    "us-west-1",
+    "us-west-2"
+  ]
 
-aws_regions = attributes_file['aws_regions']
+attributes_file = {}
 
 config_delivery_channels = {}
 aws_regions.each do |region|
@@ -48,4 +53,4 @@ attributes_file['config_delivery_channels'] = config_delivery_channels
 attributes_file['sns_topics'] = sns_topics
 attributes_file['sns_subscriptions'] = sns_subscriptions
 
-File.write(ARGF.argv[0], attributes_file.to_yaml)
+puts attributes_file.to_yaml
