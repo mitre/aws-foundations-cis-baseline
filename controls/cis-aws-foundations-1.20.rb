@@ -32,6 +32,6 @@ security contact information:
 are regularly monitored by more than one individual."
 
   describe "Control has to be tested manually" do
-    skip
+    skip "This control must be manually reviewed"
   end
 end

@@ -48,6 +48,6 @@ Information page, configure three security challenge questions.
 * Place Questions and Answers and place in a secure physical location"
 
   describe "Control has to be tested manually" do
-    skip
+    skip "This control must be manually reviewed"
   end
 end

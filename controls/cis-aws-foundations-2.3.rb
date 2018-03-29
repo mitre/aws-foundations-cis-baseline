@@ -1,7 +1,7 @@
 EXCEPTION_BUCKET_LIST= attribute(
   'exception_bucket_list',
   description: 'list of buckets exempted from inspection',
-  default: ["entservicesops-ct"]
+  default: ["exception_bucket_name"]
 )
 
 control "cis-aws-foundations-2.3" do

@@ -83,6 +83,6 @@ number>-<aws-billing-detailed-line-items-with-resources-and-tags-yyyy-mm>.csv.zi
 are being generated."
 
   describe "Control has to be tested manually" do
-    skip
+    skip "This control must be manually reviewed"
   end
 end
