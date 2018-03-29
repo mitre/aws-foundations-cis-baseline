@@ -92,7 +92,7 @@ in 1 region only
 
 'aws configservice start-configuration-recorder"
 
-  AWS_REGIONS.keys.each do |region|
+  AWS_REGIONS.each do |region|
     ENV['AWS_REGION'] = region
 
     describe aws_config_recorder do
