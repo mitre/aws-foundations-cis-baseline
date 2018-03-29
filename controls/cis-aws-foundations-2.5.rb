@@ -22,8 +22,8 @@ CONFIG_SERVICE = attribute(
 
 )
 
-AWS_REGION = attribute(
-  'aws_region',
+DEFAULT_AWS_REGION = attribute(
+  'default_aws_region',
   description: 'default aws region',
   default: 'us-east-1'
 )
@@ -99,5 +99,5 @@ in 1 region only
   end
 
   # reset to default region
-  ENV['AWS_REGION'] = AWS_REGION
+  ENV['AWS_REGION'] = DEFAULT_AWS_REGION
 end
