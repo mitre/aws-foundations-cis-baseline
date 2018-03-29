@@ -19,7 +19,7 @@ class AwsSnsTopic < Inspec.resource(1)
   end
 
   def to_s
-    "SNS Topic #{@arn}"
+    'SNS Topic'
   end
 
   private

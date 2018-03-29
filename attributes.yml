@@ -29,6 +29,9 @@ aws_regions: [
     "us-west-2"
   ]
 
+#description: 'list of buckets exempted from inspection',
+exception_bucket_list: ["exception_bucket_name"]
+
 # description: 'iam manager role name',
 iam_manager_role_name: "iam_manager_role_name"
 
