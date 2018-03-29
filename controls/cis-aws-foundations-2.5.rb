@@ -1,5 +1,5 @@
-CONFIG_SERVICE = attribute(
-  'config_service',
+CONFIG_DELIVERY_CHANNELS = attribute(
+  'config_delivery_channels',
   description: 'Config service settings',
   default: {
             "us-east-1"=> {
@@ -26,6 +26,17 @@ DEFAULT_AWS_REGION = attribute(
   'default_aws_region',
   description: 'default aws region',
   default: 'us-east-1'
+)
+
+AWS_REGIONS = attribute(
+  'aws_regions',
+  description: 'all aws regions to be inspected',
+  default: [
+    "us-east-1",
+    "us-east-2",
+    "us-west-1",
+    "us-west-2"
+  ]
 )
 
 control "cis-aws-foundations-2.5" do
@@ -81,7 +92,7 @@ in 1 region only
 
 'aws configservice start-configuration-recorder"
 
-  CONFIG_SERVICE.keys.each do |region|
+  AWS_REGIONS.keys.each do |region|
     ENV['AWS_REGION'] = region
 
     describe aws_config_recorder do
@@ -93,8 +104,8 @@ in 1 region only
 
     describe aws_config_delivery_channel do
       it { should exist }
-      its('s3_bucket_name') { should cmp CONFIG_SERVICE[region]['s3_bucket_name'] } #verify with attributes
-      its('sns_topic_arn') { should cmp CONFIG_SERVICE[region]['sns_topic_arn'] } #verify with attributes
+      its('s3_bucket_name') { should cmp CONFIG_DELIVERY_CHANNELS[region]['s3_bucket_name'] } #verify with attributes
+      its('sns_topic_arn') { should cmp CONFIG_DELIVERY_CHANNELS[region]['sns_topic_arn'] } #verify with attributes
     end
   end
 
