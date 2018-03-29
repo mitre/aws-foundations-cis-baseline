@@ -25,7 +25,7 @@ class AwsSnsSubscription < Inspec.resource(1)
   end
 
   def to_s
-    'SNS Subscription'
+    "SNS Subscription #{@arn}"
   end
 
   private
