@@ -1,0 +1,75 @@
+# encoding: utf-8
+#
+# This is an example of an attributes file that can be passed to the profile
+# to override the defaults of the attributes defined in each of the tests.
+# You can use this to automatically adjust your tests when using automation or
+# progromatic deployment or validation of differnt deployment patterns without
+# having to adjust the core profile.
+
+# The followiing attributes must be set to accepted/documented values which is
+# then verified by the applicable controls.
+
+# default aws key age (1.4)
+aws_key_age: 90
+
+# Make the password length (1.9)
+pwd_length: 14
+
+# make the aws_cred_age an attribute (1.11)
+aws_cred_age: 90
+
+# description: 'default aws region',
+aws_region: 'us-west-2'
+
+# description: 'iam manager role name',
+iam_manager_role_name: "prgmadmin"
+
+# description: 'iam master role name',
+iam_master_role_name: "entops"
+
+# description: 'iam manager user name',
+iam_manager_user_name: "iam_manager_user_name"
+
+# description: 'iam master user name',
+iam_master_user_name: "iam_master_user_name"
+
+# description: 'iam manager policy',
+iam_manager_policy_name: "iam_manager_policy"
+
+# description: 'iam master policy',
+iam_master_policy_name: "iam_master_policy"
+
+# description: 'aws actions performing instance ids',
+aws_actions_performing_instance_ids: []
+
+# description: 'Config service list and settings in all relevant regions',
+config_service:
+    us-west-2:
+      s3_bucket_name:  "s3_bucket_name_value"
+      sns_topic_arn: "sns_topic_arn_value"
+
+# description: 'SNS topics list and details in all relevant regions',
+sns_topics:
+    arn:aws:sns:us-west-2:219316120518:DEVOPS-CloudWatchAlarms :
+      owner : "219316120518"
+      region : "us-west-2"
+    arn:aws:sns:us-west-2:219316120518:SecurityGroupsChanged :
+      owner : "219316120518"
+      region : "us-west-2"
+    arn:aws:sns:us-west-2:219316120518:svc_arcsight_cloudtrail_updates :
+      owner : "219316120518"
+      region : "us-west-2"
+
+# description: 'SNS subscription list and details in all relevant regions',
+sns_subscriptions:
+    arn:aws:sns:us-west-2:219316120518:SecurityGroupsChanged:5c276626-c8f2-411f-a404-cdca791387bc:
+      endpoint: "mourinse@nga.mil"
+      owner: "219316120518"
+      protocol: "email"
+    arn:aws:sns:us-west-2:219316120518:svc_arcsight_cloudtrail_updates:9c388503-78e9-49b7-ac79-1a4586b506e7:
+      endpoint: "arn:aws:sqs:us-west-2:219316120518:svc_arcsight_cloudtrail_updates"
+      owner: "219316120518"
+      protocol: "sqs"
+
+#description: 'list of buckets exempted from inspection',
+exception_bucket_list: ["entservicesops-ct"]
