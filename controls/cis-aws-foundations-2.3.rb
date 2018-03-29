@@ -1,3 +1,9 @@
+EXCEPTION_BUCKET_LIST= attribute(
+  'exception_bucket_list',
+  description: 'list of buckets exempted from inspection',
+  default: ["exception_bucket_name"]
+)
+
 control "cis-aws-foundations-2.3" do
   title "Ensure the S3 bucket CloudTrail logs to is not publicly accessible"
   desc  "CloudTrail logs a record of every API call made in your AWS account.
@@ -80,8 +86,9 @@ row identifies the grantee and the permissions granted.
   describe aws_cloudtrail_trails do
     it { should exist }
   end
-  
+
   aws_cloudtrail_trails.trail_arns.each do |trail|
+    next if EXCEPTION_BUCKET_LIST.include?(aws_cloudtrail_trail(trail).s3_bucket_name)
     describe aws_s3_bucket(aws_cloudtrail_trail(trail).s3_bucket_name) do
       it { should_not be_public }
     end
