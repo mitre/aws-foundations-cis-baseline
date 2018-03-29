@@ -19,13 +19,21 @@ pwd_length: 14
 aws_cred_age: 90
 
 # description: 'default aws region',
-aws_region: 'us-west-2'
+default_aws_region: 'us-east-1'
+
+# description: 'all aws regions to be inspected',
+aws_regions: [
+    "us-east-1",
+    "us-east-2",
+    "us-west-1",
+    "us-west-2"
+  ]
 
 # description: 'iam manager role name',
-iam_manager_role_name: "prgmadmin"
+iam_manager_role_name: "iam_manager_role_name"
 
 # description: 'iam master role name',
-iam_master_role_name: "entops"
+iam_master_role_name: "iam_master_role_name"
 
 # description: 'iam manager user name',
 iam_manager_user_name: "iam_manager_user_name"
@@ -40,36 +48,39 @@ iam_manager_policy_name: "iam_manager_policy"
 iam_master_policy_name: "iam_master_policy"
 
 # description: 'aws actions performing instance ids',
-aws_actions_performing_instance_ids: []
+aws_actions_performing_instance_ids: ["aws_access_instance_id"]
 
-# description: 'Config service list and settings in all relevant regions',
-config_service:
+# description: 'Config delivery channel list and settings in all relevant regions',
+config_delivery_channels:
+    us-east-1:
+      s3_bucket_name: "s3_bucket_name_value"
+      sns_topic_arn: "sns_topic_arn_value"
+    us-east-2:
+      s3_bucket_name:  "s3_bucket_name_value"
+      sns_topic_arn: "sns_topic_arn_value"
+    us-west-1:
+      s3_bucket_name:  "s3_bucket_name_value"
+      sns_topic_arn: "sns_topic_arn_value"
     us-west-2:
       s3_bucket_name:  "s3_bucket_name_value"
       sns_topic_arn: "sns_topic_arn_value"
 
 # description: 'SNS topics list and details in all relevant regions',
 sns_topics:
-    arn:aws:sns:us-west-2:219316120518:DEVOPS-CloudWatchAlarms :
-      owner : "219316120518"
-      region : "us-west-2"
-    arn:aws:sns:us-west-2:219316120518:SecurityGroupsChanged :
-      owner : "219316120518"
-      region : "us-west-2"
-    arn:aws:sns:us-west-2:219316120518:svc_arcsight_cloudtrail_updates :
-      owner : "219316120518"
-      region : "us-west-2"
+    topic_arn1 :
+      owner : "owner_value"
+      region : "region_value"
+    topic_arn2 :
+      owner : "owner_value"
+      region : "region_value"
 
 # description: 'SNS subscription list and details in all relevant regions',
 sns_subscriptions:
-    arn:aws:sns:us-west-2:219316120518:SecurityGroupsChanged:5c276626-c8f2-411f-a404-cdca791387bc:
-      endpoint: "mourinse@nga.mil"
-      owner: "219316120518"
-      protocol: "email"
-    arn:aws:sns:us-west-2:219316120518:svc_arcsight_cloudtrail_updates:9c388503-78e9-49b7-ac79-1a4586b506e7:
-      endpoint: "arn:aws:sqs:us-west-2:219316120518:svc_arcsight_cloudtrail_updates"
-      owner: "219316120518"
-      protocol: "sqs"
-
-#description: 'list of buckets exempted from inspection',
-exception_bucket_list: ["entservicesops-ct"]
+    subscription_arn1:
+      endpoint: "endpoint_value"
+      owner: "owner_value"
+      protocol: "protocol_value"
+    subscription_arn2:
+      endpoint: "endpoint_value"
+      owner: "owner_value"
+      protocol: "protocol_value"
