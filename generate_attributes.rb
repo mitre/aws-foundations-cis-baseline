@@ -13,14 +13,15 @@ attributes_file = {}
 
 config_delivery_channels = {}
 aws_regions.each do |region|
-  channel = JSON.parse(%x[ aws configservice describe-delivery-channels --region #{region} ])
-  
-  config_delivery_channels[region] = 
-  {   
-    's3_bucket_name' => channel["DeliveryChannels"].first["s3BucketName"],
-    'sns_topic_arn' => channel["DeliveryChannels"].first["snsTopicARN"]
+  channels = JSON.parse(%x[ aws configservice describe-delivery-channels --region #{region} ])
+  channels['DeliveryChannels'].each do |channel|
+    config_delivery_channels[region] = 
+    {   
+      's3_bucket_name' => channel["s3BucketName"],
+      'sns_topic_arn' => channel["snsTopicARN"]
 
-  }
+    }
+  end
 end
 
 sns_topics = {}
