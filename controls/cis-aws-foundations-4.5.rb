@@ -1,18 +1,3 @@
-ROUTE_TABLES= attribute(
-  'route_tables',
-  description: 'Route tables with vpc peering with designated destination cidr block',
-  default: {
-              "route_table1" => {
-                "vpcpeeringconnectionid" => "pcx-111111111",
-                "destinationcidrblock" => "172.32.0.0/14",
-              },
-              "route_table2" => {
-                "vpcpeeringconnectionid" => "pcx-222222222",
-                "destinationcidrblock" => "172.32.0.0/14",
-              }
-            }
-)
-
 control "cis-aws-foundations-4.5" do
   title "Ensure routing tables for VPC peering are 'least access'"
   desc  "Once a VPC peering connection is estalished, routing tables must be
