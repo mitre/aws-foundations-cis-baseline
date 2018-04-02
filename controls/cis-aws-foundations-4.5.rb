@@ -50,7 +50,7 @@ compliant route:
     aws_route_table(route_table_id).routes.each do |route|
       next unless route.key?(:vpc_peering_connection_id)
       describe route do
-        its([:destination_cidr_block]) { should be_nil } #verify with attributes
+        its([:destination_cidr_block]) { should_not be nil } #verify with attributes
       end
     end
   end
