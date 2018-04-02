@@ -120,7 +120,13 @@ https://console.aws.amazon.com/sns/ [https://console.aws.amazon.com/sns/]
           its('owner') { should cmp SNS_SUBSCRIPTIONS[subscription]['owner'] } #verify with attributes
         end
       end
+      describe "SNS Subscriptions where not found for the Topic" do
+        skip "No SNS Subscriptions where found for the SNS Topic #{topic}"
+      end if aws_sns_topic(topic).subscriptions.empty?
     end
+    describe "SNS Topics where not found in this region" do
+      skip "No SNS Topics where found for the region #{region}"
+    end if aws_sns_topics.topic_arns.empty?
   end
   # reset to default region
   ENV['AWS_REGION'] = DEFAULT_AWS_REGION

@@ -88,6 +88,11 @@ row identifies the grantee and the permissions granted.
   end
 
   aws_cloudtrail_trails.trail_arns.each do |trail|
+    
+    describe "Bucket not inspected because it is defined as an exception" do
+      skip "Bucket: #{aws_cloudtrail_trail(trail).s3_bucket_name} not checked if public since it is defined as an exception."
+    end if EXCEPTION_BUCKET_LIST.include?(aws_cloudtrail_trail(trail).s3_bucket_name)
+
     next if EXCEPTION_BUCKET_LIST.include?(aws_cloudtrail_trail(trail).s3_bucket_name)
     describe aws_s3_bucket(aws_cloudtrail_trail(trail).s3_bucket_name) do
       it { should_not be_public }
