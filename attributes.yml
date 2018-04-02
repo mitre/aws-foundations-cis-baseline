@@ -32,6 +32,9 @@ aws_regions: [
 #description: 'list of buckets exempted from inspection',
 exception_bucket_list: ["exception_bucket_name"]
 
+# description: 'list of security groups exempted from inspection',
+exception_security_group_list': ["exception_security_group_name"]
+
 # description: 'iam manager role name',
 iam_manager_role_name: "iam_manager_role_name"
 
@@ -84,3 +87,5 @@ sns_subscriptions:
       endpoint: "endpoint_value"
       owner: "owner_value"
       protocol: "protocol_value"
+
+

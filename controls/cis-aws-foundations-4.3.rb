@@ -74,4 +74,7 @@ operation of an already running environment.
       end
     end
   end
+  describe "Control skipped because no vpcs were found" do
+    skip "This control is skipped since the aws_vpcs resource returned an empty vpc list"
+  end if aws_vpcs.vpc_ids.empty?
 end

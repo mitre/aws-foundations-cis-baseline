@@ -84,4 +84,9 @@ https://console.aws.amazon.com/iam/ [https://console.aws.amazon.com/iam/].
       it { should_not have_attached_policies }
     end
   end
+
+  describe "Control skipped because no iam users were found" do
+    skip "This control is skipped since the aws_iam_users resource returned an empty user list"
+  end if aws_iam_users.entries.empty?
 end
+

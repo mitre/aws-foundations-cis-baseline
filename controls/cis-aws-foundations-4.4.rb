@@ -105,4 +105,7 @@ to 'DO NOT USE. DO NOT ADD RULES'"
       its('egress_rules') { should be_empty }
     end
   end
+  describe "Control skipped because no vpcs were found" do
+    skip "This control is skipped since the aws_vpcs resource returned an empty vpc list"
+  end if aws_vpcs.vpc_ids.empty?
 end

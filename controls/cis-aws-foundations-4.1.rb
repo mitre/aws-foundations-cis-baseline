@@ -1,3 +1,9 @@
+EXCEPTION_SECURITY_GROUP_LIST= attribute(
+  'exception_security_group_list',
+  description: 'list of security groups exempted from inspection',
+  default: ["exception_security_group_name"]
+)
+
 control "cis-aws-foundations-4.1" do
   title "Ensure no security groups allow ingress from 0.0.0.0/0 to port 22"
   desc  "Security groups provide stateful filtering of ingress/egress network
@@ -46,6 +52,12 @@ https://console.aws.amazon.com/vpc/home
 * Click Save"
 
   aws_ec2_security_groups.group_ids.each do |group_id|
+
+    describe "Security Group not inspected because it is defined as an exception" do
+      skip "Security Group: #{group_id} not inspected since it is defined as an exception."
+    end if EXCEPTION_SECURITY_GROUP_LIST.include?(group_id)
+
+    next if EXCEPTION_SECURITY_GROUP_LIST.include?(group_id)
     describe aws_ec2_security_group(group_id) do
       it { should_not be_open_to_all_on_port(22) }
     end

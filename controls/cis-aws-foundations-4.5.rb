@@ -1,3 +1,18 @@
+ROUTE_TABLES= attribute(
+  'route_tables',
+  description: 'Route tables with vpc peering with designated destination cidr block',
+  default: {
+              "route_table1" => {
+                "vpcpeeringconnectionid" => "pcx-111111111",
+                "destinationcidrblock" => "172.32.0.0/14",
+              },
+              "route_table2" => {
+                "vpcpeeringconnectionid" => "pcx-222222222",
+                "destinationcidrblock" => "172.32.0.0/14",
+              }
+            }
+)
+
 control "cis-aws-foundations-4.5" do
   title "Ensure routing tables for VPC peering are 'least access'"
   desc  "Once a VPC peering connection is estalished, routing tables must be
@@ -50,8 +65,11 @@ compliant route:
     aws_route_table(route_table_id).routes.each do |route|
       next unless route.key?(:vpc_peering_connection_id)
       describe route do
-        its([:destination_cidr_block]) { should_not be nil } #verify with attributes
+        its([:destination_cidr_block]) { should be_nil } #verify with attributes
       end
     end
   end
+  describe "Control skipped because no route tables were found" do
+    skip "This control is skipped since the aws_route_tables resource returned an empty route table list"
+  end if aws_route_tables.route_table_ids.empty?
 end

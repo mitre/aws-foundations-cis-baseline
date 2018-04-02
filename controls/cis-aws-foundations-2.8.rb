@@ -59,4 +59,8 @@ https://console.aws.amazon.com/iam [https://console.aws.amazon.com/iam].
       it { should be_rotation_enabled }
     end if aws_kms_key(key).enabled?
   end
+
+  describe "Control skipped because no enabled kms keys were found" do
+    skip "This control is skipped since the aws_kms_keys resource returned an empty enabled kms key list"
+  end if aws_kms_keys.key_arns.empty?
 end
