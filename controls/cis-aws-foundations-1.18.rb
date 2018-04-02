@@ -1,37 +1,37 @@
 IAM_MANAGER_ROLE_NAME= attribute(
   'iam_manager_role_name',
   description: 'iam manager role name',
-  default: "iam_manager_role_name"
+  default: "iam-manager-role-name"
 )
 
 IAM_MASTER_ROLE_NAME= attribute(
   'iam_master_role_name',
   description: 'iam master role name',
-  default: "iam_master_role_name"
+  default: "iam-master-role-name"
 )
 
 IAM_MANAGER_USER_NAME= attribute(
   'iam_manager_user_name',
   description: 'iam manager user name',
-  default: "iam_manager_user_name"
+  default: "iam-manager-user-name"
 )
 
 IAM_MASTER_USER_NAME= attribute(
   'iam_master_user_name',
   description: 'iam master user name',
-  default: "iam_master_user_name"
+  default: "iam-master-user-name"
 )
 
 IAM_MANAGER_POLICY_NAME= attribute(
   'iam_manager_policy_name',
   description: 'iam manager policy',
-  default: "iam_manager_policy"
+  default: "iam-manager-policy"
 )
 
 IAM_MASTER_POLICY_NAME= attribute(
   'iam_master_policy_name',
   description: 'iam master policy',
-  default: "iam_master_policy"
+  default: "iam-master-policy"
 )
 
 control "cis-aws-foundations-1.18" do

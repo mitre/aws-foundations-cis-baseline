@@ -36,19 +36,19 @@ exception_bucket_list: ["exception_bucket_name"]
 exception_security_group_list': ["exception_security_group_name"]
 
 # description: 'iam manager role name',
-iam_manager_role_name: "iam_manager_role_name"
+iam_manager_role_name: "iam-manager-role-name"
 
 # description: 'iam master role name',
-iam_master_role_name: "iam_master_role_name"
+iam_master_role_name: "iam-master-role-name"
 
 # description: 'iam manager user name',
-iam_manager_user_name: "iam_manager_user_name"
+iam_manager_user_name: "iam-manager-user-name"
 
 # description: 'iam master user name',
-iam_master_user_name: "iam_master_user_name"
+iam_master_user_name: "iam-master-user-name"
 
 # description: 'iam manager policy',
-iam_manager_policy_name: "iam_manager_policy"
+iam_manager_policy_name: "iam-manager-policy"
 
 # description: 'iam master policy',
 iam_master_policy_name: "iam_master_policy"
