@@ -53,6 +53,9 @@ compliant route:
         its([:destination_cidr_block]) { should_not be nil } #verify with attributes
       end
     end
+    describe "No routes with peering connection were found for the route table" do
+      skip "No routes with peering connection were found for the route_table #{route_table_id}"
+    end if !aws_route_table(route_table_id).routes.any? { |route| route.key?(:vpc_peering_connection_id) }
   end
   describe "Control skipped because no route tables were found" do
     skip "This control is skipped since the aws_route_tables resource returned an empty route table list"
