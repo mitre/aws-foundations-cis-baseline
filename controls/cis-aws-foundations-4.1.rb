@@ -54,7 +54,7 @@ https://console.aws.amazon.com/vpc/home
   aws_ec2_security_groups.group_ids.each do |group_id|
 
     describe "Security Group not inspected because it is defined as an exception" do
-      skip "Security Group: #{group_id} not inspected since it is defined as an exception."
+      skip "Security Group:: #{group_id} not insepcted because it is defined in EXCEPTION_SECURITY_GROUP_LIST."
     end if EXCEPTION_SECURITY_GROUP_LIST.include?(group_id)
 
     next if EXCEPTION_SECURITY_GROUP_LIST.include?(group_id)
