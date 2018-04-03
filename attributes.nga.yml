@@ -1,0 +1,128 @@
+# encoding: utf-8
+#
+# This is an example of an attributes file that can be passed to the profile
+# to override the defaults of the attributes defined in each of the tests.
+# You can use this to automatically adjust your tests when using automation or
+# progromatic deployment or validation of differnt deployment patterns without
+# having to adjust the core profile.
+
+# The followiing attributes must be set to accepted/documented values which is
+# then verified by the applicable controls.
+
+# default aws key age (1.4)
+aws_key_age: 90
+
+# Make the password length (1.9)
+pwd_length: 14
+
+# make the aws_cred_age an attribute (1.11)
+aws_cred_age: 90
+
+# description: 'default aws region',
+default_aws_region: 'us-west-2'
+
+# description: 'all aws regions to be inspected',
+aws_regions: [
+    "us-east-1",
+    # "us-east-2",  
+    # "us-west-1",
+    "us-west-2"
+  ]
+
+#description: 'list of buckets exempted from inspection',
+exception_bucket_list: ["entservicesops-ct"]
+
+# description: 'list of security groups exempted from inspection',
+exception_security_group_list: ["sg-1e0a167a",
+"sg-3304ea54",
+"sg-33dd4b4b",
+"sg-3b7a8545",
+"sg-3e0e085a",
+"sg-48e7fe2c",
+"sg-586a9626",
+"sg-5b1b1d3f",
+"sg-6977800e",
+"sg-80ca5cf8",
+"sg-b99325c0",
+"sg-c190e8a5",
+"sg-d7dc4aaf",
+"sg-dca7b2b8",
+"sg-dd8792b9",
+"sg-e8922491",
+"sg-e91c1a8d",
+"sg-ed1baf92",
+"sg-f1647095",
+"sg-fabdba9e",
+"sg-3e11585a",
+"sg-a2c327d9",
+"sg-a9d58bd1",
+"sg-b1cd7dc8",]
+
+# description: 'iam manager role name',
+iam_manager_role_name: "cis-iam-manager-role"
+
+# description: 'iam master role name',
+iam_master_role_name: "cis-iam-master-role"
+
+# description: 'iam manager user name',
+iam_manager_user_name: "cis-iam-manager"
+
+# description: 'iam master user name',
+iam_master_user_name: "cis-iam-master"
+
+# description: 'iam manager policy',
+iam_manager_policy_name: "iam-manager-policy"
+
+# description: 'iam master policy',
+iam_master_policy_name: "iam-master-policy"
+
+config_delivery_channels:
+
+sns_topics:
+  arn:aws:sns:us-east-1:219316120518:DEVOPS-CloudWatchAlarms:
+    owner: '219316120518'
+    region: us-east-1
+  arn:aws:sns:us-east-1:219316120518:SecurityGroupNotification:
+    owner: '219316120518'
+    region: us-east-1
+  arn:aws:sns:us-east-1:219316120518:srv_arcsight_cloudtrail_updates:
+    owner: '219316120518'
+    region: us-east-1
+  arn:aws:sns:us-east-1:219316120518:svc_arcsight_cloudtrail_updates_test:
+    owner: '219316120518'
+    region: us-east-1
+  arn:aws:sns:us-west-1:219316120518:Topic_SecurityGroups_Changed:
+    owner: '219316120518'
+    region: us-west-1
+  arn:aws:sns:us-west-2:219316120518:DEVOPS-CloudWatchAlarms:
+    owner: '219316120518'
+    region: us-west-2
+  arn:aws:sns:us-west-2:219316120518:SecurityGroupsChanged:
+    owner: '219316120518'
+    region: us-west-2
+  arn:aws:sns:us-west-2:219316120518:svc_arcsight_cloudtrail_updates:
+    owner: '219316120518'
+    region: us-west-2
+sns_subscriptions:
+  arn:aws:sns:us-east-1:219316120518:srv_arcsight_cloudtrail_updates:773d7e50-e7c6-402d-8dfa-72dced91e631:
+    endpoint: arn:aws:sqs:us-east-1:219316120518:svc_arcsight_cloudtrail_updates
+    owner: '219316120518'
+    protocol: sqs
+  arn:aws:sns:us-east-1:219316120518:SecurityGroupNotification:54aef7c9-6045-48a6-aa29-3fef1e8de0a5:
+    endpoint: mourinse@nga.mil
+    owner: '219316120518'
+    protocol: email
+  arn:aws:sns:us-west-2:219316120518:SecurityGroupsChanged:5c276626-c8f2-411f-a404-cdca791387bc:
+    endpoint: mourinse@nga.mil
+    owner: '219316120518'
+    protocol: email
+  arn:aws:sns:us-west-2:219316120518:svc_arcsight_cloudtrail_updates:9c388503-78e9-49b7-ac79-1a4586b506e7:
+    endpoint: arn:aws:sqs:us-west-2:219316120518:svc_arcsight_cloudtrail_updates
+    owner: '219316120518'
+    protocol: sqs
+  PendingConfirmation:
+    endpoint: ngadevopsautomated@nga.mil
+    owner: '219316120518'
+    protocol: email
+
+
