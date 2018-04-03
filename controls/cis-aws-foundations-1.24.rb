@@ -95,4 +95,8 @@ _<policy_arn>_
       it { should be false }
     end if aws_iam_policy(policy).attached?
   end
+
+  describe "Control skipped because no iam policies were found" do
+    skip "This control is skipped since the aws_iam_policies resource returned an empty policy list"
+  end if !aws_iam_policies.policy_names.any? { |policy| aws_iam_policy(policy).attached? }
 end

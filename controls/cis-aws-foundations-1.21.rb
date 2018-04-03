@@ -1,9 +1,3 @@
-AWS_ACTIONS_PERFORMING_INSTANCE_IDS = attribute(
-  'aws_actions_performing_instance_ids',
-  description: 'aws access instance name',
-  default: ["aws_access_instance_id"]
-)
-
 control "cis-aws-foundations-1.21" do
   title "Ensure IAM instance roles are used for AWS resource access from
 instances"
@@ -87,9 +81,7 @@ bad practice and, if possible, you may wish to rebuild the instance with a new
 elastic IP address and make the investment to remediate affected systems while
 assigning the system to a role."
 
-  AWS_ACTIONS_PERFORMING_INSTANCE_IDS.each do |instance|
-    describe aws_ec2_instance(instance) do
-      it { should have_roles }
-    end
+  describe "Control has to be tested manually" do
+    skip "This control must be manually reviewed"
   end
 end

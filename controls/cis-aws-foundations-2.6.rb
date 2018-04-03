@@ -65,8 +65,13 @@ https://console.aws.amazon.com/s3 [https://console.aws.amazon.com/s3].
   end
 
   aws_cloudtrail_trails.trail_arns.each do |trail|
-    next if EXCEPTION_BUCKET_LIST.include?(aws_cloudtrail_trail(trail).s3_bucket_name)
-    describe aws_s3_bucket(aws_cloudtrail_trail(trail).s3_bucket_name) do
+    bucket_name = aws_cloudtrail_trail(trail).s3_bucket_name
+    describe "Bucket not inspected because it is defined as an exception" do
+      skip "Bucket: #{bucket_name} not insepcted because it is defined in EXCEPTION_BUCKET_LIST."
+    end if EXCEPTION_BUCKET_LIST.include?(bucket_name)
+
+    next if EXCEPTION_BUCKET_LIST.include?(bucket_name)
+    describe aws_s3_bucket(bucket_name) do
       it { should have_access_logging_enabled }
     end
   end

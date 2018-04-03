@@ -87,4 +87,8 @@ aws iam delete-access-key"
       end
     end
   end
+
+  describe "Control skipped because no active iam access keys were found" do
+    skip "This control is skipped since the aws_iam_access_keys resource returned an empty active access key list"
+  end if aws_iam_access_keys.where(active: true).entries.empty?
 end

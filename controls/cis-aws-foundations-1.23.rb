@@ -90,4 +90,8 @@ profile but have not been used.
       end
     end
   end
+
+  describe "Control skipped because no iam access keys were found" do
+    skip "This control is skipped since the aws_iam_access_keys resource returned an empty access key list"
+  end if aws_iam_access_keys.entries.empty?
 end
