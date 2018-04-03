@@ -1,4 +1,4 @@
-# #!/usr/bin/ruby
+#!/usr/bin/ruby
 require 'yaml'
 require 'rubygems'; require 'json';
 

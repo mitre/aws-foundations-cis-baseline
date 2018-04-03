@@ -114,11 +114,13 @@ https://console.aws.amazon.com/sns/ [https://console.aws.amazon.com/sns/]
       end
       aws_sns_topic(topic).subscriptions.each do |subscription|
         describe aws_sns_subscription(subscription) do
-          its('arn') { should_not cmp 'PendingConfirmation' }
+          its('arn') { should_not eq 'PendingConfirmation' }
+        end
+        describe aws_sns_subscription(subscription) do
           its('endpoint') { should cmp SNS_SUBSCRIPTIONS[subscription]['endpoint'] } #verify with attributes
           its('protocol') { should cmp SNS_SUBSCRIPTIONS[subscription]['protocol'] } #verify with attributes
           its('owner') { should cmp SNS_SUBSCRIPTIONS[subscription]['owner'] } #verify with attributes
-        end
+        end unless aws_sns_subscription(subscription).arn.eql?("PendingConfirmation")
       end
       describe "SNS Subscriptions where not found for the Topic" do
         skip "No SNS Subscriptions where found for the SNS Topic #{topic}"
