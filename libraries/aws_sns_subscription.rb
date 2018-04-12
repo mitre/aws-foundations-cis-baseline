@@ -25,7 +25,7 @@ class AwsSnsSubscription < Inspec.resource(1)
   end
 
   def to_s
-    'SNS Subscription'
+    "SNS Subscription #{@arn}"
   end
 
   private
@@ -46,6 +46,7 @@ class AwsSnsSubscription < Inspec.resource(1)
   end
 
   def fetch_from_aws
+    return if @arn.eql?('PendingConfirmation')
     @aws_response = AwsSnsSubscription::BackendFactory.create.get_subscription_attributes(subscription_arn: @arn).attributes
     @exists = true
     @owner = @aws_response['Owner']

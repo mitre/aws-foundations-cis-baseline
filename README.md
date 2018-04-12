@@ -9,7 +9,7 @@ InSpec is an open-source run-time framework and rule language used to specify co
 
 ## Requirements
 
-- [InSpec](http://inspec.io/) version 1.51
+- [InSpec](http://inspec.io/) version 2.1
 
 ### Tested Platforms
 
@@ -104,6 +104,22 @@ sns_subscriptions:
 ```
 
 
+## Generate Attributes
+
+The repo includes a script : generate_attributes.rb to generate part of the attributes required for the profile.
+The script will inspect aws regions: us-east-1, us-east-2, us-west-1, us-west-2 to generate the following attributes to STDOUT.
+
+```
+- config_delivery_channels
+- sns_topics
+- sns_subscriptions
+```
+The generated attributes __must be reviewed carefully__ and can be placed in the atttributes yaml file required for the inspec run.
+
+Usage:
+```
+  ruby generate_attributes.rb
+```
 ## Usage
 
 InSpec makes it easy to run your tests wherever you need. More options listed here: [InSpec cli](http://inspec.io/docs/reference/cli/)
@@ -120,9 +136,14 @@ $ export AWS_ACCESS_KEY_ID=key-id
 $ export AWS_SECRET_ACCESS_KEY=access-key
 
 # Provide required data in attributes.yml
+# Following script can be used to auto-generate part of the attributes.yml
+$ ruby generate_attributes.rb
 
 # run profile locally and directly from Github
-$ inspec exec /path/to/profile --attrs=attributes.yml
+$ inspec exec /path/to/profile -t aws:// --attrs=attributes.yml
+
+# run profile locally and directly from Github with cli & json output 
+$ inspec exec /path/to/profile -t aws:// --attrs=attributes.yml --reporter cli json:aws-results.json
 
 ```
 
