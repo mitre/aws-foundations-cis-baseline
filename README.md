@@ -162,5 +162,12 @@ $ inspec exec /path/to/profile --attrs=attributes.yml --controls cis-aws-foundat
 
 ## License and Author
 
+### Authors
+
 - Author:: Rony Xaiver [rx294@gmail.com](mailto:rx294@gmail.com)
 - Author:: Aaron Lippold [lippold@gmail.com](mailto:lippold@gmail.com)
+
+### License 
+
+* Content of this project is dual-licensed under the terms of the Apache license 2.0
+* Content of this project is dual-licensed under the terms of the Creative Commons Attribution Share Alike 4.0
