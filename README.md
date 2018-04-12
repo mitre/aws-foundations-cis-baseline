@@ -169,5 +169,5 @@ $ inspec exec /path/to/profile --attrs=attributes.yml --controls cis-aws-foundat
 
 ### License 
 
-* This project is dual-licensed under the terms of the Apache license 2.0
-* This project is dual-licensed under the terms of the Creative Commons Attribution Share Alike 4.0
+* This project is dual-licensed under the terms of the Apache license 2.0 (apache-2.0)
+* This project is dual-licensed under the terms of the Creative Commons Attribution Share Alike 4.0 (cc-by-sa-4.0)
