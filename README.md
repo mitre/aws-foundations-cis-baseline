@@ -9,7 +9,8 @@ InSpec is an open-source run-time framework and rule language used to specify co
 
 ## Requirements
 
-- [InSpec](http://inspec.io/) version 2.1
+- [InSpec](http://inspec.io/) at least version 2.1
+- [AWS CLI](https://aws.amazon.com/cli/) at least version 2.x
 
 ### Tested Platforms
 
@@ -34,6 +35,15 @@ The followiing attributes must be set to accepted/documented values which is
 then verified by the applicable controls.
 
 These attributes are generated if the profile is used with the Terraform hardening receipe (https://github.com/aaronlippold/cis-aws-foundations-hardening) with kitchen-terraform.
+
+- default aws key age (1.4), <br>
+`aws_key_age: 90`
+
+- Make the password length (1.9), <br>
+`pwd_length: 14`
+
+- make the aws_cred_age an attribute (1.11), <br>
+`aws_cred_age: 90`
 
 - description: 'default aws region', <br>
 `aws_region: 'us-east-1'`
