@@ -51,11 +51,11 @@ iam_master_user_name: "iam-master-user-name"
 iam_manager_policy_name: "iam-manager-policy"
 
 # description: 'iam master policy',
-iam_master_policy_name: "iam_master_policy"
+iam_master_policy_name: "iam-master-policy"
 
 # description: 'Config delivery channel list and settings in all relevant regions',
 config_delivery_channels:
-    us-east-1:
+    us-east-1:  
       s3_bucket_name: "s3_bucket_name_value"
       sns_topic_arn: "sns_topic_arn_value"
     us-east-2:
