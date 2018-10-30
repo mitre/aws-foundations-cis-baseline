@@ -80,7 +80,7 @@ https://console.aws.amazon.com/iam/ [https://console.aws.amazon.com/iam/].
 "
   aws_iam_users.entries.each do |user|
     describe aws_iam_user(username: user.user_name) do
-      it { should_not have_policies }
+      it { should_not have_inline_policies }
       it { should_not have_attached_policies }
     end
   end
@@ -89,4 +89,3 @@ https://console.aws.amazon.com/iam/ [https://console.aws.amazon.com/iam/].
     skip "This control is skipped since the aws_iam_users resource returned an empty user list"
   end if aws_iam_users.entries.empty?
 end
-

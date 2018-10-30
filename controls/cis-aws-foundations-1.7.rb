@@ -49,6 +49,6 @@ Management Account Settings)
 be combined into a single command."
 
   describe aws_iam_password_policy do
-    its('requires_symbols?') { should be true }
+    its('require_symbols?') { should be true }
   end
 end

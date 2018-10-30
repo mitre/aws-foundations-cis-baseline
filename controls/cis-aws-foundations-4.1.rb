@@ -51,15 +51,15 @@ https://console.aws.amazon.com/vpc/home
 * Click the x in the Remove column
 * Click Save"
 
-  aws_ec2_security_groups.group_ids.each do |group_id|
+  aws_security_groups.group_ids.each do |group_id|
 
     describe "Security Group not inspected because it is defined as an exception" do
       skip "Security Group:: #{group_id} not insepcted because it is defined in EXCEPTION_SECURITY_GROUP_LIST."
     end if EXCEPTION_SECURITY_GROUP_LIST.include?(group_id)
 
     next if EXCEPTION_SECURITY_GROUP_LIST.include?(group_id)
-    describe aws_ec2_security_group(group_id) do
-      it { should_not be_open_to_all_on_port(22) }
+    describe aws_security_group(group_id) do
+      it { should_not allow_in(port: 22, ipv4_range: '0.0.0.0/0') }
     end
   end
 end
