@@ -104,8 +104,8 @@ https://console.aws.amazon.com/sns/ [https://console.aws.amazon.com/sns/]
 * Click Actions
 * Click Delete Subscriptions"
 
-  AWS_REGIONS.each do |region|
-    ENV['AWS_REGION'] = region
+  # AWS_REGIONS.each do |region|
+    # ENV['AWS_REGION'] = region
 
     aws_sns_topics.topic_arns.each do |topic|
       describe aws_sns_topic(topic) do
@@ -129,7 +129,7 @@ https://console.aws.amazon.com/sns/ [https://console.aws.amazon.com/sns/]
     describe "SNS Topics where not found in this region" do
       skip "No SNS Topics where found for the region #{region}"
     end if aws_sns_topics.topic_arns.empty?
-  end
+  # end
   # reset to default region
-  ENV['AWS_REGION'] = DEFAULT_AWS_REGION
+  # ENV['AWS_REGION'] = DEFAULT_AWS_REGION
 end

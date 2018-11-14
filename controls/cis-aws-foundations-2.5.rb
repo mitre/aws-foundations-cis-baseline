@@ -92,8 +92,8 @@ in 1 region only
 
 'aws configservice start-configuration-recorder"
 
-  AWS_REGIONS.each do |region|
-    ENV['AWS_REGION'] = region
+  # AWS_REGIONS.each do |region|
+    # ENV['AWS_REGION'] = region
 
     describe aws_config_recorder do
       it { should exist }
@@ -104,11 +104,11 @@ in 1 region only
 
     describe aws_config_delivery_channel do
       it { should exist }
-      its('s3_bucket_name') { should cmp CONFIG_DELIVERY_CHANNELS[region]['s3_bucket_name'] } #verify with attributes
-      its('sns_topic_arn') { should cmp CONFIG_DELIVERY_CHANNELS[region]['sns_topic_arn'] } #verify with attributes
+      its('s3_bucket_name') { should cmp CONFIG_DELIVERY_CHANNELS[DEFAULT_AWS_REGION]['s3_bucket_name'] } #verify with attributes
+      its('sns_topic_arn') { should cmp CONFIG_DELIVERY_CHANNELS[DEFAULT_AWS_REGION]['sns_topic_arn'] } #verify with attributes
     end
-  end
+  # end
 
   # reset to default region
-  ENV['AWS_REGION'] = DEFAULT_AWS_REGION
+  # ENV['AWS_REGION'] = DEFAULT_AWS_REGION
 end
