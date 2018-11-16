@@ -61,7 +61,7 @@ We use a yml attribute file to steer the configuration, the following options ar
 The followiing attributes must be set to accepted/documented values which is 
 then verified by the applicable controls.
 
-These attributes are generated if the profile is used with the Terraform hardening receipe (https://github.com/aaronlippold/cis-aws-foundations-hardening) with kitchen-terraform.
+These attributes are generated if the profile is used with the Terraform hardening receipe (https://github.com/mitre/cis-aws-foundations-hardening) with kitchen-terraform.
 
 - default aws key age (1.4), <br>
 `aws_key_age: 90`
