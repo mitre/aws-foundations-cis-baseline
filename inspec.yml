@@ -1,11 +1,14 @@
 name: cis-aws-foundations-baseline
 title: cis-aws-foundations-baseline
-maintainer: The Authors
-copyright: The Authors
-copyright_email: you@example.com
+maintainer: MITRE InSpec Team
+copyright: MITRE, 2018
+copyright_email: inspec@mitre.org
 license: Apache-2.0
-summary: An InSpec Compliance Profile
-version: 0.1.1
+summary: 'InSpec Profile to validate the CIS AWS Foundations Benchmark v1.1.0'
+version: 1.0.0
+supports:
+  - platform: aws
+inspec_version: "~> 3.0"
 
 attributes:
   - name: default_aws_region
