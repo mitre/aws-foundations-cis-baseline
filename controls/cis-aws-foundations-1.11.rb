@@ -1,8 +1,4 @@
-AWS_CRED_AGE = attribute(
-  'aws_cred_age',
-  description: 'The maximum allowed IAM account age',
-  default: 90 # in days
-)
+AWS_CRED_AGE = attribute('aws_cred_age')
 
 control "cis-aws-foundations-1.11" do
   title "Ensure IAM password policy expires passwords within #{AWS_CRED_AGE} days or less"
@@ -65,7 +61,7 @@ Management Account Settings)
 be combined into a single command."
 
   describe aws_iam_password_policy do
-    its('expires_passwords?') { should be true }
-    its('max_password_age') { should cmp <= AWS_CRED_AGE }
+    its('expire_passwords?') { should be true }
+    its('max_password_age_in_days') { should cmp <= AWS_CRED_AGE }
   end
 end

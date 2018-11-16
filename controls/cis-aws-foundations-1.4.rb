@@ -1,8 +1,4 @@
-AWS_KEY_AGE = attribute(
-  'aws_key_age',
-  description: 'The maximum allowed key age',
-  default: 90 # in days
-)
+AWS_KEY_AGE = attribute('aws_key_age')
 
 control "cis-aws-foundations-1.4" do
   title "Ensure access keys are rotated every #{AWS_KEY_AGE} days or less"

@@ -1,38 +1,14 @@
-IAM_MANAGER_ROLE_NAME= attribute(
-  'iam_manager_role_name',
-  description: 'iam manager role name',
-  default: "iam-manager-role-name"
-)
+IAM_MANAGER_ROLE_NAME= attribute('iam_manager_role_name')
 
-IAM_MASTER_ROLE_NAME= attribute(
-  'iam_master_role_name',
-  description: 'iam master role name',
-  default: "iam-master-role-name"
-)
+IAM_MASTER_ROLE_NAME= attribute('iam_master_role_name')
 
-IAM_MANAGER_USER_NAME= attribute(
-  'iam_manager_user_name',
-  description: 'iam manager user name',
-  default: "iam-manager-user-name"
-)
+IAM_MANAGER_USER_NAME= attribute('iam_manager_user_name')
 
-IAM_MASTER_USER_NAME= attribute(
-  'iam_master_user_name',
-  description: 'iam master user name',
-  default: "iam-master-user-name"
-)
+IAM_MASTER_USER_NAME= attribute('iam_master_user_name')
 
-IAM_MANAGER_POLICY_NAME= attribute(
-  'iam_manager_policy_name',
-  description: 'iam manager policy',
-  default: "iam-manager-policy"
-)
+IAM_MANAGER_POLICY_NAME= attribute('iam_manager_policy_name')
 
-IAM_MASTER_POLICY_NAME= attribute(
-  'iam_master_policy_name',
-  description: 'iam master policy',
-  default: "iam-master-policy"
-)
+IAM_MASTER_POLICY_NAME= attribute('iam_master_policy_name')
 
 control "cis-aws-foundations-1.18" do
   title "Ensure IAM Master and IAM Manager roles are active"

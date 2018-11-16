@@ -100,9 +100,9 @@ groups rules for all VPCs in all regions, edit this field to add text similar
 to 'DO NOT USE. DO NOT ADD RULES'"
 
   aws_vpcs.vpc_ids.each do |vpc|
-    describe aws_ec2_security_group(group_name: 'default', vpc_id: vpc) do
-      its('ingress_rules') { should be_empty }
-      its('egress_rules') { should be_empty }
+    describe aws_security_group(group_name: 'default', vpc_id: vpc) do
+      its('inbound_rules') { should be_empty }
+      its('outbound_rules') { should be_empty }
     end
   end
   describe "Control skipped because no vpcs were found" do
