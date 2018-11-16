@@ -27,7 +27,7 @@ Please note 0.x releases are works in progress (WIP) and may change at any time.
 
 ### Tested Platforms
 
-This profile is being developed and tested along side a `hardening` recipe implemented in Terraform. The [cis-aws-foundations-hardening](https://github.com/aaronlippold/cis-aws-foundations-hardening) will help you configure and deploy your AWS environment to meet the requirements of the security baseline.
+This profile is being developed and tested along side a `hardening` recipe implemented in Terraform. The [cis-aws-foundations-hardening](https://github.com/mitre/cis-aws-foundations-hardening) will help you configure and deploy your AWS environment to meet the requirements of the security baseline.
 
 ## Get started
 
