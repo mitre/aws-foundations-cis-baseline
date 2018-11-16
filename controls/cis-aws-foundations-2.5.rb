@@ -54,9 +54,7 @@ in 1 region only
 'aws configservice start-configuration-recorder"
 
 
-  aws_regions = attribute('aws_regions')
-
-  aws_regions.each do |region|
+  attribute('aws_regions').each do |region|
     ENV['AWS_REGION'] = region
 
     describe aws_config_recorder do
