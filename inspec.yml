@@ -8,6 +8,18 @@ summary: An InSpec Compliance Profile
 version: 0.1.1
 
 attributes:
+  - name: default_aws_region
+    description: 'default aws region'
+    default: 'us-east-1'
+
+  - name: aws_regions
+    description: 'all aws regions to be inspected'
+    default: 
+      - us-east-1
+      - us-east-2
+      - us-west-1
+      - us-west-2
+
   - name: aws_key_age
     description: 'The maximum allowed key age'
     type: numeric
