@@ -637,7 +637,7 @@ mfa_condition = {
   end
 
   describe aws_iam_policy(IAM_MASTER_POLICY_NAME) do
-    it{ should be_attached_to_role(IAM_MASTER_ROLE_NAME) }
+    it { should be_attached_to_role(IAM_MASTER_ROLE_NAME) }
   end
 
   describe aws_iam_role(IAM_MASTER_ROLE_NAME).assume_role_policy_document do
