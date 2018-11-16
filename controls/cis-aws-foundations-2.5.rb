@@ -1,43 +1,4 @@
-CONFIG_DELIVERY_CHANNELS = attribute(
-  'config_delivery_channels',
-  description: 'Config service settings',
-  default: {
-            "us-east-1"=> {
-                "s3_bucket_name"=> "s3_bucket_name_value",
-                "sns_topic_arn"=> "sns_topic_arn_value"
-            },
-            "us-east-2"=> {
-                "s3_bucket_name"=>  "s3_bucket_name_value",
-                "sns_topic_arn"=> "sns_topic_arn_value"
-            },
-            "us-west-1"=> {
-                "s3_bucket_name"=>  "s3_bucket_name_value",
-                "sns_topic_arn"=> "sns_topic_arn_value"
-            },
-            "us-west-2"=> {
-                "s3_bucket_name"=>  "s3_bucket_name_value",
-                "sns_topic_arn"=> "sns_topic_arn_value"
-            }
-          }
-
-)
-
-DEFAULT_AWS_REGION = attribute(
-  'default_aws_region',
-  description: 'default aws region',
-  default: 'us-east-1'
-)
-
-AWS_REGIONS = attribute(
-  'aws_regions',
-  description: 'all aws regions to be inspected',
-  default: [
-    "us-east-1",
-    "us-east-2",
-    "us-west-1",
-    "us-west-2"
-  ]
-)
+CONFIG_DELIVERY_CHANNELS = attribute('config_delivery_channels')
 
 control "cis-aws-foundations-2.5" do
   title "Ensure AWS Config is enabled in all regions"
@@ -92,8 +53,11 @@ in 1 region only
 
 'aws configservice start-configuration-recorder"
 
-  # AWS_REGIONS.each do |region|
-    # ENV['AWS_REGION'] = region
+
+  aws_regions = attribute('aws_regions')
+
+  aws_regions.each do |region|
+    ENV['AWS_REGION'] = region
 
     describe aws_config_recorder do
       it { should exist }
@@ -104,11 +68,11 @@ in 1 region only
 
     describe aws_config_delivery_channel do
       it { should exist }
-      its('s3_bucket_name') { should cmp CONFIG_DELIVERY_CHANNELS[DEFAULT_AWS_REGION]['s3_bucket_name'] } #verify with attributes
-      its('sns_topic_arn') { should cmp CONFIG_DELIVERY_CHANNELS[DEFAULT_AWS_REGION]['sns_topic_arn'] } #verify with attributes
+      its('s3_bucket_name') { should cmp CONFIG_DELIVERY_CHANNELS[region]['s3_bucket_name'] } #verify with attributes
+      its('sns_topic_arn') { should cmp CONFIG_DELIVERY_CHANNELS[region]['sns_topic_arn'] } #verify with attributes
     end
-  # end
+  end
 
   # reset to default region
-  # ENV['AWS_REGION'] = DEFAULT_AWS_REGION
+  ENV['AWS_REGION'] = attribute('default_aws_region')
 end

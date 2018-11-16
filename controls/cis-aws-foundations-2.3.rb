@@ -1,8 +1,4 @@
-EXCEPTION_BUCKET_LIST= attribute(
-  'exception_bucket_list',
-  description: 'list of buckets exempted from inspection',
-  default: ["exception_bucket_name"]
-)
+EXCEPTION_BUCKET_LIST= attribute('exception_bucket_list')
 
 control "cis-aws-foundations-2.3" do
   title "Ensure the S3 bucket CloudTrail logs to is not publicly accessible"

@@ -1,8 +1,4 @@
-EXCEPTION_SECURITY_GROUP_LIST= attribute(
-  'exception_security_group_list',
-  description: 'list of security groups exempted from inspection',
-  default: ["exception_security_group_name"]
-)
+EXCEPTION_SECURITY_GROUP_LIST= attribute('exception_security_group_list')
 
 control "cis-aws-foundations-4.1" do
   title "Ensure no security groups allow ingress from 0.0.0.0/0 to port 22"

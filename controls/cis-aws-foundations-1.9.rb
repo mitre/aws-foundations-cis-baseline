@@ -1,7 +1,4 @@
-PWD_LENGTH = attribute(
-  'pwd_length',
-  description: 'Required password length',
-  default: '14')
+PWD_LENGTH = attribute('pwd_length')
 
 control "cis-aws-foundations-1.9" do
   title "Ensure IAM password policy requires minimum length of #{PWD_LENGTH} or greater"
