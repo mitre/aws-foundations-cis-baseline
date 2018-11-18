@@ -1,4 +1,5 @@
-# cis-aws-foundations-baseline 
+# cis-aws-foundations-baseline
+
 InSpec profile to validate your VPC to the standards of the CIS Amazon Web Services Foundations Benchmark v1.1.0 - 11-29-2016
 
 ## Description
@@ -8,17 +9,20 @@ This [InSpec](https://github.com/chef/inspec) compliance profile implement the [
 InSpec is an open-source run-time framework and rule language used to specify compliance, security, and policy requirements for testing any node in your infrastructure.
 
 ## Versioning and State of Development
-This project uses the [Semantic Versioning Policy](https://semver.org/). 
+
+This project uses the [Semantic Versioning Policy](https://semver.org/).
 
 ### Branches
-The master branch contains the latest version of the software leading up to a new release. 
 
-Other branches contain feature-specific updates. 
+The master branch contains the latest version of the software leading up to a new release.
+
+Other branches contain feature-specific updates.
 
 ### Tags
+
 Tags indicate official releases of the project.
 
-Please note 0.x releases are works in progress (WIP) and may change at any time.   
+Please note 0.x releases are works in progress (WIP) and may change at any time.
 
 ## Requirements
 
@@ -58,7 +62,7 @@ In an AWS MFA enabled enviroment - you need to use derived credentials to use th
 ## Attributes
 
 We use a yml attribute file to steer the configuration, the following options are available:
-The followiing attributes must be set to accepted/documented values which is 
+The followiing attributes must be set to accepted/documented values which is
 then verified by the applicable controls.
 
 These attributes are generated if the profile is used with the Terraform hardening receipe (https://github.com/mitre/cis-aws-foundations-hardening) with kitchen-terraform.
@@ -96,19 +100,25 @@ These attributes are generated if the profile is used with the Terraform hardeni
 - description: 'list of instances that have specific roles',<br>
 `aws_actions_performing_instance_ids: ["aws_access_instance_id"]`
 
+- description: 'list of **documented service accounts** which are exempt from the MFA requirement',<br>
+`service_account_mfa_exceptions:`<br>
+  `- user1`<br>
+  `- user2`<br>
+  `- ...`<br>
+
 - description: 'Config service list and settings in all relevant regions',<br>
 ```
 config_service:
-    us-east-1: 
+    us-east-1:
       s3_bucket_name: "s3_bucket_name_value"
       sns_topic_arn: "sns_topic_arn_value"
-    us-east-2: 
+    us-east-2:
       s3_bucket_name:  "s3_bucket_name_value"
       sns_topic_arn: "sns_topic_arn_value"
-    us-west-1: 
+    us-west-1:
       s3_bucket_name:  "s3_bucket_name_value"
       sns_topic_arn: "sns_topic_arn_value"
-    us-west-2: 
+    us-west-2:
       s3_bucket_name:  "s3_bucket_name_value"
       sns_topic_arn: "sns_topic_arn_value"
 
@@ -117,24 +127,24 @@ config_service:
 
 - description: 'SNS topics list and details in all relevant regions',<br>
 ```
-sns_topics: 
-    topic_arn1 : 
+sns_topics:
+    topic_arn1 :
       owner : "owner_value"
       region : "region_value"
     topic_arn2 :
       owner : "owner_value"
       region : "region_value"`
 ```
-  
+
 
 - description: 'SNS subscription list and details in all relevant regions', <br>
 ```
-sns_subscriptions: 
-    subscription_arn1: 
+sns_subscriptions:
+    subscription_arn1:
       endpoint: "endpoint_value"
       owner: "owner_value"
       protocol: "protocol_value"
-    subscription_arn2: 
+    subscription_arn2:
       endpoint: "endpoint_value"
       owner: "owner_value"
       protocol: "protocol_value"`
@@ -179,7 +189,7 @@ $ ruby generate_attributes.rb
 # run profile locally and directly from Github
 $ inspec exec /path/to/profile -t aws:// --attrs=attributes.yml
 
-# run profile locally and directly from Github with cli & json output 
+# run profile locally and directly from Github with cli & json output
 $ inspec exec /path/to/profile -t aws:// --attrs=attributes.yml --reporter cli json:aws-results.json
 
 ```
@@ -194,8 +204,7 @@ $ inspec exec /path/to/profile --attrs=attributes.yml --controls cis-aws-foundat
 
 ## Contributors + Kudos
 
-- Rony Xavier [rx294](https://github.com/rx294)
-- Aaron Lippold [aaronlippold](https://github.com/aaronlippold)
+- Chef InSpec Team
 
 ## License and Author
 
@@ -204,20 +213,20 @@ $ inspec exec /path/to/profile --attrs=attributes.yml --controls cis-aws-foundat
 - Author:: Rony Xaiver [rx294@gmail.com](mailto:rx294@gmail.com)
 - Author:: Aaron Lippold [lippold@gmail.com](mailto:lippold@gmail.com)
 
-## NOTICE  
+### NOTICE
 
-© 2018 The MITRE Corporation.  
+© 2018 The MITRE Corporation.
 
-Approved for Public Release; Distribution Unlimited. Case Number 18-3678.  
+Approved for Public Release; Distribution Unlimited. Case Number 18-3678.
 
-## NOTICE
+### NOTICE
 
-This software was produced for the U. S. Government under Contract Number HHSM-500-2012-00008I, and is subject to Federal Acquisition Regulation Clause 52.227-14, Rights in Data-General.  
+This software was produced for the U. S. Government under Contract Number HHSM-500-2012-00008I, and is subject to Federal Acquisition Regulation Clause 52.227-14, Rights in Data-General.
 
-No other use other than that granted to the U. S. Government, or to those acting on behalf of the U. S. Government under that Clause is authorized without the express written permission of The MITRE Corporation.   
+No other use other than that granted to the U. S. Government, or to those acting on behalf of the U. S. Government under that Clause is authorized without the express written permission of The MITRE Corporation.
 
-For further information, please contact The MITRE Corporation, Contracts Management Office, 7515 Colshire Drive, McLean, VA  22102-7539, (703) 983-6000.  
+For further information, please contact The MITRE Corporation, Contracts Management Office, 7515 Colshire Drive, McLean, VA  22102-7539, (703) 983-6000.
 
-## NOTICE
+### NOTICE
 
 CIS Benchmarks are published by the Center for Internet Security (CIS), see: https://www.cisecurity.org/.

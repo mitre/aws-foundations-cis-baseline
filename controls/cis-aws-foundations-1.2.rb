@@ -1,4 +1,4 @@
-control "cis-aws-foundations-1.2" do
+control 'cis-aws-foundations-1.2' do
   title "Ensure multi-factor authentication (MFA) is enabled for all IAM users
 that have a console password"
   desc  "Multi-Factor Authentication (MFA) adds an extra layer of protection on
@@ -10,12 +10,12 @@ MFA be enabled for all accounts that have a console password."
   tag "rationale": "Enabling MFA provides increased security for console access
 as it requires the authenticating principal to possess a device that emits a
 time-sensitive key and have knowledge of a credential."
-  tag "cis_impact": ""
-  tag "cis_rid": "1.2"
+  tag "cis_impact": ''
+  tag "cis_rid": '1.2'
   tag "cis_level": 1
-  tag "csc_control": [["5.6", "11.4", "12.6", "16.11"], "6.0"]
-  tag "nist": ["IA-2(1)","SC-23", "Rev_4"]
-  tag "cce_id": "CCE-78901-6"
+  tag "csc_control": [['5.6', '11.4', '12.6', '16.11'], '6.0']
+  tag "nist": ['IA-2(1)', 'SC-23', 'Rev_4']
+  tag "cce_id": 'CCE-78901-6'
   tag "check": "Perform the following to determine if a MFA device is enabled
 for all IAM users having a console password:
 Via Management Console
@@ -119,8 +119,20 @@ enrollment before active enforcement on existing AWS accounts.
 'How to Delegate Management of Multi-Factor Authentication to AWS IAM Users
 [http://blogs.aws.amazon.com/security/post/Tx2SJJYE082KBUK/How-to-Delegate-Management-of-Multi-Factor-Authentication-to-AWS-IAM-Users]"
 
-  describe aws_iam_users.where(has_console_password?: true).where(has_mfa_enabled?: false) do
-    it { should_not exist }
+  users_without_mfa = aws_iam_users.where(has_console_password?: true).where(has_mfa_enabled?: false).usernames
+
+  if attribute('service_account_mfa_exceptions').compact.empty?
+    describe 'The active IAM users that do not have MFA enabled' do
+      subject { users_without_mfa }
+      it { should be_empty }
+    end
   end
 
+  unless attribute('service_account_mfa_exceptions').compact.empty?
+    describe "The active IAM users that do not have MFA enabled
+    (except for the documented service accounts: #{attribute('service_account_mfa_exceptions')})" do
+      subject { users_without_mfa - attribute('service_account_mfa_exceptions') }
+      it { should be_empty }
+    end
+  end
 end
