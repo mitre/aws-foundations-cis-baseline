@@ -1,7 +1,5 @@
-EXCEPTION_SECURITY_GROUP_LIST= attribute('exception_security_group_list')
-
-control "cis-aws-foundations-4.2" do
-  title "Ensure no security groups allow ingress from 0.0.0.0/0 to port 3389"
+control 'cis-aws-foundations-4.2' do
+  title 'Ensure no security groups allow ingress from 0.0.0.0/0 to port 3389'
   desc  "Security groups provide stateful filtering of ingress/egress network
 traffic to AWS resources. It is recommended that no security group allows
 unrestricted ingress access to port 3389."
@@ -11,11 +9,11 @@ services, such as RDP, reduces a server's exposure to risk."
   tag "cis_impact": "For updating an existing environment, care should be taken
 to ensure that administrators currently relying on an existing ingress from
 0.0.0.0/0 have access to ports 22 and/or 3389 through another security group."
-  tag "cis_rid": "4.2"
+  tag "cis_rid": '4.2'
   tag "cis_level": 1
-  tag "cis_control_number": ""
-  tag "nist": ["SC-7(5)", "Rev_4"]
-  tag "cce_id": ""
+  tag "cis_control_number": ''
+  tag "nist": ['SC-7(5)', 'Rev_4']
+  tag "cce_id": ''
   tag "check": "Perform the following to determine if the account is configured
 as prescribed:
 
@@ -48,12 +46,14 @@ https://console.aws.amazon.com/vpc/home
 * Click Save"
 
   aws_security_groups.group_ids.each do |group_id|
+    if attribute('exception_security_group_list').include?(group_id)
+      describe 'Security Group not inspected because it is defined as an exception' do
+        skip "Security Group:: #{group_id} not insepcted because it is defined in EXCEPTION_SECURITY_GROUP_LIST."
+      end
+    end
 
-    describe "Security Group not inspected because it is defined as an exception" do
-      skip "Security Group:: #{group_id} not insepcted because it is defined in EXCEPTION_SECURITY_GROUP_LIST."
-    end if EXCEPTION_SECURITY_GROUP_LIST.include?(group_id)
+    next if attribute('exception_security_group_list').include?(group_id)
 
-    next if EXCEPTION_SECURITY_GROUP_LIST.include?(group_id)
     describe aws_security_group(group_id) do
       it { should_not allow_in(port: 3389, ipv4_range: '0.0.0.0/0') }
     end

@@ -1,17 +1,5 @@
-IAM_MANAGER_ROLE_NAME= attribute('iam_manager_role_name')
-
-IAM_MASTER_ROLE_NAME= attribute('iam_master_role_name')
-
-IAM_MANAGER_USER_NAME= attribute('iam_manager_user_name')
-
-IAM_MASTER_USER_NAME= attribute('iam_master_user_name')
-
-IAM_MANAGER_POLICY_NAME= attribute('iam_manager_policy_name')
-
-IAM_MASTER_POLICY_NAME= attribute('iam_master_policy_name')
-
-control "cis-aws-foundations-1.18" do
-  title "Ensure IAM Master and IAM Manager roles are active"
+control 'cis-aws-foundations-1.18' do
+  title 'Ensure IAM Master and IAM Manager roles are active'
   desc  "Ensure IAM Master and IAM Manager roles are in place for IAM
 administration and assignment of administrative permissions for other services
 to other roles.
@@ -51,12 +39,12 @@ IAM Manager: assigns users and roles to groups
 
 In this model, IAM Master and IAM Manager must work together in a 2-person rule
 manner, in order for a user to gain access to a permission."
-  tag "cis_impact": ""
-  tag "cis_rid": "1.18"
+  tag "cis_impact": ''
+  tag "cis_rid": '1.18'
   tag "cis_level": 1
-  tag "csc_control": ""
-  tag "nist": ["AC-6(7)", "Rev_4"]
-  tag "cce_id": ""
+  tag "csc_control": ''
+  tag "nist": ['AC-6(7)', 'Rev_4']
+  tag "cce_id": ''
   tag "check": "Using the Amazon unified CLI, from a user or role which has the
 iam:ListRoles and iam:GetRolePolicy permissions:
 
@@ -515,164 +503,167 @@ _<assume_iam_manager_role_policy> _--policy-document
 
 '}"
 
-master_allow_actions = [
-  "iam:AttachRolePolicy",
-  "iam:CreateGroup",
-  "iam:CreatePolicy",
-  "iam:CreatePolicyVersion",
-  "iam:CreateRole",
-  "iam:CreateUser",
-  "iam:DeleteGroup",
-  "iam:DeletePolicy",
-  "iam:DeletePolicyVersion",
-  "iam:DeleteRole",
-  "iam:DeleteRolePolicy",
-  "iam:DeleteUser",
-  "iam:PutRolePolicy",
-  "iam:GetPolicy",
-  "iam:GetPolicyVersion",
-  "iam:GetRole",
-  "iam:GetRolePolicy",
-  "iam:GetUser",
-  "iam:GetUserPolicy",
-  "iam:ListEntitiesForPolicy",
-  "iam:ListGroupPolicies",
-  "iam:ListGroups",
-  "iam:ListGroupsForUser",
-  "iam:ListPolicies",
-  "iam:ListPoliciesGrantingServiceAccess",
-  "iam:ListPolicyVersions",
-  "iam:ListRolePolicies",
-  "iam:ListAttachedGroupPolicies",
-  "iam:ListAttachedRolePolicies",
-  "iam:ListAttachedUserPolicies",
-  "iam:ListRoles",
-  "iam:ListUsers",
-]
+  master_allow_actions = [
+    'iam:AttachRolePolicy',
+    'iam:CreateGroup',
+    'iam:CreatePolicy',
+    'iam:CreatePolicyVersion',
+    'iam:CreateRole',
+    'iam:CreateUser',
+    'iam:DeleteGroup',
+    'iam:DeletePolicy',
+    'iam:DeletePolicyVersion',
+    'iam:DeleteRole',
+    'iam:DeleteRolePolicy',
+    'iam:DeleteUser',
+    'iam:PutRolePolicy',
+    'iam:GetPolicy',
+    'iam:GetPolicyVersion',
+    'iam:GetRole',
+    'iam:GetRolePolicy',
+    'iam:GetUser',
+    'iam:GetUserPolicy',
+    'iam:ListEntitiesForPolicy',
+    'iam:ListGroupPolicies',
+    'iam:ListGroups',
+    'iam:ListGroupsForUser',
+    'iam:ListPolicies',
+    'iam:ListPoliciesGrantingServiceAccess',
+    'iam:ListPolicyVersions',
+    'iam:ListRolePolicies',
+    'iam:ListAttachedGroupPolicies',
+    'iam:ListAttachedRolePolicies',
+    'iam:ListAttachedUserPolicies',
+    'iam:ListRoles',
+    'iam:ListUsers'
+  ]
 
-master_deny_actions= [
- "iam:AddUserToGroup",
- "iam:AttachGroupPolicy",
- "iam:DeleteGroupPolicy",
- "iam:DeleteUserPolicy",
- "iam:DetachGroupPolicy",
- "iam:DetachRolePolicy",
- "iam:DetachUserPolicy",
- "iam:PutGroupPolicy",
- "iam:PutUserPolicy",
- "iam:RemoveUserFromGroup",
- "iam:UpdateGroup",
- "iam:UpdateAssumeRolePolicy",
- "iam:UpdateUser"
-]
+  master_deny_actions = [
+    'iam:AddUserToGroup',
+    'iam:AttachGroupPolicy',
+    'iam:DeleteGroupPolicy',
+    'iam:DeleteUserPolicy',
+    'iam:DetachGroupPolicy',
+    'iam:DetachRolePolicy',
+    'iam:DetachUserPolicy',
+    'iam:PutGroupPolicy',
+    'iam:PutUserPolicy',
+    'iam:RemoveUserFromGroup',
+    'iam:UpdateGroup',
+    'iam:UpdateAssumeRolePolicy',
+    'iam:UpdateUser'
+  ]
 
+  manager_allow_actions = [
+    'iam:AddUserToGroup',
+    'iam:AttachGroupPolicy',
+    'iam:DeleteGroupPolicy',
+    'iam:DeleteUserPolicy',
+    'iam:DetachGroupPolicy',
+    'iam:DetachRolePolicy',
+    'iam:DetachUserPolicy',
+    'iam:PutGroupPolicy',
+    'iam:PutUserPolicy',
+    'iam:RemoveUserFromGroup',
+    'iam:UpdateGroup',
+    'iam:UpdateAssumeRolePolicy',
+    'iam:UpdateUser',
+    'iam:GetPolicy',
+    'iam:GetPolicyVersion',
+    'iam:GetRole',
+    'iam:GetRolePolicy',
+    'iam:GetUser',
+    'iam:GetUserPolicy',
+    'iam:ListEntitiesForPolicy',
+    'iam:ListGroupPolicies',
+    'iam:ListGroups',
+    'iam:ListGroupsForUser',
+    'iam:ListPolicies',
+    'iam:ListPoliciesGrantingServiceAccess',
+    'iam:ListPolicyVersions',
+    'iam:ListRolePolicies',
+    'iam:ListAttachedGroupPolicies',
+    'iam:ListAttachedRolePolicies',
+    'iam:ListAttachedUserPolicies',
+    'iam:ListRoles',
+    'iam:ListUsers'
+  ]
 
-manager_allow_actions=  [
- "iam:AddUserToGroup",
- "iam:AttachGroupPolicy",
- "iam:DeleteGroupPolicy",
- "iam:DeleteUserPolicy",
- "iam:DetachGroupPolicy",
- "iam:DetachRolePolicy",
- "iam:DetachUserPolicy",
- "iam:PutGroupPolicy",
- "iam:PutUserPolicy",
- "iam:RemoveUserFromGroup",
- "iam:UpdateGroup",
- "iam:UpdateAssumeRolePolicy",
- "iam:UpdateUser",
- "iam:GetPolicy",
- "iam:GetPolicyVersion",
- "iam:GetRole",
- "iam:GetRolePolicy",
- "iam:GetUser",
- "iam:GetUserPolicy",
- "iam:ListEntitiesForPolicy",
- "iam:ListGroupPolicies",
- "iam:ListGroups",
- "iam:ListGroupsForUser",
- "iam:ListPolicies",
- "iam:ListPoliciesGrantingServiceAccess",
- "iam:ListPolicyVersions",
- "iam:ListRolePolicies",
- "iam:ListAttachedGroupPolicies",
- "iam:ListAttachedRolePolicies",
- "iam:ListAttachedUserPolicies",
- "iam:ListRoles",
- "iam:ListUsers"
-]
+  manager_deny_actions = [
+    'iam:AttachRolePolicy',
+    'iam:CreateGroup',
+    'iam:CreatePolicy',
+    'iam:CreatePolicyVersion',
+    'iam:CreateRole',
+    'iam:CreateUser',
+    'iam:DeleteGroup',
+    'iam:DeletePolicy',
+    'iam:DeletePolicyVersion',
+    'iam:DeleteRole',
+    'iam:DeleteRolePolicy',
+    'iam:DeleteUser',
+    'iam:PutRolePolicy'
+  ]
 
-manager_deny_actions= [
- "iam:AttachRolePolicy",
- "iam:CreateGroup",
- "iam:CreatePolicy",
- "iam:CreatePolicyVersion",
- "iam:CreateRole",
- "iam:CreateUser",
- "iam:DeleteGroup",
- "iam:DeletePolicy",
- "iam:DeletePolicyVersion",
- "iam:DeleteRole",
- "iam:DeleteRolePolicy",
- "iam:DeleteUser",
- "iam:PutRolePolicy"
-]
+  mfa_condition = {
+    "Bool": {
+      "aws:MultiFactorAuthPresent": 'true'
+    }
+  }
 
-mfa_condition = {
-                    "Bool": {
-                        "aws:MultiFactorAuthPresent": "true"
-                    }
-                }
-
-  describe "Master Policy Allow Actions " do
+  describe 'Master Policy Allow Actions ' do
     subject { master_allow_actions }
     it { should_not be_empty }
-    it { should be_in aws_iam_policy(IAM_MASTER_POLICY_NAME).document.where(Effect: "Allow").actions.flatten }
+    it { should be_in aws_iam_policy(attribute('iam_master_policy_name')).document.where(Effect: 'Allow').actions.flatten }
   end
 
-  describe "Master Policy Deny Actions " do
+  describe 'Master Policy Deny Actions ' do
     subject { master_deny_actions }
     it { should_not be_empty }
-    it { should be_in aws_iam_policy(IAM_MASTER_POLICY_NAME).document.where(Effect: "Deny").actions.flatten}
+    it { should be_in aws_iam_policy(attribute('iam_master_policy_name')).document.where(Effect: 'Deny').actions.flatten }
   end
 
-  describe aws_iam_policy(IAM_MASTER_POLICY_NAME) do
-    it { should be_attached_to_role(IAM_MASTER_ROLE_NAME) }
+  describe aws_iam_policy(attribute('iam_master_policy_name')) do
+    it { should be_attached_to_role(attribute('iam_master_role_name')) }
   end
 
-  describe aws_iam_role(IAM_MASTER_ROLE_NAME).assume_role_policy_document do
+  describe aws_iam_role(attribute('iam_master_role_name')).assume_role_policy_document do
     its('actions') { should_not be_empty }
-    its('actions') { should be_in ['sts:AssumeRole','sts:AssumeRoleWithSAML','sts:AssumeRoleWithWebIdentity'] }
+    its('actions') { should be_in ['sts:AssumeRole', 'sts:AssumeRoleWithSAML', 'sts:AssumeRoleWithWebIdentity'] }
   end
 
-  describe aws_iam_role(IAM_MASTER_ROLE_NAME).assume_role_policy_document.where(Action: "sts:AssumeRole").where(Effect: "Allow") do
-    its("principals.to_s") { should match ":user/#{IAM_MASTER_USER_NAME}"}
-    its("principals.to_s") { should_not match ":user/#{IAM_MANAGER_USER_NAME}"}
-  end if aws_iam_role(IAM_MANAGER_ROLE_NAME).assume_role_policy_document.where(Action: "sts:AssumeRole").exists?
+  if aws_iam_role(attribute('iam_manager_role_name')).assume_role_policy_document.where(Action: 'sts:AssumeRole').exists?
+    describe aws_iam_role(attribute('iam_master_role_name')).assume_role_policy_document.where(Action: 'sts:AssumeRole').where(Effect: 'Allow') do
+      its('principals.to_s') { should match ":user/#{attribute('iam_master_user_name')}" }
+      its('principals.to_s') { should_not match ":user/#{attribute('iam_manager_user_name')}" }
+    end
+  end
 
-  describe "Manager Policy Allow Actions " do
+  describe 'Manager Policy Allow Actions ' do
     subject { manager_allow_actions }
     it { should_not be_empty }
-    it { should be_in aws_iam_policy(IAM_MANAGER_POLICY_NAME).document.where(Effect: "Allow").actions.flatten }
+    it { should be_in aws_iam_policy(attribute('iam_manager_policy_name')).document.where(Effect: 'Allow').actions.flatten }
   end
 
-  describe "Manager Policy Deny Actions " do
+  describe 'Manager Policy Deny Actions ' do
     subject { manager_deny_actions }
     it { should_not be_empty }
-    it { should be_in aws_iam_policy(IAM_MANAGER_POLICY_NAME).document.where(Effect: "Deny").actions.flatten}
+    it { should be_in aws_iam_policy(attribute('iam_manager_policy_name')).document.where(Effect: 'Deny').actions.flatten }
   end
 
-  describe aws_iam_policy(IAM_MANAGER_POLICY_NAME) do
-    it { should be_attached_to_role(IAM_MANAGER_ROLE_NAME) }
+  describe aws_iam_policy(attribute('iam_manager_policy_name')) do
+    it { should be_attached_to_role(attribute('iam_manager_role_name')) }
   end
 
-  describe aws_iam_role(IAM_MANAGER_ROLE_NAME).assume_role_policy_document do
+  describe aws_iam_role(attribute('iam_manager_role_name')).assume_role_policy_document do
     its('actions') { should_not be_empty }
-    its('actions') { should be_in ['sts:AssumeRole','sts:AssumeRoleWithSAML','sts:AssumeRoleWithWebIdentity'] }
+    its('actions') { should be_in ['sts:AssumeRole', 'sts:AssumeRoleWithSAML', 'sts:AssumeRoleWithWebIdentity'] }
   end
 
-  describe aws_iam_role(IAM_MANAGER_ROLE_NAME).assume_role_policy_document.where(Action: "sts:AssumeRole").where(Effect: "Allow") do
-    its("principals.to_s") { should match ":user/#{IAM_MANAGER_USER_NAME}"}
-    its("principals.to_s") { should_not match ":user/#{IAM_MASTER_USER_NAME}"}
-  end if aws_iam_role(IAM_MANAGER_ROLE_NAME).assume_role_policy_document.where(Action: "sts:AssumeRole").exists?
+  if aws_iam_role(attribute('iam_manager_role_name')).assume_role_policy_document.where(Action: 'sts:AssumeRole').exists?
+    describe aws_iam_role(attribute('iam_manager_role_name')).assume_role_policy_document.where(Action: 'sts:AssumeRole').where(Effect: 'Allow') do
+      its('principals.to_s') { should match ":user/#{attribute('iam_manager_user_name')}" }
+      its('principals.to_s') { should_not match ":user/#{attribute('iam_master_user_name')}" }
+    end
+  end
 end

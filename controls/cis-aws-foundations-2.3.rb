@@ -1,7 +1,5 @@
-EXCEPTION_BUCKET_LIST= attribute('exception_bucket_list')
-
-control "cis-aws-foundations-2.3" do
-  title "Ensure the S3 bucket CloudTrail logs to is not publicly accessible"
+control 'cis-aws-foundations-2.3' do
+  title 'Ensure the S3 bucket CloudTrail logs to is not publicly accessible'
   desc  "CloudTrail logs a record of every API call made in your AWS account.
 These logs file are stored in an S3 bucket. It is recommended that the bucket
 policy or access control list (ACL) applied to the S3 bucket that CloudTrail
@@ -10,12 +8,12 @@ logs to prevents public access to the CloudTrail logs."
   tag "rationale": "Allowing public access to CloudTrail log content may aid an
 adversary in identifying weaknesses in the affected account's use or
 configuration."
-  tag "cis_impact": ""
-  tag "cis_rid": "2.3"
+  tag "cis_impact": ''
+  tag "cis_rid": '2.3'
   tag "cis_level": 1
-  tag "csc_control": ""
-  tag "nist": ["AU-9", "Rev_4"]
-  tag "cce_id": "CCE-78915-6"
+  tag "csc_control": ''
+  tag "nist": ['AU-9', 'Rev_4']
+  tag "cce_id": 'CCE-78915-6'
   tag "check": "Perform the following to determine if any public access is
 granted to an S3 bucket via an ACL or S3 bucket policy:
 
@@ -85,11 +83,14 @@ row identifies the grantee and the permissions granted.
 
   aws_cloudtrail_trails.trail_arns.each do |trail|
     bucket_name = aws_cloudtrail_trail(trail).s3_bucket_name
-    describe "Bucket not inspected because it is defined as an exception" do
-      skip "Bucket: #{bucket_name} not insepcted because it is defined in EXCEPTION_BUCKET_LIST."
-    end if EXCEPTION_BUCKET_LIST.include?(bucket_name)
+    if attribute('exception_bucket_list').include?(bucket_name)
+      describe 'Bucket not inspected because it is defined as an exception' do
+        skip "Bucket: #{bucket_name} not insepcted because it is defined in EXCEPTION_BUCKET_LIST."
+      end
+    end
 
-    next if EXCEPTION_BUCKET_LIST.include?(bucket_name)
+    next if attribute('exception_bucket_list').include?(bucket_name)
+
     describe aws_s3_bucket(bucket_name) do
       it { should_not be_public }
     end

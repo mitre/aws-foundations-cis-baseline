@@ -1,7 +1,5 @@
-EXCEPTION_BUCKET_LIST= attribute('exception_bucket_list')
-
-control "cis-aws-foundations-2.6" do
-  title "Ensure S3 bucket access logging is enabled on the CloudTrail S3 bucket"
+control 'cis-aws-foundations-2.6' do
+  title 'Ensure S3 bucket access logging is enabled on the CloudTrail S3 bucket'
   desc  "S3 Bucket Access Logging generates a log that contains access records
 for each request made to your S3 bucket. An access log record contains details
 about the request, such as the request type, the resources specified in the
@@ -13,12 +11,12 @@ possible to capture all events which may affect objects within an target
 buckets. Configuring logs to be placed in a separate bucket allows access to
 log information which can be useful in security and incident response
 workflows."
-  tag "cis_impact": ""
-  tag "cis_rid": "2.6"
+  tag "cis_impact": ''
+  tag "cis_rid": '2.6'
   tag "cis_level": 1
-  tag "csc_control": [["14.6"], "6.0"]
-  tag "nist": ["AU-2", "Rev_4"]
-  tag "cce_id": "CCE-78918-0"
+  tag "csc_control": [['14.6'], '6.0']
+  tag "nist": ['AU-2', 'Rev_4']
+  tag "cce_id": 'CCE-78918-0'
   tag "check": "Perform the following ensure the CloudTrail S3 bucket has
 access logging is enabled:
 
@@ -62,11 +60,14 @@ https://console.aws.amazon.com/s3 [https://console.aws.amazon.com/s3].
 
   aws_cloudtrail_trails.trail_arns.each do |trail|
     bucket_name = aws_cloudtrail_trail(trail).s3_bucket_name
-    describe "Bucket not inspected because it is defined as an exception" do
-      skip "Bucket: #{bucket_name} not insepcted because it is defined in EXCEPTION_BUCKET_LIST."
-    end if EXCEPTION_BUCKET_LIST.include?(bucket_name)
+    if attribute('exception_bucket_list').include?(bucket_name)
+      describe 'Bucket not inspected because it is defined as an exception' do
+        skip "Bucket: #{bucket_name} not insepcted because it is defined in EXCEPTION_BUCKET_LIST."
+      end
+    end
 
-    next if EXCEPTION_BUCKET_LIST.include?(bucket_name)
+    next if attribute('exception_bucket_list').include?(bucket_name)
+
     describe aws_s3_bucket(bucket_name) do
       it { should have_access_logging_enabled }
     end
