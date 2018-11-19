@@ -9,7 +9,7 @@ keys. CloudTrail logs can be configured to leverage server side encryption
 (SSE) and KMS customer created master keys (CMK) to further protect CloudTrail
 logs. It is recommended that CloudTrail be configured to use SSE-KMS."
   impact 0.7
-  tag "rationale": "Configuring CloudTrail to use SSE-KMS provides additional
+  desc 'rationale', "Configuring CloudTrail to use SSE-KMS provides additional
 confidentiality controls on log data as a given user must have S3 read
 permission on the corresponding log bucket and must be granted decrypt
 permission by the CMK policy."
@@ -20,7 +20,7 @@ https://aws.amazon.com/kms/pricing/ for more information."
   tag "csc_control": [["13.1"], "6.0"]
   tag "nist": ["AU-9", "Rev_4"]
   tag "cce_id": "CCE-78919-8"
-  tag "check": "Perform the following to determine if CloudTrail is configured
+  desc 'check', "Perform the following to determine if CloudTrail is configured
 to use SSE-KMS:
 
 'Via the Management Console
@@ -40,7 +40,7 @@ is specified in the KSM Key Id field.
 'aws cloudtrail describe-trails
 * For each trail listed, SSE-KMS is enabled if the trail has a KmsKeyId
 property defined."
-  tag "fix": "Perform the following to configure CloudTrail to use SSE-KMS:
+  desc 'fix',"Perform the following to configure CloudTrail to use SSE-KMS:
 
 'Via the Management Console
 

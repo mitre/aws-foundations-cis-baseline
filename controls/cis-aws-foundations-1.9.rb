@@ -6,8 +6,8 @@ control "cis-aws-foundations-1.9" do
 requirements. IAM password policies can be used to ensure password are at least
 a given length. It is recommended that the password policy require a minimum
 password length #{PWD_LENGTH}."
-  impact 0.3
-  tag "rationale": "Setting a password complexity policy increases account
+  impact 'low'
+  desc 'rationale', "Setting a password complexity policy increases account
 resiliency against brute force login attempts."
   tag "cis_impact": ''
   tag "cis_rid": "1.9"
@@ -15,7 +15,7 @@ resiliency against brute force login attempts."
   tag "csc_control": [["5.7", "16.12"], "6.0"]
   tag "nist": ["IA-5(1)","IA-2", "Rev_4"]
   tag "cce_id": "CCE-78907-3"
-  tag "check": "Perform the following to ensure the password policy is
+  desc 'check', "Perform the following to ensure the password policy is
 configured as prescribed:
 
 'Via AWS Console
@@ -33,7 +33,7 @@ Management Account Settings)
 Ensure the output of the above command includes 'MinimumPasswordLength': #{PWD_LENGTH} (or
 higher)"
 
-  tag "fix": "Perform the following to set the password policy as prescribed:
+  desc 'fix',"Perform the following to set the password policy as prescribed:
 
 'Via AWS Console
 

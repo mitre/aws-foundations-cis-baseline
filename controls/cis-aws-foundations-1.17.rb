@@ -5,8 +5,8 @@ every event or hourly ongoing activity which incurs cost in an AWS account.
 These records are aggregated into CSV files of hourly records, and written to
 an S3 bucket. A CSV (Comma Separated Values) file of billing records is written
 at least every 24 hours; writing of files is often more frequent."
-  impact 0.3
-  tag "rationale": "Detailed Billing records can be used as an overview of AWS
+  impact 'low'
+  desc 'rationale', "Detailed Billing records can be used as an overview of AWS
 activity across the whole of an account, in addition to per-Region CloudTrail,
 Config and other service-specific JSON-based logs. Billing records can be
 graphed over time using the Cost Explorer tool, and budgeting alerts can be
@@ -23,7 +23,7 @@ occurring in."
   tag "csc_control": ""
   tag "nist": ["AU-12", "Rev_4"]
   tag "cce_id": ""
-  tag "check": "There is currently no AWS CLI support for this operation, so it
+  desc 'check', "There is currently no AWS CLI support for this operation, so it
 is necessary to use the Management Console.
 
 As a user with IAM permission to read billing information
@@ -34,7 +34,7 @@ Management console at https://console.aws.amazon.com/billing/home#/.
 * On the navigation pane, choose Preferences.
 * Verify whether the 'Receive Billing Reports' check box is ticked. If it is
 not, billing reports are not being generated."
-  tag "fix": "There is currently no AWS CLI support for this operation, so it
+  desc 'fix',"There is currently no AWS CLI support for this operation, so it
 is necessary to use the Management Console.
 
 'As a user with IAM permission to read and write billing information

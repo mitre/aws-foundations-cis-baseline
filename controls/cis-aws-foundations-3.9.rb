@@ -6,7 +6,7 @@ CloudTrail Logs to CloudWatch Logs and establishing corresponding metric
 filters and alarms. It is recommended that a metric filter and alarm be
 established for detecting changes to CloudTrail's configurations."
   impact 0.7
-  tag "rationale": "Monitoring changes to AWS Config configuration will help
+  desc 'rationale', "Monitoring changes to AWS Config configuration will help
 ensure sustained visibility of configuration items within the AWS account."
   tag "cis_impact": ""
   tag "cis_rid": "3.9"
@@ -14,7 +14,7 @@ ensure sustained visibility of configuration items within the AWS account."
   tag "csc_control": [["5.4"], "6.0"]
   tag "nist": ["AC-2(4)", "Rev_4"]
   tag "cce_id": "CCE-79194-7"
-  tag "check": "Perform the following to determine if the account is configured
+  desc 'check', "Perform the following to determine if the account is configured
 as prescribed: 1. Identify the log group name configured for use with
 CloudTrail:
 
@@ -38,7 +38,7 @@ contains the following:
 ''filterPattern': '{($.eventSource = config.amazonaws.com) &'><sns_topic_arn> _
 
 "
-  tag "fix": "Perform the following to setup the metric filter, alarm, SNS
+  desc 'fix',"Perform the following to setup the metric filter, alarm, SNS
 topic, and subscription:1. Create a metric filter based on filter pattern
 provided which checks for AWS Config changes and the
 <cloudtrail_log_group_name> taken from audit step 2.

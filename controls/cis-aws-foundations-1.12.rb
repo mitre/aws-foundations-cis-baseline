@@ -3,8 +3,8 @@ control "cis-aws-foundations-1.12" do
   desc  "The root account is the most privileged user in an AWS account. AWS
 Access Keys provide programmatic access to a given AWS account. It is
 recommended that all access keys associated with the root account be removed."
-  impact 0.3
-  tag "rationale": "Removing access keys associated with the root account
+  impact 'low'
+  desc 'rationale', "Removing access keys associated with the root account
 limits vectors by which the account can be compromised. Additionally, removing
 the root access keys encourages the creation and use of role based accounts
 that are least privileged."
@@ -14,7 +14,7 @@ that are least privileged."
   tag "csc_control": [["5.1"], "6.0"]
   tag "nist": ["AC-6(9)", "Rev_4"]
   tag "cce_id": "CCE-78910-7"
-  tag "check": "Perform the following to determine if the root account has
+  desc 'check', "Perform the following to determine if the root account has
 access keys:
 
 'Via the AWS Console
@@ -37,7 +37,7 @@ aws iam get-credential-report --query 'Content' --output text | base64 -d | cut
 -d, -f1,9,14 | grep -B1 '<root_account>'
 * For the <root_account> user, ensure the access_key_1_active and
 access_key_2_active fields are set to FALSE."
-  tag "fix": "Perform the following to delete or disable active root access
+  desc 'fix',"Perform the following to delete or disable active root access
 keys being
 
 'Via the AWS Console

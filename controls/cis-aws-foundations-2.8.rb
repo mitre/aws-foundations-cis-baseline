@@ -8,7 +8,7 @@ decryption. Automated key rotation currently retains all prior backing keys so
 that decryption of encrypted data can take place transparently. It is
 recommended that CMK key rotation be enabled."
   impact 0.7
-  tag "rationale": "Rotating encryption keys helps reduce the potential impact
+  desc 'rationale', "Rotating encryption keys helps reduce the potential impact
 of a compromised key as data encrypted with a new key cannot be accessed with a
 previous key that may have been exposed."
   tag "cis_impact": ""
@@ -17,7 +17,7 @@ previous key that may have been exposed."
   tag "csc_control": ""
   tag "nist": ["SC-12", "Rev_4"]
   tag "cce_id": "CCE-78920-6"
-  tag "check": "Via the Management Console:
+  desc 'check', "Via the Management Console:
 
 * Sign in to the AWS Management Console and open the IAM console at
 https://console.aws.amazon.com/iam [https://console.aws.amazon.com/iam].
@@ -38,7 +38,7 @@ KeyIds
 
 'aws kms get-key-rotation-status --key-id _<kms_key_id>_
 * Ensure KeyRotationEnabled is set to true"
-  tag "fix": "Via the Management Console:
+  desc 'fix',"Via the Management Console:
 
 * Sign in to the AWS Management Console and open the IAM console at
 https://console.aws.amazon.com/iam [https://console.aws.amazon.com/iam].

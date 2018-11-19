@@ -22,7 +22,7 @@ this benchmark is not adopted as a permanent security measure, it should be
 used during any period of discovery and engineering for least privileged
 security groups."
   impact 0.7
-  tag "rationale": "Configuring all VPC default security groups to restrict all
+  desc 'rationale', "Configuring all VPC default security groups to restrict all
 traffic will encourage least privilege security group development and mindful
 placement of AWS resources into security groups which will in-turn reduce the
 exposure of those resources."
@@ -37,7 +37,7 @@ for each instance to communicate successfully."
   tag "csc_control": [["9.2"], "6.0"]
   tag "nist": ["SC-7(5)", "Rev_4"]
   tag "cce_id": "CCE-79201-0"
-  tag "check": "Perform the following to determine if the account is configured
+  desc 'check', "Perform the following to determine if the account is configured
 as prescribed:
 
 'Security Group State
@@ -68,7 +68,7 @@ default VPC in each AWS region:
 * Change to the EC2 Management Console at
 https://console.aws.amazon.com/ec2/v2/home
 * In the filter column type 'Security Group ID : <security group id from #4>'"
-  tag "fix": "Security Group Members
+  desc 'fix',"Security Group Members
 
 'Perform the following to implement the prescribed state:
 

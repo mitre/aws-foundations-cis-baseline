@@ -25,8 +25,8 @@ also be assigned to EC2 instances and Lambda functions.
 Control over IAM, which is also defined and mediated by a number of
 fine-grained permissions, should be divided between a number of roles, such
 that no individual user in a production account has full control over IAM."
-  impact 0.3
-  tag "rationale": "IAM is the principal point of control for service
+  impact 'low'
+  desc 'rationale', "IAM is the principal point of control for service
 configuration access, and 'control over IAM' means 'control over the
 configuration of all other assets in the AWS account'. Therefore it is
 recommended that control of this degree of security criticality should be
@@ -57,7 +57,7 @@ manner, in order for a user to gain access to a permission."
   tag "csc_control": ""
   tag "nist": ["AC-6(7)", "Rev_4"]
   tag "cce_id": ""
-  tag "check": "Using the Amazon unified CLI, from a user or role which has the
+  desc 'check', "Using the Amazon unified CLI, from a user or role which has the
 iam:ListRoles and iam:GetRolePolicy permissions:
 
 List the configured roles:
@@ -196,7 +196,7 @@ Each role needs to be assumable by at least one user or group:
 'should display the AssumeRolePolicyDocument indicating which users and groups
 are able to assume the roles. No user or group should be able to assume both
 roles."
-  tag "fix": "Using the Amazon unified CLI, from a user or role which has the
+  desc 'fix',"Using the Amazon unified CLI, from a user or role which has the
 iam:CreateRole, iam:CreatePolicy and iam:PutRolePolicy permissions:
 
 'aws iam create-role --role-name _<iam_manager_role_name>_

@@ -6,8 +6,8 @@ CloudTrail Logs to CloudWatch Logs and establishing corresponding metric
 filters and alarms. It is recommended that a metric filter and alarm be
 established for console logins that are not protected by multi-factor
 authentication (MFA)."
-  impact 0.3
-  tag "rationale": "Monitoring for single-factor console logins will increase
+  impact 'low'
+  desc 'rationale', "Monitoring for single-factor console logins will increase
 visibility into accounts that are not protected by MFA."
   tag "cis_impact": ""
   tag "cis_rid": "3.2"
@@ -15,7 +15,7 @@ visibility into accounts that are not protected by MFA."
   tag "csc_control": [["5.5"], "6.0"]
   tag "nist": ["AU-2", "Rev_4"]
   tag "cce_id": "CCE-79187-1"
-  tag "check": "Perform the following to determine if the account is configured
+  desc 'check', "Perform the following to determine if the account is configured
 as prescribed: 1. Identify the log group name configured for use with
 CloudTrail:
 
@@ -38,7 +38,7 @@ contains the following:
 
 ''filterPattern': '{ ($.eventName = 'ConsoleLogin') &'><sns_topic_arn> _
 "
-  tag "fix": "Perform the following to setup the metric filter, alarm, SNS
+  desc 'fix',"Perform the following to setup the metric filter, alarm, SNS
 topic, and subscription:1. Create a metric filter based on filter pattern
 provided which checks for AWS Management Console sign-in without MFA and the
 <cloudtrail_log_group_name> taken from audit step 2.

@@ -6,8 +6,8 @@ CloudTrail Logs to CloudWatch Logs and establishing corresponding metric
 filters and alarms. Network gateways are required to send/receive traffic to a
 destination outside of a VPC. It is recommended that a metric filter and alarm
 be established for changes to network gateways."
-  impact 0.3
-  tag "rationale": "Monitoring changes to network gateways will help ensure
+  impact 'low'
+  desc 'rationale', "Monitoring changes to network gateways will help ensure
 that all ingress/egress traffic traverses the VPC border via a controlled path."
   tag "cis_impact": ""
   tag "cis_rid": "3.12"
@@ -15,7 +15,7 @@ that all ingress/egress traffic traverses the VPC border via a controlled path."
   tag "csc_control": ""
   tag "nist": ["SI-4(5)", "Rev_4"]
   tag "cce_id": "CCE-79197-0"
-  tag "check": "Perform the following to determine if the account is configured
+  desc 'check', "Perform the following to determine if the account is configured
 as prescribed: 1. Identify the log group name configured for use with
 CloudTrail:
 
@@ -55,7 +55,7 @@ _<network_gw_changes_metric>_ captured in step 5.
 'aws sns list-subscriptions-by-topic --topic-arn _<sns_topic_arn> _
 
 "
-  tag "fix": "Perform the following to setup the metric filter, alarm, SNS
+  desc 'fix',"Perform the following to setup the metric filter, alarm, SNS
 topic, and subscription:1. Create a metric filter based on filter pattern
 provided which checks for network gateways changes and the
 <cloudtrail_log_group_name> taken from audit step 2.

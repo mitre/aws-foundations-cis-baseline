@@ -4,8 +4,8 @@ control "cis-aws-foundations-1.16" do
 resources. IAM policies are the means by which privileges are granted to users,
 groups, or roles. It is recommended that IAM policies be applied directly to
 groups and roles but not users."
-  impact 0.3
-  tag "rationale": "Assigning privileges at the group or role level reduces the
+  impact 'low'
+  desc 'rationale', "Assigning privileges at the group or role level reduces the
 complexity of access management as the number of users grow. Reducing access
 management complexity may in-turn reduce opportunity for a principal to
 inadvertently receive or retain excessive privileges."
@@ -15,7 +15,7 @@ inadvertently receive or retain excessive privileges."
   tag "csc_control": ""
   tag "nist": ["AC-6(7)", "Rev_4"]
   tag "cce_id": "CCE-78912-3"
-  tag "check": "Perform the following to determine if policies are attached
+  desc 'check', "Perform the following to determine if policies are attached
 directly to users:
 
 * Run the following to get a list of IAM users:
@@ -28,7 +28,7 @@ policies are attached to them:
 'aws iam list-attached-user-policies --user-name <_iam_user_>
 aws iam list-user-policies --user-name _<iam_user>_
 * If any policies are returned, the user has a direct policy attachment."
-  tag "fix": "Perform the following to create an IAM group and assign a policy
+  desc 'fix',"Perform the following to create an IAM group and assign a policy
 to it:
 
  'Sign in to the AWS Management Console and open the IAM console at

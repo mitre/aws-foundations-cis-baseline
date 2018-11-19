@@ -16,8 +16,8 @@ be sent to CloudWatch Logs.
 being captured, monitored, and appropriately alarmed on. CloudWatch Logs is a
 native way to accomplish this using AWS services but does not preclude the use
 of an alternate solution."
-  impact 0.3
-  tag "rationale": "Sending CloudTrail logs to CloudWatch Logs will facilitate
+  impact 'low'
+  desc 'rationale', "Sending CloudTrail logs to CloudWatch Logs will facilitate
 real-time and historic activity logging based on user, API, resource, and IP
 address, and provides opportunity to establish alarms and notifications for
 anomalous or sensitivity account activity."
@@ -38,7 +38,7 @@ http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/SettingLogRete
   tag "csc_control": [["6.6", "14.6"], "6.0"]
   tag "nist": ["SI-4(2)", "AU-2", "Rev_4"]
   tag "cce_id": "CCE-78916-4"
-  tag "check": "Perform the following to ensure CloudTrail is configured as
+  desc 'check', "Perform the following to ensure CloudTrail is configured as
 prescribed:
 
 'Via the AWS management Console
@@ -65,7 +65,7 @@ property.
 'aws cloudtrail get-trail-status --name _<trail_name>_
 * Ensure the LatestcloudwatchLogdDeliveryTime property is set to a recent (~one
 day old) timestamp."
-  tag "fix": "Perform the following to establish the prescribed state:
+  desc 'fix',"Perform the following to establish the prescribed state:
 
 'Via the AWS management Console
 

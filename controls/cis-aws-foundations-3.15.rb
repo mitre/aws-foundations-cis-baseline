@@ -9,8 +9,8 @@ updates to notify their subscribers about, they can publish a message to the
 topic - which immediately triggers Amazon SNS to deliver the message to all
 applicable subscribers. It is recommended that the list of subscribers to given
 topics be periodically reviewed for appropriateness."
-  impact 0.3
-  tag "rationale": "Reviewing subscriber topics will help ensure that only
+  impact 'low'
+  desc 'rationale', "Reviewing subscriber topics will help ensure that only
 expected recipients receive information published to SNS topics."
   tag "cis_impact": ""
   tag "cis_rid": "3.15"
@@ -18,7 +18,7 @@ expected recipients receive information published to SNS topics."
   tag "csc_control": ""
   tag "nist": ["AC-6", "Rev_4"]
   tag "cce_id": ""
-  tag "check": "Perform the following to ensure appropriate subscribers:
+  desc 'check', "Perform the following to ensure appropriate subscribers:
 
 'Via the AWS Management console:
 
@@ -44,7 +44,7 @@ https://console.aws.amazon.com/sns/ [https://console.aws.amazon.com/sns/]
 
 'aws sns list-topics
 aws sns list-subscriptions-by-topic --topic-arn _<topic_arn>_"
-  tag "fix": "Perform the following to remove undesired subscriptions:
+  desc 'fix',"Perform the following to remove undesired subscriptions:
 
 'Via Management Console
 

@@ -7,8 +7,8 @@ for each request made to your S3 bucket. An access log record contains details
 about the request, such as the request type, the resources specified in the
 request worked, and the time and date the request was processed. It is
 recommended that bucket access logging be enabled on the CloudTrail S3 bucket."
-  impact 0.3
-  tag "rationale": "By enabling S3 bucket logging on target S3 buckets, it is
+  impact 'low'
+  desc 'rationale', "By enabling S3 bucket logging on target S3 buckets, it is
 possible to capture all events which may affect objects within an target
 buckets. Configuring logs to be placed in a separate bucket allows access to
 log information which can be useful in security and incident response
@@ -19,7 +19,7 @@ workflows."
   tag "csc_control": [["14.6"], "6.0"]
   tag "nist": ["AU-2", "Rev_4"]
   tag "cce_id": "CCE-78918-0"
-  tag "check": "Perform the following ensure the CloudTrail S3 bucket has
+  desc 'check', "Perform the following ensure the CloudTrail S3 bucket has
 access logging is enabled:
 
 'Via the management Console
@@ -39,7 +39,7 @@ https://console.aws.amazon.com/s3 [https://console.aws.amazon.com/s3].
 'Via CLI
 
 'aws s3api get-bucket-logging --bucket <s3_bucket_for_cloudtrail>"
-  tag "fix": "Perform the following to enable S3 bucket logging:
+  desc 'fix',"Perform the following to enable S3 bucket logging:
 
 'Via the Management Console
 

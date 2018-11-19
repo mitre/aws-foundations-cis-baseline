@@ -7,7 +7,7 @@ appropriate permissions policy for the required access. 'AWS Access' means
 accessing the APIs of AWS in order to access AWS resources or manage AWS
 account resources."
   impact 0.7
-  tag "rationale": "AWS IAM roles reduce the risks associated with sharing and
+  desc 'rationale', "AWS IAM roles reduce the risks associated with sharing and
 rotating credentials that can be used outside of AWS itself. If credentials are
 compromised, they can be used from outside of the the AWS account they give
 access to. In contrast, in order to leverage role permissions an attacker would
@@ -25,7 +25,7 @@ individuals who no longer work for the organization owning the credentials."
   tag "csc_control": [["16.14"], "6.0"]
   tag "nist": ["SC-28", "Rev_4"]
   tag "cce_id": ""
-  tag "check": "Whether an Instance Is Associated With a Role
+  desc 'check', "Whether an Instance Is Associated With a Role
 
 'For instances that are known to perform AWS actions, ensure that they belong
 to an instance role that has the necessary permissions:
@@ -53,7 +53,7 @@ determined by eliminating all other sources of credentials and if the
 application can still access AWS resources - it likely contains embedded
 credentials. Another method is to examine all source code and configuration
 files of the application."
-  tag "fix": "IAM roles can only be associated at the launch of an instance. To
+  desc 'fix',"IAM roles can only be associated at the launch of an instance. To
 remediate an instance to add it to a role you must create a new instance.
 
 'If the instance has no external dependencies on it's current private ip or

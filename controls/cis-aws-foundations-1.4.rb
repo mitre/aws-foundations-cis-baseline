@@ -8,8 +8,8 @@ their own access keys to make programmatic calls to AWS from the AWS Command
 Line Interface (AWS CLI), Tools for Windows PowerShell, the AWS SDKs, or direct
 HTTP calls using the APIs for individual AWS services. It is recommended that
 all access keys be regularly rotated."
-  impact 0.3
-  tag "rationale": "Rotating access keys will reduce the window of opportunity
+  impact 'low'
+  desc 'rationale', "Rotating access keys will reduce the window of opportunity
 for an access key that is associated with a compromised or terminated account
 to be used.
 
@@ -21,7 +21,7 @@ old key which might have been lost, cracked, or stolen."
   tag "csc_control": ""
   tag "nist": ["IA-5(1)", "Rev_4"]
   tag "cce_id": "CCE-78902-4"
-  tag "check": "Perform the following to determine if access keys are rotated
+  desc 'check', "Perform the following to determine if access keys are rotated
 as prescribed:
 
 * Login to the AWS Management Console
@@ -48,7 +48,7 @@ users within an AWS Account - open this file
 
 'aws iam generate-credential-report
 aws iam get-credential-report --query 'Content' --output text | base64 -d"
-  tag "fix": "Perform the following to rotate access keys:
+  desc 'fix',"Perform the following to rotate access keys:
 
 * Login to the AWS Management Console:
 * Click Services

@@ -6,7 +6,7 @@ can be used to determine whether a log file was changed, deleted, or unchanged
 after CloudTrail delivered the log. It is recommended that file validation be
 enabled on all CloudTrails."
   impact 0.7
-  tag "rationale": "Enabling log file validation will provide additional
+  desc 'rationale', "Enabling log file validation will provide additional
 integrity checking of CloudTrail logs."
   tag "cis_impact": ""
   tag "cis_rid": "2.2"
@@ -14,7 +14,7 @@ integrity checking of CloudTrail logs."
   tag "csc_control": [["6.3"], "6.0"]
   tag "nist": ["AU-4", "Rev_4"]
   tag "cce_id": "CCE-78914-9"
-  tag "check": "Perform the following on each trail to determine if log file
+  desc 'check', "Perform the following on each trail to determine if log file
 validation is enabled:
 
 'Via the management Console
@@ -37,7 +37,7 @@ https://console.aws.amazon.com/cloudtrail
 'aws cloudtrail describe-trails
 
 'Ensure LogFileValidationEnabled is set to true for each trail."
-  tag "fix": "Perform the following to enable log file validation on a given
+  desc 'fix',"Perform the following to enable log file validation on a given
 trail:
 
 'Via the management Console

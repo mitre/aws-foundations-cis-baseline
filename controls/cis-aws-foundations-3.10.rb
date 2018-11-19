@@ -6,7 +6,7 @@ filters and alarms. Security Groups are a stateful packet filter that controls
 ingress and egress traffic within a VPC. It is recommended that a metric filter
 and alarm be established changes to Security Groups."
   impact 0.7
-  tag "rationale": "Monitoring changes to security group will help ensure that
+  desc 'rationale', "Monitoring changes to security group will help ensure that
 resources and services are not unintentionally exposed."
   tag "cis_impact": ""
   tag "cis_rid": "3.10"
@@ -14,7 +14,7 @@ resources and services are not unintentionally exposed."
   tag "csc_control": ""
   tag "nist": ["SI-4(5)", "Rev_4"]
   tag "cce_id": "CCE-79195-4"
-  tag "check": "Perform the following to determine if the account is configured
+  desc 'check', "Perform the following to determine if the account is configured
 as prescribed: 1. Identify the log group name configured for use with
 CloudTrail:
 
@@ -54,7 +54,7 @@ _<security_group_changes_metric>_ captured in step 5.
 'aws sns list-subscriptions-by-topic --topic-arn _<sns_topic_arn> _
 
 "
-  tag "fix": "Perform the following to setup the metric filter, alarm, SNS
+  desc 'fix',"Perform the following to setup the metric filter, alarm, SNS
 topic, and subscription:1. Create a metric filter based on filter pattern
 provided which checks for security groups changes and the
 <cloudtrail_log_group_name> taken from audit step 2.

@@ -7,7 +7,7 @@ their user name and password as well as for an authentication code from their
 AWS MFA device. For Level 2, it is recommended that the root account be
 protected with a hardware MFA."
   impact 0.7
-  tag "rationale": "A hardware MFA has a smaller attack surface than a virtual
+  desc 'rationale', "A hardware MFA has a smaller attack surface than a virtual
 MFA. For example, a hardware MFA does not suffer the attack surface introduced
 by the mobile smartphone on which a virtual MFA resides.
 
@@ -24,7 +24,7 @@ http://onlinenoram.gemalto.com/ [http://onlinenoram.gemalto.com/]"
   tag "csc_control": [["5.6", "11.4", "12.6", "16.11"], "6.0"]
   tag "nist": ["IA-2(1)","SC-23", "Rev_4"]
   tag "cce_id": "CCE-78911-5"
-  tag "check": "Perform the following to determine if the root account has a
+  desc 'check', "Perform the following to determine if the root account has a
 hardware MFA setup:
 
 
@@ -38,7 +38,7 @@ recommendation:
 ' 'SerialNumber':
 'arn:aws:iam::_<aws_account_number>_:mfa/root-account-mfa-device'
 "
-  tag "fix": "Perform the following to establish a hardware MFA for the root
+  desc 'fix',"Perform the following to establish a hardware MFA for the root
 account:
 
 

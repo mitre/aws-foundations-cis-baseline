@@ -6,7 +6,7 @@ CloudTrail Logs to CloudWatch Logs and establishing corresponding metric
 filters and alarms. It is recommended that a metric filter and alarm be
 established for failed console authentication attempts."
   impact 0.7
-  tag "rationale": "Monitoring failed console logins may decrease lead time to
+  desc 'rationale', "Monitoring failed console logins may decrease lead time to
 detect an attempt to brute force a credential, which may provide an indicator,
 such as source IP, that can be used in other event correlation."
   tag "cis_impact": ""
@@ -15,7 +15,7 @@ such as source IP, that can be used in other event correlation."
   tag "csc_control": ""
   tag "nist": ["SI-4(5)", "Rev_4"]
   tag "cce_id": "CCE-79191-3"
-  tag "check": "Perform the following to determine if the account is configured
+  desc 'check', "Perform the following to determine if the account is configured
 as prescribed: 1. Identify the log group name configured for use with
 CloudTrail:
 
@@ -39,7 +39,7 @@ contains the following:
 ''filterPattern': '{ ($.eventName = ConsoleLogin) &'><sns_topic_arn> _
 
 "
-  tag "fix": "Perform the following to setup the metric filter, alarm, SNS
+  desc 'fix',"Perform the following to setup the metric filter, alarm, SNS
 topic, and subscription:1. Create a metric filter based on filter pattern
 provided which checks for AWS Management Console authentication failures and
 the <cloudtrail_log_group_name> taken from audit step 2.

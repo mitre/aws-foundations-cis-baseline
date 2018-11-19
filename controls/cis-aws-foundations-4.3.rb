@@ -6,7 +6,7 @@ you've created a flow log, you can view and retrieve its data in Amazon
 CloudWatch Logs. It is recommended that VPC Flow Logs be enabled for packet
 'Rejects' for VPCs."
   impact 0.7
-  tag "rationale": "VPC Flow Logs provide visibility into network traffic that
+  desc 'rationale', "VPC Flow Logs provide visibility into network traffic that
 traverses the VPC and can be used to detect anomalous traffic or insight during
 security workflows."
   tag "cis_impact": "By default, CloudWatch Logs will store Logs indefinitely
@@ -26,7 +26,7 @@ http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/SettingLogRete
   tag "cis_control_number": ""
   tag "nist": ["SI-4(4)", "Rev_4"]
   tag "cce_id": "CCE-79202-8"
-  tag "check": "Perform the following to determine if VPC Flow logs is enabled:
+  desc 'check', "Perform the following to determine if VPC Flow logs is enabled:
 
 
 'Via the Management Console:
@@ -37,7 +37,7 @@ http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/SettingLogRete
 * Select a VPC
 * In the right pane, select the Flow Logs tab.
 * Ensure a Log Flow exists that has Active in the Status column."
-  tag "fix": "Perform the following to determine if VPC Flow logs is enabled:
+  desc 'fix',"Perform the following to determine if VPC Flow logs is enabled:
 
 'Via the Management Console:
 

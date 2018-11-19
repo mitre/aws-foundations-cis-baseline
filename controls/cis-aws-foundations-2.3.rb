@@ -6,8 +6,8 @@ control "cis-aws-foundations-2.3" do
 These logs file are stored in an S3 bucket. It is recommended that the bucket
 policy or access control list (ACL) applied to the S3 bucket that CloudTrail
 logs to prevents public access to the CloudTrail logs."
-  impact 0.3
-  tag "rationale": "Allowing public access to CloudTrail log content may aid an
+  impact 'low'
+  desc 'rationale', "Allowing public access to CloudTrail log content may aid an
 adversary in identifying weaknesses in the affected account's use or
 configuration."
   tag "cis_impact": ""
@@ -16,7 +16,7 @@ configuration."
   tag "csc_control": ""
   tag "nist": ["AU-9", "Rev_4"]
   tag "cce_id": "CCE-78915-6"
-  tag "check": "Perform the following to determine if any public access is
+  desc 'check', "Perform the following to determine if any public access is
 granted to an S3 bucket via an ACL or S3 bucket policy:
 
 'Via the Management Console
@@ -63,7 +63,7 @@ Users`]'
 'aws s3api get-bucket-policy --bucket <s3_bucket_for_cloudtrail>
 * Ensure the policy does not contain a Statement having an Effect set to Allow
 and a Principal set to *."
-  tag "fix": "Perform the following to remove any public access that has been
+  desc 'fix',"Perform the following to remove any public access that has been
 granted to the bucket via an ACL or S3 bucket policy:
 
 * Go to Amazon S3 console at https://console.aws.amazon.com/s3/home
