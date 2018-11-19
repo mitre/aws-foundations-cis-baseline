@@ -1,4 +1,4 @@
-control "cis-aws-foundations-4.5" do
+control 'cis-aws-foundations-4.5' do
   title "Ensure routing tables for VPC peering are 'least access'"
   desc  "Once a VPC peering connection is estalished, routing tables must be
 updated to establish any connections between the peered VPCs. These routes can
@@ -8,12 +8,12 @@ other side of the connection."
   tag "rationale": "Being highly selective in peering routing tables is a very
 effective way of minimizing the impact of breach as resources outside of these
 routes are inaccessible to the peered VPC."
-  tag "cis_impact": ""
-  tag "cis_rid": "4.5"
+  tag "cis_impact": ''
+  tag "cis_rid": '4.5'
   tag "cis_level": 2
-  tag "csc_control": ""
-  tag "nist": ["SC-7", "Rev_4"]
-  tag "cce_id": ""
+  tag "csc_control": ''
+  tag "nist": ['SC-7', 'Rev_4']
+  tag "cce_id": ''
   tag "check": "Review routing tables of peered VPCs for whether they route all
 subnets of each VPC and whether that is necessary to accomplish the intended
 purposes for peering the VPCs.
@@ -49,15 +49,20 @@ compliant route:
   aws_route_tables.route_table_ids.each do |route_table_id|
     aws_route_table(route_table_id).routes.each do |route|
       next unless route.key?(:vpc_peering_connection_id)
+
       describe route do
-        its([:destination_cidr_block]) { should_not be nil } #verify with attributes
+        its([:destination_cidr_block]) { should_not be nil }
       end
     end
-    describe "No routes with peering connection were found for the route table" do
+    next unless aws_route_table(route_table_id).routes.none? { |route| route.key?(:vpc_peering_connection_id) }
+
+    describe 'No routes with peering connection were found for the route table' do
       skip "No routes with peering connection were found for the route_table #{route_table_id}"
-    end if !aws_route_table(route_table_id).routes.any? { |route| route.key?(:vpc_peering_connection_id) }
+    end
   end
-  describe "Control skipped because no route tables were found" do
-    skip "This control is skipped since the aws_route_tables resource returned an empty route table list"
-  end if aws_route_tables.route_table_ids.empty?
+  if aws_route_tables.route_table_ids.empty?
+    describe 'Control skipped because no route tables were found' do
+      skip 'This control is skipped since the aws_route_tables resource returned an empty route table list'
+    end
+  end
 end

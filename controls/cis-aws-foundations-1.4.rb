@@ -1,7 +1,5 @@
-AWS_KEY_AGE = attribute('aws_key_age')
-
-control "cis-aws-foundations-1.4" do
-  title "Ensure access keys are rotated every #{AWS_KEY_AGE} days or less"
+control 'cis-aws-foundations-1.4' do
+  title "Ensure access keys are rotated every #{attribute('aws_key_age')} days or less"
   desc  "Access keys consist of an access key ID and secret access key, which
 are used to sign programmatic requests that you make to AWS. AWS users need
 their own access keys to make programmatic calls to AWS from the AWS Command
@@ -15,12 +13,12 @@ to be used.
 
 'Access keys should be rotated to ensure that data cannot be accessed with an
 old key which might have been lost, cracked, or stolen."
-  tag "cis_impact": ""
-  tag "cis_rid": "1.4"
+  tag "cis_impact": ''
+  tag "cis_rid": '1.4'
   tag "cis_level": 1
-  tag "csc_control": ""
-  tag "nist": ["IA-5(1)", "Rev_4"]
-  tag "cce_id": "CCE-78902-4"
+  tag "csc_control": ''
+  tag "nist": ['IA-5(1)', 'Rev_4']
+  tag "cce_id": 'CCE-78902-4'
   tag "check": "Perform the following to determine if access keys are rotated
 as prescribed:
 
@@ -38,7 +36,7 @@ users within an AWS Account - open this file
 * access_key_X_last_used_date
 
 
-* Ensure all active keys have been rotated within #{AWS_KEY_AGE} days
+* Ensure all active keys have been rotated within #{attribute('aws_key_age')} days
 
 * Ensure all active keys have been used since last rotation
 
@@ -58,12 +56,12 @@ aws iam get-credential-report --query 'Content' --output text | base64 -d"
 
 * As an Administrator
 
-* Click on Make Inactive for keys that have not been rotated in #{AWS_KEY_AGE} Days
+* Click on Make Inactive for keys that have not been rotated in #{attribute('aws_key_age')} Days
 
 * As an IAM User
 
 * Click on Make Inactive or Delete for keys which have not been rotated or used
-in the last #{AWS_KEY_AGE} days
+in the last #{attribute('aws_key_age')} days
 
 
 * Click on Create Access Key
@@ -78,13 +76,15 @@ aws iam delete-access-key"
   aws_iam_access_keys.where(active: true).entries.each do |key|
     describe key.username do
       context key do
-        its('created_days_ago') { should cmp <= AWS_KEY_AGE }
+        its('created_days_ago') { should cmp <= attribute('aws_key_age') }
         its('ever_used') { should be true }
       end
     end
   end
 
-  describe "Control skipped because no active iam access keys were found" do
-    skip "This control is skipped since the aws_iam_access_keys resource returned an empty active access key list"
-  end if aws_iam_access_keys.where(active: true).entries.empty?
+  if aws_iam_access_keys.where(active: true).entries.empty?
+    describe 'Control skipped because no active iam access keys were found' do
+      skip 'This control is skipped since the aws_iam_access_keys resource returned an empty active access key list'
+    end
+  end
 end

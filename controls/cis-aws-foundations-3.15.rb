@@ -1,5 +1,5 @@
-control "cis-aws-foundations-3.15" do
-  title "Ensure appropriate subscribers to each SNS topic"
+control 'cis-aws-foundations-3.15' do
+  title 'Ensure appropriate subscribers to each SNS topic'
   desc  "AWS Simple Notification Service (SNS) is a web service that can
 publish messages from an application and immediately deliver them to
 subscribers or other applications. Subscribers are clients interested in
@@ -12,12 +12,12 @@ topics be periodically reviewed for appropriateness."
   impact 0.3
   tag "rationale": "Reviewing subscriber topics will help ensure that only
 expected recipients receive information published to SNS topics."
-  tag "cis_impact": ""
-  tag "cis_rid": "3.15"
+  tag "cis_impact": ''
+  tag "cis_rid": '3.15'
   tag "cis_level": 1
-  tag "csc_control": ""
-  tag "nist": ["AC-6", "Rev_4"]
-  tag "cce_id": ""
+  tag "csc_control": ''
+  tag "nist": ['AC-6', 'Rev_4']
+  tag "cce_id": ''
   tag "check": "Perform the following to ensure appropriate subscribers:
 
 'Via the AWS Management console:
@@ -55,34 +55,37 @@ https://console.aws.amazon.com/sns/ [https://console.aws.amazon.com/sns/]
 * Click Actions
 * Click Delete Subscriptions"
 
-  SNS_TOPICS = attribute('sns_topics')
-  SNS_SUBSCRIPTIONS = attribute('sns_subscriptions')
-
   attribute('aws_regions').each do |region|
     ENV['AWS_REGION'] = region
 
     aws_sns_topics.topic_arns.each do |topic|
       describe aws_sns_topic(topic) do
-        its('owner') { should cmp SNS_TOPICS[topic]['owner'] } #verify with attributes
-        its('region') { should cmp SNS_TOPICS[topic]['region'] } #verify with attributes
+        its('owner') { should cmp attribute('sns_topics')[topic]['owner'] }
+        its('region') { should cmp attribute('sns_topics')[topic]['region'] }
       end
       aws_sns_topic(topic).subscriptions.each do |subscription|
         describe aws_sns_subscription(subscription) do
           its('arn') { should_not eq 'PendingConfirmation' }
         end
+        next if aws_sns_subscription(subscription).arn.eql?('PendingConfirmation')
+
         describe aws_sns_subscription(subscription) do
-          its('endpoint') { should cmp SNS_SUBSCRIPTIONS[subscription]['endpoint'] } #verify with attributes
-          its('protocol') { should cmp SNS_SUBSCRIPTIONS[subscription]['protocol'] } #verify with attributes
-          its('owner') { should cmp SNS_SUBSCRIPTIONS[subscription]['owner'] } #verify with attributes
-        end unless aws_sns_subscription(subscription).arn.eql?("PendingConfirmation")
+          its('endpoint') { should cmp attribute('sns_subscriptions')[subscription]['endpoint'] }
+          its('protocol') { should cmp attribute('sns_subscriptions')[subscription]['protocol'] }
+          its('owner') { should cmp attribute('sns_subscriptions')[subscription]['owner'] }
+        end
       end
-      describe "SNS Subscriptions where not found for the Topic" do
+      next unless aws_sns_topic(topic).subscriptions.empty?
+
+      describe 'SNS Subscriptions where not found for the Topic' do
         skip "No SNS Subscriptions where found for the SNS Topic #{topic}"
-      end if aws_sns_topic(topic).subscriptions.empty?
+      end
     end
-    describe "SNS Topics where not found in this region" do
+    next unless aws_sns_topics.topic_arns.empty?
+
+    describe 'SNS Topics where not found in this region' do
       skip "No SNS Topics where found for the region #{region}"
-    end if aws_sns_topics.topic_arns.empty?
+    end
   end
   # reset to default region
   ENV['AWS_REGION'] = attribute('default_aws_region')

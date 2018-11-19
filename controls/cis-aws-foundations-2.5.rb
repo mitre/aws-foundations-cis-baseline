@@ -1,7 +1,5 @@
-CONFIG_DELIVERY_CHANNELS = attribute('config_delivery_channels')
-
-control "cis-aws-foundations-2.5" do
-  title "Ensure AWS Config is enabled in all regions"
+control 'cis-aws-foundations-2.5' do
+  title 'Ensure AWS Config is enabled in all regions'
   desc  "AWS Config is a web service that performs configuration management of
 supported AWS resources within your account and delivers log files to you. The
 recorded information includes the configuration item (AWS resource),
@@ -11,12 +9,12 @@ all regions."
   impact 0.3
   tag "rationale": "The AWS configuration item history captured by AWS Config
 enables security analysis, resource change tracking, and compliance auditing."
-  tag "cis_impact": ""
-  tag "cis_rid": "2.5"
+  tag "cis_impact": ''
+  tag "cis_rid": '2.5'
   tag "cis_level": 1
-  tag "csc_control": [["1.1", "1.3", "1.4", "5.2", "11.1", "11.3", "14.6"], "6.0"]
-  tag "nist": ["CM-8(3)", "CM-8(2)", "CM-8", "AC-6(7)", "CM-6(1)", "CM-6(2)", "AU-2", "Rev_4"]
-  tag "cce_id": "CCE-78917-2"
+  tag "csc_control": [['1.1', '1.3', '1.4', '5.2', '11.1', '11.3', '14.6'], '6.0']
+  tag "nist": ['CM-8(3)', 'CM-8(2)', 'CM-8', 'AC-6(7)', 'CM-6(1)', 'CM-6(2)', 'AU-2', 'Rev_4']
+  tag "cce_id": 'CCE-78917-2'
   tag "check": "Process to evaluate AWS Config configuration per region
 
 'Via AWS Management Console
@@ -53,7 +51,6 @@ in 1 region only
 
 'aws configservice start-configuration-recorder"
 
-
   attribute('aws_regions').each do |region|
     ENV['AWS_REGION'] = region
 
@@ -66,8 +63,8 @@ in 1 region only
 
     describe aws_config_delivery_channel do
       it { should exist }
-      its('s3_bucket_name') { should cmp CONFIG_DELIVERY_CHANNELS[region]['s3_bucket_name'] } #verify with attributes
-      its('sns_topic_arn') { should cmp CONFIG_DELIVERY_CHANNELS[region]['sns_topic_arn'] } #verify with attributes
+      its('s3_bucket_name') { should cmp attribute('config_delivery_channels')[region]['s3_bucket_name'] }
+      its('sns_topic_arn') { should cmp attribute('config_delivery_channels')[region]['sns_topic_arn'] }
     end
   end
 

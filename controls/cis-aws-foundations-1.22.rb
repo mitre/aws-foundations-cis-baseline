@@ -1,4 +1,4 @@
-control "cis-aws-foundations-1.22" do
+control 'cis-aws-foundations-1.22' do
   title "Ensure a support role has been created to manage incidents with AWS
 Support"
   desc  "AWS provides a support center that can be used for incident
@@ -18,11 +18,11 @@ enabled accounts in an aggregated monthly billing calculation.
 
 Monthly charges for the Business and Enterprise support plans are based on each
 month's AWS usage charges, subject to a monthly minimum, billed in advance."
-  tag "cis_rid": "1.22"
+  tag "cis_rid": '1.22'
   tag "cis_level": 1
-  tag "csc_control": ""
-  tag "nist": ["IR-7", "Rev_4"]
-  tag "cce_id": ""
+  tag "csc_control": ''
+  tag "nist": ['IR-7', 'Rev_4']
+  tag "cce_id": ''
   tag "check": "Using the Amazon unified command line interface:
 
 * List IAM policies, filter for the 'AWSSupportAccess' managed policy, and note
@@ -70,7 +70,6 @@ AWS incidents, and save it locally as /tmp/TrustPolicy.json:
 "
 
   describe aws_iam_policy('AWSSupportAccess') do
-    it{ should be_attached }
+    it { should be_attached }
   end
-
 end
