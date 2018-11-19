@@ -17,7 +17,7 @@ attributes:
 
   - name: aws_regions
     description: 'all aws regions to be inspected'
-    default: 
+    default:
       - us-east-1
       - us-east-2
       - us-west-1
@@ -71,13 +71,13 @@ attributes:
   - name: exception_bucket_list
     description: 'list of buckets exempted from inspection'
     type: array
-    default: 
+    default:
       - exception_bucket_name
 
   - name: config_delivery_channels
     description: 'Config service settings'
     type: hash
-    default: 
+    default:
       us-east-1:
         s3_bucket_name: s3_bucket_name_value
         sns_topic_arn: sns_topic_arn_value
@@ -94,7 +94,7 @@ attributes:
   - name: sns_topics
     description: 'SNS topics list and details'
     type: hash
-    default: 
+    default:
       topic_arn1:
         owner: owner_value
         region: region_value
@@ -105,7 +105,7 @@ attributes:
   - name: sns_subscriptions
     description: 'SNS subscription list and details'
     type: hash
-    default: 
+    default:
       subscription_arn1:
         endpoint: endpoint_value
         owner: owner_value
@@ -118,5 +118,11 @@ attributes:
   - name: exception_security_group_list
     description: 'list of security groups exempted from inspection'
     type: array
-    default: 
+    default:
       - 'exception_security_group_name'
+
+  - name: service_account_mfa_exceptions
+    description: 'list of service accounts which are exempt from the MFA requirement'
+    type: array
+    default:
+      -
