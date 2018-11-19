@@ -4,8 +4,8 @@ control "cis-aws-foundations-1.7" do
 requirements. IAM password policies can be used to ensure password are
 comprised of different character sets. It is recommended that the password
 policy require at least one symbol."
-  impact 0.3
-  tag "rationale": "Setting a password complexity policy increases account
+  impact 'low'
+  desc 'rationale', "Setting a password complexity policy increases account
 resiliency against brute force login attempts."
   tag "cis_impact": ""
   tag "cis_rid": "1.7"
@@ -13,7 +13,7 @@ resiliency against brute force login attempts."
   tag "csc_control": ""
   tag "nist": ["IA-5(1)", "Rev_4"]
   tag "cce_id": "CCE-78905-7"
-  tag "check": "Perform the following to ensure the password policy is
+  desc 'check', "Perform the following to ensure the password policy is
 configured as prescribed:
 
 'Via AWS Console
@@ -30,7 +30,7 @@ Management Account Settings)
 'aws iam get-account-password-policy
 
 Ensure the output of the above command includes 'RequireSymbols': true"
-  tag "fix": "Perform the following to set the password policy as prescribed:
+  desc 'fix',"Perform the following to set the password policy as prescribed:
 
 'Via AWS Console
 

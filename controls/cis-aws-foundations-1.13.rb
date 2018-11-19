@@ -12,8 +12,8 @@ device used is NOT a personal device, but rather a dedicated mobile device
 any individual personal devices. ('non-personal virtual MFA') This lessens the
 risks of losing access to the MFA due to device loss, device trade-in or if the
 individual owning the device is no longer employed at the company."
-  impact 0.3
-  tag "rationale": "Enabling MFA provides increased security for console access
+  impact 'low'
+  desc 'rationale', "Enabling MFA provides increased security for console access
 as it requires the authenticating principal to possess a device that emits a
 time-sensitive key and have knowledge of a credential."
   tag "cis_impact": ""
@@ -22,7 +22,7 @@ time-sensitive key and have knowledge of a credential."
   tag "csc_control": [["5.6", "11.4", "12.6", "16.11"], "6.0"]
   tag "nist": ["IA-2(1)","SC-23", "Rev_4"]
   tag "cce_id": "CCE-78911-5"
-  tag "check": "Perform the following to determine if the root account has MFA
+  desc 'check', "Perform the following to determine if the root account has MFA
 setup:
 
 
@@ -33,7 +33,7 @@ setup:
 
 
 "
-  tag "fix": "Perform the following to establish MFA for the root account:
+  desc 'fix',"Perform the following to establish MFA for the root account:
 
 
  'Sign in to the AWS Management Console and open the IAM console at

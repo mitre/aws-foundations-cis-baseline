@@ -8,8 +8,8 @@ recorded information includes the configuration item (AWS resource),
 relationships between configuration items (AWS resources), any configuration
 changes between resources. It is recommended to enable AWS Config be enabled in
 all regions."
-  impact 0.3
-  tag "rationale": "The AWS configuration item history captured by AWS Config
+  impact 'low'
+  desc 'rationale', "The AWS configuration item history captured by AWS Config
 enables security analysis, resource change tracking, and compliance auditing."
   tag "cis_impact": ""
   tag "cis_rid": "2.5"
@@ -17,7 +17,7 @@ enables security analysis, resource change tracking, and compliance auditing."
   tag "csc_control": [["1.1", "1.3", "1.4", "5.2", "11.1", "11.3", "14.6"], "6.0"]
   tag "nist": ["CM-8(3)", "CM-8(2)", "CM-8", "AC-6(7)", "CM-6(1)", "CM-6(2)", "AU-2", "Rev_4"]
   tag "cce_id": "CCE-78917-2"
-  tag "check": "Process to evaluate AWS Config configuration per region
+  desc 'check', "Process to evaluate AWS Config configuration per region
 
 'Via AWS Management Console
 
@@ -38,7 +38,7 @@ in 1 region only
 * Ensure the correct S3 bucket has been defined.
 * Ensure the correct SNS topic has been defined.
 * Repeat steps 2 to 7 for each region."
-  tag "fix": "Perform the following in the AWS Management Console:
+  desc 'fix',"Perform the following in the AWS Management Console:
 
 * Select the region you want to focus on in the top right of the console
 * Click Services

@@ -5,7 +5,7 @@ updated to establish any connections between the peered VPCs. These routes can
 be as specific as desired - even peering a VPC to only a single host on the
 other side of the connection."
   impact 0.7
-  tag "rationale": "Being highly selective in peering routing tables is a very
+  desc 'rationale', "Being highly selective in peering routing tables is a very
 effective way of minimizing the impact of breach as resources outside of these
 routes are inaccessible to the peered VPC."
   tag "cis_impact": ""
@@ -14,7 +14,7 @@ routes are inaccessible to the peered VPC."
   tag "csc_control": ""
   tag "nist": ["SC-7", "Rev_4"]
   tag "cce_id": ""
-  tag "check": "Review routing tables of peered VPCs for whether they route all
+  desc 'check', "Review routing tables of peered VPCs for whether they route all
 subnets of each VPC and whether that is necessary to accomplish the intended
 purposes for peering the VPCs.
 
@@ -27,7 +27,7 @@ is as specific as desired.
 'aws ec2 describe-route-tables --filter 'Name=vpc-id,Values=_<vpc_id>_' --query
 'RouteTables[*].{RouteTableId:RouteTableId, VpcId:VpcId, Routes:Routes,
 AssociatedSubnets:Associations[*].SubnetId}'"
-  tag "fix": "Remove and add route table entries to ensure that the least
+  desc 'fix',"Remove and add route table entries to ensure that the least
 number of subnets or hosts as is required to accomplish the purpose for peering
 are routable.
 

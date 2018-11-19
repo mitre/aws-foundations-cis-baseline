@@ -11,8 +11,8 @@ may arise where that individual is unavailable. Email contact details should
 point to a mail alias which forwards email to multiple individuals within the
 organisation; where feasible, phone contact details should point to a PABX hunt
 group or other call-forwarding system."
-  impact 0.3
-  tag "rationale": "If an AWS account is observed to be behaving in a
+  impact 'low'
+  desc 'rationale', "If an AWS account is observed to be behaving in a
 prohibited or suspicious manner, AWS will attempt to contact the account owner
 by email and phone using the contact details listed. If this is unsuccessful
 and the account behaviour needs urgent mitigation, proactive measures may be
@@ -29,7 +29,7 @@ aliases and PABX hunt groups."
   tag "csc_control": ""
   tag "nist": ["IA-4", "Rev_4"]
   tag "cce_id": ""
-  tag "check": "This activity can only be performed via the AWS Console, with a
+  desc 'check', "This activity can only be performed via the AWS Console, with a
 user who has permission to read and write Billing information
 (aws-portal:*Billing ).
 
@@ -39,7 +39,7 @@ Management console at https://console.aws.amazon.com/billing/home#/.
 
 * On the Account Settings page, review and verify the current details.
 * Under Contact Information, review and verify the current details."
-  tag "fix": "This activity can only be performed via the AWS Console, with a
+  desc 'fix',"This activity can only be performed via the AWS Console, with a
 user who has permission to read and write Billing information
 (aws-portal:*Billing ).
 

@@ -5,8 +5,8 @@ Support"
 notification and response, as well as technical support and customer services.
 Create an IAM Role to allow authorized users to manage incidents with AWS
 Support."
-  impact 0.3
-  tag "rationale": "By implementing least privilege for access control, an IAM
+  impact 'low'
+  desc 'rationale', "By implementing least privilege for access control, an IAM
 Role will require an appropriate IAM Policy to allow Support Center Access in
 order to manage Incidents with AWS Support."
   tag "cis_impact": "All AWS Support plans include an unlimited number of
@@ -23,7 +23,7 @@ month's AWS usage charges, subject to a monthly minimum, billed in advance."
   tag "csc_control": ""
   tag "nist": ["IR-7", "Rev_4"]
   tag "cce_id": ""
-  tag "check": "Using the Amazon unified command line interface:
+  desc 'check', "Using the Amazon unified command line interface:
 
 * List IAM policies, filter for the 'AWSSupportAccess' managed policy, and note
 the 'Arn' element value:
@@ -35,7 +35,7 @@ the 'Arn' element value:
 
  'aws iam list-entities-for-policy --policy-arn <iam_policy_arn>
 "
-  tag "fix": "Using the Amazon unified command line interface:
+  desc 'fix',"Using the Amazon unified command line interface:
 
 * Create an IAM role for managing incidents with AWS:
 

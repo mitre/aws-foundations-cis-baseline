@@ -5,8 +5,8 @@ control "cis-aws-foundations-4.1" do
   desc  "Security groups provide stateful filtering of ingress/egress network
 traffic to AWS resources. It is recommended that no security group allows
 unrestricted ingress access to port 22."
-  impact 0.3
-  tag "rationale": "Removing unfettered connectivity to remote console
+  impact 'low'
+  desc 'rationale', "Removing unfettered connectivity to remote console
 services, such as SSH, reduces a server's exposure to risk."
   tag "cis_impact": "For updating an existing environment, care should be taken
 to ensure that administrators currently relying on an existing ingress from
@@ -16,7 +16,7 @@ to ensure that administrators currently relying on an existing ingress from
   tag "cis_control_number": ""
   tag "nist": ["SC-7(5)", "Rev_4"]
   tag "cce_id": ""
-  tag "check": "Perform the following to determine if the account is configured
+  desc 'check', "Perform the following to determine if the account is configured
 as prescribed:
 
 * Login to the AWS Management Console at
@@ -33,7 +33,7 @@ Source of 0.0.0.0/0
 Note: A Port value of ALL or a port range such as 0-1024 are inclusive of port
 22.
 "
-  tag "fix": "Perform the following to implement the prescribed state:
+  desc 'fix',"Perform the following to implement the prescribed state:
 
 * Login to the AWS Management Console at
 https://console.aws.amazon.com/vpc/home

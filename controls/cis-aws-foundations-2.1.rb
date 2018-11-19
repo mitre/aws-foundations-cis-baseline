@@ -7,8 +7,8 @@ the API caller, the request parameters, and the response elements returned by
 the AWS service. CloudTrail provides a history of AWS API calls for an account,
 including API calls made via the Management Console, SDKs, command line tools,
 and higher-level AWS services (such as CloudFormation)."
-  impact 0.3
-  tag "rationale": "The AWS API call history produced by CloudTrail enables
+  impact 'low'
+  desc 'rationale', "The AWS API call history produced by CloudTrail enables
 security analysis, resource change tracking, and compliance auditing.
 Additionally, ensuring that a multi-regions trail exists will ensure that
 unexpected activity occurring in otherwise unused regions is detected."
@@ -22,7 +22,7 @@ for more information on these features:
   tag "csc_control": [["14.6"], "6.0"]
   tag "nist": ["AU-2", "Rev_4"]
   tag "cce_id": "CCE-78913-1"
-  tag "check": "Perform the following to determine if CloudTrail is enabled for
+  desc 'check', "Perform the following to determine if CloudTrail is enabled for
 all regions:
 
 'Via the management Console
@@ -47,7 +47,7 @@ https://console.aws.amazon.com/cloudtrail
 ' aws cloudtrail describe-trails
 
 'Ensure IsMultiRegionTrail is set to true"
-  tag "fix": "Perform the following to enable global CloudTrail logging:
+  desc 'fix',"Perform the following to enable global CloudTrail logging:
 
 'Via the management Console
 

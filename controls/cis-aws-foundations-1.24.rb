@@ -7,8 +7,8 @@ to grant _least privilege_--that is, granting only the permissions required to
 perform a task. Determine what users need to do and then craft policies for
 them that let the users perform _only_ those tasks, instead of allowing full
 administrative privileges."
-  impact 0.3
-  tag "rationale": "It's more secure to start with a minimum set of permissions
+  impact 'low'
+  desc 'rationale', "It's more secure to start with a minimum set of permissions
 and grant additional permissions as necessary, rather than starting with
 permissions that are too lenient and then trying to tighten them later.
 
@@ -25,7 +25,7 @@ over  'Resource': '*' should be removed."
   tag "csc_control": ""
   tag "nist": ["AC-6", "Rev_4"]
   tag "cce_id": "CCE-78912-3"
-  tag "check": "Perform the following to determine what policies are created:
+  desc 'check', "Perform the following to determine what policies are created:
 
 * Run the following to get a list of IAM policies:
 
@@ -38,7 +38,7 @@ policies is allowing full administrative privileges on the account:
 _<policy_version>_ --query 'PolicyVersion.Document.Statement[?Effect == 'Allow'
 && contains(Resource, '*') && contains (Action, '*')]'
 * If the output of the command returns any policies, it's not compliant."
-  tag "fix": "Using the GUI, perform the following to detach the policy that
+  desc 'fix',"Using the GUI, perform the following to detach the policy that
 has full administrative privileges:
 
  'Sign in to the AWS Management Console and open the IAM console at

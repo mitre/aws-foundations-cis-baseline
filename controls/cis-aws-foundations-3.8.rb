@@ -5,8 +5,8 @@ changes"
 CloudTrail Logs to CloudWatch Logs and establishing corresponding metric
 filters and alarms. It is recommended that a metric filter and alarm be
 established for changes to S3 bucket policies."
-  impact 0.3
-  tag "rationale": "Monitoring changes to S3 bucket policies may reduce time to
+  impact 'low'
+  desc 'rationale', "Monitoring changes to S3 bucket policies may reduce time to
 detect and correct permissive policies on sensitive S3 buckets."
   tag "cis_impact": ""
   tag "cis_rid": "3.8"
@@ -14,7 +14,7 @@ detect and correct permissive policies on sensitive S3 buckets."
   tag "csc_control": ""
   tag "nist": ["SI-4(5)", "Rev_4"]
   tag "cce_id": "CCE-79193-9"
-  tag "check": "Perform the following to determine if the account is configured
+  desc 'check', "Perform the following to determine if the account is configured
 as prescribed: 1. Identify the log group name configured for use with
 CloudTrail:
 
@@ -39,7 +39,7 @@ contains the following:
 
 '
 "
-  tag "fix": "Perform the following to setup the metric filter, alarm, SNS
+  desc 'fix',"Perform the following to setup the metric filter, alarm, SNS
 topic, and subscription:1. Create a metric filter based on filter pattern
 provided which checks for S3 Bucket Policy changes and the
 <cloudtrail_log_group_name> taken from audit step 2.

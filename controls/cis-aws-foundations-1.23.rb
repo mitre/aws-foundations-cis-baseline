@@ -5,8 +5,8 @@ that have a console password"
 This results in many access keys being generated unnecessarily. In addition to
 unnecessary credentials, it also generates unnecessary management work in
 auditing and rotating these keys."
-  impact 0.3
-  tag "rationale": "Requiring that additional steps be taken by the user after
+  impact 'low'
+  desc 'rationale', "Requiring that additional steps be taken by the user after
 their profile has been created will give a stronger indication of intent that
 access keys are [a] necessary for their work and [b] once the access key is
 established on an account, that the keys may be in use somewhere in the
@@ -21,7 +21,7 @@ separate step from user creation."
   tag "csc_control": ""
   tag "nist": ["AC-6", "Rev_4"]
   tag "cce_id": ""
-  tag "check": "Perform the following to determine if access keys are rotated
+  desc 'check', "Perform the following to determine if access keys are rotated
 as prescribed:
 
 * Login to the AWS Management Console
@@ -60,7 +60,7 @@ key is deleted.
 
 
 "
-  tag "fix": "Perform the following to delete access keys that do not pass the
+  desc 'fix',"Perform the following to delete access keys that do not pass the
 audit:
 
 * Login to the AWS Management Console:

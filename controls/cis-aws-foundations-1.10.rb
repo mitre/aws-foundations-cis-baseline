@@ -3,8 +3,8 @@ control "cis-aws-foundations-1.10" do
   desc  "IAM password policies can prevent the reuse of a given password by the
 same user. It is recommended that the password policy prevent the reuse of
 passwords."
-  impact 0.3
-  tag "rationale": "Preventing password reuse increases account resiliency
+  impact 'low'
+  desc 'rationale', "Preventing password reuse increases account resiliency
 against brute force login attempts."
   tag "cis_impact": ""
   tag "cis_rid": "1.10"
@@ -12,7 +12,7 @@ against brute force login attempts."
   tag "csc_control": ""
   tag "nist": ["IA-5(1)", "Rev_4"]
   tag "cce_id": "CCE-78908-1"
-  tag "check": "Perform the following to ensure the password policy is
+  desc 'check', "Perform the following to ensure the password policy is
 configured as prescribed:
 
 'Via AWS Console
@@ -29,7 +29,7 @@ Management Account Settings)
 'aws iam get-account-password-policy
 
 Ensure the output of the above command includes 'PasswordReusePrevention': 24"
-  tag "fix": "Perform the following to set the password policy as prescribed:
+  desc 'fix',"Perform the following to set the password policy as prescribed:
 
 'Via AWS Console
 

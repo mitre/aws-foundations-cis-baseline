@@ -1,4 +1,4 @@
-control "cis-aws-foundations-1.2" do
+control 'cis-aws-foundations-1.2' do
   title "Ensure multi-factor authentication (MFA) is enabled for all IAM users
 that have a console password"
   desc  "Multi-Factor Authentication (MFA) adds an extra layer of protection on
@@ -6,17 +6,17 @@ top of a user name and password. With MFA enabled, when a user signs in to an
 AWS website, they will be prompted for their user name and password as well as
 for an authentication code from their AWS MFA device. It is recommended that
 MFA be enabled for all accounts that have a console password."
-  impact 0.3
-  tag "rationale": "Enabling MFA provides increased security for console access
+  impact 'low'
+  desc 'rationale', "Enabling MFA provides increased security for console access
 as it requires the authenticating principal to possess a device that emits a
 time-sensitive key and have knowledge of a credential."
-  tag "cis_impact": ""
-  tag "cis_rid": "1.2"
+  tag "cis_impact": ''
+  tag "cis_rid": '1.2'
   tag "cis_level": 1
-  tag "csc_control": [["5.6", "11.4", "12.6", "16.11"], "6.0"]
-  tag "nist": ["IA-2(1)","SC-23", "Rev_4"]
-  tag "cce_id": "CCE-78901-6"
-  tag "check": "Perform the following to determine if a MFA device is enabled
+  tag "csc_control": [['5.6', '11.4', '12.6', '16.11'], '6.0']
+  tag "nist": ['IA-2(1)', 'SC-23', 'Rev_4']
+  tag "cce_id": 'CCE-78901-6'
+  desc 'check', "Perform the following to determine if a MFA device is enabled
 for all IAM users having a console password:
 Via Management Console
 
@@ -59,7 +59,7 @@ set to true.
 
 
 "
-  tag "fix": "Perform the following to enable MFA:
+  desc 'fix', "Perform the following to enable MFA:
 
 
  'Sign in to the AWS Management Console and open the IAM console at
@@ -122,5 +122,4 @@ enrollment before active enforcement on existing AWS accounts.
   describe aws_iam_users.where(has_console_password?: true).where(has_mfa_enabled?: false) do
     it { should_not exist }
   end
-
 end
