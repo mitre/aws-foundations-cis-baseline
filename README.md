@@ -213,13 +213,16 @@ $ inspec exec /path/to/profile --attrs=attributes.yml --controls cis-aws-foundat
 - Author:: Rony Xaiver [rx294@gmail.com](mailto:rx294@gmail.com)
 - Author:: Aaron Lippold [lippold@gmail.com](mailto:lippold@gmail.com)
 
-### NOTICE
+## NOTICE
 
 © 2018 The MITRE Corporation.
 
 Approved for Public Release; Distribution Unlimited. Case Number 18-3678.
 
-### NOTICE
+## NOTICE
+MITRE hereby grants express written permission to use, reproduce, distribute, modify, and otherwise leverage this software to the extent permitted by the licensed terms provided in the LICENSE.md file included with this project.
+
+## NOTICE
 
 This software was produced for the U. S. Government under Contract Number HHSM-500-2012-00008I, and is subject to Federal Acquisition Regulation Clause 52.227-14, Rights in Data-General.
 
