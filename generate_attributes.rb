@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require 'yaml'
-require 'rubygems'
 require 'json'
 
 aws_regions = [
