@@ -1,4 +1,4 @@
-control "cis-aws-foundations-1.24" do
+control 'cis-aws-foundations-1.24' do
   title "Ensure IAM policies that allow full '*:*' administrative privileges
 are not created"
   desc  "IAM policies are the means by which privileges are granted to users,
@@ -18,13 +18,13 @@ potentially unwanted actions.
 
 'IAM policies that have a statement with 'Effect': 'Allow' with 'Action': '*'
 over  'Resource': '*' should be removed."
-  tag "cis_impact": ""
-  tag "cis_rid": "1.24"
+  tag "cis_impact": ''
+  tag "cis_rid": '1.24'
   tag "cis_level": 1
-  tag "severity": "low"
-  tag "csc_control": ""
-  tag "nist": ["AC-6", "Rev_4"]
-  tag "cce_id": "CCE-78912-3"
+  tag "severity": 'low'
+  tag "csc_control": ''
+  tag "nist": ['AC-6', 'Rev_4']
+  tag "cce_id": 'CCE-78912-3'
   tag "check": "Perform the following to determine what policies are created:
 
 * Run the following to get a list of IAM policies:
@@ -82,21 +82,25 @@ _<policy_arn>_
 
 '
 "
-# the following implementation covers cases where 'Action' and 'Resource' param of the
-# policy json is defined as an array or string
-# if recoded please confirm that it tests both cases
+  # the following implementation covers cases where 'Action' and 'Resource' param of the
+  # policy json is defined as an array or string
+  # if recoded please confirm that it tests both cases
 
   aws_iam_policies.policy_names.each do |policy|
+    next unless aws_iam_policy(policy).attached?
+
     describe "Attached Policies #{policy} allows full '*:*' privileges?" do
-      subject {
-        aws_iam_policy(policy).document.where(Effect:'Allow').actions.flatten.include?("*") and
-        aws_iam_policy(policy).document.where(Effect:'Allow').resources.flatten.include?("*")
-      }
+      subject do
+        aws_iam_policy(policy).document.where(Effect: 'Allow').actions.flatten.include?('*') &&
+          aws_iam_policy(policy).document.where(Effect: 'Allow').resources.flatten.include?('*')
+      end
       it { should be false }
-    end if aws_iam_policy(policy).attached?
+    end
   end
 
-  describe "Control skipped because no iam policies were found" do
-    skip "This control is skipped since the aws_iam_policies resource returned an empty policy list"
-  end if !aws_iam_policies.policy_names.any? { |policy| aws_iam_policy(policy).attached? }
+  if aws_iam_policies.policy_names.none? { |policy| aws_iam_policy(policy).attached? }
+    describe 'Control skipped because no iam policies were found' do
+      skip 'This control is skipped since the aws_iam_policies resource returned an empty policy list'
+    end
+  end
 end

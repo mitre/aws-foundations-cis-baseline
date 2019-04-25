@@ -11,22 +11,22 @@ class AwsIamRole < Inspec.resource(1)
 
   include AwsResourceMixin
   attr_reader :role_name, :description,
+              def inline_policies
+                return [] unless @exists
 
-  def inline_policies
-    return [] unless @exists
-    AwsIamRole::BackendFactory.create.list_role_policies(role_name: role_name).policy_names
-  end
+                AwsIamRole::BackendFactory.create.list_role_policies(role_name: role_name).policy_names
+              end
 
   def attached_policies
     return [] unless @exists
+
     AwsIamRole::BackendFactory.create.list_attached_role_policies(role_name: role_name).attached_policies.map(&:policy_name)
   end
-
 
   def assume_role_policy_document
     return AssumePolicyDocumentFilter.new({}) unless @exists
 
-    policy_data = CGI.unescape(@assume_role_policy_document) #CGI.unescape(AwsIamPolicy::BackendFactory.create.get_policy_version(
+    policy_data = CGI.unescape(@assume_role_policy_document) # CGI.unescape(AwsIamPolicy::BackendFactory.create.get_policy_version(
     #   {
     #     policy_arn: @arn,
     #     version_id: @default_version_id,
@@ -45,11 +45,12 @@ class AwsIamRole < Inspec.resource(1)
       raw_params: raw_params,
       allowed_params: [:role_name],
       allowed_scalar_name: :role_name,
-      allowed_scalar_type: String,
+      allowed_scalar_type: String
     )
     if validated_params.empty?
       raise ArgumentError, 'You must provide a role_name to aws_iam_role.'
     end
+
     validated_params
   end
 
@@ -99,7 +100,7 @@ class AssumePolicyDocumentFilter
   filter.connect(self, :document)
 
   def to_s
-    "Assume Role Rolicy"
+    'Assume Role Rolicy'
   end
 
   attr_reader :document

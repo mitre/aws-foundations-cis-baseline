@@ -1,4 +1,4 @@
-control "cis-aws-foundations-3.8" do
+control 'cis-aws-foundations-3.8' do
   title "Ensure a log metric filter and alarm exist for S3 bucket policy
 changes"
   desc  "Real-time monitoring of API calls can be achieved by directing
@@ -8,12 +8,12 @@ established for changes to S3 bucket policies."
   impact 0.3
   tag "rationale": "Monitoring changes to S3 bucket policies may reduce time to
 detect and correct permissive policies on sensitive S3 buckets."
-  tag "cis_impact": ""
-  tag "cis_rid": "3.8"
+  tag "cis_impact": ''
+  tag "cis_rid": '3.8'
   tag "cis_level": 1
-  tag "csc_control": ""
-  tag "nist": ["SI-4(5)", "Rev_4"]
-  tag "cce_id": "CCE-79193-9"
+  tag "csc_control": ''
+  tag "nist": ['SI-4(5)', 'Rev_4']
+  tag "cce_id": 'CCE-79193-9'
   tag "check": "Perform the following to determine if the account is configured
 as prescribed: 1. Identify the log group name configured for use with
 CloudTrail:
@@ -70,7 +70,7 @@ _<s3_bucket_policy_changes_metric>_ --statistic Sum --period 300 --threshold 1
 
   describe.one do
     aws_cloudtrail_trails.trail_arns.each do |trail|
-      trail_log_group_name = aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.scan( /log-group:(.+):/ ).last.first unless aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.nil?
+      trail_log_group_name = aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.scan(/log-group:(.+):/).last.first unless aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.nil?
 
       pattern = '{ ($.eventSource = s3.amazonaws.com) && (($.eventName = PutBucketAcl) || ($.eventName = PutBucketPolicy) || ($.eventName = PutBucketCors) || ($.eventName = PutBucketLifecycle) || ($.eventName = PutBucketReplication) || ($.eventName = DeleteBucketPolicy) || ($.eventName = DeleteBucketCors) || ($.eventName = DeleteBucketLifecycle) || ($.eventName = DeleteBucketReplication)) }'
 
@@ -80,21 +80,23 @@ _<s3_bucket_policy_changes_metric>_ --statistic Sum --period 300 --threshold 1
 
       metric_name = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name).metric_name
       metric_namespace = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name).metric_namespace
-      unless metric_name.nil? && metric_namespace.nil?
-        describe aws_cloudwatch_alarm(
-          metric_name: metric_name,
-          metric_namespace: metric_namespace ) do
-          it { should exist }
-          its ('alarm_actions') { should_not be_empty }
-        end
+      next if metric_name.nil? && metric_namespace.nil?
 
-        aws_cloudwatch_alarm(
-          metric_name: metric_name,
-          metric_namespace: metric_namespace).alarm_actions.each do |sns|
-          describe aws_sns_topic(sns) do
-            it { should exist }
-            its('confirmed_subscription_count') { should_not be_zero }
-          end
+      describe aws_cloudwatch_alarm(
+        metric_name: metric_name,
+        metric_namespace: metric_namespace
+      ) do
+        it { should exist }
+        its ('alarm_actions') { should_not be_empty }
+      end
+
+      aws_cloudwatch_alarm(
+        metric_name: metric_name,
+        metric_namespace: metric_namespace
+      ).alarm_actions.each do |sns|
+        describe aws_sns_topic(sns) do
+          it { should exist }
+          its('confirmed_subscription_count') { should_not be_zero }
         end
       end
     end

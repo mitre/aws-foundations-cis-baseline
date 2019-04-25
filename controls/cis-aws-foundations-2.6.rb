@@ -1,3 +1,5 @@
+exception_bucket_list = attribute('exception_bucket_list')
+
 control 'cis-aws-foundations-2.6' do
   title 'Ensure S3 bucket access logging is enabled on the CloudTrail S3 bucket'
   desc  "S3 Bucket Access Logging generates a log that contains access records
@@ -60,13 +62,13 @@ https://console.aws.amazon.com/s3 [https://console.aws.amazon.com/s3].
 
   aws_cloudtrail_trails.trail_arns.each do |trail|
     bucket_name = aws_cloudtrail_trail(trail).s3_bucket_name
-    if attribute('exception_bucket_list').include?(bucket_name)
+    if exception_bucket_list.include?(bucket_name)
       describe 'Bucket not inspected because it is defined as an exception' do
-        skip "Bucket: #{bucket_name} not insepcted because it is defined in EXCEPTION_BUCKET_LIST."
+        skip "Bucket: #{bucket_name} not insepcted because it is defined in exception_bucket_list."
       end
     end
 
-    next if attribute('exception_bucket_list').include?(bucket_name)
+    next if exception_bucket_list.include?(bucket_name)
 
     describe aws_s3_bucket(bucket_name) do
       it { should have_access_logging_enabled }

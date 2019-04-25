@@ -1,4 +1,4 @@
-control "cis-aws-foundations-3.2" do
+control 'cis-aws-foundations-3.2' do
   title "Ensure a log metric filter and alarm exist for Management Console
 sign-in without MFA"
   desc  "Real-time monitoring of API calls can be achieved by directing
@@ -9,12 +9,12 @@ authentication (MFA)."
   impact 0.3
   tag "rationale": "Monitoring for single-factor console logins will increase
 visibility into accounts that are not protected by MFA."
-  tag "cis_impact": ""
-  tag "cis_rid": "3.2"
+  tag "cis_impact": ''
+  tag "cis_rid": '3.2'
   tag "cis_level": 1
-  tag "csc_control": [["5.5"], "6.0"]
-  tag "nist": ["AU-2", "Rev_4"]
-  tag "cce_id": "CCE-79187-1"
+  tag "csc_control": [['5.5'], '6.0']
+  tag "nist": ['AU-2', 'Rev_4']
+  tag "cce_id": 'CCE-79187-1'
   tag "check": "Perform the following to determine if the account is configured
 as prescribed: 1. Identify the log group name configured for use with
 CloudTrail:
@@ -69,7 +69,7 @@ _<no_mfa_console_signin_metric>_ --statistic Sum --period 300 --threshold 1
 
   describe.one do
     aws_cloudtrail_trails.trail_arns.each do |trail|
-      trail_log_group_name = aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.scan( /log-group:(.+):/ ).last.first unless aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.nil?
+      trail_log_group_name = aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.scan(/log-group:(.+):/).last.first unless aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.nil?
 
       pattern = '{ ($.eventName = "ConsoleLogin") && ($.additionalEventData.MFAUsed != "Yes") }'
 
@@ -79,21 +79,23 @@ _<no_mfa_console_signin_metric>_ --statistic Sum --period 300 --threshold 1
 
       metric_name = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name).metric_name
       metric_namespace = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name).metric_namespace
-      unless metric_name.nil? && metric_namespace.nil?
-        describe aws_cloudwatch_alarm(
-          metric_name: metric_name,
-          metric_namespace: metric_namespace ) do
-          it { should exist }
-          its ('alarm_actions') { should_not be_empty }
-        end
+      next if metric_name.nil? && metric_namespace.nil?
 
-        aws_cloudwatch_alarm(
-          metric_name: metric_name,
-          metric_namespace: metric_namespace).alarm_actions.each do |sns|
-          describe aws_sns_topic(sns) do
-            it { should exist }
-            its('confirmed_subscription_count') { should_not be_zero }
-          end
+      describe aws_cloudwatch_alarm(
+        metric_name: metric_name,
+        metric_namespace: metric_namespace
+      ) do
+        it { should exist }
+        its ('alarm_actions') { should_not be_empty }
+      end
+
+      aws_cloudwatch_alarm(
+        metric_name: metric_name,
+        metric_namespace: metric_namespace
+      ).alarm_actions.each do |sns|
+        describe aws_sns_topic(sns) do
+          it { should exist }
+          its('confirmed_subscription_count') { should_not be_zero }
         end
       end
     end

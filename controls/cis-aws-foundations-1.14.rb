@@ -1,4 +1,4 @@
-control "cis-aws-foundations-1.14" do
+control 'cis-aws-foundations-1.14' do
   title "Ensure hardware MFA is enabled for the 'root' account"
   desc  "The root account is the most privileged user in an AWS account. MFA
 adds an extra layer of protection on top of a user name and password. With MFA
@@ -18,12 +18,12 @@ device management issue. If this is the case, consider implementing this Level
 
 'Link to order AWS compatible hardware MFA device:
 http://onlinenoram.gemalto.com/ [http://onlinenoram.gemalto.com/]"
-  tag "cis_impact": ""
-  tag "cis_rid": "1.14"
+  tag "cis_impact": ''
+  tag "cis_rid": '1.14'
   tag "cis_level": 2
-  tag "csc_control": [["5.6", "11.4", "12.6", "16.11"], "6.0"]
-  tag "nist": ["IA-2(1)","SC-23", "Rev_4"]
-  tag "cce_id": "CCE-78911-5"
+  tag "csc_control": [['5.6', '11.4', '12.6', '16.11'], '6.0']
+  tag "nist": ['IA-2(1)', 'SC-23', 'Rev_4']
+  tag "cce_id": 'CCE-78911-5'
   tag "check": "Perform the following to determine if the root account has a
 hardware MFA setup:
 

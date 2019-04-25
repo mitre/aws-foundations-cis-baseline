@@ -1,4 +1,4 @@
-control "cis-aws-foundations-1.21" do
+control 'cis-aws-foundations-1.21' do
   title "Ensure IAM instance roles are used for AWS resource access from
 instances"
   desc  "AWS access from within AWS instances can be done by either encoding
@@ -19,12 +19,12 @@ hard to change mechanisms, then they are even more unlikely to be properly
 rotated due to service disruption risks. As time goes on, credentials that
 cannot be rotated are more likely to be known by an increasing number of
 individuals who no longer work for the organization owning the credentials."
-  tag "cis_impact": ""
-  tag "cis_rid": "1.21"
+  tag "cis_impact": ''
+  tag "cis_rid": '1.21'
   tag "cis_level": 2
-  tag "csc_control": [["16.14"], "6.0"]
-  tag "nist": ["SC-28", "Rev_4"]
-  tag "cce_id": ""
+  tag "csc_control": [['16.14'], '6.0']
+  tag "nist": ['SC-28', 'Rev_4']
+  tag "cce_id": ''
   tag "check": "Whether an Instance Is Associated With a Role
 
 'For instances that are known to perform AWS actions, ensure that they belong
@@ -81,7 +81,7 @@ bad practice and, if possible, you may wish to rebuild the instance with a new
 elastic IP address and make the investment to remediate affected systems while
 assigning the system to a role."
 
-  describe "Control has to be tested manually" do
-    skip "This control must be manually reviewed"
+  describe 'Control has to be tested manually' do
+    skip 'This control must be manually reviewed'
   end
 end

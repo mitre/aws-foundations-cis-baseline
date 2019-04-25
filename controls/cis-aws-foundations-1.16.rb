@@ -1,5 +1,5 @@
-control "cis-aws-foundations-1.16" do
-  title "Ensure IAM policies are attached only to groups or roles"
+control 'cis-aws-foundations-1.16' do
+  title 'Ensure IAM policies are attached only to groups or roles'
   desc  "By default, IAM users, groups, and roles have no access to AWS
 resources. IAM policies are the means by which privileges are granted to users,
 groups, or roles. It is recommended that IAM policies be applied directly to
@@ -9,12 +9,12 @@ groups and roles but not users."
 complexity of access management as the number of users grow. Reducing access
 management complexity may in-turn reduce opportunity for a principal to
 inadvertently receive or retain excessive privileges."
-  tag "cis_impact": ""
-  tag "cis_rid": "1.16"
+  tag "cis_impact": ''
+  tag "cis_rid": '1.16'
   tag "cis_level": 1
-  tag "csc_control": ""
-  tag "nist": ["AC-6(7)", "Rev_4"]
-  tag "cce_id": "CCE-78912-3"
+  tag "csc_control": ''
+  tag "nist": ['AC-6(7)', 'Rev_4']
+  tag "cce_id": 'CCE-78912-3'
   tag "check": "Perform the following to determine if policies are attached
 directly to users:
 
@@ -85,7 +85,9 @@ https://console.aws.amazon.com/iam/ [https://console.aws.amazon.com/iam/].
     end
   end
 
-  describe "Control skipped because no iam users were found" do
-    skip "This control is skipped since the aws_iam_users resource returned an empty user list"
-  end if aws_iam_users.entries.empty?
+  if aws_iam_users.entries.empty?
+    describe 'Control skipped because no iam users were found' do
+      skip 'This control is skipped since the aws_iam_users resource returned an empty user list'
+    end
+  end
 end

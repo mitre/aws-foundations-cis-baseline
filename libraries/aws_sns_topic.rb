@@ -15,6 +15,7 @@ class AwsSnsTopic < Inspec.resource(1)
 
   def subscriptions
     return unless @exists
+
     AwsSnsTopic::BackendFactory.create.list_subscriptions_by_topic(topic_arn: @arn).subscriptions.map(&:subscription_arn)
   end
 
@@ -29,7 +30,7 @@ class AwsSnsTopic < Inspec.resource(1)
       raw_params: raw_params,
       allowed_params: [:arn],
       allowed_scalar_name: :arn,
-      allowed_scalar_type: String,
+      allowed_scalar_type: String
     )
     # Validate the ARN
     unless validated_params[:arn] =~ /^arn:aws:sns:[\w\-]+:\d{12}:[\S]+$/

@@ -1,5 +1,5 @@
-control "cis-aws-foundations-4.3" do
-  title "Ensure VPC flow logging is enabled in all VPCs"
+control 'cis-aws-foundations-4.3' do
+  title 'Ensure VPC flow logging is enabled in all VPCs'
   desc  "VPC Flow Logs is a feature that enables you to capture information
 about the IP traffic going to and from network interfaces in your VPC. After
 you've created a flow log, you can view and retrieve its data in Amazon
@@ -21,11 +21,11 @@ retention periods:
 
 *
 http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/SettingLogRetention.html"
-  tag "cis_rid": "4.3"
+  tag "cis_rid": '4.3'
   tag "cis_level": 2
-  tag "cis_control_number": ""
-  tag "nist": ["SI-4(4)", "Rev_4"]
-  tag "cce_id": "CCE-79202-8"
+  tag "cis_control_number": ''
+  tag "nist": ['SI-4(4)', 'Rev_4']
+  tag "cce_id": 'CCE-79202-8'
   tag "check": "Perform the following to determine if VPC Flow logs is enabled:
 
 
@@ -67,14 +67,16 @@ operation of an already running environment.
     end
     describe.one do
       aws_vpc(vpc).flow_logs.each do |flow_log|
-        describe "flow log settings" do
+        describe 'flow log settings' do
           subject { flow_log }
           its('traffic_type') { should cmp 'REJECT' }
         end
       end
     end
   end
-  describe "Control skipped because no vpcs were found" do
-    skip "This control is skipped since the aws_vpcs resource returned an empty vpc list"
-  end if aws_vpcs.vpc_ids.empty?
+  if aws_vpcs.vpc_ids.empty?
+    describe 'Control skipped because no vpcs were found' do
+      skip 'This control is skipped since the aws_vpcs resource returned an empty vpc list'
+    end
+  end
 end

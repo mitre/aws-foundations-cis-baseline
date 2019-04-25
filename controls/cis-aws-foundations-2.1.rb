@@ -1,5 +1,5 @@
-control "cis-aws-foundations-2.1" do
-  title "Ensure CloudTrail is enabled in all regions"
+control 'cis-aws-foundations-2.1' do
+  title 'Ensure CloudTrail is enabled in all regions'
   desc  "AWS CloudTrail is a web service that records AWS API calls for your
 account and delivers log files to you. The recorded information includes the
 identity of the API caller, the time of the API call, the source IP address of
@@ -17,11 +17,11 @@ accumulation and management of logs over time. See the following AWS resource
 for more information on these features:
 
 * http://docs.aws.amazon.com/AmazonS3/latest/dev/object-lifecycle-mgmt.html"
-  tag "cis_rid": "2.1"
+  tag "cis_rid": '2.1'
   tag "cis_level": 1
-  tag "csc_control": [["14.6"], "6.0"]
-  tag "nist": ["AU-2", "Rev_4"]
-  tag "cce_id": "CCE-78913-1"
+  tag "csc_control": [['14.6'], '6.0']
+  tag "nist": ['AU-2', 'Rev_4']
+  tag "cce_id": 'CCE-78913-1'
   tag "check": "Perform the following to determine if CloudTrail is enabled for
 all regions:
 

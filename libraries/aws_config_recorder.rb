@@ -14,7 +14,7 @@ class AwsConfigurationRecorder < Inspec.resource(1)
   "
 
   include AwsResourceMixin
-  attr_reader :role_arn , :resource_types, :recorder_name, :resp
+  attr_reader :role_arn, :resource_types, :recorder_name, :resp
 
   def to_s
     "Configuration_Recorder: #{@recorder_name}"
@@ -34,6 +34,7 @@ class AwsConfigurationRecorder < Inspec.resource(1)
 
   def status
     return unless @exists
+
     backend = AwsConfigurationRecorder::BackendFactory.create
     @resp = backend.describe_configuration_recorder_status(@query)
     @status = @resp.configuration_recorders_status.first.to_h
@@ -41,6 +42,7 @@ class AwsConfigurationRecorder < Inspec.resource(1)
 
   def recording?
     return unless @exists
+
     status[:recording]
   end
 
@@ -51,7 +53,7 @@ class AwsConfigurationRecorder < Inspec.resource(1)
       raw_params: raw_params,
       allowed_params: [:recorder_name],
       allowed_scalar_name: :recorder_name,
-      allowed_scalar_type: String,
+      allowed_scalar_type: String
     )
 
     validated_params
@@ -60,11 +62,11 @@ class AwsConfigurationRecorder < Inspec.resource(1)
   def fetch_from_aws
     backend = AwsConfigurationRecorder::BackendFactory.create
 
-    if @recorder_name.nil?
-      @query = { configuration_recorder_names: ['default'] }
-    else
-      @query = { configuration_recorder_names: [@recorder_name] }
-    end
+    @query = if @recorder_name.nil?
+               { configuration_recorder_names: ['default'] }
+             else
+               { configuration_recorder_names: [@recorder_name] }
+             end
 
     @resp = backend.describe_configuration_recorders(@query)
     @exists = !@resp.empty?
@@ -85,7 +87,7 @@ class AwsConfigurationRecorder < Inspec.resource(1)
       def describe_configuration_recorders(query)
         AWSConnection.new.configservice_client.describe_configuration_recorders(query)
       rescue Aws::ConfigService::Errors::NoSuchConfigurationRecorderException
-        return {}
+        {}
       end
 
       def describe_configuration_recorder_status(query)

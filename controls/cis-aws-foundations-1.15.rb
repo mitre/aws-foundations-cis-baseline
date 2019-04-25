@@ -1,5 +1,5 @@
-control "cis-aws-foundations-1.15" do
-  title "Ensure security questions are registered in the AWS account"
+control 'cis-aws-foundations-1.15' do
+  title 'Ensure security questions are registered in the AWS account'
   desc  "The AWS support portal allows account owners to establish security
 questions that can be used to authenticate individuals calling AWS customer
 service for support. It is recommended that security questions be established."
@@ -11,12 +11,12 @@ During events in which the Root password is no longer accessible or the MFA
 token associated with root is lost/destroyed it is possible, through
 authentication using secret questions and associated answers, to recover root
 login access."
-  tag "cis_impact": ""
-  tag "cis_rid": "1.15"
+  tag "cis_impact": ''
+  tag "cis_rid": '1.15'
   tag "cis_level": 1
-  tag "cis_control_number": ""
-  tag "nist": ["IA-2", "Rev_4"]
-  tag "cce_id": ""
+  tag "cis_control_number": ''
+  tag "nist": ['IA-2', 'Rev_4']
+  tag "cce_id": ''
   tag "check": "Perform the following in the AWS Management Console:
 
 * Login to the AWS account as root
@@ -47,7 +47,7 @@ Information page, configure three security challenge questions.
 * Click Update when complete
 * Place Questions and Answers and place in a secure physical location"
 
-  describe "Control has to be tested manually" do
-    skip "This control must be manually reviewed"
+  describe 'Control has to be tested manually' do
+    skip 'This control must be manually reviewed'
   end
 end

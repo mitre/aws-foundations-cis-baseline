@@ -1,5 +1,5 @@
-control "cis-aws-foundations-2.4" do
-  title "Ensure CloudTrail trails are integrated with CloudWatch Logs"
+control 'cis-aws-foundations-2.4' do
+  title 'Ensure CloudTrail trails are integrated with CloudWatch Logs'
   desc  "AWS CloudTrail is a web service that records AWS API calls made in a
 given AWS account. The recorded information includes the identity of the API
 caller, the time of the API call, the source IP address of the API caller, the
@@ -33,11 +33,11 @@ retention periods:
 
 *
 http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/SettingLogRetention.html"
-  tag "cis_rid": "2.4"
+  tag "cis_rid": '2.4'
   tag "cis_level": 1
-  tag "csc_control": [["6.6", "14.6"], "6.0"]
-  tag "nist": ["SI-4(2)", "AU-2", "Rev_4"]
-  tag "cce_id": "CCE-78916-4"
+  tag "csc_control": [['6.6', '14.6'], '6.0']
+  tag "nist": ['SI-4(2)', 'AU-2', 'Rev_4']
+  tag "cce_id": 'CCE-78916-4'
   tag "check": "Perform the following to ensure CloudTrail is configured as
 prescribed:
 
@@ -97,8 +97,8 @@ https://console.aws.amazon.com/cloudtrail/
 
   aws_cloudtrail_trails.trail_arns.each do |trail|
     describe aws_cloudtrail_trail(trail) do
-      its('cloud_watch_logs_log_group_arn') { should_not be_nil}
-      its('status.latest_cloud_watch_logs_delivery_time') { should cmp > Time.now - 86400 }
+      its('cloud_watch_logs_log_group_arn') { should_not be_nil }
+      its('status.latest_cloud_watch_logs_delivery_time') { should cmp > Time.now - 86_400 }
     end
   end
 end

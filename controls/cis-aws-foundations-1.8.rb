@@ -1,5 +1,5 @@
-control "cis-aws-foundations-1.8" do
-  title "Ensure IAM password policy require at least one number"
+control 'cis-aws-foundations-1.8' do
+  title 'Ensure IAM password policy require at least one number'
   desc  "Password policies are, in part, used to enforce password complexity
 requirements. IAM password policies can be used to ensure password are
 comprised of different character sets. It is recommended that the password
@@ -7,12 +7,12 @@ policy require at least one number."
   impact 0.3
   tag "rationale": "Setting a password complexity policy increases account
 resiliency against brute force login attempts."
-  tag "cis_impact": ""
-  tag "cis_rid": "1.8"
+  tag "cis_impact": ''
+  tag "cis_rid": '1.8'
   tag "cis_level": 1
-  tag "csc_control": ""
-  tag "nist": ["IA-5(1)", "Rev_4"]
-  tag "cce_id": "CCE-78906-5"
+  tag "csc_control": ''
+  tag "nist": ['IA-5(1)', 'Rev_4']
+  tag "cce_id": 'CCE-78906-5'
   tag "check": "Perform the following to ensure the password policy is
 configured as prescribed:
 

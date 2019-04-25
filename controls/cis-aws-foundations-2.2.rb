@@ -1,5 +1,5 @@
-control "cis-aws-foundations-2.2" do
-  title "Ensure CloudTrail log file validation is enabled"
+control 'cis-aws-foundations-2.2' do
+  title 'Ensure CloudTrail log file validation is enabled'
   desc  "CloudTrail log file validation creates a digitally signed digest file
 containing a hash of each log that CloudTrail writes to S3. These digest files
 can be used to determine whether a log file was changed, deleted, or unchanged
@@ -8,12 +8,12 @@ enabled on all CloudTrails."
   impact 0.7
   tag "rationale": "Enabling log file validation will provide additional
 integrity checking of CloudTrail logs."
-  tag "cis_impact": ""
-  tag "cis_rid": "2.2"
+  tag "cis_impact": ''
+  tag "cis_rid": '2.2'
   tag "cis_level": 2
-  tag "csc_control": [["6.3"], "6.0"]
-  tag "nist": ["AU-4", "Rev_4"]
-  tag "cce_id": "CCE-78914-9"
+  tag "csc_control": [['6.3'], '6.0']
+  tag "nist": ['AU-4', 'Rev_4']
+  tag "cce_id": 'CCE-78914-9'
   tag "check": "Perform the following on each trail to determine if log file
 validation is enabled:
 

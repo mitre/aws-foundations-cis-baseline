@@ -9,20 +9,20 @@
 class AWSConnection
   def initialize
     creds = nil
-    if ENV['AWS_PROFILE']
-      creds = Aws::SharedCredentials.new(profile_name: ENV['AWS_PROFILE'])
-    elsif ENV['AWS_ACCESS_KEY_ID'] and ENV['AWS_SECRET_ACCESS_KEY']
-      creds = Aws::Credentials.new(
-        ENV['AWS_ACCESS_KEY_ID'],
-        ENV['AWS_SECRET_ACCESS_KEY'],
-        ENV['AWS_SESSION_TOKEN'],
-      )
-    else
-      creds = Aws::InstanceProfileCredentials.new
-    end
+    creds = if ENV['AWS_PROFILE']
+              Aws::SharedCredentials.new(profile_name: ENV['AWS_PROFILE'])
+            elsif ENV['AWS_ACCESS_KEY_ID'] && ENV['AWS_SECRET_ACCESS_KEY']
+              Aws::Credentials.new(
+                ENV['AWS_ACCESS_KEY_ID'],
+                ENV['AWS_SECRET_ACCESS_KEY'],
+                ENV['AWS_SESSION_TOKEN']
+              )
+            else
+              Aws::InstanceProfileCredentials.new
+            end
     opts = {
       region: ENV['AWS_REGION'] || ENV['AWS_DEFAULT_REGION'],
-      credentials: creds,
+      credentials: creds
     }
     Aws.config.update(opts)
   end
@@ -38,7 +38,7 @@ class AWSConnection
   def cloudwatch_logs_client
     @cloudwatch_logs_client ||= Aws::CloudWatchLogs::Client.new
   end
-  
+
   def configservice_client
     @configservice_client ||= Aws::ConfigService::Client.new
   end

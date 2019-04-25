@@ -1,4 +1,4 @@
-control "cis-aws-foundations-1.13" do
+control 'cis-aws-foundations-1.13' do
   title "Ensure MFA is enabled for the 'root' account"
   desc  "The root account is the most privileged user in an AWS account. MFA
 adds an extra layer of protection on top of a user name and password. With MFA
@@ -16,12 +16,12 @@ individual owning the device is no longer employed at the company."
   tag "rationale": "Enabling MFA provides increased security for console access
 as it requires the authenticating principal to possess a device that emits a
 time-sensitive key and have knowledge of a credential."
-  tag "cis_impact": ""
-  tag "cis_rid": "1.13"
+  tag "cis_impact": ''
+  tag "cis_rid": '1.13'
   tag "cis_level": 1
-  tag "csc_control": [["5.6", "11.4", "12.6", "16.11"], "6.0"]
-  tag "nist": ["IA-2(1)","SC-23", "Rev_4"]
-  tag "cce_id": "CCE-78911-5"
+  tag "csc_control": [['5.6', '11.4', '12.6', '16.11'], '6.0']
+  tag "nist": ['IA-2(1)', 'SC-23', 'Rev_4']
+  tag "cce_id": 'CCE-78911-5'
   tag "check": "Perform the following to determine if the root account has MFA
 setup:
 
