@@ -40,7 +40,7 @@ class AwsCloudTrailTrail < Inspec.resource(1)
       raw_params: raw_params,
       allowed_params: [:trail_name],
       allowed_scalar_name: :trail_name,
-      allowed_scalar_type: String,
+      allowed_scalar_type: String
     )
 
     if validated_params.empty?
@@ -79,7 +79,7 @@ class AwsCloudTrailTrail < Inspec.resource(1)
       def get_trail_status(query)
         AWSConnection.new.cloudtrail_client.get_trail_status(query)
       rescue Aws::CloudTrail::Errors::TrailNotFoundException
-        return {}
+        {}
       end
     end
   end

@@ -35,7 +35,7 @@ class AwsSnsSubscription < Inspec.resource(1)
       raw_params: raw_params,
       allowed_params: [:arn],
       allowed_scalar_name: :arn,
-      allowed_scalar_type: String,
+      allowed_scalar_type: String
     )
     # Validate the ARN
     # unless validated_params[:arn] =~ /^arn:aws:sns:[\w\-]+:\d{12}:[\S]+$/
@@ -47,6 +47,7 @@ class AwsSnsSubscription < Inspec.resource(1)
 
   def fetch_from_aws
     return if @arn.eql?('PendingConfirmation')
+
     @aws_response = AwsSnsSubscription::BackendFactory.create.get_subscription_attributes(subscription_arn: @arn).attributes
     @exists = true
     @owner = @aws_response['Owner']
@@ -55,7 +56,6 @@ class AwsSnsSubscription < Inspec.resource(1)
     @endpoint = @aws_response['Endpoint']
     @protocol = @aws_response['Protocol']
     @confirmation_was_authenticated = @aws_response['ConfirmationWasAuthenticated'].eql?('true')
-
   rescue Aws::SNS::Errors::NotFound
     @exists = false
   end

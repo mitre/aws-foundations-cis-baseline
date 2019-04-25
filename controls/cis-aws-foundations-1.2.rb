@@ -1,3 +1,5 @@
+service_account_mfa_exceptions = attribute('service_account_mfa_exceptions')
+
 control 'cis-aws-foundations-1.2' do
   title "Ensure multi-factor authentication (MFA) is enabled for all IAM users
 that have a console password"
@@ -121,17 +123,17 @@ enrollment before active enforcement on existing AWS accounts.
 
   users_without_mfa = aws_iam_users.where(has_console_password?: true).where(has_mfa_enabled?: false).usernames
 
-  if attribute('service_account_mfa_exceptions').compact.empty?
+  if service_account_mfa_exceptions.compact.empty?
     describe 'The active IAM users that do not have MFA enabled' do
       subject { users_without_mfa }
       it { should be_empty }
     end
   end
 
-  unless attribute('service_account_mfa_exceptions').compact.empty?
+  unless service_account_mfa_exceptions.compact.empty?
     describe "The active IAM users that do not have MFA enabled
-    (except for the documented service accounts: #{attribute('service_account_mfa_exceptions')})" do
-      subject { users_without_mfa - attribute('service_account_mfa_exceptions') }
+    (except for the documented service accounts: #{service_account_mfa_exceptions})" do
+      subject { users_without_mfa - service_account_mfa_exceptions }
       it { should be_empty }
     end
   end

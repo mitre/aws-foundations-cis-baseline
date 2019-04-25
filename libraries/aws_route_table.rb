@@ -22,7 +22,7 @@ class AwsRouteTable < Inspec.resource(1)
       raw_params: raw_params,
       allowed_params: [:route_table_id],
       allowed_scalar_name: :route_table_id,
-      allowed_scalar_type: String,
+      allowed_scalar_type: String
     )
 
     if validated_params.key?(:route_table_id) && validated_params[:route_table_id] !~ /^rtb\-[0-9a-f]{8}/
@@ -36,11 +36,11 @@ class AwsRouteTable < Inspec.resource(1)
   def fetch_from_aws
     backend = AwsRouteTable::BackendFactory.create
 
-    if @route_table_id.nil?
-      args = nil
-    else
-      args = { filters: [{ name: 'route-table-id', values: [@route_table_id] }] }
-    end
+    args = if @route_table_id.nil?
+             nil
+           else
+             { filters: [{ name: 'route-table-id', values: [@route_table_id] }] }
+           end
 
     @resp = backend.describe_route_tables(args)
     @routetable = @resp.to_h[:route_tables]

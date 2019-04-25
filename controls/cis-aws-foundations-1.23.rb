@@ -1,4 +1,4 @@
-control "cis-aws-foundations-1.23" do
+control 'cis-aws-foundations-1.23' do
   title "Do not setup access keys during initial user setup for all IAM users
 that have a console password"
   desc  "AWS console defaults the checkbox for creating access keys to enabled.
@@ -15,12 +15,12 @@ organization.
 'NOTE: Even if it is known the user will need access keys, require them to
 create the keys themselves or put in a support ticket to have the created as a
 separate step from user creation."
-  tag "cis_impact": ""
-  tag "cis_rid": "1.23"
+  tag "cis_impact": ''
+  tag "cis_rid": '1.23'
   tag "cis_level": 1
-  tag "csc_control": ""
-  tag "nist": ["AC-6", "Rev_4"]
-  tag "cce_id": ""
+  tag "csc_control": ''
+  tag "nist": ['AC-6', 'Rev_4']
+  tag "cce_id": ''
   tag "check": "Perform the following to determine if access keys are rotated
 as prescribed:
 
@@ -91,7 +91,9 @@ profile but have not been used.
     end
   end
 
-  describe "Control skipped because no iam access keys were found" do
-    skip "This control is skipped since the aws_iam_access_keys resource returned an empty access key list"
-  end if aws_iam_access_keys.entries.empty?
+  if aws_iam_access_keys.entries.empty?
+    describe 'Control skipped because no iam access keys were found' do
+      skip 'This control is skipped since the aws_iam_access_keys resource returned an empty access key list'
+    end
+  end
 end

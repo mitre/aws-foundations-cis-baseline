@@ -1,5 +1,5 @@
-control "cis-aws-foundations-2.7" do
-  title "Ensure CloudTrail logs are encrypted at rest using KMS CMKs"
+control 'cis-aws-foundations-2.7' do
+  title 'Ensure CloudTrail logs are encrypted at rest using KMS CMKs'
   desc  "AWS CloudTrail is a web service that records AWS API calls for an
 account and makes those logs available to users and resources in accordance
 with IAM policies. AWS Key Management Service (KMS) is a managed service that
@@ -15,11 +15,11 @@ permission on the corresponding log bucket and must be granted decrypt
 permission by the CMK policy."
   tag "cis_impact": "Customer created keys incur an additional cost. See
 https://aws.amazon.com/kms/pricing/ for more information."
-  tag "cis_rid": "2.7"
+  tag "cis_rid": '2.7'
   tag "cis_level": 2
-  tag "csc_control": [["13.1"], "6.0"]
-  tag "nist": ["AU-9", "Rev_4"]
-  tag "cce_id": "CCE-78919-8"
+  tag "csc_control": [['13.1'], '6.0']
+  tag "nist": ['AU-9', 'Rev_4']
+  tag "cce_id": 'CCE-78919-8'
   tag "check": "Perform the following to determine if CloudTrail is configured
 to use SSE-KMS:
 
@@ -80,7 +80,7 @@ aws kms put-key-policy --key-id <_cloudtrail_kms_key_> --policy
 
   aws_cloudtrail_trails.trail_arns.each do |trail|
     describe aws_cloudtrail_trail(trail) do
-      its('kms_key_id') { should_not be_nil}
+      its('kms_key_id') { should_not be_nil }
     end
   end
 end

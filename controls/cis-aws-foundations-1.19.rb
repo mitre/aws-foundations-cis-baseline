@@ -1,5 +1,5 @@
-control "cis-aws-foundations-1.19" do
-  title "Maintain current contact details"
+control 'cis-aws-foundations-1.19' do
+  title 'Maintain current contact details'
   desc  "Ensure contact email and telephone details for AWS accounts are
 current and map to more than one individual in your organisation.
 
@@ -23,12 +23,12 @@ both the customers' and AWS' best interests that prompt contact can be
 established. This is best achieved by setting AWS account contact details to
 point to resources which have multiple individuals as recipients, such as email
 aliases and PABX hunt groups."
-  tag "cis_impact": ""
-  tag "cis_rid": "1.19"
+  tag "cis_impact": ''
+  tag "cis_rid": '1.19'
   tag "cis_level": 1
-  tag "csc_control": ""
-  tag "nist": ["IA-4", "Rev_4"]
-  tag "cce_id": ""
+  tag "csc_control": ''
+  tag "nist": ['IA-4', 'Rev_4']
+  tag "cce_id": ''
   tag "check": "This activity can only be performed via the AWS Console, with a
 user who has permission to read and write Billing information
 (aws-portal:*Billing ).
@@ -56,7 +56,7 @@ Management console at https://console.aws.amazon.com/billing/home#/.
 * For the fields that you want to change, type your updated information, and
 then choose Update."
 
-  describe "Control has to be tested manually" do
-    skip "This control must be manually reviewed"
+  describe 'Control has to be tested manually' do
+    skip 'This control must be manually reviewed'
   end
 end

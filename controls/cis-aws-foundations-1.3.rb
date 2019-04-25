@@ -1,5 +1,5 @@
-control "cis-aws-foundations-1.3" do
-  title "Ensure credentials unused for 90 days or greater are disabled"
+control 'cis-aws-foundations-1.3' do
+  title 'Ensure credentials unused for 90 days or greater are disabled'
   desc  "AWS IAM users can access AWS resources using different types of
 credentials, such as passwords or access keys. It is recommended that all
 credentials that have been unused in 90 or greater days be removed or
@@ -8,12 +8,12 @@ deactivated."
   tag "rationale": "Disabling or removing unnecessary credentials will reduce
 the window of opportunity for credentials associated with a compromised or
 abandoned account to be used."
-  tag "cis_impact": ""
-  tag "cis_rid": "1.3"
+  tag "cis_impact": ''
+  tag "cis_rid": '1.3'
   tag "cis_level": 1
-  tag "csc_control": [["16.6"], "6.0"]
-  tag "nist": ["IA-4", "Rev_4"]
-  tag "cce_id": "CCE-78900-8"
+  tag "csc_control": [['16.6'], '6.0']
+  tag "nist": ['IA-4', 'Rev_4']
+  tag "cce_id": 'CCE-78900-8'
   tag "check": "Perform the following to determine if unused credentials exist:
 
 
@@ -61,7 +61,7 @@ ensure the corresponding access_key_n_last_used_date is less than 90 days ago."
     it { should_not exist }
   end
 
-  describe aws_iam_users.where(password_ever_used?: true).where{ password_last_used_days_ago >= 90 } do
+  describe aws_iam_users.where(password_ever_used?: true).where { password_last_used_days_ago >= 90 } do
     it { should_not exist }
   end
 
@@ -73,7 +73,9 @@ ensure the corresponding access_key_n_last_used_date is less than 90 days ago."
     end
   end
 
-  describe "Control skipped because no active iam access keys were found" do
-    skip "This control is skipped since the aws_iam_access_keys resource returned an empty active access key list"
-  end if aws_iam_access_keys.where(active: true).entries.empty?
+  if aws_iam_access_keys.where(active: true).entries.empty?
+    describe 'Control skipped because no active iam access keys were found' do
+      skip 'This control is skipped since the aws_iam_access_keys resource returned an empty active access key list'
+    end
+  end
 end

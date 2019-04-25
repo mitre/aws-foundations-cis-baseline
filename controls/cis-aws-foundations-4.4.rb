@@ -1,5 +1,5 @@
-control "cis-aws-foundations-4.4" do
-  title "Ensure the default security group of every VPC restricts all traffic"
+control 'cis-aws-foundations-4.4' do
+  title 'Ensure the default security group of every VPC restricts all traffic'
   desc  "A VPC comes with a default security group whose initial settings deny
 all inbound traffic, allow all outbound traffic, and allow all traffic between
 instances assigned to the security group. If you don't specify a security group
@@ -32,11 +32,11 @@ the default security groups are likely to be enabling many ports that are
 unknown. Enabling VPC flow logging (of accepts) in an existing environment that
 is know to be breach free will reveal the current pattern of ports being used
 for each instance to communicate successfully."
-  tag "cis_rid": "4.4"
+  tag "cis_rid": '4.4'
   tag "cis_level": 2
-  tag "csc_control": [["9.2"], "6.0"]
-  tag "nist": ["SC-7(5)", "Rev_4"]
-  tag "cce_id": "CCE-79201-0"
+  tag "csc_control": [['9.2'], '6.0']
+  tag "nist": ['SC-7(5)', 'Rev_4']
+  tag "cce_id": 'CCE-79201-0'
   tag "check": "Perform the following to determine if the account is configured
 as prescribed:
 
@@ -105,7 +105,9 @@ to 'DO NOT USE. DO NOT ADD RULES'"
       its('outbound_rules') { should be_empty }
     end
   end
-  describe "Control skipped because no vpcs were found" do
-    skip "This control is skipped since the aws_vpcs resource returned an empty vpc list"
-  end if aws_vpcs.vpc_ids.empty?
+  if aws_vpcs.vpc_ids.empty?
+    describe 'Control skipped because no vpcs were found' do
+      skip 'This control is skipped since the aws_vpcs resource returned an empty vpc list'
+    end
+  end
 end

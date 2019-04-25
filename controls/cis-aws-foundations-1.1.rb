@@ -1,4 +1,4 @@
-control "cis-aws-foundations-1.1" do
+control 'cis-aws-foundations-1.1' do
   title "Avoid the use of the 'root' account"
   desc  "The 'root' account has unrestricted access to all resources in the AWS
 account. It is highly recommended that the use of this account be avoided."
@@ -7,12 +7,12 @@ account. It is highly recommended that the use of this account be avoided."
 Minimizing the use of this account and adopting the principle of least
 privilege for access management will reduce the risk of accidental changes and
 unintended disclosure of highly privileged credentials."
-  tag "cis_impact": ""
-  tag "cis_rid": "1.1"
+  tag "cis_impact": ''
+  tag "cis_rid": '1.1'
   tag "cis_level": 1
-  tag "csc_control": [["5.1"], "6.0"]
-  tag "nist": ["AC-6 (9)", "Rev_4"]
-  tag "cce_id": ""
+  tag "csc_control": [['5.1'], '6.0']
+  tag "nist": ['AC-6 (9)', 'Rev_4']
+  tag "cce_id": ''
 
   tag "check": "Implement the Ensure a log metric filter and alarm exist for
 usage of 'root' account recommendation in the Monitoring section of this
@@ -34,31 +34,33 @@ are attached only to groups or roles recommendation"
 
   describe.one do
     aws_cloudtrail_trails.trail_arns.each do |trail|
-      trail_log_group_name = aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.scan( /log-group:(.+):/ ).last.first unless aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.nil?
+      trail_log_group_name = aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.scan(/log-group:(.+):/).last.first unless aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.nil?
 
       pattern = '{ $.userIdentity.type = "Root" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != "AwsServiceEvent" }'
 
       describe aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name) do
-        it { should exist}
+        it { should exist }
       end
 
       metric_name = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name).metric_name
       metric_namespace = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name).metric_namespace
-      unless metric_name.nil? && metric_namespace.nil?
-        describe aws_cloudwatch_alarm(
-          metric_name: metric_name,
-          metric_namespace: metric_namespace ) do
-          it { should exist }
-          its ('alarm_actions') { should_not be_empty }
-        end
+      next if metric_name.nil? && metric_namespace.nil?
 
-        aws_cloudwatch_alarm(
-          metric_name: metric_name,
-          metric_namespace: metric_namespace).alarm_actions.each do |sns|
-          describe aws_sns_topic(sns) do
-            it { should exist }
-            its('confirmed_subscription_count') { should_not be_zero }
-          end
+      describe aws_cloudwatch_alarm(
+        metric_name: metric_name,
+        metric_namespace: metric_namespace
+      ) do
+        it { should exist }
+        its ('alarm_actions') { should_not be_empty }
+      end
+
+      aws_cloudwatch_alarm(
+        metric_name: metric_name,
+        metric_namespace: metric_namespace
+      ).alarm_actions.each do |sns|
+        describe aws_sns_topic(sns) do
+          it { should exist }
+          its('confirmed_subscription_count') { should_not be_zero }
         end
       end
     end

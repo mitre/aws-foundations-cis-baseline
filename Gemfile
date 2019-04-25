@@ -1,4 +1,4 @@
 source 'https://rubygems.org'
 
-gem 'aws-sdk', '~> 2'
 gem 'inspec'
+gem 'aws-sdk'

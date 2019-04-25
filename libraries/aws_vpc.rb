@@ -16,7 +16,7 @@ class AwsVpc < Inspec.resource(1)
     "VPC #{vpc_id}"
   end
 
-  [:cidr_block, :dhcp_options_id, :state, :vpc_id, :instance_tenancy, :is_default,].each do |property|
+  %i[cidr_block dhcp_options_id state vpc_id instance_tenancy is_default].each do |property|
     define_method(property) do
       @vpc[property]
     end
@@ -24,17 +24,18 @@ class AwsVpc < Inspec.resource(1)
 
   def flow_logs
     return unless @exists
+
     backend = AwsVpc::BackendFactory.create
-    filter = { name: "resource-id", values: [@vpc_id],}
-    resp = backend.describe_flow_logs({filter: [filter]})
+    filter = { name: 'resource-id', values: [@vpc_id] }
+    resp = backend.describe_flow_logs(filter: [filter])
     resp.flow_logs
   end
 
   def flow_logs_enabled?
     return unless @exists
+
     !flow_logs.empty?
   end
-
 
   alias default? is_default
 
@@ -45,7 +46,7 @@ class AwsVpc < Inspec.resource(1)
       raw_params: raw_params,
       allowed_params: [:vpc_id],
       allowed_scalar_name: :vpc_id,
-      allowed_scalar_type: String,
+      allowed_scalar_type: String
     )
 
     if validated_params.key?(:vpc_id) && validated_params[:vpc_id] !~ /^vpc\-[0-9a-f]{8}/
@@ -58,13 +59,13 @@ class AwsVpc < Inspec.resource(1)
   def fetch_from_aws
     backend = AwsVpc::BackendFactory.create
 
-    if @vpc_id.nil?
-      filter = { name: 'isDefault', values: ['true'] }
-    else
-      filter = { name: 'vpc-id', values: [@vpc_id] }
-    end
+    filter = if @vpc_id.nil?
+               { name: 'isDefault', values: ['true'] }
+             else
+               { name: 'vpc-id', values: [@vpc_id] }
+             end
 
-    resp = backend.describe_vpcs({ filters: [filter] })
+    resp = backend.describe_vpcs(filters: [filter])
 
     @vpc = resp.vpcs[0].to_h
     @vpc_id = @vpc[:vpc_id]

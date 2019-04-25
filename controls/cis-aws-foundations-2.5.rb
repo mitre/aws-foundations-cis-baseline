@@ -1,3 +1,5 @@
+config_delivery_channels = attribute('config_delivery_channels')
+
 control 'cis-aws-foundations-2.5' do
   title 'Ensure AWS Config is enabled in all regions'
   desc  "AWS Config is a web service that performs configuration management of
@@ -63,8 +65,8 @@ in 1 region only
 
     describe aws_config_delivery_channel do
       it { should exist }
-      its('s3_bucket_name') { should cmp attribute('config_delivery_channels')[region]['s3_bucket_name'] }
-      its('sns_topic_arn') { should cmp attribute('config_delivery_channels')[region]['sns_topic_arn'] }
+      its('s3_bucket_name') { should cmp config_delivery_channels[region]['s3_bucket_name'] } 
+      its('sns_topic_arn') { should cmp config_delivery_channels[region]['sns_topic_arn'] } 
     end
   end
 

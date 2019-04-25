@@ -1,5 +1,5 @@
-control "cis-aws-foundations-1.6" do
-  title "Ensure IAM password policy require at least one lowercase letter"
+control 'cis-aws-foundations-1.6' do
+  title 'Ensure IAM password policy require at least one lowercase letter'
   desc  "Password policies are, in part, used to enforce password complexity
 requirements. IAM password policies can be used to ensure password are
 comprised of different character sets. It is recommended that the password
@@ -7,12 +7,12 @@ policy require at least one lowercase letter."
   impact 0.3
   tag "rationale": "Setting a password complexity policy increases account
 resiliency against brute force login attempts."
-  tag "cis_impact": ""
-  tag "cis_rid": "1.6"
+  tag "cis_impact": ''
+  tag "cis_rid": '1.6'
   tag "cis_level": 1
-  tag "csc_control": ""
-  tag "nist": ["IA-5(1)", "Rev_4"]
-  tag "cce_id": "CCE-78904-0"
+  tag "csc_control": ''
+  tag "nist": ['IA-5(1)', 'Rev_4']
+  tag "cce_id": 'CCE-78904-0'
   tag "check": "Perform the following to ensure the password policy is
 configured as prescribed:
 

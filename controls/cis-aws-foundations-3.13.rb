@@ -1,5 +1,5 @@
-control "cis-aws-foundations-3.13" do
-  title "Ensure a log metric filter and alarm exist for route table changes"
+control 'cis-aws-foundations-3.13' do
+  title 'Ensure a log metric filter and alarm exist for route table changes'
   desc  "Real-time monitoring of API calls can be achieved by directing
 CloudTrail Logs to CloudWatch Logs and establishing corresponding metric
 filters and alarms. Routing tables are used to route network traffic between
@@ -8,12 +8,12 @@ alarm be established for changes to route tables."
   impact 0.3
   tag "rationale": "Monitoring changes to route tables will help ensure that
 all VPC traffic flows through an expected path."
-  tag "cis_impact": ""
-  tag "cis_rid": "3.13"
+  tag "cis_impact": ''
+  tag "cis_rid": '3.13'
   tag "cis_level": 1
-  tag "csc_control": ""
-  tag "nist": ["SI-4(5)", "Rev_4"]
-  tag "cce_id": "CCE-79198-8"
+  tag "csc_control": ''
+  tag "nist": ['SI-4(5)', 'Rev_4']
+  tag "cce_id": 'CCE-79198-8'
   tag "check": "Perform the following to determine if the account is configured
 as prescribed: 1. Identify the log group name configured for use with
 CloudTrail:
@@ -100,7 +100,7 @@ created in step 1 and an SNS topic created in step 2
 
   describe.one do
     aws_cloudtrail_trails.trail_arns.each do |trail|
-      trail_log_group_name = aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.scan( /log-group:(.+):/ ).last.first unless aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.nil?
+      trail_log_group_name = aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.scan(/log-group:(.+):/).last.first unless aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.nil?
 
       pattern = '{ ($.eventName = CreateRoute) || ($.eventName = CreateRouteTable) || ($.eventName = ReplaceRoute) || ($.eventName = ReplaceRouteTableAssociation) || ($.eventName = DeleteRouteTable) || ($.eventName = DeleteRoute) || ($.eventName = DisassociateRouteTable) }'
 
@@ -110,21 +110,23 @@ created in step 1 and an SNS topic created in step 2
 
       metric_name = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name).metric_name
       metric_namespace = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name).metric_namespace
-      unless metric_name.nil? && metric_namespace.nil?
-        describe aws_cloudwatch_alarm(
-          metric_name: metric_name,
-          metric_namespace: metric_namespace ) do
-          it { should exist }
-          its ('alarm_actions') { should_not be_empty }
-        end
+      next if metric_name.nil? && metric_namespace.nil?
 
-        aws_cloudwatch_alarm(
-          metric_name: metric_name,
-          metric_namespace: metric_namespace).alarm_actions.each do |sns|
-          describe aws_sns_topic(sns) do
-            it { should exist }
-            its('confirmed_subscription_count') { should_not be_zero }
-          end
+      describe aws_cloudwatch_alarm(
+        metric_name: metric_name,
+        metric_namespace: metric_namespace
+      ) do
+        it { should exist }
+        its ('alarm_actions') { should_not be_empty }
+      end
+
+      aws_cloudwatch_alarm(
+        metric_name: metric_name,
+        metric_namespace: metric_namespace
+      ).alarm_actions.each do |sns|
+        describe aws_sns_topic(sns) do
+          it { should exist }
+          its('confirmed_subscription_count') { should_not be_zero }
         end
       end
     end

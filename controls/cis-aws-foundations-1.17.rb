@@ -1,5 +1,5 @@
-control "cis-aws-foundations-1.17" do
-  title "Enable detailed billing"
+control 'cis-aws-foundations-1.17' do
+  title 'Enable detailed billing'
   desc  "Enable Detailed Billing to cause the generation of a log record for
 every event or hourly ongoing activity which incurs cost in an AWS account.
 These records are aggregated into CSV files of hourly records, and written to
@@ -17,12 +17,12 @@ resources and thereby triggering investigation activities. Billing records can
 also be broken out by tag, which can serve as a starting point in identifying
 which part of the environment, or organisation, the anomalous activity is
 occurring in."
-  tag "cis_impact": ""
-  tag "cis_rid": "1.17"
+  tag "cis_impact": ''
+  tag "cis_rid": '1.17'
   tag "cis_level": 1
-  tag "csc_control": ""
-  tag "nist": ["AU-12", "Rev_4"]
-  tag "cce_id": ""
+  tag "csc_control": ''
+  tag "nist": ['AU-12', 'Rev_4']
+  tag "cce_id": ''
   tag "check": "There is currently no AWS CLI support for this operation, so it
 is necessary to use the Management Console.
 
@@ -82,7 +82,7 @@ names of the form (eg) <AWS account
 number>-<aws-billing-detailed-line-items-with-resources-and-tags-yyyy-mm>.csv.zip
 are being generated."
 
-  describe "Control has to be tested manually" do
-    skip "This control must be manually reviewed"
+  describe 'Control has to be tested manually' do
+    skip 'This control must be manually reviewed'
   end
 end

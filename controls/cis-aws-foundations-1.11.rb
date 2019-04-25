@@ -1,8 +1,10 @@
+aws_cred_age = attribute('aws_cred_age')
+
 control 'cis-aws-foundations-1.11' do
-  title "Ensure IAM password policy expires passwords within #{attribute('aws_cred_age')} days or less"
+  title "Ensure IAM password policy expires passwords within #{aws_cred_age} days or less"
   desc  "IAM password policies can require passwords to be rotated or expired
 after a given number of days. It is recommended that the password policy expire
-passwords after #{attribute('aws_cred_age')} days or less."
+passwords after #{aws_cred_age} days or less."
   impact 0.3
   tag "rationale": "Reducing the password lifetime increases account resiliency
 against brute force login attempts. Additionally, requiring regular password
@@ -33,13 +35,13 @@ Management Account Settings)
 * Go to IAM Service on the AWS Console
 * Click on Account Settings on the Left Pane
 * Ensure 'Enable password expiration' is checked
-* Ensure 'Password expiration period (in days):' is set to #{attribute('aws_cred_age')} or less
+* Ensure 'Password expiration period (in days):' is set to #{aws_cred_age} or less
 
 'Via CLI
 
 'aws iam get-account-password-policy
 
-Ensure the output of the above command includes 'MaxPasswordAge': #{attribute('aws_cred_age')} or less"
+Ensure the output of the above command includes 'MaxPasswordAge': #{aws_cred_age} or less"
   tag "fix": "Perform the following to set the password policy as prescribed:
 
 'Via AWS Console:
@@ -49,17 +51,17 @@ Management Account Settings)
 * Go to IAM Service on the AWS Console
 * Click on Account Settings on the Left Pane
 * Check 'Enable password expiration'
-* Set 'Password expiration period (in days):' to #{attribute('aws_cred_age')} or less
+* Set 'Password expiration period (in days):' to #{aws_cred_age} or less
 
 ' Via CLI
 
-' aws iam update-account-password-policy --max-password-age #{attribute('aws_cred_age')}
+' aws iam update-account-password-policy --max-password-age #{aws_cred_age}
 
 'Note: All commands starting with 'aws iam update-account-password-policy' can
 be combined into a single command."
 
   describe aws_iam_password_policy do
     its('expire_passwords?') { should be true }
-    its('max_password_age_in_days') { should cmp <= attribute('aws_cred_age') }
+    its('max_password_age_in_days') { should cmp <= aws_cred_age }
   end
 end

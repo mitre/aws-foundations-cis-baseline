@@ -5,10 +5,10 @@ copyright: MITRE, 2018
 copyright_email: inspec@mitre.org
 license: Apache-2.0
 summary: 'InSpec Profile to validate the CIS AWS Foundations Benchmark v1.1.0'
-version: 1.0.4
+version: 1.0.5
 supports:
   - platform: aws
-inspec_version: "~> 3.0"
+
 
 attributes:
   - name: default_aws_region
@@ -125,4 +125,5 @@ attributes:
     description: 'list of service accounts which are exempt from the MFA requirement'
     type: array
     default:
-      -
+      - 
+

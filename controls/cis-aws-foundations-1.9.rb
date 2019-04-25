@@ -1,9 +1,11 @@
+pwd_length = attribute('pwd_length')
+
 control 'cis-aws-foundations-1.9' do
-  title "Ensure IAM password policy requires minimum length of #{attribute('pwd_length')} or greater"
+  title "Ensure IAM password policy requires minimum length of #{pwd_length} or greater"
   desc  "Password policies are, in part, used to enforce password complexity
 requirements. IAM password policies can be used to ensure password are at least
 a given length. It is recommended that the password policy require a minimum
-password length #{attribute('pwd_length')}."
+password length #{pwd_length}."
   impact 0.3
   tag "rationale": "Setting a password complexity policy increases account
 resiliency against brute force login attempts."
@@ -22,13 +24,13 @@ configured as prescribed:
 Management Account Settings)
 * Go to IAM Service on the AWS Console
 * Click on Account Settings on the Left Pane
-* Ensure 'Minimum password length' is set to #{attribute('pwd_length')} or greater.
+* Ensure 'Minimum password length' is set to #{pwd_length} or greater.
 
 'Via CLI
 
 'aws iam get-account-password-policy
 
-Ensure the output of the above command includes 'MinimumPasswordLength': #{attribute('pwd_length')} (or
+Ensure the output of the above command includes 'MinimumPasswordLength': #{pwd_length} (or
 higher)"
 
   tag "fix": "Perform the following to set the password policy as prescribed:
@@ -39,17 +41,17 @@ higher)"
 Management Account Settings)
 * Go to IAM Service on the AWS Console
 * Click on Account Settings on the Left Pane
-* Set 'Minimum password length' to #{attribute('pwd_length')} or greater.
+* Set 'Minimum password length' to #{pwd_length} or greater.
 * Click 'Apply password policy'
 
 ' Via CLI
 
-' aws iam update-account-password-policy --minimum-password-length #{attribute('pwd_length')}
+' aws iam update-account-password-policy --minimum-password-length #{pwd_length}
 
 'Note: All commands starting with 'aws iam update-account-password-policy' can
 be combined into a single command."
 
   describe aws_iam_password_policy do
-    its('minimum_password_length') { should cmp >= attribute('pwd_length') }
+    its('minimum_password_length') { should cmp >= pwd_length }
   end
 end

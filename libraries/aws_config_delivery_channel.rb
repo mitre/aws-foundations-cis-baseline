@@ -13,7 +13,7 @@ class AwsConfigurationDeliveryChannel < Inspec.resource(1)
   "
 
   include AwsResourceMixin
-  attr_reader :channel_name , :s3_bucket_name, :s3_key_prefix, :sns_topic_arn
+  attr_reader :channel_name, :s3_bucket_name, :s3_key_prefix, :sns_topic_arn
 
   def to_s
     "Configuration_Delivery_Channel: #{@channel_name}"
@@ -30,7 +30,7 @@ class AwsConfigurationDeliveryChannel < Inspec.resource(1)
       raw_params: raw_params,
       allowed_params: [:channel_name],
       allowed_scalar_name: :channel_name,
-      allowed_scalar_type: String,
+      allowed_scalar_type: String
     )
 
     validated_params
@@ -39,11 +39,11 @@ class AwsConfigurationDeliveryChannel < Inspec.resource(1)
   def fetch_from_aws
     backend = AwsConfigurationDeliveryChannel::BackendFactory.create
 
-    if @recorder_name.nil?
-      query = { delivery_channel_names: ['default'] }
-    else
-      query = { delivery_channel_names: [@channel_name] }
-    end
+    query = if @recorder_name.nil?
+              { delivery_channel_names: ['default'] }
+            else
+              { delivery_channel_names: [@channel_name] }
+            end
 
     @resp = backend.describe_delivery_channels(query)
     @exists = !@resp.empty?
@@ -63,9 +63,8 @@ class AwsConfigurationDeliveryChannel < Inspec.resource(1)
       def describe_delivery_channels(query)
         AWSConnection.new.configservice_client.describe_delivery_channels(query)
       rescue Aws::ConfigService::Errors::NoSuchDeliveryChannelException
-        return {}
+        {}
       end
-
     end
   end
 end
