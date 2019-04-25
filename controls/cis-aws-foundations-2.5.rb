@@ -65,8 +65,8 @@ in 1 region only
 
     describe aws_config_delivery_channel do
       it { should exist }
-      its('s3_bucket_name') { should cmp config_delivery_channels[region]['s3_bucket_name'] } # verify with attributes
-      its('sns_topic_arn') { should cmp config_delivery_channels[region]['sns_topic_arn'] } # verify with attributes
+      its('s3_bucket_name') { should cmp config_delivery_channels[region]['s3_bucket_name'] } 
+      its('sns_topic_arn') { should cmp config_delivery_channels[region]['sns_topic_arn'] } 
     end
   end
 

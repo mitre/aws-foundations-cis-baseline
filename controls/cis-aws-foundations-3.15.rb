@@ -63,8 +63,8 @@ https://console.aws.amazon.com/sns/ [https://console.aws.amazon.com/sns/]
 
     aws_sns_topics.topic_arns.each do |topic|
       describe aws_sns_topic(topic) do
-        its('owner') { should cmp sns_topics[topic]['owner'] } # verify with attributes
-        its('region') { should cmp sns_topics[topic]['region'] } # verify with attributes
+        its('owner') { should cmp sns_topics[topic]['owner'] } 
+        its('region') { should cmp sns_topics[topic]['region'] } 
       end
       aws_sns_topic(topic).subscriptions.each do |subscription|
         describe aws_sns_subscription(subscription) do
@@ -73,9 +73,9 @@ https://console.aws.amazon.com/sns/ [https://console.aws.amazon.com/sns/]
         next if aws_sns_subscription(subscription).arn.eql?('PendingConfirmation')
 
         describe aws_sns_subscription(subscription) do
-          its('endpoint') { should cmp sns_subscriptions[subscription]['endpoint'] } # verify with attributes
-          its('protocol') { should cmp sns_subscriptions[subscription]['protocol'] } # verify with attributes
-          its('owner') { should cmp sns_subscriptions[subscription]['owner'] } # verify with attributes
+          its('endpoint') { should cmp sns_subscriptions[subscription]['endpoint'] } 
+          its('protocol') { should cmp sns_subscriptions[subscription]['protocol'] } 
+          its('owner') { should cmp sns_subscriptions[subscription]['owner'] } 
         end
       end
       next unless aws_sns_topic(topic).subscriptions.empty?
