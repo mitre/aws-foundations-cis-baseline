@@ -86,9 +86,7 @@ _<policy_arn>_
   # policy json is defined as an array or string
   # if recoded please confirm that it tests both cases
 
-  aws_iam_policies.policy_names.each do |policy|
-    next unless aws_iam_policy(policy).attached?
-
+  aws_iam_policies.where { attachment_count > 0 }.policy_names.each do |policy|
     describe "Attached Policies #{policy} allows full '*:*' privileges?" do
       subject do
         aws_iam_policy(policy).document.where(Effect: 'Allow').actions.flatten.include?('*') &&
@@ -98,9 +96,33 @@ _<policy_arn>_
     end
   end
 
-  if aws_iam_policies.policy_names.none? { |policy| aws_iam_policy(policy).attached? }
+  if  aws_iam_policies.where { attachment_count > 0 }.policy_names.empty?
     describe 'Control skipped because no iam policies were found' do
       skip 'This control is skipped since the aws_iam_policies resource returned an empty policy list'
     end
   end
 end
+
+#   aws_iam_policies.policy_names.each do |policy|
+#     describe "Attached Policies #{policy} allows full '*:*' privileges?" do
+#       subject {
+#         aws_iam_policy(policy).attached?
+#       }
+#       it { should be false }
+#     end
+#   end
+
+#   aws_iam_policies.policy_names.each do |policy|
+#     describe "Attached Policies #{policy} allows full '*:*' privileges?" do
+#       subject {
+#         aws_iam_policy(policy).document.where(Effect:'Allow').actions.flatten.include?("*") and
+#         aws_iam_policy(policy).document.where(Effect:'Allow').resources.flatten.include?("*")
+#       }
+#       it { should be false }
+#     end
+#   end
+
+#   describe "Control skipped because no iam policies were found" do
+#     skip "This control is skipped since the aws_iam_policies resource returned an empty policy list"
+#   end if !aws_iam_policies.policy_names.any? { |policy| aws_iam_policy(policy).attached? }
+# end
