@@ -57,39 +57,34 @@ https://console.aws.amazon.com/sns/ [https://console.aws.amazon.com/sns/]
 
   sns_topics = attribute('sns_topics')
   sns_subscriptions = attribute('sns_subscriptions')
+  region = ENV['AWS_REGION']
 
-  attribute('aws_regions').each do |region|
-    ENV['AWS_REGION'] = region
-
-    aws_sns_topics.topic_arns.each do |topic|
-      describe aws_sns_topic(topic) do
-        its('owner') { should cmp sns_topics[topic]['owner'] } 
-        its('region') { should cmp sns_topics[topic]['region'] } 
+  aws_sns_topics.topic_arns.each do |topic|
+    describe aws_sns_topic(topic) do
+      its('owner') { should cmp sns_topics[topic]['owner'] } 
+      its('region') { should cmp sns_topics[topic]['region'] } 
+    end
+    aws_sns_topic(topic).subscriptions.each do |subscription|
+      describe aws_sns_subscription(subscription) do
+        its('arn') { should_not eq 'PendingConfirmation' }
       end
-      aws_sns_topic(topic).subscriptions.each do |subscription|
-        describe aws_sns_subscription(subscription) do
-          its('arn') { should_not eq 'PendingConfirmation' }
-        end
-        next if aws_sns_subscription(subscription).arn.eql?('PendingConfirmation')
+      next if aws_sns_subscription(subscription).arn.eql?('PendingConfirmation')
 
-        describe aws_sns_subscription(subscription) do
-          its('endpoint') { should cmp sns_subscriptions[subscription]['endpoint'] } 
-          its('protocol') { should cmp sns_subscriptions[subscription]['protocol'] } 
-          its('owner') { should cmp sns_subscriptions[subscription]['owner'] } 
-        end
-      end
-      next unless aws_sns_topic(topic).subscriptions.empty?
-
-      describe 'SNS Subscriptions where not found for the Topic' do
-        skip "No SNS Subscriptions where found for the SNS Topic #{topic}"
+      describe aws_sns_subscription(subscription) do
+        its('endpoint') { should cmp sns_subscriptions[subscription]['endpoint'] } 
+        its('protocol') { should cmp sns_subscriptions[subscription]['protocol'] } 
+        its('owner') { should cmp sns_subscriptions[subscription]['owner'] } 
       end
     end
-    next unless aws_sns_topics.topic_arns.empty?
+    next unless aws_sns_topic(topic).subscriptions.empty?
 
-    describe 'SNS Topics where not found in this region' do
-      skip "No SNS Topics where found for the region #{region}"
+    describe 'SNS Subscriptions where not found for the Topic' do
+      skip "No SNS Subscriptions where found for the SNS Topic #{topic}"
     end
   end
-  # reset to default region
-  ENV['AWS_REGION'] = attribute('default_aws_region')
+  next unless aws_sns_topics.topic_arns.empty?
+
+  describe 'SNS Topics where not found in this region' do
+    skip "No SNS Topics where found for the region #{region}"
+  end
 end

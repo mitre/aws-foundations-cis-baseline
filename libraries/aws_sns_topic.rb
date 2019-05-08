@@ -1,22 +1,21 @@
-require '_aws'
-
 class AwsSnsTopic < Inspec.resource(1)
   name 'aws_sns_topic'
   desc 'Verifies settings for an SNS Topic'
-  example "
+  example <<~EXAMPLE
     describe aws_sns_topic('arn:aws:sns:us-east-1:123456789012:some-topic') do
       it { should exist }
       its('confirmed_subscription_count') { should_not be_zero }
     end
-  "
+  EXAMPLE
+  supports platform: 'aws'
 
-  include AwsResourceMixin
+  include AwsSingularResourceMixin
   attr_reader :arn, :confirmed_subscription_count, :region, :owner, :aws_response
 
   def subscriptions
     return unless @exists
 
-    AwsSnsTopic::BackendFactory.create.list_subscriptions_by_topic(topic_arn: @arn).subscriptions.map(&:subscription_arn)
+   BackendFactory.create(inspec_runner).list_subscriptions_by_topic(topic_arn: @arn).subscriptions.map(&:subscription_arn)
   end
 
   def to_s
@@ -30,7 +29,7 @@ class AwsSnsTopic < Inspec.resource(1)
       raw_params: raw_params,
       allowed_params: [:arn],
       allowed_scalar_name: :arn,
-      allowed_scalar_type: String
+      allowed_scalar_type: String,
     )
     # Validate the ARN
     unless validated_params[:arn] =~ /^arn:aws:sns:[\w\-]+:\d{12}:[\S]+$/
@@ -40,29 +39,30 @@ class AwsSnsTopic < Inspec.resource(1)
     validated_params
   end
 
-  def fetch_from_aws
-    @aws_response = AwsSnsTopic::BackendFactory.create.get_topic_attributes(topic_arn: @arn).attributes
+  def fetch_from_api
+    aws_response = BackendFactory.create(inspec_runner).get_topic_attributes(topic_arn: @arn).attributes
     @exists = true
 
     # The response has a plain hash with CamelCase plain string keys and string values
-    @owner = @aws_response['Owner']
-    @region = @aws_response['TopicArn'].scan(/^arn:aws:sns:([\w\-]+):\d{12}:[\S]+$/).flatten.first
-    @confirmed_subscription_count = @aws_response['SubscriptionsConfirmed'].to_i
+    @owner = aws_response['Owner']
+    @region = aws_response['TopicArn'].scan(/^arn:aws:sns:([\w\-]+):\d{12}:[\S]+$/).flatten.first
+    @confirmed_subscription_count = aws_response['SubscriptionsConfirmed'].to_i
   rescue Aws::SNS::Errors::NotFound
     @exists = false
   end
 
   # Uses the SDK API to really talk to AWS
   class Backend
-    class AwsClientApi
+    class AwsClientApi < AwsBackendBase
       BackendFactory.set_default_backend(self)
+      self.aws_client_class = Aws::SNS::Client
 
       def get_topic_attributes(criteria)
-        AWSConnection.new.sns_client.get_topic_attributes(criteria)
+        aws_service_client.get_topic_attributes(criteria)
       end
 
       def list_subscriptions_by_topic(criteria)
-        AWSConnection.new.sns_client.list_subscriptions_by_topic(criteria)
+        aws_service_client.list_subscriptions_by_topic(criteria)
       end
     end
   end

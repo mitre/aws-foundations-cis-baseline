@@ -1,15 +1,17 @@
 class AwsCloudTrailTrail < Inspec.resource(1)
   name 'aws_cloudtrail_trail'
   desc 'Verifies settings for an individual AWS CloudTrail Trail'
-  example "
+  example <<~EXAMPLE
     describe aws_cloudtrail_trail('trail-name') do
       it { should exist }
     end
-  "
+  EXAMPLE
 
-  include AwsResourceMixin
-  attr_reader :s3_bucket_name, :trail_arn, :cloud_watch_logs_role_arn,
-              :cloud_watch_logs_log_group_arn, :kms_key_id, :home_region
+  supports platform: 'aws'
+
+  include AwsSingularResourceMixin
+  attr_reader :cloud_watch_logs_log_group_arn, :cloud_watch_logs_role_arn, :home_region,
+              :kms_key_id, :s3_bucket_name, :trail_arn
 
   def to_s
     "CloudTrail #{@trail_name}"
@@ -27,9 +29,21 @@ class AwsCloudTrailTrail < Inspec.resource(1)
     !kms_key_id.nil?
   end
 
+  def delivered_logs_days_ago
+    query = { name: @trail_name }
+    catch_aws_errors do
+      begin
+        resp = BackendFactory.create(inspec_runner).get_trail_status(query).to_h
+        ((Time.now - resp[:latest_cloud_watch_logs_delivery_time])/(24*60*60)).to_i unless resp[:latest_cloud_watch_logs_delivery_time].nil?
+      rescue Aws::CloudTrail::Errors::TrailNotFoundException
+        nil
+      end
+    end
+  end
+  
   def status
     query = { name: @trail_name }
-    data = AwsCloudTrailTrail::BackendFactory.create.get_trail_status(query).to_h
+    data = BackendFactory.create(inspec_runner).get_trail_status(query).to_h
     Hashie::Mash.new(data)
   end
 
@@ -40,7 +54,7 @@ class AwsCloudTrailTrail < Inspec.resource(1)
       raw_params: raw_params,
       allowed_params: [:trail_name],
       allowed_scalar_name: :trail_name,
-      allowed_scalar_type: String
+      allowed_scalar_type: String,
     )
 
     if validated_params.empty?
@@ -50,8 +64,8 @@ class AwsCloudTrailTrail < Inspec.resource(1)
     validated_params
   end
 
-  def fetch_from_aws
-    backend = AwsCloudTrailTrail::BackendFactory.create
+  def fetch_from_api
+    backend = BackendFactory.create(inspec_runner)
 
     query = { trail_name_list: [@trail_name] }
     resp = backend.describe_trails(query)
@@ -69,17 +83,16 @@ class AwsCloudTrailTrail < Inspec.resource(1)
   end
 
   class Backend
-    class AwsClientApi
-      BackendFactory.set_default_backend(self)
+    class AwsClientApi < AwsBackendBase
+      AwsCloudTrailTrail::BackendFactory.set_default_backend(self)
+      self.aws_client_class = Aws::CloudTrail::Client
 
       def describe_trails(query)
-        AWSConnection.new.cloudtrail_client.describe_trails(query)
+        aws_service_client.describe_trails(query)
       end
 
       def get_trail_status(query)
-        AWSConnection.new.cloudtrail_client.get_trail_status(query)
-      rescue Aws::CloudTrail::Errors::TrailNotFoundException
-        {}
+        aws_service_client.get_trail_status(query)
       end
     end
   end

@@ -1,41 +1,37 @@
-require '_aws'
-
 class AwsIamRole < Inspec.resource(1)
   name 'aws_iam_role'
   desc 'Verifies settings for an IAM Role'
-  example "
+  example <<~EXAMPLE
     describe aws_iam_role('my-role') do
       it { should exist }
     end
-  "
+  EXAMPLE
+  supports platform: 'aws'
 
-  include AwsResourceMixin
-  attr_reader :role_name, :description,
-              def inline_policies
-                return [] unless @exists
+  include AwsSingularResourceMixin
+  attr_reader :description, :role_name
 
-                AwsIamRole::BackendFactory.create.list_role_policies(role_name: role_name).policy_names
-              end
+  def inline_policies
+    return [] unless @exists
+
+    BackendFactory.create(inspec_runner).list_role_policies(role_name: role_name).policy_names
+  end
 
   def attached_policies
     return [] unless @exists
 
-    AwsIamRole::BackendFactory.create.list_attached_role_policies(role_name: role_name).attached_policies.map(&:policy_name)
+    BackendFactory.create(inspec_runner).list_attached_role_policies(role_name: role_name).attached_policies.map(&:policy_name)
   end
 
   def assume_role_policy_document
     return AssumePolicyDocumentFilter.new({}) unless @exists
-
-    policy_data = CGI.unescape(@assume_role_policy_document) # CGI.unescape(AwsIamPolicy::BackendFactory.create.get_policy_version(
-    #   {
-    #     policy_arn: @arn,
-    #     version_id: @default_version_id,
-    #   },
-    # ).policy_version.document)
-
+    policy_data = CGI.unescape(@assume_role_policy_document) 
     document = JSON.parse(policy_data, symbolize_names: true)[:Statement]
-
     AssumePolicyDocumentFilter.new(document)
+  end
+  
+  def to_s
+    "IAM Role #{role_name}"
   end
 
   private
@@ -45,19 +41,18 @@ class AwsIamRole < Inspec.resource(1)
       raw_params: raw_params,
       allowed_params: [:role_name],
       allowed_scalar_name: :role_name,
-      allowed_scalar_type: String
+      allowed_scalar_type: String,
     )
     if validated_params.empty?
       raise ArgumentError, 'You must provide a role_name to aws_iam_role.'
     end
-
     validated_params
   end
 
-  def fetch_from_aws
+  def fetch_from_api
     role_info = nil
     begin
-      role_info = AwsIamRole::BackendFactory.create.get_role(role_name: role_name)
+      role_info = BackendFactory.create(inspec_runner).get_role(role_name: role_name)
     rescue Aws::IAM::Errors::NoSuchEntity
       @exists = false
       return
@@ -69,18 +64,19 @@ class AwsIamRole < Inspec.resource(1)
 
   # Uses the SDK API to really talk to AWS
   class Backend
-    class AwsClientApi
+    class AwsClientApi < AwsBackendBase
       BackendFactory.set_default_backend(self)
+      self.aws_client_class = Aws::IAM::Client
       def get_role(query)
-        AWSConnection.new.iam_client.get_role(query)
+        aws_service_client.get_role(query)
       end
 
       def list_role_policies(query)
-        AWSConnection.new.iam_client.list_role_policies(query)
+        aws_service_client.list_role_policies(query)
       end
 
       def list_attached_role_policies(query)
-        AWSConnection.new.iam_client.list_attached_role_policies(query)
+        aws_service_client.list_attached_role_policies(query)
       end
     end
   end
