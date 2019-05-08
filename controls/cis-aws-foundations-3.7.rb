@@ -63,7 +63,7 @@ created in step 1 and an SNS topic created in step 2
 --evaluation-periods 1 --namespace 'CISBenchmark' --alarm-actions
 <sns_topic_arn>
 "
-  if ! ENV['AWS_REGION'].eql?(attribute('default_aws_region'))
+ unless ENV['AWS_REGION'].eql?(attribute('default_aws_region'))
     impact 0.0
     desc  "Currently inspected region #{ENV['AWS_REGION']} is not the primary AWS region"
   end
