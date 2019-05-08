@@ -48,7 +48,11 @@ Management Account Settings)
 be combined into a single command."
 
   describe aws_iam_password_policy do
+    it { should exist }
+  end
+
+  describe aws_iam_password_policy do
     its('prevent_password_reuse?') { should be true }
     its('number_of_passwords_to_remember') { should cmp <= 24 }
-  end
+  end if aws_iam_password_policy.exists?
 end

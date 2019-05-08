@@ -49,7 +49,12 @@ Management Account Settings)
 'Note: All commands starting with 'aws iam update-account-password-policy' can
 be combined into a single command."
 
+
+  describe aws_iam_password_policy do
+    it { should exist }
+  end
+
   describe aws_iam_password_policy do
     its('require_lowercase_characters?') { should be true }
-  end
+  end if aws_iam_password_policy.exists?
 end
