@@ -5,11 +5,11 @@ require 'uri'
 class AwsIamPolicy < Inspec.resource(1)
   name 'aws_iam_policy'
   desc 'Verifies settings for individual AWS IAM Policy'
-  example "
+  example <<~EXAMPLE
     describe aws_iam_policy('AWSSupportAccess') do
       it { should be_attached }
     end
-  "
+  EXAMPLE
   supports platform: 'aws'
 
   include AwsSingularResourceMixin
@@ -17,20 +17,20 @@ class AwsIamPolicy < Inspec.resource(1)
   attr_reader :arn, :attachment_count, :default_version_id
 
   # Note that we also accept downcases and symbol versions of these
-  EXPECTED_CRITERIA = %w[
+  EXPECTED_CRITERIA = %w{
     Action
     Effect
     Resource
     Sid
-  ].freeze
+  }.freeze
 
-  UNIMPLEMENTED_CRITERIA = %w[
+  UNIMPLEMENTED_CRITERIA = %w{
     Conditional
     NotAction
     NotPrincipal
     NotResource
     Principal
-  ].freeze
+  }.freeze
 
   def to_s
     "Policy #{@policy_name}"
@@ -42,21 +42,18 @@ class AwsIamPolicy < Inspec.resource(1)
 
   def attached_users
     return @attached_users if defined? @attached_users
-
     fetch_attached_entities
     @attached_users
   end
 
   def attached_groups
     return @attached_groups if defined? @attached_groups
-
     fetch_attached_entities
     @attached_groups
   end
 
   def attached_roles
     return @attached_roles if defined? @attached_roles
-
     fetch_attached_entities
     @attached_roles
   end
@@ -99,7 +96,6 @@ class AwsIamPolicy < Inspec.resource(1)
 
   def statement_count
     return nil unless exists?
-
     # Typically it is an array of statements
     if policy['Statement'].is_a? Array
       policy['Statement'].count
@@ -112,7 +108,6 @@ class AwsIamPolicy < Inspec.resource(1)
 
   def has_statement?(provided_criteria = {})
     return nil unless exists?
-
     raw_criteria = provided_criteria.dup # provided_criteria is used for output formatting - can't delete from it.
     criteria = has_statement__validate_criteria(raw_criteria)
     @normalized_statements ||= has_statement__normalize_statements
@@ -134,7 +129,7 @@ class AwsIamPolicy < Inspec.resource(1)
         expected_criterion,
         expected_criterion.downcase,
         expected_criterion.to_sym,
-        expected_criterion.downcase.to_sym
+        expected_criterion.downcase.to_sym,
       ].each do |variant|
         if raw_criteria.key?(variant)
           # Always store as downcased symbol
@@ -149,7 +144,7 @@ class AwsIamPolicy < Inspec.resource(1)
         unimplemented_criterion,
         unimplemented_criterion.downcase,
         unimplemented_criterion.to_sym,
-        unimplemented_criterion.downcase.to_sym
+        unimplemented_criterion.downcase.to_sym,
       ].each do |variant|
         if raw_criteria.key?(variant)
           raise ArgumentError, "Criterion '#{unimplemented_criterion}' is not supported for performing have_statement queries."
@@ -164,7 +159,7 @@ class AwsIamPolicy < Inspec.resource(1)
 
     # Effect has only 2 permitted values
     if recognized_criteria.key?(:effect)
-      unless %w[Allow Deny].include?(recognized_criteria[:effect])
+      unless %w{Allow Deny}.include?(recognized_criteria[:effect])
         raise ArgumentError, "Criterion 'Effect' for have_statement must be one of 'Allow' or 'Deny' - got '#{recognized_criteria[:effect]}'"
       end
     end
@@ -180,8 +175,10 @@ class AwsIamPolicy < Inspec.resource(1)
     policy['Statement'] = [policy['Statement']] if policy['Statement'].is_a? Hash
     policy['Statement'].map do |statement|
       # Coerce some values into arrays
-      %w[Action Resource].each do |field|
-        statement[field] = Array(statement[field]) if statement.key?(field)
+      %w{Action Resource}.each do |field|
+        if statement.key?(field)
+          statement[field] = Array(statement[field])
+        end
       end
 
       # Symbolize all keys
@@ -195,7 +192,6 @@ class AwsIamPolicy < Inspec.resource(1)
 
   def has_statement__focus_on_sid(statements, criteria)
     return statements unless criteria.key?(:sid)
-
     sid_seek = criteria[:sid]
     statements.select do |statement|
       if sid_seek.is_a? Regexp
@@ -212,7 +208,6 @@ class AwsIamPolicy < Inspec.resource(1)
 
   def has_statement__array_criterion(crit_name, statement, criteria)
     return true unless criteria.key?(crit_name)
-
     check = criteria[crit_name]
     # This is an array due to normalize_statements
     # If it is nil, the statement does not have an entry for that dimension;
@@ -243,7 +238,7 @@ class AwsIamPolicy < Inspec.resource(1)
       raw_params: raw_params,
       allowed_params: [:policy_name],
       allowed_scalar_name: :policy_name,
-      allowed_scalar_type: String
+      allowed_scalar_type: String,
     )
 
     if validated_params.empty?
@@ -265,14 +260,12 @@ class AwsIamPolicy < Inspec.resource(1)
       end
       break if policy # Found it!
       break unless api_result.is_truncated # Not found and no more results
-
       pagination_opts[:marker] = api_result.marker
     end
 
     @exists = !policy.nil?
 
     return unless @exists
-
     @arn = policy[:arn]
     @default_version_id = policy[:default_version_id]
     @attachment_count = policy[:attachment_count]
