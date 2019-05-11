@@ -53,23 +53,23 @@ in 1 region only
 
 'aws configservice start-configuration-recorder"
 
-  attribute('aws_regions').each do |region|
-    ENV['AWS_REGION'] = region
+  region = ENV['AWS_REGION']
 
-    describe aws_config_recorder do
-      it { should exist }
-      it { should be_recording }
-      it { should be_all_supported }
-      it { should have_include_global_resource_types }
-    end
+  describe aws_config_recorder do
+    it { should exist }
+    it { should be_recording }
+    it { should be_recording_all_resource_types }
+    it { should be_recording_all_global_types }
+  end
 
+  describe aws_config_delivery_channel do
+    it { should exist }
+  end
+
+  if aws_config_delivery_channel.exists?
     describe aws_config_delivery_channel do
-      it { should exist }
       its('s3_bucket_name') { should cmp config_delivery_channels[region]['s3_bucket_name'] } 
       its('sns_topic_arn') { should cmp config_delivery_channels[region]['sns_topic_arn'] } 
     end
   end
-
-  # reset to default region
-  ENV['AWS_REGION'] = attribute('default_aws_region')
 end

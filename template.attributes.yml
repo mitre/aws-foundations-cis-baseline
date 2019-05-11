@@ -21,14 +21,6 @@ aws_cred_age: 90
 # description: 'default aws region',
 default_aws_region: 'us-east-1'
 
-# description: 'all aws regions to be inspected',
-aws_regions: [
-    "us-east-1",
-    "us-east-2",
-    "us-west-1",
-    "us-west-2"
-  ]
-
 #description: 'list of buckets exempted from inspection',
 exception_bucket_list: ["exception_bucket_name"]
 

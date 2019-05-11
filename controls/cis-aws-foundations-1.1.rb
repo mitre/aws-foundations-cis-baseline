@@ -28,6 +28,11 @@ private key."
   tag "fix": "Follow the remediation instructions of the Ensure IAM policies
 are attached only to groups or roles recommendation"
 
+  unless ENV['AWS_REGION'].eql?(attribute('default_aws_region'))
+    impact 0.0
+    desc  "Currently inspected region #{ENV['AWS_REGION']} is not the primary AWS region"
+  end
+
   describe aws_cloudtrail_trails do
     it { should exist }
   end

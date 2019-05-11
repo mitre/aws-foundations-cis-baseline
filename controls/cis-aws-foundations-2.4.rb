@@ -98,7 +98,7 @@ https://console.aws.amazon.com/cloudtrail/
   aws_cloudtrail_trails.trail_arns.each do |trail|
     describe aws_cloudtrail_trail(trail) do
       its('cloud_watch_logs_log_group_arn') { should_not be_nil }
-      its('status.latest_cloud_watch_logs_delivery_time') { should cmp > Time.now - 86_400 }
+      its('delivered_logs_days_ago') { should cmp <= 1 }
     end
   end
 end
