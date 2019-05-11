@@ -12,7 +12,7 @@ supports:
 
 attributes:
   - name: default_aws_region
-    description: 'default aws region'
+    description: 'primary aws region your resources are deployed.'
     default: 'us-east-1'
 
   - name: aws_key_age
