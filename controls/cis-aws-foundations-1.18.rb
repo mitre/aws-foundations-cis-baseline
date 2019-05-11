@@ -623,59 +623,65 @@ _<assume_iam_manager_role_policy> _--policy-document
     }
   }
 
-  describe 'Master Policy Allow Actions ' do
-    subject { master_allow_actions }
-    it { should_not be_empty }
-    it { should be_in aws_iam_policy(iam_master_policy_name).document.where(Effect: 'Allow').actions.flatten }
-  end
-
-  describe 'Master Policy Deny Actions ' do
-    subject { master_deny_actions }
-    it { should_not be_empty }
-    it { should be_in aws_iam_policy(iam_master_policy_name).document.where(Effect: 'Deny').actions.flatten }
-  end
-
   describe aws_iam_policy(iam_master_policy_name) do
-    it { should be_attached_to_role(iam_master_role_name) }
+    it { should exist }
   end
 
-  describe aws_iam_role(iam_master_role_name).assume_role_policy_document do
-    its('actions') { should_not be_empty }
-    its('actions') { should be_in ['sts:AssumeRole', 'sts:AssumeRoleWithSAML', 'sts:AssumeRoleWithWebIdentity'] }
-  end
+  if aws_iam_policy(iam_master_policy_name).exists?
+    describe 'Master Policy Allow Actions ' do
+      subject { master_allow_actions }
+      it { should be_in aws_iam_policy(iam_master_policy_name).document.where(Effect: 'Allow').actions.flatten }
+    end
 
-  if aws_iam_role(iam_manager_role_name).assume_role_policy_document.where(Action: 'sts:AssumeRole').exists?
-    describe aws_iam_role(iam_master_role_name).assume_role_policy_document.where(Action: 'sts:AssumeRole').where(Effect: 'Allow') do
-      its('principals.to_s') { should match ":user/#{iam_master_user_name}" }
-      its('principals.to_s') { should_not match ":user/#{iam_manager_user_name}" }
+    describe 'Master Policy Deny Actions ' do
+      subject { master_deny_actions }
+      it { should be_in aws_iam_policy(iam_master_policy_name).document.where(Effect: 'Deny').actions.flatten }
+    end
+
+    describe aws_iam_policy(iam_master_policy_name) do
+      it { should be_attached_to_role(iam_master_role_name) }
+    end
+
+    describe aws_iam_role(iam_master_role_name).assume_role_policy_document do
+      its('actions') { should_not be_empty }
+    end
+
+    if aws_iam_role(iam_manager_role_name).assume_role_policy_document.where(Action: 'sts:AssumeRole').exists?
+      describe aws_iam_role(iam_master_role_name).assume_role_policy_document.where(Action: 'sts:AssumeRole').where(Effect: 'Allow') do
+        its('principals.to_s') { should match ":user/#{iam_master_user_name}" }
+        its('principals.to_s') { should_not match ":user/#{iam_manager_user_name}" }
+      end
     end
   end
 
-  describe 'Manager Policy Allow Actions ' do
-    subject { manager_allow_actions }
-    it { should_not be_empty }
-    it { should be_in aws_iam_policy(iam_manager_policy_name).document.where(Effect: 'Allow').actions.flatten }
-  end
-
-  describe 'Manager Policy Deny Actions ' do
-    subject { manager_deny_actions }
-    it { should_not be_empty }
-    it { should be_in aws_iam_policy(iam_manager_policy_name).document.where(Effect: 'Deny').actions.flatten }
-  end
-
   describe aws_iam_policy(iam_manager_policy_name) do
-    it { should be_attached_to_role(iam_manager_role_name) }
+    it { should exist }
   end
 
-  describe aws_iam_role(iam_manager_role_name).assume_role_policy_document do
-    its('actions') { should_not be_empty }
-    its('actions') { should be_in ['sts:AssumeRole', 'sts:AssumeRoleWithSAML', 'sts:AssumeRoleWithWebIdentity'] }
-  end
+  if aws_iam_policy(iam_manager_policy_name).exists?
+    describe 'Manager Policy Allow Actions ' do
+      subject { manager_allow_actions }
+      it { should be_in aws_iam_policy(iam_manager_policy_name).document.where(Effect: 'Allow').actions.flatten }
+    end
 
-  if aws_iam_role(iam_manager_role_name).assume_role_policy_document.where(Action: 'sts:AssumeRole').exists?
-    describe aws_iam_role(iam_manager_role_name).assume_role_policy_document.where(Action: 'sts:AssumeRole').where(Effect: 'Allow') do
-      its('principals.to_s') { should match ":user/#{iam_manager_user_name}" }
-      its('principals.to_s') { should_not match ":user/#{iam_master_user_name}" }
+    describe 'Manager Policy Deny Actions ' do
+      subject { manager_deny_actions }
+      it { should be_in aws_iam_policy(iam_manager_policy_name).document.where(Effect: 'Deny').actions.flatten }
+    end
+
+    describe aws_iam_policy(iam_manager_policy_name) do
+      it { should be_attached_to_role(iam_manager_role_name) }
+    end
+
+    describe aws_iam_role(iam_manager_role_name).assume_role_policy_document do
+      its('actions') { should_not be_empty }
+    end
+
+    if aws_iam_role(iam_manager_role_name).assume_role_policy_document.where(Action: 'sts:AssumeRole').exists?
+      describe aws_iam_role(iam_manager_role_name).assume_role_policy_document.where(Action: 'sts:AssumeRole').where(Effect: 'Allow') do
+        its('principals.to_s') { should match ":user/#{iam_manager_user_name}" }
+        its('principals.to_s') { should_not match ":user/#{iam_manager_user_name}" }
+      end
     end
   end
 end
