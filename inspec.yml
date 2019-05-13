@@ -13,63 +13,63 @@ supports:
 attributes:
   - name: default_aws_region
     description: 'primary aws region your resources are deployed.'
-    default: 'us-east-1'
+    value: 'us-east-1'
 
   - name: aws_key_age
     description: 'The maximum allowed key age'
     type: numeric
-    default: 90
+    value: 90
 
   - name: pwd_length
     description: 'Required password length'
     type: numeric
-    default: 14
+    value: 14
 
   - name: aws_cred_age
     description: 'The maximum allowed IAM account age'
     type: numeric
-    default: 90
+    value: 90
 
   - name: iam_manager_role_name
     description: 'iam manager role name'
     type: string
-    default: 'iam-manager-role-name'
+    value: 'iam-manager-role-name'
 
   - name: iam_master_role_name
     description: 'iam master role name'
     type: string
-    default: 'iam-master-role-name'
+    value: 'iam-master-role-name'
 
   - name: iam_manager_user_name
     description: 'iam manager user name'
     type: string
-    default: 'iam-manager-user-name'
+    value: 'iam-manager-user-name'
 
   - name: iam_master_user_name
     description: 'iam master user name'
     type: string
-    default: 'iam-master-user-name'
+    value: 'iam-master-user-name'
 
   - name: iam_manager_policy_name
     description: 'iam manager policy'
     type: string
-    default: 'iam-manager-policy'
+    value: 'iam-manager-policy'
 
   - name: iam_master_policy_name
     description: 'iam master policy'
     type: string
-    default: 'iam-master-policy'
+    value: 'iam-master-policy'
 
   - name: exception_bucket_list
     description: 'list of buckets exempted from inspection'
     type: array
-    default:
-      - exception_bucket_name
+    value:
+      - ['exception_bucket_name']
 
   - name: config_delivery_channels
     description: 'Config service settings'
     type: hash
-    default:
+    value:
       us-east-1:
         s3_bucket_name: s3_bucket_name_value
         sns_topic_arn: sns_topic_arn_value
@@ -86,7 +86,7 @@ attributes:
   - name: sns_topics
     description: 'SNS topics list and details'
     type: hash
-    default:
+    value:
       topic_arn1:
         owner: owner_value
         region: region_value
@@ -97,7 +97,7 @@ attributes:
   - name: sns_subscriptions
     description: 'SNS subscription list and details'
     type: hash
-    default:
+    value:
       subscription_arn1:
         endpoint: endpoint_value
         owner: owner_value
@@ -110,12 +110,11 @@ attributes:
   - name: exception_security_group_list
     description: 'list of security groups exempted from inspection'
     type: array
-    default:
-      - 'exception_security_group_name'
+    value:
+      - ['exception_security_group_name']
 
   - name: service_account_mfa_exceptions
     description: 'list of service accounts which are exempt from the MFA requirement'
     type: array
-    default:
-      - 
-
+    value:
+      - ['service_account_mfa_exceptions']
