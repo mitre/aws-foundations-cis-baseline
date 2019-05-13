@@ -64,7 +64,7 @@ attributes:
     description: 'list of buckets exempted from inspection'
     type: array
     value:
-      - ['exception_bucket_name']
+      - 'exception_bucket_name'
 
   - name: config_delivery_channels
     description: 'Config service settings'
@@ -111,10 +111,10 @@ attributes:
     description: 'list of security groups exempted from inspection'
     type: array
     value:
-      - ['exception_security_group_name']
+      - 'exception_security_group_name'
 
   - name: service_account_mfa_exceptions
     description: 'list of service accounts which are exempt from the MFA requirement'
     type: array
     value:
-      - ['service_account_mfa_exceptions']
+      - 'service_account_mfa_exceptions'
