@@ -328,7 +328,7 @@ class PolicyDocumentFilter
 
   attr_reader :document
   def initialize(document = nil, policy_name = nil)
-    @document = document
+    @document = document.kind_of?(Array) ? document : [document]
     @policy_name = policy_name
   end
 end
