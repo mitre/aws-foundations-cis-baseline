@@ -25,7 +25,7 @@ default_aws_region: 'us-east-1'
 exception_bucket_list: ["exception_bucket_name"]
 
 # description: 'list of security groups exempted from inspection',
-exception_security_group_list': ["exception_security_group_name"]
+exception_security_group_list: ["exception_security_group_name"]
 
 # description: 'iam manager role name',
 iam_manager_role_name: "iam-manager-role-name"
