@@ -85,6 +85,6 @@ second one-time password into the Authentication Code 2 box. Choose Active
 Virtual MFA.
 "
   describe aws_iam_root_user do
-    its('has_mfa_enabled?') { should be true }
+    it { should have_mfa_enabled }
   end
 end

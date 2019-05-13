@@ -75,6 +75,7 @@ from the hardware MFA device.
 "
 
   describe aws_iam_root_user do
+    it { should have_mfa_enabled }
     it { should_not have_virtual_mfa_enabled }
   end
 end
