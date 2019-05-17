@@ -118,7 +118,7 @@ atlassian-ide-plugin.xml
 
 
 # Build Folder
-build/
+/build/
 build-iPhoneOS/
 build-iPhoneSimulator/
 
