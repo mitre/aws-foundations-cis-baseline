@@ -200,6 +200,17 @@ Usage:
 ```
   ruby generate_attributes.rb
 ```
+
+## Additional optional attributes the user may add to their attributes file:
+
+```
+#description: 'list of buckets exempted from inspection',
+exception_bucket_list: ["exception_bucket_name"]
+
+# description: 'list of security groups exempted from inspection',
+exception_security_group_list: ["exception_security_group_name"]
+```
+
 ## Usage
 
 InSpec makes it easy to run your tests wherever you need. More options listed here: [InSpec cli](http://inspec.io/docs/reference/cli/)
