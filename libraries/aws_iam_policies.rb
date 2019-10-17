@@ -1,3 +1,8 @@
+  
+require "resource_support/aws/aws_plural_resource_mixin"
+require "resource_support/aws/aws_backend_base"
+
+
 class AwsIamPolicies < Inspec.resource(1)
   name 'aws_iam_policies'
   desc 'Verifies settings for AWS IAM Policies in bulk'
