@@ -1,3 +1,6 @@
+  
+require "resource_support/aws/aws_singular_resource_mixin"
+require "resource_support/aws/aws_backend_base"
 
 class AwsVpc < Inspec.resource(1)
   name 'aws_vpc'
