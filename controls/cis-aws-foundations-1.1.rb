@@ -39,7 +39,14 @@ are attached only to groups or roles recommendation"
 
   describe.one do
     aws_cloudtrail_trails.trail_arns.each do |trail|
+
+      describe aws_cloudtrail_trail(trail) do
+        its ('cloud_watch_logs_log_group_arn') { should_not be_nil }
+      end
+
       trail_log_group_name = aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.scan(/log-group:(.+):/).last.first unless aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.nil?
+
+      next if trail_log_group_name.nil?
 
       pattern = '{ $.userIdentity.type = "Root" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != "AwsServiceEvent" }'
 

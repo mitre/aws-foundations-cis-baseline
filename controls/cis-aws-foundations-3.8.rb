@@ -75,7 +75,14 @@ _<s3_bucket_policy_changes_metric>_ --statistic Sum --period 300 --threshold 1
 
   describe.one do
     aws_cloudtrail_trails.trail_arns.each do |trail|
+
+      describe aws_cloudtrail_trail(trail) do
+        its ('cloud_watch_logs_log_group_arn') { should_not be_nil }
+      end
+
       trail_log_group_name = aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.scan(/log-group:(.+):/).last.first unless aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.nil?
+
+      next if trail_log_group_name.nil?
 
       pattern = '{ ($.eventSource = s3.amazonaws.com) && (($.eventName = PutBucketAcl) || ($.eventName = PutBucketPolicy) || ($.eventName = PutBucketCors) || ($.eventName = PutBucketLifecycle) || ($.eventName = PutBucketReplication) || ($.eventName = DeleteBucketPolicy) || ($.eventName = DeleteBucketCors) || ($.eventName = DeleteBucketLifecycle) || ($.eventName = DeleteBucketReplication)) }'
 
