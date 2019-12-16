@@ -61,7 +61,7 @@ ensure the corresponding access_key_n_last_used_date is less than 90 days ago."
     it { should_not exist }
   end
 
-  describe aws_iam_users.where(password_ever_used?: true).where { password_last_used_days_ago >= 90 } do
+  describe aws_iam_users.where(has_console_password?: true).where(password_ever_used?: true).where { password_last_used_days_ago >= 90 } do
     it { should_not exist }
   end
 
