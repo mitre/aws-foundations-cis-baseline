@@ -64,7 +64,7 @@ https://console.aws.amazon.com/s3 [https://console.aws.amazon.com/s3].
     bucket_name = aws_cloudtrail_trail(trail).s3_bucket_name
     if exception_bucket_list.include?(bucket_name)
       describe 'Bucket not inspected because it is defined as an exception' do
-        skip "Bucket: #{bucket_name} not insepcted because it is defined in exception_bucket_list."
+        skip "Bucket: #{bucket_name} not inspected because it is defined in exception_bucket_list."
       end
     end
 
