@@ -2,19 +2,13 @@
 
 control "1.10" do
   title "Ensure IAM password policy prevents password reuse"
-  desc  "IAM password policies can prevent the reuse of a given password by the
-same user. It is recommended that the password policy prevent the reuse of
-passwords."
-  desc  "rationale", "Preventing password reuse increases account resiliency
-against brute force login attempts."
-  desc  "check", "
-    Perform the following to ensure the password policy is configured as
-prescribed:
+  desc  "IAM password policies can prevent the reuse of a given password by the same user. It is recommended that the password policy prevent the reuse of passwords."
+  desc  "rationale", "Preventing password reuse increases account resiliency against brute force login attempts."
+  desc  "check", "Perform the following to ensure the password policy is configured as prescribed:
 
     Via AWS Console
 
-    1. Login to AWS Console (with appropriate permissions to View Identity
-Access Management Account Settings)
+    1. Login to AWS Console (with appropriate permissions to View Identity Access Management Account Settings)
     2. Go to IAM Service on the AWS Console
     3. Click on Account Settings on the Left Pane
     4. Ensure \"Prevent password reuse\" is checked
@@ -24,16 +18,12 @@ Access Management Account Settings)
     ```
     aws iam get-account-password-policy
     ```
-    Ensure the output of the above command includes
-\"PasswordReusePrevention\": 24
-  "
-  desc  "fix", "
-    Perform the following to set the password policy as prescribed:
+    Ensure the output of the above command includes \"PasswordReusePrevention\": 24"
+  desc  "fix", "Perform the following to set the password policy as prescribed:
 
     Via AWS Console
 
-    1. Login to AWS Console (with appropriate permissions to View Identity
-Access Management Account Settings)
+    1. Login to AWS Console (with appropriate permissions to View Identity Access Management Account Settings)
     2. Go to IAM Service on the AWS Console
     3. Click on Account Settings on the Left Pane
     4. Check \"Prevent password reuse\"
@@ -43,9 +33,7 @@ Access Management Account Settings)
     ```
      aws iam update-account-password-policy --password-reuse-prevention 24
     ```
-    Note: All commands starting with \"aws iam update-account-password-policy\"
-can be combined into a single command.
-  "
+    Note: All commands starting with \"aws iam update-account-password-policy\" can be combined into a single command."
   impact 0.3
   tag severity: "Low"
   tag gtitle: nil
@@ -57,9 +45,8 @@ can be combined into a single command.
   tag nist: nil
   tag notes: nil
   tag comment: nil
-  tag cis_controls: "TITLE:Use Unique Passwords CONTROL:4.4 DESCRIPTION:Where
-multi-factor authentication is not supported (such as local administrator,
-root, or service accounts), accounts will use passwords that are unique to that
-system.;"
+  tag cis_controls: "TITLE:Use Unique Passwords CONTROL:4.4 DESCRIPTION:Where multi-factor authentication is not supported (such as local administrator, root, or service accounts), accounts will use passwords that are unique to that system.;"
+
+  
 end
 

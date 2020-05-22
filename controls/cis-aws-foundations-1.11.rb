@@ -2,31 +2,18 @@
 
 control "1.11" do
   title "Ensure IAM password policy expires passwords within 90 days or less"
-  desc  "IAM password policies can require passwords to be rotated or expired
-after a given number of days. It is recommended that the password policy expire
-passwords after 90 days or less."
-  desc  "rationale", "
-    Reducing the password lifetime increases account resiliency against brute
-force login attempts. Additionally, requiring regular password changes help in
-the following scenarios:
+  desc  "IAM password policies can require passwords to be rotated or expired after a given number of days. It is recommended that the password policy expire passwords after 90 days or less."
+  desc  "rationale", "Reducing the password lifetime increases account resiliency against brute force login attempts. Additionally, requiring regular password changes help in the following scenarios:
 
-    - Passwords can be stolen or compromised sometimes without your knowledge.
-This can happen via a system compromise, software vulnerability, or internal
-threat.
-    - Certain corporate and government web filters or proxy servers have the
-ability to intercept and record traffic even if it's encrypted.
-    - Many people use the same password for many systems such as work, email,
-and personal.
-    - Compromised end user workstations might have a keystroke logger.
-  "
-  desc  "check", "
-    Perform the following to ensure the password policy is configured as
-prescribed:
+    - Passwords can be stolen or compromised sometimes without your knowledge. This can happen via a system compromise, software vulnerability, or internal threat.
+    - Certain corporate and government web filters or proxy servers have the ability to intercept and record traffic even if it's encrypted.
+    - Many people use the same password for many systems such as work, email, and personal.
+    - Compromised end user workstations might have a keystroke logger."
+  desc  "check", "Perform the following to ensure the password policy is configured as prescribed:
 
     Via AWS Console:
 
-    1. Login to AWS Console (with appropriate permissions to View Identity
-Access Management Account Settings)
+    1. Login to AWS Console (with appropriate permissions to View Identity Access Management Account Settings)
     2. Go to IAM Service on the AWS Console
     3. Click on Account Settings on the Left Pane
     4. Ensure \"Enable password expiration\" is checked
@@ -36,16 +23,12 @@ Access Management Account Settings)
     ```
     aws iam get-account-password-policy
     ```
-    Ensure the output of the above command includes \"MaxPasswordAge\": 90 or
-less
-  "
-  desc  "fix", "
-    Perform the following to set the password policy as prescribed:
+    Ensure the output of the above command includes \"MaxPasswordAge\": 90 or less"
+  desc  "fix", "Perform the following to set the password policy as prescribed:
 
     Via AWS Console:
 
-    1. Login to AWS Console (with appropriate permissions to View Identity
-Access Management Account Settings)
+    1. Login to AWS Console (with appropriate permissions to View Identity Access Management Account Settings)
     2. Go to IAM Service on the AWS Console
     3. Click on Account Settings on the Left Pane
     4. Check \"Enable password expiration\"
@@ -55,9 +38,7 @@ Access Management Account Settings)
     ```
      aws iam update-account-password-policy --max-password-age 90
     ```
-    Note: All commands starting with \"aws iam update-account-password-policy\"
-can be combined into a single command.
-  "
+    Note: All commands starting with \"aws iam update-account-password-policy\" can be combined into a single command."
   impact 0.3
   tag severity: "Low"
   tag gtitle: nil
@@ -69,7 +50,8 @@ can be combined into a single command.
   tag nist: nil
   tag notes: nil
   tag comment: nil
-  tag cis_controls: "TITLE:Account Monitoring and Control CONTROL:16
-DESCRIPTION:Account Monitoring and Control;"
+  tag cis_controls: "TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;"
+
+  
 end
 

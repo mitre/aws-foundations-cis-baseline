@@ -11,6 +11,7 @@ control "1.1" do
     ```
     aws iam get-credential-report --query 'Content' --output text | base64 -d | cut -d, -f1,5,11,16 | grep -B1 ''
     ```
+    
     Note: there are a few conditions under which the use of the root account is required, such as requesting a penetration test or creating a CloudFront private key."
   desc  "fix", "Follow the remediation instructions of the `Ensure IAM policies are attached only to groups or roles` recommendation"
   impact 0.3

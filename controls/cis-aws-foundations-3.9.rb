@@ -1,32 +1,22 @@
 # encoding: UTF-8
 
 control "3.9" do
-  title "Ensure a log metric filter and alarm exist for AWS Config
-configuration changes"
-  desc  "Real-time monitoring of API calls can be achieved by directing
-CloudTrail Logs to CloudWatch Logs and establishing corresponding metric
-filters and alarms. It is recommended that a metric filter and alarm be
-established for detecting changes to CloudTrail's configurations."
-  desc  "rationale", "Monitoring changes to AWS Config configuration will help
-ensure sustained visibility of configuration items within the AWS account."
-  desc  "check", "
-    Perform the following to ensure that there is at least one active
-multi-region CloudTrail with prescribed metric filters and alarms configured:
+  title "Ensure a log metric filter and alarm exist for AWS Config configuration changes"
+  desc  "Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch Logs and establishing corresponding metric filters and alarms. It is recommended that a metric filter and alarm be established for detecting changes to CloudTrail's configurations."
+  desc  "rationale", "Monitoring changes to AWS Config configuration will help ensure sustained visibility of configuration items within the AWS account."
+  desc  "check", "Perform the following to ensure that there is at least one active multi-region CloudTrail with prescribed metric filters and alarms configured:
 
-    1. Identify the log group name configured for use with active multi-region
-CloudTrail:
+    1. Identify the log group name configured for use with active multi-region CloudTrail:
 
     - List all CloudTrails:
 
     `aws cloudtrail describe-trails`
 
-    - Identify Multi region Cloudtrails: `Trails with \"IsMultiRegionTrail\"
-set to true`
+    - Identify Multi region Cloudtrails: `Trails with \"IsMultiRegionTrail\" set to true`
 
     - From value associated with CloudWatchLogsLogGroupArn note ``
 
-    Example: for CloudWatchLogsLogGroupArn that looks like
-`arn:aws:logs:::log-group:NewGroup:*`, `` would be `NewGroup`
+    Example: for CloudWatchLogsLogGroupArn that looks like `arn:aws:logs:::log-group:NewGroup:*`, `` would be `NewGroup`
 
     - Ensure Identified Multi region CloudTrail is active
 
@@ -39,8 +29,7 @@ set to true`
     `aws cloudtrail get-event-selectors --trail-name
     `
 
-    Ensure there is at least one Event Selector for a Trail with
-`IncludeManagementEvents` set to `true` and `ReadWriteType` set to `All`
+    Ensure there is at least one Event Selector for a Trail with `IncludeManagementEvents` set to `true` and `ReadWriteType` set to `All`
 
     2. Get a list of all associated metric filters for this ``:
     ```
@@ -48,9 +37,7 @@ set to true`
     ```
     3. Ensure the output from the above command contains the following:
     ```
-    \"filterPattern\": \"{ ($.eventSource = config.amazonaws.com) &&
-(($.eventName=StopConfigurationRecorder)||($.eventName=DeleteDeliveryChannel)||($.eventName=PutDeliveryChannel)||($.eventName=PutConfigurationRecorder))
-}\"
+    \"filterPattern\": \"{ ($.eventSource = config.amazonaws.com) && (($.eventName=StopConfigurationRecorder)||($.eventName=DeleteDeliveryChannel)||($.eventName=PutDeliveryChannel)||($.eventName=PutConfigurationRecorder)) }\"
     ```
     4. Note the `` value associated with the `filterPattern` found in step 3.
 
@@ -58,45 +45,31 @@ set to true`
     ```
     aws cloudwatch describe-alarms --query 'MetricAlarms[?MetricName== ``]'
     ```
-    6. Note the `AlarmActions` value - this will provide the SNS topic ARN
-value.
+    6. Note the `AlarmActions` value - this will provide the SNS topic ARN value.
 
     7. Ensure there is at least one active subscriber to the SNS topic
     ```
     aws sns list-subscriptions-by-topic --topic-arn
     ```
-    at least one subscription should have \"SubscriptionArn\" with valid aws
-ARN.
+    at least one subscription should have \"SubscriptionArn\" with valid aws ARN.
     ```
     Example of valid \"SubscriptionArn\": \"arn:aws:sns::::\"
-    ```
-  "
-  desc  "fix", "
-    Perform the following to setup the metric filter, alarm, SNS topic, and
-subscription:
+    ```"
+  desc  "fix", "Perform the following to setup the metric filter, alarm, SNS topic, and subscription:
 
-    1. Create a metric filter based on filter pattern provided which checks for
-AWS Configuration changes and the `` taken from audit step 1.
+    1. Create a metric filter based on filter pattern provided which checks for AWS Configuration changes and the `` taken from audit step 1.
     ```
-    aws logs put-metric-filter --log-group-name  --filter-name ``
---metric-transformations metricName= ``
-,metricNamespace='CISBenchmark',metricValue=1 --filter-pattern '{
-($.eventSource = config.amazonaws.com) &&
-(($.eventName=StopConfigurationRecorder)||($.eventName=DeleteDeliveryChannel)||($.eventName=PutDeliveryChannel)||($.eventName=PutConfigurationRecorder))
-}'
+    aws logs put-metric-filter --log-group-name  --filter-name `` --metric-transformations metricName= `` ,metricNamespace='CISBenchmark',metricValue=1 --filter-pattern '{ ($.eventSource = config.amazonaws.com) && (($.eventName=StopConfigurationRecorder)||($.eventName=DeleteDeliveryChannel)||($.eventName=PutDeliveryChannel)||($.eventName=PutConfigurationRecorder)) }'
     ```
 
-    **Note**: You can choose your own metricName and metricNamespace strings.
-Using the same metricNamespace for all Foundations Benchmark metrics will group
-them together.
+    **Note**: You can choose your own metricName and metricNamespace strings. Using the same metricNamespace for all Foundations Benchmark metrics will group them together.
 
     2. Create an SNS topic that the alarm will notify
     ```
     aws sns create-topic --name
     ```
 
-    **Note**: you can execute this command once and then re-use the same topic
-for all monitoring alarms.
+    **Note**: you can execute this command once and then re-use the same topic for all monitoring alarms.
 
     3. Create an SNS subscription to topic created in step 2
     ```
@@ -105,18 +78,12 @@ for all monitoring alarms.
     \t --notification-endpoint
     ```
 
-    **Note**: you can execute this command once and then re-use the SNS
-subscription for all monitoring alarms.
+    **Note**: you can execute this command once and then re-use the SNS subscription for all monitoring alarms.
 
-    4. Create an alarm that is associated with the CloudWatch Logs Metric
-Filter created in step 1 and an SNS topic created in step 2
+    4. Create an alarm that is associated with the CloudWatch Logs Metric Filter created in step 1 and an SNS topic created in step 2
     ```
-    aws cloudwatch put-metric-alarm --alarm-name `` --metric-name ``
---statistic Sum --period 300 --threshold 1 --comparison-operator
-GreaterThanOrEqualToThreshold --evaluation-periods 1 --namespace 'CISBenchmark'
---alarm-actions
-    ```
-  "
+    aws cloudwatch put-metric-alarm --alarm-name `` --metric-name `` --statistic Sum --period 300 --threshold 1 --comparison-operator GreaterThanOrEqualToThreshold --evaluation-periods 1 --namespace 'CISBenchmark' --alarm-actions
+    ```"
   impact 0.5
   tag severity: "Medium"
   tag gtitle: nil
@@ -128,19 +95,9 @@ GreaterThanOrEqualToThreshold --evaluation-periods 1 --namespace 'CISBenchmark'
   tag nist: nil
   tag notes: nil
   tag comment: nil
-  tag cis_controls: "TITLE:Maintain Detailed Asset Inventory CONTROL:1.4
-DESCRIPTION:Maintain an accurate and up-to-date inventory of all technology
-assets with the potential to store or process information. This inventory shall
-include all hardware assets, whether connected to the organization's network or
-not.;TITLE:Document Traffic Configuration Rules CONTROL:11.2 DESCRIPTION:All
-configuration rules that allow traffic to flow through network devices should
-be documented in a configuration management system with a specific business
-reason for each rule, a specific individual\x92s name responsible for that
-business need, and an expected duration of the need.;TITLE:Maintain an
-Inventory of Authentication Systems CONTROL:16.1 DESCRIPTION:Maintain an
-inventory of each of the organization's authentication systems, including those
-located onsite or at a remote service provider.;"
-  tag ref: "CIS CSC v6.0
-#5.4:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html:https://docs.aws.amazon.com/sns/latest/dg/SubscribeTopic.html"
+  tag cis_controls: "TITLE:Maintain Detailed Asset Inventory CONTROL:1.4 DESCRIPTION:Maintain an accurate and up-to-date inventory of all technology assets with the potential to store or process information. This inventory shall include all hardware assets, whether connected to the organization's network or not.;TITLE:Document Traffic Configuration Rules CONTROL:11.2 DESCRIPTION:All configuration rules that allow traffic to flow through network devices should be documented in a configuration management system with a specific business reason for each rule, a specific individual\x92s name responsible for that business need, and an expected duration of the need.;TITLE:Maintain an Inventory of Authentication Systems CONTROL:16.1 DESCRIPTION:Maintain an inventory of each of the organization's authentication systems, including those located onsite or at a remote service provider.;"
+  tag ref: "CIS CSC v6.0 #5.4:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html:https://docs.aws.amazon.com/sns/latest/dg/SubscribeTopic.html"
+
+
 end
 
