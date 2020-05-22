@@ -129,6 +129,15 @@ GreaterThanOrEqualToThreshold --evaluation-periods 1 --namespace 'CISBenchmark'
   tag fix_id: nil
   tag cci: nil
   tag nist: nil
+  tag notes: "Configuring log metric filter and alarm on Multi-region (global) CloudTrail
+  - ensures that activities from all regions (used as well as unused) are monitored
+  - ensures that activities on all supported global services are monitored
+  - ensures that all management events across all regions are monitored"
+  tag comment: "This alert may be triggered by normal read-only console activities that attempt to opportunistically gather optional information, but gracefully fail if they don't have permissions.
+
+  If an excessive number of alerts are being generated then an organization may wish to consider adding read access to the limited IAM user permissions simply to quiet the alerts.
+  
+  In some cases doing this may allow the users to actually view some areas of the system - any additional access given should be reviewed for alignment with the original limited IAM user intent."
   tag cis_controls: "TITLE:Regularly Review Logs CONTROL:6.7 DESCRIPTION:On a
 regular basis, review logs to identify anomalies or abnormal
 events.;TITLE:Central Log Management CONTROL:6.5 DESCRIPTION:Ensure that

@@ -75,6 +75,8 @@ decrypt permissions on the specified KMS key to decrypt log files.
   tag fix_id: nil
   tag cci: nil
   tag nist: nil
+  tag notes: nil
+  tag comment: nil
   tag cis_controls: "TITLE:Maintenance, Monitoring and Analysis of Audit Logs
 CONTROL:6 DESCRIPTION:Maintenance, Monitoring and Analysis of Audit Logs;"
   tag ref: "CIS CSC v6.0 #13.1: Perform an assessment of data to identify

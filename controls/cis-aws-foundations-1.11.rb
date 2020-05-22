@@ -67,6 +67,8 @@ can be combined into a single command.
   tag fix_id: nil
   tag cci: nil
   tag nist: nil
+  tag notes: nil
+  tag comment: nil
   tag cis_controls: "TITLE:Account Monitoring and Control CONTROL:16
 DESCRIPTION:Account Monitoring and Control;"
 end

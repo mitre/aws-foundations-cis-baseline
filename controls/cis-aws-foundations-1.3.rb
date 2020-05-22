@@ -76,6 +76,8 @@ been used in `90` Days
   tag fix_id: nil
   tag cci: nil
   tag nist: nil
+  tag notes: nil
+  tag comment: nil
   tag cis_controls: "TITLE:Disable Dormant Accounts CONTROL:16.9
 DESCRIPTION:Automatically disable dormant accounts after a set period of
 inactivity.;"

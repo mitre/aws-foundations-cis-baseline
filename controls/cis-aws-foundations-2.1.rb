@@ -98,6 +98,9 @@ configures `Management Events` to set `All` type of `Read/Writes` by default.
   tag fix_id: nil
   tag cci: nil
   tag nist: nil
+  tag notes: nil
+  tag comment: "S3 lifecycle features can be used to manage the accumulation and management of logs over time. See the following AWS resource for more information on these features:
+  1. http://docs.aws.amazon.com/AmazonS3/latest/dev/object-lifecycle-mgmt.html"
   tag cis_controls: "TITLE:Activate audit logging CONTROL:6.2
 DESCRIPTION:Ensure that local logging has been enabled on all systems and
 networking devices.;"

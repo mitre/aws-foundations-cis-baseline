@@ -38,6 +38,8 @@ emails are regularly monitored by more than one individual.
   tag fix_id: nil
   tag cci: nil
   tag nist: nil
+  tag notes: nil
+  tag comment: nil
   tag cis_controls: "TITLE:Incident Response and Management CONTROL:19
 DESCRIPTION:Incident Response and Management;"
 end

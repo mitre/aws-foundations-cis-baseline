@@ -45,6 +45,8 @@ of port `22` .
   tag fix_id: nil
   tag cci: nil
   tag nist: nil
+  tag notes: nil
+  tag comment: "For updating an existing environment, care should be taken to ensure that administrators currently relying on an existing ingress from 0.0.0.0/0 have access to ports 22 and/or 3389 through another security group."
   tag cis_controls: "TITLE:Ensure Only Approved Ports, Protocols and Services
 Are Running CONTROL:9.2 DESCRIPTION:Ensure that only network ports, protocols,
 and services listening on a system with validated business needs, are running

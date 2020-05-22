@@ -60,6 +60,8 @@ again)
   tag fix_id: nil
   tag cci: nil
   tag nist: nil
+  tag notes: nil
+  tag comment: nil
   tag cis_controls: "TITLE:Ensure the Use of Dedicated Administrative Accounts
 CONTROL:4.3 DESCRIPTION:Ensure that all users with administrative account
 access use a dedicated or secondary account for elevated activities. This

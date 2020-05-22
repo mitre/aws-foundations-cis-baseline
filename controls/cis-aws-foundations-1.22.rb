@@ -94,6 +94,8 @@ policy is attached to.
   tag fix_id: nil
   tag cci: nil
   tag nist: nil
+  tag notes: nil
+  tag comment: nil
   tag cis_controls: "TITLE:Controlled Use of Administrative Privileges
 CONTROL:4 DESCRIPTION:Controlled Use of Administrative Privileges;"
   tag ref:

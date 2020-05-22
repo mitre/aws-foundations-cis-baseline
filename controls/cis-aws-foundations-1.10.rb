@@ -55,6 +55,8 @@ can be combined into a single command.
   tag fix_id: nil
   tag cci: nil
   tag nist: nil
+  tag notes: nil
+  tag comment: nil
   tag cis_controls: "TITLE:Use Unique Passwords CONTROL:4.4 DESCRIPTION:Where
 multi-factor authentication is not supported (such as local administrator,
 root, or service accounts), accounts will use passwords that are unique to that

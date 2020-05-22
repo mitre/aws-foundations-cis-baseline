@@ -126,6 +126,8 @@ GreaterThanOrEqualToThreshold --evaluation-periods 1 --namespace 'CISBenchmark'
   tag fix_id: nil
   tag cci: nil
   tag nist: nil
+  tag notes: nil
+  tag comment: nil
   tag cis_controls: "TITLE:Maintain Detailed Asset Inventory CONTROL:1.4
 DESCRIPTION:Maintain an accurate and up-to-date inventory of all technology
 assets with the potential to store or process information. This inventory shall

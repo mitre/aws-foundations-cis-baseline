@@ -82,6 +82,8 @@ must type a code from the hardware MFA device.
   tag fix_id: nil
   tag cci: nil
   tag nist: nil
+  tag notes: nil
+  tag comment: nil
   tag cis_controls: "TITLE:Use Multifactor Authentication For All
 Administrative Access CONTROL:4.5 DESCRIPTION:Use multi-factor authentication
 and encrypted channels for all administrative account access.;"

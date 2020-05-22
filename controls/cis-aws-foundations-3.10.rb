@@ -128,6 +128,8 @@ GreaterThanOrEqualToThreshold --evaluation-periods 1 --namespace 'CISBenchmark'
   tag fix_id: nil
   tag cci: nil
   tag nist: nil
+  tag notes: nil
+  tag comment: nil
   tag cis_controls: "TITLE:Log and Alert on Changes to Administrative Group
 Membership CONTROL:4.8 DESCRIPTION:Configure systems to issue a log entry and
 alert when an account is added to or removed from any group assigned

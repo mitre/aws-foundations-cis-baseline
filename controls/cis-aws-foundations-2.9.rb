@@ -54,6 +54,8 @@ flows required for proper operation of an already running environment.
   tag fix_id: nil
   tag cci: nil
   tag nist: nil
+  tag notes: nil
+  tag comment: nil
   tag cis_controls: "TITLE:Configure Monitoring Systems to Record Network
 Packets CONTROL:12.5 DESCRIPTION:Configure monitoring systems to record network
 packets passing through the boundary at each of the organization's network

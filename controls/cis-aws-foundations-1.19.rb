@@ -90,6 +90,8 @@ assigning the system to a role.
   tag fix_id: nil
   tag cci: nil
   tag nist: nil
+  tag notes: nil
+  tag comment: nil
   tag ref:
 "http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html:http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html:CIS
 CSC v6.0 #16.14 (someone please check the applicability of this for me)"

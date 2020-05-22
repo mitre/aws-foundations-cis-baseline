@@ -93,6 +93,8 @@ User` (click `x` to delete the row).
   tag fix_id: nil
   tag cci: nil
   tag nist: nil
+  tag notes: nil
+  tag comment: nil
   tag cis_controls: "TITLE:Protect Information through Access Control Lists
 CONTROL:14.6 DESCRIPTION:Protect all information stored on systems with file
 system, network share, claims, application, or database specific access control

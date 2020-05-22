@@ -129,6 +129,11 @@ GreaterThanOrEqualToThreshold --evaluation-periods 1 --namespace 'CISBenchmark'
   tag fix_id: nil
   tag cci: nil
   tag nist: nil
+  tag notes: "Configuring log metric filter and alarm on Multi-region (global) CloudTrail
+  - ensures that activities from all regions (used as well as unused) are monitored
+  - ensures that activities on all supported global services are monitored
+  - ensures that all management events across all regions are monitored"
+  tag comment: nil
   tag cis_controls: "TITLE:Use Automated Tools to Verify Standard Device
 Configurations and Detect Changes CONTROL:11.3 DESCRIPTION:Compare all network
 device configuration against approved security configurations defined for each
