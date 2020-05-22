@@ -1,0 +1,81 @@
+# encoding: utf-8
+#
+# This is an example of an attributes file that can be passed to the profile
+# to override the defaults of the attributes defined in each of the tests.
+# You can use this to automatically adjust your tests when using automation or
+# progromatic deployment or validation of differnt deployment patterns without
+# having to adjust the core profile.
+
+# The followiing attributes must be set to accepted/documented values which is
+# then verified by the applicable controls.
+
+# default aws key age (1.4)
+aws_key_age: 90
+
+# Make the password length (1.9)
+pwd_length: 14
+
+# make the aws_cred_age an attribute (1.11)
+aws_cred_age: 90
+
+# description: 'primary aws region your resources are deployed.',
+default_aws_region: 'us-east-1'
+
+#description: 'list of buckets exempted from inspection',
+exception_bucket_list: ["exception_bucket_name"]
+
+# description: 'list of security groups exempted from inspection',
+exception_security_group_list: ["exception_security_group_name"]
+
+# description: 'iam manager role name',
+iam_manager_role_name: "iam-manager-role-name"
+
+# description: 'iam master role name',
+iam_master_role_name: "iam-master-role-name"
+
+# description: 'iam manager user name',
+iam_manager_user_name: "iam-manager-user-name"
+
+# description: 'iam master user name',
+iam_master_user_name: "iam-master-user-name"
+
+# description: 'iam manager policy',
+iam_manager_policy_name: "iam-manager-policy"
+
+# description: 'iam master policy',
+iam_master_policy_name: "iam-master-policy"
+
+# description: 'Config delivery channel list and settings in all relevant regions',
+config_delivery_channels:
+    us-east-1:  
+      s3_bucket_name: "s3_bucket_name_value"
+      sns_topic_arn: "sns_topic_arn_value"
+    us-east-2:
+      s3_bucket_name:  "s3_bucket_name_value"
+      sns_topic_arn: "sns_topic_arn_value"
+    us-west-1:
+      s3_bucket_name:  "s3_bucket_name_value"
+      sns_topic_arn: "sns_topic_arn_value"
+    us-west-2:
+      s3_bucket_name:  "s3_bucket_name_value"
+      sns_topic_arn: "sns_topic_arn_value"
+
+# description: 'SNS topics list and details in all relevant regions',
+sns_topics:
+    topic_arn1 :
+      owner : "owner_value"
+      region : "region_value"
+    topic_arn2 :
+      owner : "owner_value"
+      region : "region_value"
+
+# description: 'SNS subscription list and details in all relevant regions',
+sns_subscriptions:
+    subscription_arn1:
+      endpoint: "endpoint_value"
+      owner: "owner_value"
+      protocol: "protocol_value"
+    subscription_arn2:
+      endpoint: "endpoint_value"
+      owner: "owner_value"
+      protocol: "protocol_value"
