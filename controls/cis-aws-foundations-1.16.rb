@@ -59,6 +59,17 @@ users:
   tag cis_controls: "TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;"
   tag ref: "http://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html:http://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html"
 
-  
+  aws_iam_users.entries.each do |user|
+    describe aws_iam_user(username: user.user_name) do
+      it { should_not have_inline_policies }
+      it { should_not have_attached_policies }
+    end
+  end
+
+  if aws_iam_users.entries.empty?
+    describe 'Control skipped because no iam users were found' do
+      skip 'This control is skipped since the aws_iam_users resource returned an empty user list'
+    end
+  end
 end
 

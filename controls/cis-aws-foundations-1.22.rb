@@ -61,7 +61,22 @@ control "1.22" do
   tag comment: nil
   tag cis_controls: "TITLE:Controlled Use of Administrative Privileges CONTROL:4 DESCRIPTION:Controlled Use of Administrative Privileges;"
   tag ref: "http://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html:http://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html:http://docs.aws.amazon.com/cli/latest/reference/iam/index.html#cli-aws-iam"
-
   
+
+  aws_iam_policies.where { attachment_count > 0 }.policy_names.each do |policy|
+    describe "Attached Policies #{policy} allows full '*:*' privileges?" do
+      subject do
+        aws_iam_policy(policy).document.where(Effect: 'Allow').actions.flatten.include?('*') &&
+          aws_iam_policy(policy).document.where(Effect: 'Allow').resources.flatten.include?('*')
+      end
+      it { should be false }
+    end
+  end
+
+  if  aws_iam_policies.where { attachment_count > 0 }.policy_names.empty?
+    describe 'Control skipped because no iam policies were found' do
+      skip 'This control is skipped since the aws_iam_policies resource returned an empty policy list'
+    end
+  end
 end
 

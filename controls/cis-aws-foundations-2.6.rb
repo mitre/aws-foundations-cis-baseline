@@ -68,6 +68,23 @@ control "2.6" do
   tag cis_controls: "TITLE:Activate audit logging CONTROL:6.2 DESCRIPTION:Ensure that local logging has been enabled on all systems and networking devices.;TITLE:Enforce Detail Logging for Access or Changes to Sensitive Data CONTROL:14.9 DESCRIPTION:Enforce detailed audit logging for access to sensitive data or changes to sensitive data (utilizing tools such as File Integrity Monitoring or Security Information and Event Monitoring).;"
   tag ref: "CIS CSC v6.0 #14.6"
 
-  
+  describe aws_cloudtrail_trails do
+    it { should exist }
+  end
+
+  aws_cloudtrail_trails.trail_arns.each do |trail|
+    bucket_name = aws_cloudtrail_trail(trail).s3_bucket_name
+    if exception_bucket_list.include?(bucket_name)
+      describe 'Bucket not inspected because it is defined as an exception' do
+        skip "Bucket: #{bucket_name} not inspected because it is defined in exception_bucket_list."
+      end
+    end
+
+    next if exception_bucket_list.include?(bucket_name)
+
+    describe aws_s3_bucket(bucket_name) do
+      it { should have_access_logging_enabled }
+    end
+  end
 end
 

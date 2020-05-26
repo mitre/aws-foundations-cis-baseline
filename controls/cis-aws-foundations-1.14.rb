@@ -53,6 +53,10 @@ control "1.14" do
   tag cis_controls: "TITLE:Use Multifactor Authentication For All Administrative Access CONTROL:4.5 DESCRIPTION:Use multi-factor authentication and encrypted channels for all administrative account access.;"
   tag ref: "CIS CSC v6.0 #5.6, #11.4, #12.6, #16.11:Order Hardware MFA: http://onlinenoram.gemalto.com/:http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html:http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_physical.html#enable-hw-mfa-for-root"
 
-  
+  describe aws_iam_root_user do
+    it { should have_mfa_enabled }
+    it { should_not have_virtual_mfa_enabled }
+    it { should have_hardware_mfa_enabled }
+  end
 end
 

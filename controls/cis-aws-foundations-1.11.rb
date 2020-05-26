@@ -52,6 +52,13 @@ control "1.11" do
   tag comment: nil
   tag cis_controls: "TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;"
 
-  
+  describe aws_iam_password_policy do
+    it { should exist }
+  end
+
+  describe aws_iam_password_policy do
+    its('expire_passwords?') { should be true }
+    its('max_password_age_in_days') { should cmp <= aws_cred_age }
+  end if aws_iam_password_policy.exists?
 end
 

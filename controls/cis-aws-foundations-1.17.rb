@@ -36,6 +36,8 @@ control "1.17" do
   tag cis_controls: "TITLE:Enable Detailed Logging CONTROL:6.3 DESCRIPTION:Enable system logging to include detailed information such as a event source, date, user, timestamp, source addresses, destination addresses, and other useful elements.;"
   tag ref: "https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/manage-account-payment.html#contact-info"
 
-  
+  describe 'Control has to be tested manually' do
+    skip 'This control must be manually reviewed'
+  end
 end
 

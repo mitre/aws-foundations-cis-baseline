@@ -59,6 +59,36 @@ control "1.3" do
   tag cis_controls: "TITLE:Disable Dormant Accounts CONTROL:16.9 DESCRIPTION:Automatically disable dormant accounts after a set period of inactivity.;"
   tag ref: "CIS CSC v6.0 #16.6"
 
+  # SK: Conditions added
+  # If password_last_used is No_Information -> password_last_changed should be < 90
+  # If access_key_x_active is True && access_key_x_last_used_date is N/A -> access_key_x_last_rotated should be < 90
 
+  describe aws_iam_users.where(has_console_password?: true).where(password_never_used?: true) do
+    it { should_not exist }
+  end
+
+  describe aws_iam_users.where(has_console_password?: true).where { password_last_used_days_ago = 'nil' } do
+    it { should_not exist }
+  end
+
+  describe aws_iam_users.where(has_console_password?: true).where(password_ever_used?: true).where { password_last_used_days_ago >= 90 } do
+    it { should_not exist }
+  end
+
+  describe aws_iam_users.where(has_console)
+
+  aws_iam_access_keys.where(active: true).entries.each do |key|
+    describe key.username do
+      context key do
+        its('last_used_days_ago') { should cmp < 90 }
+      end
+    end
+  end
+
+  if aws_iam_access_keys.where(active: true).entries.empty?
+    describe 'Control skipped because no active iam access keys were found' do
+      skip 'This control is skipped since the aws_iam_access_keys resource returned an empty active access key list'
+    end
+  end
 end
 

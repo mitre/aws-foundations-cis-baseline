@@ -113,6 +113,69 @@ control "3.1" do
   tag cis_controls: "TITLE:Regularly Review Logs CONTROL:6.7 DESCRIPTION:On a regular basis, review logs to identify anomalies or abnormal events.;TITLE:Central Log Management CONTROL:6.5 DESCRIPTION:Ensure that appropriate logs are being aggregated to a central log management system for analysis and review.;"
   tag ref: "https://aws.amazon.com/sns/:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/sns/latest/dg/SubscribeTopic.html"
 
+
+  # SK: Changed made to this control need to be reflected throughout this section
   
+  unless ENV['AWS_REGION'].eql?(attribute('default_aws_region'))
+    impact 0.0
+    desc  "Currently inspected region #{ENV['AWS_REGION']} is not the primary AWS region"
+  end
+
+  describe aws_cloudtrail_trails do
+    it { should exist }
+  end
+
+  # SK: Additions similar to control 2.1: Ensure that at least one Cloudtrail is active and multi-region 
+  # aws_cloudtrail_trails.trail_arns.each do |trail|
+  #   describe aws_cloudtrail_trail(trail) do
+  #     it { should be_multi_region_trail }
+  #     its('status.is_logging') { should be true }
+  #   end
+  # end
+
+  # SK: Add management events check to verify Read/Write events is set to all
+
+
+  describe.one do
+    aws_cloudtrail_trails.trail_arns.each do |trail|
+
+      describe aws_cloudtrail_trail(trail) do
+        its ('cloud_watch_logs_log_group_arn') { should_not be_nil }
+      end
+
+      trail_log_group_name = aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.scan(/log-group:(.+):/).last.first unless aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.nil?
+
+      next if trail_log_group_name.nil?
+
+      pattern = '{ ($.errorCode = "*UnauthorizedOperation") || ($.errorCode = "AccessDenied*") }'
+
+      describe aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name) do
+        it { should exist }
+      end
+
+      metric_name = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name).metric_name
+      metric_namespace = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name).metric_namespace
+      next if metric_name.nil? && metric_namespace.nil?
+
+      describe aws_cloudwatch_alarm(
+        metric_name: metric_name,
+        metric_namespace: metric_namespace
+      ) do
+        it { should exist }
+        its ('alarm_actions') { should_not be_empty }
+      end
+
+      aws_cloudwatch_alarm(
+        metric_name: metric_name,
+        metric_namespace: metric_namespace
+      ).alarm_actions.each do |sns|
+        describe aws_sns_topic(sns) do
+          it { should exist }
+          # SK: At least one subscriber should be active and at least one subscription should have "SubscriptionArn" with valid aws ARN
+          its('confirmed_subscription_count') { should_not be_zero }
+        end
+      end
+    end
+  end
 end
 

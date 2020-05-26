@@ -77,6 +77,18 @@ control "2.1" do
   tag cis_controls: "TITLE:Activate audit logging CONTROL:6.2 DESCRIPTION:Ensure that local logging has been enabled on all systems and networking devices.;"
   tag ref: "CIS CSC v6.0 #14.6:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-concepts.html#cloudtrail-concepts-management-events:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-management-and-data-events-with-cloudtrail.html?icmpid=docs_cloudtrail_console#logging-management-events:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-supported-services.html#cloud-trail-supported-services-data-events"
 
-  
+  describe aws_cloudtrail_trails do
+    it { should exist }
+  end
+
+  # SK: In Management Events section, ensure Read/Write events is set to All | https://github.com/inspec/inspec-aws/blob/master/libraries/aws_cloudtrail_trail.rb
+
+  aws_cloudtrail_trails.trail_arns.each do |trail|
+    describe aws_cloudtrail_trail(trail) do
+      # SK: Logic change proposal - at least one result should pass
+      it { should be_multi_region_trail }
+      its('status.is_logging') { should be true }
+    end
+  end
 end
 

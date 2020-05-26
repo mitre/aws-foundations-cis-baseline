@@ -39,6 +39,8 @@ control "1.15" do
   tag comment: nil
   tag cis_controls: "TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;"
 
-  
+  describe 'Control has to be tested manually' do
+    skip 'This control must be manually reviewed'
+  end
 end
 

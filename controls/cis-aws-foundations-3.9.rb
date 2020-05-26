@@ -98,6 +98,54 @@ control "3.9" do
   tag cis_controls: "TITLE:Maintain Detailed Asset Inventory CONTROL:1.4 DESCRIPTION:Maintain an accurate and up-to-date inventory of all technology assets with the potential to store or process information. This inventory shall include all hardware assets, whether connected to the organization's network or not.;TITLE:Document Traffic Configuration Rules CONTROL:11.2 DESCRIPTION:All configuration rules that allow traffic to flow through network devices should be documented in a configuration management system with a specific business reason for each rule, a specific individual\x92s name responsible for that business need, and an expected duration of the need.;TITLE:Maintain an Inventory of Authentication Systems CONTROL:16.1 DESCRIPTION:Maintain an inventory of each of the organization's authentication systems, including those located onsite or at a remote service provider.;"
   tag ref: "CIS CSC v6.0 #5.4:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html:https://docs.aws.amazon.com/sns/latest/dg/SubscribeTopic.html"
 
+  unless ENV['AWS_REGION'].eql?(attribute('default_aws_region'))
+    impact 0.0
+    desc  "Currently inspected region #{ENV['AWS_REGION']} is not the primary AWS region"
+  end
 
+  describe aws_cloudtrail_trails do
+    it { should exist }
+  end
+
+  describe.one do
+    aws_cloudtrail_trails.trail_arns.each do |trail|
+
+      describe aws_cloudtrail_trail(trail) do
+        its ('cloud_watch_logs_log_group_arn') { should_not be_nil }
+      end
+
+      trail_log_group_name = aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.scan(/log-group:(.+):/).last.first unless aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.nil?
+
+      next if trail_log_group_name.nil?
+
+      pattern = '{ ($.eventSource = config.amazonaws.com) && (($.eventName=StopConfigurationRecorder)||($.eventName=DeleteDeliveryChannel)||($.eventName=PutDeliveryChannel)||($.eventName=PutConfigurationRecorder))}'
+
+      describe aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name) do
+        it { should exist }
+      end
+
+      metric_name = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name).metric_name
+      metric_namespace = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name).metric_namespace
+      next if metric_name.nil? && metric_namespace.nil?
+
+      describe aws_cloudwatch_alarm(
+        metric_name: metric_name,
+        metric_namespace: metric_namespace
+      ) do
+        it { should exist }
+        its ('alarm_actions') { should_not be_empty }
+      end
+
+      aws_cloudwatch_alarm(
+        metric_name: metric_name,
+        metric_namespace: metric_namespace
+      ).alarm_actions.each do |sns|
+        describe aws_sns_topic(sns) do
+          it { should exist }
+          its('confirmed_subscription_count') { should_not be_zero }
+        end
+      end
+    end
+  end
 end
 

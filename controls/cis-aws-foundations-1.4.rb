@@ -56,6 +56,18 @@ control "1.4" do
   tag comment: nil
   tag cis_controls: "TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;"
 
+  aws_iam_access_keys.where(active: true).entries.each do |key|
+    describe key.username do
+      context key do
+        its('created_days_ago') { should cmp <= aws_key_age }
+      end
+    end
+  end
 
+  if aws_iam_access_keys.where(active: true).entries.empty?
+    describe 'Control skipped because no active iam access keys were found' do
+      skip 'This control is skipped since the aws_iam_access_keys resource returned an empty active access key list'
+    end
+  end
 end
 

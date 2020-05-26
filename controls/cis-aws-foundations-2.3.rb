@@ -69,6 +69,23 @@ control "2.3" do
   tag cis_controls: "TITLE:Protect Information through Access Control Lists CONTROL:14.6 DESCRIPTION:Protect all information stored on systems with file system, network share, claims, application, or database specific access control lists. These controls will enforce the principle that only authorized individuals should have access to the information based on their need to access the information as a part of their responsibilities.;"
   tag ref: "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_principal.html"
 
-  
+  describe aws_cloudtrail_trails do
+    it { should exist }
+  end
+
+  aws_cloudtrail_trails.trail_arns.each do |trail|
+    bucket_name = aws_cloudtrail_trail(trail).s3_bucket_name
+    if exception_bucket_list.include?(bucket_name)
+      describe 'Bucket not inspected because it is defined as an exception' do
+        skip "Bucket: #{bucket_name} not inspected because it is defined in exception_bucket_list."
+      end
+    end
+
+    next if exception_bucket_list.include?(bucket_name)
+    
+    describe aws_s3_bucket(bucket_name) do
+      it { should_not be_public }
+    end
+  end
 end
 
