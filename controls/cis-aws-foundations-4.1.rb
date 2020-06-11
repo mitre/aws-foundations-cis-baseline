@@ -37,18 +37,16 @@ control "4.1" do
   tag comment: "For updating an existing environment, care should be taken to ensure that administrators currently relying on an existing ingress from 0.0.0.0/0 have access to ports 22 and/or 3389 through another security group."
   tag cis_controls: "TITLE:Ensure Only Approved Ports, Protocols and Services Are Running CONTROL:9.2 DESCRIPTION:Ensure that only network ports, protocols, and services listening on a system with validated business needs, are running on each system.;"
 
+  # SK: Test passed
   aws_security_groups.group_ids.each do |group_id|
     if exception_security_group_list.include?(group_id)
       describe 'Security Group not inspected because it is defined as an exception' do
         skip "Security Group:: #{group_id} not inspected because it is defined in exception_security_group_list."
       end
-    end
-
-    next if exception_security_group_list.include?(group_id)
-
-    describe aws_security_group(group_id) do
-      it { should_not allow_in(port: 22, ipv4_range: '0.0.0.0/0') }
+    else
+      describe aws_security_group(group_id) do
+        it { should_not allow_in(port: 22, ipv4_range: '0.0.0.0/0') }
+      end
     end
   end
 end
-

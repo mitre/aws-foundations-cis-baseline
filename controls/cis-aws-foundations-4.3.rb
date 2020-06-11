@@ -68,16 +68,17 @@ control "4.3" do
   tag cis_controls: "TITLE:Protect Information through Access Control Lists CONTROL:14.6 DESCRIPTION:Protect all information stored on systems with file system, network share, claims, application, or database specific access control lists. These controls will enforce the principle that only authorized individuals should have access to the information based on their need to access the information as a part of their responsibilities.;"
   tag ref: "http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html:CIS CSC v6.0 #9.2"
 
-  aws_vpcs.vpc_ids.each do |vpc|
-    describe aws_security_group(group_name: 'default', vpc_id: vpc) do
-      its('inbound_rules') { should be_empty }
-      its('outbound_rules') { should be_empty }
-    end
-  end
+  # SK: Test passed
   if aws_vpcs.vpc_ids.empty?
     describe 'Control skipped because no vpcs were found' do
       skip 'This control is skipped since the aws_vpcs resource returned an empty vpc list'
     end
+  else
+    aws_vpcs.vpc_ids.each do |vpc|
+      describe aws_security_group(group_name: 'default', vpc_id: vpc) do
+        its('inbound_rules') { should be_empty }
+        its('outbound_rules') { should be_empty }
+      end
+    end
   end
 end
-

@@ -80,15 +80,15 @@ control "2.1" do
   describe aws_cloudtrail_trails do
     it { should exist }
   end
-
-  # SK: In Management Events section, ensure Read/Write events is set to All | https://github.com/inspec/inspec-aws/blob/master/libraries/aws_cloudtrail_trail.rb
+  # QR: Should the block above be an if statement along with an else that leads to a skip statement? | If approved, reflect changes in other controls too
 
   aws_cloudtrail_trails.trail_arns.each do |trail|
     describe aws_cloudtrail_trail(trail) do
       # SK: Logic change proposal - at least one result should pass
       it { should be_multi_region_trail }
       its('status.is_logging') { should be true }
+      # QR: Property listed in AWS resource pack (https://github.com/inspec/inspec-aws/blob/master/libraries/aws_cloudtrail_trail.rb#L74)
+      it { should have_event_selector_mgmt_events_rw_type_all }
     end
   end
 end
-

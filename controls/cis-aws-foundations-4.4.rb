@@ -41,12 +41,14 @@ control "4.4" do
   tag cis_controls: "TITLE:Protect Information through Access Control Lists CONTROL:14.6 DESCRIPTION:Protect all information stored on systems with file system, network share, claims, application, or database specific access control lists. These controls will enforce the principle that only authorized individuals should have access to the information based on their need to access the information as a part of their responsibilities.;"
   tag ref: "http://docs.aws.amazon.com/AmazonVPC/latest/PeeringGuide/peering-configurations-partial-access.html"
 
+  # SK: Test passed
   aws_route_tables.route_table_ids.each do |route_table_id|
     aws_route_table(route_table_id).routes.each do |route|
       next unless route.key?(:vpc_peering_connection_id)
 
       describe route do
         its([:destination_cidr_block]) { should_not be nil }
+        its([:destination_cidr_block]) { should be_in nil }
       end
     end
     next unless aws_route_table(route_table_id).routes.none? { |route| route.key?(:vpc_peering_connection_id) }
@@ -61,4 +63,3 @@ control "4.4" do
     end
   end
 end
-

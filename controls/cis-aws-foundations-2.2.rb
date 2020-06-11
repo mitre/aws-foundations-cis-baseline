@@ -65,4 +65,3 @@ control "2.2" do
     end
   end
 end
-
