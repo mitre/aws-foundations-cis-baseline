@@ -66,6 +66,7 @@ control "1.21" do
   tag comment: nil
   tag cis_controls: "TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;"
 
+  # SK: Test passed
   aws_iam_access_keys.entries.each do |key|
     describe key.username do
       context key do
@@ -80,4 +81,3 @@ control "1.21" do
     end
   end
 end
-
