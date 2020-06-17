@@ -217,7 +217,7 @@ InSpec makes it easy to run your tests wherever you need. More options listed he
 
 ```
 # Clone Inspec Profile
-$ git clone https://github.com/aaronlippold/cis-aws-foundations-baseline
+$ git clone https://github.com/mitre/cis-aws-foundations-baseline
 
 # Install Gems
 $ bundle install
