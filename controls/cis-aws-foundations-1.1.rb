@@ -14,7 +14,7 @@ control "1.1" do
     
     Note: there are a few conditions under which the use of the root account is required, such as requesting a penetration test or creating a CloudFront private key."
   desc  "fix", "Follow the remediation instructions of the `Ensure IAM policies are attached only to groups or roles` recommendation"
-  impact 0.3
+  impact 0.5
   tag severity: "Low"
   tag gtitle: nil
   tag gid: nil

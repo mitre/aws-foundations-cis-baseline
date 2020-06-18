@@ -24,7 +24,7 @@ control "4.2" do
     3. Identify the rules to be removed
     4. Click the `x` in the `Remove` column
     5. Click `Save`"
-  impact 0.3
+  impact 0.5
   tag severity: "Low"
   tag gtitle: nil
   tag gid: nil

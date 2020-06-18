@@ -22,7 +22,7 @@ control "1.17" do
     - After you have made your changes, choose Done.
     - To edit your contact information, under Contact Information, choose Edit.
     - For the fields that you want to change, type your updated information, and then choose Update."
-  impact 0.3
+  impact 0.5
   tag severity: "Low"
   tag gtitle: nil
   tag gid: nil

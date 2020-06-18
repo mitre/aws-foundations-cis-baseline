@@ -55,7 +55,7 @@ control "2.3" do
     7. Click `Save` to save the ACL.
     8. If the `Edit bucket policy` button is present, click it.
     9. Remove any `Statement` having an `Effect` set to `Allow` and a `Principal` set to \"\\*\" or {\"AWS\" : \"\\*\"}."
-  impact 0.3
+  impact 0.5
   tag severity: "Low"
   tag gtitle: nil
   tag gid: nil

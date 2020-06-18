@@ -32,7 +32,7 @@ control "1.13" do
     When you are finished, the virtual MFA device starts generating one-time passwords.
 
     1. In the Manage MFA Device wizard, in the Authentication Code 1 box, type the one-time password that currently appears in the virtual MFA device. Wait up to 30 seconds for the device to generate a new one-time password. Then type the second one-time password into the Authentication Code 2 box. Choose Active Virtual MFA."
-  impact 0.3
+  impact 0.5
   tag severity: "Low"
   tag gtitle: nil
   tag gid: nil

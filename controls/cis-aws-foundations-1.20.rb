@@ -40,7 +40,7 @@ control "1.20" do
     ```
      aws iam attach-role-policy --policy-arn  --role-name
     ```"
-  impact 0.3
+  impact 0.5
   tag severity: "Low"
   tag gtitle: nil
   tag gid: nil

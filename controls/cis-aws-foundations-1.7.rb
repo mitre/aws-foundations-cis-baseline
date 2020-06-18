@@ -33,7 +33,7 @@ control "1.7" do
      aws iam update-account-password-policy --require-symbols
     ```
     Note: All commands starting with \"aws iam update-account-password-policy\" can be combined into a single command."
-  impact 0.3
+  impact 0.5
   tag severity: "Low"
   tag gtitle: nil
   tag gid: nil

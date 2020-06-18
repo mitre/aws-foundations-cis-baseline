@@ -51,7 +51,7 @@ control "2.4" do
     aws cloudtrail update-trail --name
      --cloudwatch-logs-log-group-arn  --cloudwatch-logs-role-arn
     ```"
-  impact 0.3
+  impact 0.5
   tag severity: "Low"
   tag gtitle: nil
   tag gid: nil

@@ -53,7 +53,7 @@ control "1.21" do
     ```
     aws iam delete-access-key
     ```"
-  impact 0.3
+  impact 0.5
   tag severity: "Low"
   tag gtitle: nil
   tag gid: nil

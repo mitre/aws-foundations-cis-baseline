@@ -34,7 +34,7 @@ control "1.12" do
     5. Under the `Status` column if there are any Keys which are Active
      1. Click on `Make Inactive` - (Temporarily disable Key - may be needed again)
      2. Click `Delete` - (Deleted keys cannot be recovered)"
-  impact 0.3
+  impact 0.5
   tag severity: "Low"
   tag gtitle: nil
   tag gid: nil

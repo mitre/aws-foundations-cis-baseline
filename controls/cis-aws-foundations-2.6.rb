@@ -54,7 +54,7 @@ control "2.6" do
      2. Select Target Bucket from list
      3. Enter a Target Prefix
     6. Click `Save`"
-  impact 0.3
+  impact 0.5
   tag severity: "Low"
   tag gtitle: nil
   tag gid: nil

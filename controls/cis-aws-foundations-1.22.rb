@@ -48,7 +48,7 @@ control "1.22" do
     ```
      aws iam detach-role-policy --role-name  --policy-arn
     ```"
-  impact 0.3
+  impact 0.5
   tag severity: "Low"
   tag gtitle: nil
   tag gid: nil

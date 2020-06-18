@@ -26,7 +26,7 @@ control "1.15" do
      - Follow process for all 3 questions
     7. Click `Update` when complete
     8. Place Questions and Answers and place in a secure physical location"
-  impact 0.3
+  impact 0.5
   tag severity: "Low"
   tag gtitle: nil
   tag gid: nil

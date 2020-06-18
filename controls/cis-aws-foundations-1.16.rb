@@ -45,7 +45,7 @@ users:
      4. Click `Detach Policy` for each policy
      5. Expand `Inline Policies`
      6. Click `Remove Policy` for each policy"
-  impact 0.3
+  impact 0.5
   tag severity: "Low"
   tag gtitle: nil
   tag gid: nil

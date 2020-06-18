@@ -18,7 +18,7 @@ control "1.18" do
     4. Enter contact information in the `Security` section
 
     Note: Consider specifying an internal email distribution list to ensure emails are regularly monitored by more than one individual."
-  impact 0.3
+  impact 0.5
   tag severity: "Low"
   tag gtitle: nil
   tag gid: nil

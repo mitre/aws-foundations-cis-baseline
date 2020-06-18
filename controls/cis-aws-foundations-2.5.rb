@@ -73,7 +73,7 @@ control "2.5" do
     ```
     start-configuration-recorder --configuration-recorder-name
     ```"
-  impact 0.3
+  impact 0.5
   tag severity: "Low"
   tag gtitle: nil
   tag gid: nil
