@@ -63,19 +63,17 @@ control "1.3" do
   # If password_last_used is No_Information -> password_last_changed should be < 90
   # If access_key_x_active is True && access_key_x_last_used_date is N/A -> access_key_x_last_rotated should be < 90
 
-  describe aws_iam_users.where(has_console_password?: true).where(password_never_used?: true) do
+  describe aws_iam_users.where(has_console_password: true).where(password_never_used: true) do
     it { should_not exist }
   end
 
-  describe aws_iam_users.where(has_console_password?: true).where { password_last_used_days_ago = 'nil' } do
+  describe aws_iam_users.where(has_console_password: true).where { password_last_used_days_ago = 'nil' } do
     it { should_not exist }
   end
 
-  describe aws_iam_users.where(has_console_password?: true).where(password_ever_used?: true).where { password_last_used_days_ago >= 90 } do
+  describe aws_iam_users.where(has_console_password: true).where(password_ever_used: true).where { password_last_used_days_ago >= 90 } do
     it { should_not exist }
   end
-
-  describe aws_iam_users.where(has_console)
 
   aws_iam_access_keys.where(active: true).entries.each do |key|
     describe key.username do
