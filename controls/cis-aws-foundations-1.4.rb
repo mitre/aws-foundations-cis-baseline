@@ -1,4 +1,5 @@
 # encoding: UTF-8
+aws_key_age = attribute('aws_key_age')
 
 control "1.4" do
   title "Ensure access keys are rotated every 90 days or less"

@@ -1,4 +1,5 @@
 # encoding: UTF-8
+exception_bucket_list = attribute('exception_bucket_list')
 
 control "2.6" do
   title "Ensure S3 bucket access logging is enabled on the CloudTrail S3 bucket"

@@ -1,4 +1,5 @@
 # encoding: UTF-8
+service_account_mfa_exceptions = attribute('service_account_mfa_exceptions')
 
 control "1.2" do
   title "Ensure multi-factor authentication (MFA) is enabled for all IAM users that have a console password"

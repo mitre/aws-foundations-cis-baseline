@@ -1,4 +1,5 @@
 # encoding: UTF-8
+pwd_length = attribute('pwd_length')
 
 control "1.9" do
   title "Ensure IAM password policy requires minimum length of 14 or greater"

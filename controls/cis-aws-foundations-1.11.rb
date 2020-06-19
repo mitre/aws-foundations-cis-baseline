@@ -1,4 +1,5 @@
 # encoding: UTF-8
+aws_cred_age = attribute('aws_cred_age')
 
 control "1.11" do
   title "Ensure IAM password policy expires passwords within 90 days or less"

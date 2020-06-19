@@ -1,4 +1,5 @@
 # encoding: UTF-8
+exception_bucket_list = attribute('exception_bucket_list')
 
 control "2.3" do
   title "Ensure the S3 bucket used to store CloudTrail logs is not publicly accessible"

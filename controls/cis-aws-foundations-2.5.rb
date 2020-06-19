@@ -1,4 +1,5 @@
 # encoding: UTF-8
+config_delivery_channels = attribute('config_delivery_channels')
 
 control "2.5" do
   title "Ensure AWS Config is enabled in all regions"
