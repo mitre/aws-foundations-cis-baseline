@@ -17,7 +17,7 @@ control "1.22" do
     2. For each policy returned, run the following command to determine if any policies is allowing full administrative privileges on the account:
     ```
      aws iam get-policy-version --policy-arn
-    \t --version-id
+     --version-id
     ```
     3. In output ensure policy should not have any Statement block with `\"Effect\": \"Allow\"` and `Action` set to `\"*\"` and `Resource` set to `\"*\"`"
   desc  "fix", "Using the GUI, perform the following to detach the policy that has full administrative privileges:

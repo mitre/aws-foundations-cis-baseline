@@ -1,4 +1,5 @@
 # encoding: UTF-8
+exception_security_group_list = attribute('exception_security_group_list')
 
 control "4.1" do
   title "Ensure no security groups allow ingress from 0.0.0.0/0 to port 22"
