@@ -9,6 +9,9 @@ version: 1.2
 supports:
   - platform: aws
 
+depends:
+  - name: inspec-aws
+    url: https://github.com/inspec/inspec-aws/archive/v1.26.1.zip
 
 attributes:
   - name: default_aws_region
