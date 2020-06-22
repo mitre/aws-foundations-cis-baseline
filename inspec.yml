@@ -8,7 +8,9 @@ summary: 'InSpec Profile to validate the CIS AWS Foundations Benchmark v1.1.0'
 version: 1.2
 supports:
   - platform: aws
-
+depends:
+  - name: inspec-aws
+    git: https://github.com/inspec/inspec-aws.git
 
 attributes:
   - name: default_aws_region
