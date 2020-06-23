@@ -10,7 +10,7 @@ supports:
   - platform: aws
 depends:
   - name: inspec-aws
-    git: git@github.com:inspec/inspec-aws.git
+    git: https://github.com/inspec/inspec-aws.git
 
 attributes:
   - name: default_aws_region
