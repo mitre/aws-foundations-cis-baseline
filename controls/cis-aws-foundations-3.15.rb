@@ -55,9 +55,9 @@ https://console.aws.amazon.com/sns/ [https://console.aws.amazon.com/sns/]
 * Click Actions
 * Click Delete Subscriptions"
 
-  sns_topics = attribute('sns_topics')
-  sns_subscriptions = attribute('sns_subscriptions')
-  region = ENV['AWS_REGION']
+  sns_topics = input('sns_topics')
+  sns_subscriptions = input('sns_subscriptions')
+  region = input('default_aws_region')
 
   aws_sns_topics.topic_arns.each do |topic|
     describe aws_sns_topic(topic) do

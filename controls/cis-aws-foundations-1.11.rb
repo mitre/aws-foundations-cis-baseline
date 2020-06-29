@@ -1,4 +1,4 @@
-aws_cred_age = attribute('aws_cred_age')
+aws_cred_age = input('aws_cred_age')
 
 control 'cis-aws-foundations-1.11' do
   title "Ensure IAM password policy expires passwords within #{aws_cred_age} days or less"

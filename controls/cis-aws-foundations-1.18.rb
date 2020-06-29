@@ -1,14 +1,14 @@
-iam_manager_role_name = attribute('iam_manager_role_name')
+iam_manager_role_name = input('iam_manager_role_name')
 
-iam_master_role_name = attribute('iam_master_role_name')
+iam_master_role_name = input('iam_master_role_name')
 
-iam_manager_user_name = attribute('iam_manager_user_name')
+iam_manager_user_name = input('iam_manager_user_name')
 
-iam_master_user_name = attribute('iam_master_user_name')
+iam_master_user_name = input('iam_master_user_name')
 
-iam_manager_policy_name = attribute('iam_manager_policy_name')
+iam_manager_policy_name = input('iam_manager_policy_name')
 
-iam_master_policy_name = attribute('iam_master_policy_name')
+iam_master_policy_name = input('iam_master_policy_name')
 
 control 'cis-aws-foundations-1.18' do
   title 'Ensure IAM Master and IAM Manager roles are active'
@@ -680,7 +680,7 @@ _<assume_iam_manager_role_policy> _--policy-document
     if aws_iam_role(iam_manager_role_name).assume_role_policy_document.where(Action: 'sts:AssumeRole').exists?
       describe aws_iam_role(iam_manager_role_name).assume_role_policy_document.where(Action: 'sts:AssumeRole').where(Effect: 'Allow') do
         its('principals.to_s') { should match ":user/#{iam_manager_user_name}" }
-        its('principals.to_s') { should_not match ":user/#{iam_manager_user_name}" }
+        its('principals.to_s') { should_not match ":user/#{iam_master_user_name}" }
       end
     end
   end

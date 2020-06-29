@@ -1,4 +1,4 @@
-aws_key_age = attribute('aws_key_age')
+aws_key_age = input('aws_key_age')
 
 control 'cis-aws-foundations-1.4' do
   title "Ensure access keys are rotated every #{aws_key_age} days or less"

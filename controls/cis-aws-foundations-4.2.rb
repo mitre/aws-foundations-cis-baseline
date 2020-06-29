@@ -1,4 +1,4 @@
-exception_security_group_list = attribute('exception_security_group_list')
+exception_security_group_list = input('exception_security_group_list')
 
 control 'cis-aws-foundations-4.2' do
   title 'Ensure no security groups allow ingress from 0.0.0.0/0 to port 3389'

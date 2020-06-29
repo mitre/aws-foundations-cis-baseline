@@ -102,10 +102,6 @@ _<unauthorized_api_calls_metric>_ --statistic Sum --period 300 --threshold 1
 NOTE: set the period and threshold to values that fit your organization.
 "
 
-  unless ENV['AWS_REGION'].eql?(attribute('default_aws_region'))
-    impact 0.0
-    desc  "Currently inspected region #{ENV['AWS_REGION']} is not the primary AWS region"
-  end
 
   describe aws_cloudtrail_trails do
     it { should exist }

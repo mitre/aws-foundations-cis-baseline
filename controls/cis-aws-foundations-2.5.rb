@@ -1,4 +1,4 @@
-config_delivery_channels = attribute('config_delivery_channels')
+config_delivery_channels = input('config_delivery_channels')
 
 control 'cis-aws-foundations-2.5' do
   title 'Ensure AWS Config is enabled in all regions'
@@ -53,7 +53,7 @@ in 1 region only
 
 'aws configservice start-configuration-recorder"
 
-  region = ENV['AWS_REGION']
+  region = input('default_aws_region')
 
   describe aws_config_recorder do
     it { should exist }
@@ -68,8 +68,8 @@ in 1 region only
 
   if aws_config_delivery_channel.exists?
     describe aws_config_delivery_channel do
-      its('s3_bucket_name') { should cmp config_delivery_channels[region]['s3_bucket_name'] } 
-      its('sns_topic_arn') { should cmp config_delivery_channels[region]['sns_topic_arn'] } 
+      its('s3_bucket_name') { should cmp config_delivery_channels[region]['s3_bucket_name'] }
+      its('sns_topic_arn') { should cmp config_delivery_channels[region]['sns_topic_arn'] }
     end
   end
 end

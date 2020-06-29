@@ -79,9 +79,9 @@ https://console.aws.amazon.com/iam/ [https://console.aws.amazon.com/iam/].
 '
 "
   aws_iam_users.entries.each do |user|
-    describe aws_iam_user(username: user.user_name) do
-      it { should_not have_inline_policies }
-      it { should_not have_attached_policies }
+    describe aws_iam_user(user_name: user.username) do
+      its ('inline_policy_names') { should be_empty }
+      its ('attached_policy_names') { should be_empty }
     end
   end
 
