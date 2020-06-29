@@ -57,7 +57,7 @@ https://console.aws.amazon.com/sns/ [https://console.aws.amazon.com/sns/]
 
   sns_topics = attribute('sns_topics')
   sns_subscriptions = attribute('sns_subscriptions')
-  region = ENV['AWS_REGION']
+  region = attribute('default_aws_region')
 
   aws_sns_topics.topic_arns.each do |topic|
     describe aws_sns_topic(topic) do

@@ -121,7 +121,7 @@ enrollment before active enforcement on existing AWS accounts.
 'How to Delegate Management of Multi-Factor Authentication to AWS IAM Users
 [http://blogs.aws.amazon.com/security/post/Tx2SJJYE082KBUK/How-to-Delegate-Management-of-Multi-Factor-Authentication-to-AWS-IAM-Users]"
 
-  users_without_mfa = aws_iam_users.where(has_console_password?: true).where(has_mfa_enabled?: false).usernames
+  users_without_mfa = aws_iam_users.where(has_console_password: true).where(has_mfa_enabled: false).usernames
 
   if service_account_mfa_exceptions.compact.empty?
     describe 'The active IAM users that do not have MFA enabled' do

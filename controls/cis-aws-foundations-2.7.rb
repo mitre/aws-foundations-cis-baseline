@@ -80,7 +80,7 @@ aws kms put-key-policy --key-id <_cloudtrail_kms_key_> --policy
 
   aws_cloudtrail_trails.trail_arns.each do |trail|
     describe aws_cloudtrail_trail(trail) do
-      its('kms_key_id') { should_not be_nil }
+      it { should be_encrypted }
     end
   end
 end
