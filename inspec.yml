@@ -9,6 +9,9 @@ version: 1.0.5
 supports:
   - platform: aws
 
+depends:
+  - name: inspec-aws
+    git: https://github.com/inspec/inspec-aws.git
 
 attributes:
   - name: default_aws_region
