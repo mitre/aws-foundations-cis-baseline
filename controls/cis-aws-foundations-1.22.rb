@@ -2,7 +2,7 @@
 
 control "1.22" do
   title "Ensure IAM policies that allow full \"*:*\" administrative privileges are not created"
-  desc  "IAM policies are the means by which privileges are granted to users, groups, or roles. It is recommended and considered a standard security advice to grant _least privilege_\x97that is, granting only the permissions required to perform a task. Determine what users need to do and then craft policies for them that let the users perform _only_ those tasks, instead of allowing full administrative privileges."
+  desc  "IAM policies are the means by which privileges are granted to users, groups, or roles. It is recommended and considered a standard security advice to grant _least privilege_ that is, granting only the permissions required to perform a task. Determine what users need to do and then craft policies for them that let the users perform _only_ those tasks, instead of allowing full administrative privileges."
   desc  "rationale", "It's more secure to start with a minimum set of permissions and grant additional permissions as necessary, rather than starting with permissions that are too lenient and then trying to tighten them later.
 
     Providing full administrative privileges instead of restricting to the minimum set of permissions that the user is required to do exposes the resources to potentially unwanted actions.
