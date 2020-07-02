@@ -1,4 +1,4 @@
-exception_bucket_list = attribute('exception_bucket_list')
+exception_bucket_list = input('exception_bucket_list')
 
 control 'cis-aws-foundations-2.6' do
   title 'Ensure S3 bucket access logging is enabled on the CloudTrail S3 bucket'

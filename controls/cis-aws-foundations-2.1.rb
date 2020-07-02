@@ -85,7 +85,7 @@ aws cloudtrail update-trail --name _<trail_name>_ --is-multi-region-trail"
   aws_cloudtrail_trails.trail_arns.each do |trail|
     describe aws_cloudtrail_trail(trail) do
       it { should be_multi_region_trail }
-      its('status.is_logging') { should be true }
+      it { should be_logging }
     end
   end
 end
