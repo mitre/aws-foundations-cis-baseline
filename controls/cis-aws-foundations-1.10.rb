@@ -53,6 +53,6 @@ be combined into a single command."
 
   describe aws_iam_password_policy do
     it { should prevent_password_reuse }
-    its('number_of_passwords_to_remember') { should cmp <= 24 }
+    its('number_of_passwords_to_remember') { should cmp == 24 }
   end if aws_iam_password_policy.exists?
 end
