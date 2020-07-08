@@ -55,6 +55,6 @@ be combined into a single command."
   end
 
   describe aws_iam_password_policy do
-    its('require_lowercase_characters?') { should be true }
+    it { should require_lowercase_characters }
   end if aws_iam_password_policy.exists?
 end
