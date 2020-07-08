@@ -52,7 +52,7 @@ be combined into a single command."
   end
 
   describe aws_iam_password_policy do
-    its('prevent_password_reuse?') { should be true }
+    it { should prevent_password_reuse }
     its('number_of_passwords_to_remember') { should cmp <= 24 }
   end if aws_iam_password_policy.exists?
 end
