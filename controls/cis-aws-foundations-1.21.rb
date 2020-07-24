@@ -66,18 +66,19 @@ control "1.21" do
   tag comment: nil
   tag cis_controls: "TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;"
 
-  # SK: Test passed
-  aws_iam_access_keys.entries.each do |key|
-    describe key.username do
-      context key do
-        its('last_used_days_ago') { should_not be_nil }
-      end
-    end
-  end
-
+  
   if aws_iam_access_keys.entries.empty?
     describe 'Control skipped because no iam access keys were found' do
       skip 'This control is skipped since the aws_iam_access_keys resource returned an empty access key list'
+    end
+  else
+    aws_iam_access_keys.entries.each do |key|
+      describe key.username do
+        context key do
+          its('last_used_days_ago') { should_not be_nil }
+          its('created_with_user') { should be false }  
+        end
+      end
     end
   end
 end

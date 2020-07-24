@@ -46,12 +46,9 @@ control "1.6" do
   tag comment: nil
   tag cis_controls: "TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;"
 
+ 
   describe aws_iam_password_policy do
     it { should exist }
+    it { should require_lowercase_characters }
   end
-
-  describe aws_iam_password_policy do
-    its('require_lowercase_characters?') { should be true }
-  end if aws_iam_password_policy.exists?
 end
-

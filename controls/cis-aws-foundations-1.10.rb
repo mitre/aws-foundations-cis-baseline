@@ -47,13 +47,10 @@ control "1.10" do
   tag comment: nil
   tag cis_controls: "TITLE:Use Unique Passwords CONTROL:4.4 DESCRIPTION:Where multi-factor authentication is not supported (such as local administrator, root, or service accounts), accounts will use passwords that are unique to that system.;"
 
+
   describe aws_iam_password_policy do
     it { should exist }
+    it { should prevent_password_reuse }
+    its('number_of_passwords_to_remember') { should cmp == 24 }
   end
-
-  describe aws_iam_password_policy do
-    its('prevent_password_reuse?') { should be true }
-    its('number_of_passwords_to_remember') { should cmp <= 24 }
-  end if aws_iam_password_policy.exists?
 end
-

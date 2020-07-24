@@ -46,12 +46,9 @@ control "1.7" do
   tag comment: nil
   tag cis_controls: "TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;"
 
+  
   describe aws_iam_password_policy do
     it { should exist }
+    it { should require_symbols }
   end
-
-  describe aws_iam_password_policy do
-    its('require_symbols?') { should be true }
-  end if aws_iam_password_policy.exists?
 end
-

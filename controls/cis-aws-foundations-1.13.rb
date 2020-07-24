@@ -46,8 +46,8 @@ control "1.13" do
   tag cis_controls: "TITLE:Use Multifactor Authentication For All Administrative Access CONTROL:4.5 DESCRIPTION:Use multi-factor authentication and encrypted channels for all administrative account access.;"
   tag ref: "CIS CSC v6.0 #5.6, #11.4, #12.6, #16.11"
 
+  
   describe aws_iam_root_user do
     it { should have_mfa_enabled }
   end
 end
-

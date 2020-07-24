@@ -61,12 +61,9 @@ can be combined into a single command.
   tag cis_controls: "TITLE:Account Monitoring and Control CONTROL:16
 DESCRIPTION:Account Monitoring and Control;"
 
+
   describe aws_iam_password_policy do
     it { should exist }
+    it { should require_uppercase_characters }
   end
-
-  describe aws_iam_password_policy do
-    its('require_uppercase_characters?') { should be true }
-  end if aws_iam_password_policy.exists?
 end
-

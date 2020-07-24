@@ -47,12 +47,9 @@ control "1.9" do
   tag cis_controls: "TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;"
   tag ref: "CIS CSC v6.0 #5.7, #16.12"
 
+
   describe aws_iam_password_policy do
     it { should exist }
-  end
-
-  describe aws_iam_password_policy do
     its('minimum_password_length') { should cmp >= pwd_length }
-  end if aws_iam_password_policy.exists?
+  end
 end
-

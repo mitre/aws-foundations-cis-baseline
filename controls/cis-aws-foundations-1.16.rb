@@ -4,8 +4,7 @@ control "1.16" do
   title "Ensure IAM policies are attached only to groups or roles"
   desc  "By default, IAM users, groups, and roles have no access to AWS resources. IAM policies are the means by which privileges are granted to users, groups, or roles. It is recommended that IAM policies be applied directly to groups and roles but not users."
   desc  "rationale", "Assigning privileges at the group or role level reduces the complexity of access management as the number of users grow. Reducing access management complexity may in-turn reduce opportunity for a principal to inadvertently receive or retain excessive privileges."
-  desc  "check", "Perform the following to determine if policies are attached directly to
-users:
+  desc  "check", "Perform the following to determine if policies are attached directly to users:
 
     1. Run the following to get a list of IAM users:
     ```
@@ -59,17 +58,17 @@ users:
   tag cis_controls: "TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;"
   tag ref: "http://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html:http://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html"
 
-  aws_iam_users.entries.each do |user|
-    describe aws_iam_user(username: user.user_name) do
-      it { should_not have_inline_policies }
-      it { should_not have_attached_policies }
-    end
-  end
 
   if aws_iam_users.entries.empty?
     describe 'Control skipped because no iam users were found' do
       skip 'This control is skipped since the aws_iam_users resource returned an empty user list'
     end
+  else
+    aws_iam_users.entries.each do |user|
+      describe aws_iam_user(user_name: user.username) do
+        its ('inline_policy_names') { should be_empty }
+        its ('attached_policy_names') { should be_empty }
+      end
+    end
   end
 end
-
