@@ -66,9 +66,9 @@ control "1.22" do
   attached_policies = aws_iam_policies.where { attachment_count > 0 }.policy_names
   
   if attached_policies.empty? == true
-    describe "Control passes since no IAM policies are attached to users, groups or roles" do
-      subject { attached_policies }
-      it { should be_empty }
+    impact 0.0
+    describe 'Control not applicable since no attached iam policies were detected' do
+      skip 'Not applicable since no policies are detected as attached to anything within this account.'
     end
   else
     attached_policies.each do |policy|
