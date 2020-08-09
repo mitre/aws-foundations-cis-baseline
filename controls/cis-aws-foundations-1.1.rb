@@ -11,7 +11,6 @@ control "1.1" do
     ```
     aws iam get-credential-report --query 'Content' --output text | base64 -d | cut -d, -f1,5,11,16 | grep -B1 ''
     ```
-    
     Note: there are a few conditions under which the use of the root account is required, such as requesting a penetration test or creating a CloudFront private key."
   desc  "fix", "Follow the remediation instructions of the `Ensure IAM policies are attached only to groups or roles` recommendation"
   impact 0.5
@@ -28,54 +27,43 @@ control "1.1" do
   tag cis_controls: "TITLE:Ensure the Use of Dedicated Administrative Accounts CONTROL:4.3 DESCRIPTION:Ensure that all users with administrative account access use a dedicated or secondary account for elevated activities. This account should only be used for administrative activities and not internet browsing, email, or similar activities.;"
   tag ref: "http://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html:CIS CSC v6.0 #5.1"
 
-  unless ENV['AWS_REGION'].eql?(attribute('default_aws_region'))
-    impact 0.0
-    desc  "Currently inspected region #{ENV['AWS_REGION']} is not the primary AWS region"
-  end
+
+  trail = input('aws_cloudtrail_trail')
 
   describe aws_cloudtrail_trails do
     it { should exist }
   end
 
-  describe.one do
-    aws_cloudtrail_trails.trail_arns.each do |trail|
+  describe aws_cloudtrail_trail(trail) do
+    its ('cloud_watch_logs_log_group_arn') { should_not be_nil }
+    it { should be_multi_region_trail }
+    it { should have_event_selector_mgmt_events_rw_type_all }
+    it { should be_logging }
+  end
 
-      describe aws_cloudtrail_trail(trail) do
-        its ('cloud_watch_logs_log_group_arn') { should_not be_nil }
-      end
+  next if aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.nil?
 
-      trail_log_group_name = aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.scan(/log-group:(.+):/).last.first unless aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.nil?
+  trail_log_group_name = aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.scan(/log-group:(.+):/).last.first
+  pattern = '{ $.userIdentity.type = "Root" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != "AwsServiceEvent" }'
 
-      next if trail_log_group_name.nil?
+  describe aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name) do
+    it { should exist }
+  end
 
-      pattern = '{ $.userIdentity.type = "Root" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != "AwsServiceEvent" }'
+  metric_name = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name).metric_name
+  metric_namespace = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name).metric_namespace
 
-      describe aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name) do
-        it { should exist }
-      end
+  next if metric_name.nil? && metric_namespace.nil?
 
-      metric_name = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name).metric_name
-      metric_namespace = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name).metric_namespace
-      next if metric_name.nil? && metric_namespace.nil?
+  describe aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace) do
+    it { should exist }
+    its ('alarm_actions') { should_not be_empty }
+  end
 
-      describe aws_cloudwatch_alarm(
-        metric_name: metric_name,
-        metric_namespace: metric_namespace
-      ) do
-        it { should exist }
-        its ('alarm_actions') { should_not be_empty }
-      end
-
-      aws_cloudwatch_alarm(
-        metric_name: metric_name,
-        metric_namespace: metric_namespace
-      ).alarm_actions.each do |sns|
-        describe aws_sns_topic(sns) do
-          it { should exist }
-          its('confirmed_subscription_count') { should_not be_zero }
-        end
-      end
+  aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace).alarm_actions.each do |sns|
+    describe aws_sns_topic(sns) do
+      it { should exist }
+      its('confirmed_subscription_count') { should cmp >= 1 }
     end
   end
 end
-
