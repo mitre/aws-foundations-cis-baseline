@@ -71,16 +71,16 @@ control "1.2" do
   tag cis_controls: "TITLE:Use Multifactor Authentication For All Administrative Access CONTROL:4.5 DESCRIPTION:Use multi-factor authentication and encrypted channels for all administrative account access.;"
   tag ref: "http://tools.ietf.org/html/rfc6238:http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html:CIS CSC v6.0 #5.6, #11.4, #12.6, #16.11"
 
-  users_without_mfa = aws_iam_users.where(has_console_password?: true).where(has_mfa_enabled?: false).usernames
+  service_account_mfa_exceptions = input('service_account_mfa_exceptions')
+
+  users_without_mfa = aws_iam_users.where(has_console_password: true).where(has_mfa_enabled: false).usernames
 
   if service_account_mfa_exceptions.compact.empty?
     describe 'The active IAM users that do not have MFA enabled' do
       subject { users_without_mfa }
       it { should be_empty }
     end
-  end
-
-  unless service_account_mfa_exceptions.compact.empty?
+  else
     describe "The active IAM users that do not have MFA enabled
     (except for the documented service accounts: #{service_account_mfa_exceptions})" do
       subject { users_without_mfa - service_account_mfa_exceptions }
@@ -88,4 +88,3 @@ control "1.2" do
     end
   end
 end
-
