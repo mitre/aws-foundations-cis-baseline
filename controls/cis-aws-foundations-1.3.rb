@@ -9,7 +9,6 @@ control "1.3" do
     **Download Credential Report:**
 
     Using Management Console:
-
     1. Login to the AWS Management Console
     2. Click `Services`
     3. Click `IAM`
@@ -17,22 +16,15 @@ control "1.3" do
     5. This will download an `.xls` file which contains credential usage for all users within an AWS Account - open this file
 
     Via CLI
-
     1. Run the following commands:
-
     ```
      aws iam generate-credential-report
      aws iam get-credential-report --query 'Content' --output text | base64 -d | cut -d, -f1,4,5,6,9,10,11,14,15,16
     ```
-
     **Ensure unused credentials does not exist:**
-
     2. For each user having `password_enabled` set to `TRUE` , ensure `password_last_used_date` is less than `90` days ago.
-
     - When `password_enabled` is set to `TRUE` and `password_last_used` is set to `No_Information` , ensure `password_last_changed` is less than 90 days ago.
-
     3. For each user having an `access_key_1_active` or `access_key_2_active` to `TRUE` , ensure the corresponding `access_key_n_last_used_date` is less than `90` days ago.
-
     - When a user having an `access_key_x_active` (where x is 1 or 2) to `TRUE` and corresponding access_key_x_last_used_date is set to `N/A', ensure `access_key_x_last_rotated` is less than 90 days ago."
   desc  "fix", "Perform the following to remove or deactivate credentials:
 
@@ -59,28 +51,32 @@ control "1.3" do
   tag cis_controls: "TITLE:Disable Dormant Accounts CONTROL:16.9 DESCRIPTION:Automatically disable dormant accounts after a set period of inactivity.;"
   tag ref: "CIS CSC v6.0 #16.6"
 
-  # SK: Conditions added
-  # If password_last_used is No_Information -> password_last_changed should be < 90
-  # If access_key_x_active is True && access_key_x_last_used_date is N/A -> access_key_x_last_rotated should be < 90
-
-  describe aws_iam_users.where(has_console_password?: true).where(password_never_used?: true) do
-    it { should_not exist }
+  # For each user having `password_enabled` set to `TRUE` , ensure `password_last_used_date` is less than `90` days ago.
+  describe aws_iam_users.where(has_console_password: true) do
+    its('password_last_used_days_ago') { should cmp < 90 }
   end
 
-  describe aws_iam_users.where(has_console_password?: true).where { password_last_used_days_ago = 'nil' } do
-    it { should_not exist }
+  # When `password_enabled` is set to `TRUE` and `password_last_used` is set to `No_Information` , ensure `password_last_changed` is less than 90 days ago.
+  describe aws_iam_users.where(has_console_password: true).where(password_last_used_days_ago: -1) do
+  # its('password_last_changed') { should cmp < 90 } # property not exposed in AWS Ruby SDK: https://github.com/aws/aws-sdk-ruby/issues/2375
+    describe "This check is skipped due to lack of password_last_changed property accessibility using an API. Verify that 'password_last_changed' is less than 90 days ago if 'password_enabled is 'TRUE' and 'password_last_used' is 'No_Information' in the credential report" do
+      skip "This check is skipped due to lack of password_last_changed property accessibility using an API. Verify that 'password_last_changed' is less than 90 days ago if 'password_enabled is 'TRUE' and 'password_last_used' is 'No_Information' in the credential report"
+    end
   end
 
-  describe aws_iam_users.where(has_console_password?: true).where(password_ever_used?: true).where { password_last_used_days_ago >= 90 } do
-    it { should_not exist }
-  end
-
-  describe aws_iam_users.where(has_console)
-
+  # For each user having an `access_key_1_active` or `access_key_2_active` to `TRUE` , ensure the corresponding `access_key_n_last_used_date` is less than `90` days ago.
   aws_iam_access_keys.where(active: true).entries.each do |key|
     describe key.username do
       context key do
         its('last_used_days_ago') { should cmp < 90 }
+      end
+  # When a user having an `access_key_x_active` (where x is 1 or 2) to `TRUE` and corresponding access_key_x_last_used_date is set to `N/A', ensure `access_key_x_last_rotated` is less than 90 days ago
+      if key.last_used_days_ago.nil?
+        describe key.username do
+          context key do
+            its('created_days_ago') { should cmp < 90 }
+          end
+        end
       end
     end
   end
