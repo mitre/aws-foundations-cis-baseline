@@ -50,6 +50,6 @@ control "1.9" do
 
   describe aws_iam_password_policy do
     it { should exist }
-    its('minimum_password_length') { should cmp >= pwd_length }
+    its('minimum_password_length') { should cmp >= input("pwd_length") }
   end
 end

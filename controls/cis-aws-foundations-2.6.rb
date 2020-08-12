@@ -67,14 +67,11 @@ control "2.6" do
 
   aws_cloudtrail_trails.trail_arns.each do |trail|
     bucket_name = aws_cloudtrail_trail(trail).s3_bucket_name
-    if exception_bucket_list.include?(bucket_name)
+    if input("exception_bucket_list").include?(bucket_name)
       describe 'Bucket not inspected because it is defined as an exception' do
         skip "Bucket: #{bucket_name} not inspected because it is defined in exception_bucket_list."
       end
-    end
-
-    next if exception_bucket_list.include?(bucket_name)
-
+    else
     describe aws_s3_bucket(bucket_name) do
       it { should have_access_logging_enabled }
     end

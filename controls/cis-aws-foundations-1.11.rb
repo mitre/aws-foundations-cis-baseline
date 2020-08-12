@@ -56,6 +56,6 @@ control "1.11" do
   describe aws_iam_password_policy do
     it { should exist }
     it { should expire_passwords }
-    its('max_password_age_in_days') { should cmp <= aws_cred_age }
+    its('max_password_age_in_days') { should cmp <= input("aws_cred_age") }
   end
 end

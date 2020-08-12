@@ -65,7 +65,7 @@ control "1.4" do
     aws_iam_access_keys.where(active: true).entries.each do |key|
       describe key.username do
         context key do
-          its('created_days_ago') { should cmp <= aws_key_age }
+          its('created_days_ago') { should cmp <= input("aws_key_age") }
           its('ever_used') { should be true }
         end
       end
