@@ -72,8 +72,9 @@ control "2.6" do
         skip "Bucket: #{bucket_name} not inspected because it is defined in exception_bucket_list."
       end
     else
-    describe aws_s3_bucket(bucket_name) do
-      it { should have_access_logging_enabled }
+      describe aws_s3_bucket(bucket_name) do
+        it { should have_access_logging_enabled }
+      end
     end
   end
 end
