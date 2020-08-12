@@ -72,8 +72,9 @@ control "2.3" do
         skip "Bucket: #{bucket_name} not inspected because it is defined in exception_bucket_list."
       end
     else
-    describe aws_s3_bucket(bucket_name) do
-      it { should_not be_public }
+      describe aws_s3_bucket(bucket_name) do
+        it { should_not be_public }
+      end
     end
   end
 
