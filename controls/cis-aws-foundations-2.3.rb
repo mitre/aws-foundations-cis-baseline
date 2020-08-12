@@ -7,7 +7,6 @@ control "2.3" do
   desc  "check", "Perform the following to determine if any public access is granted to an S3 bucket via an ACL or S3 bucket policy:
 
     Via the Management Console
-
     1. Go to the Amazon CloudTrail console at [https://console.aws.amazon.com/cloudtrail/home](https://console.aws.amazon.com/cloudtrail/home)
     2. In the `API activity history` pane on the left, click `Trails`
     3. In the `Trails` pane, note the bucket names in the `S3 bucket` column
@@ -20,32 +19,25 @@ control "2.3" do
     10. Ensure the policy does not contain a `Statement` having an `Effect` set to `Allow` and a `Principal` set to \"\\*\" or {\"AWS\" : \"\\*\"}
 
     Via CLI:
-
     1. Get the name of the S3 bucket that CloudTrail is logging to:
     ```
      aws cloudtrail describe-trails --query 'trailList[*].S3BucketName'
-
     ```
     2. Ensure the `AllUsers` principal is not granted privileges to that `` :
     ```
      aws s3api get-bucket-acl --bucket  --query 'Grants[?Grantee.URI== `http://acs.amazonaws.com/groups/global/AllUsers` ]'
-
     ```
     3. Ensure the `AuthenticatedUsers` principal is not granted privileges to that `` :
     ```
      aws s3api get-bucket-acl --bucket  --query 'Grants[?Grantee.URI== `http://acs.amazonaws.com/groups/global/Authenticated Users` ]'
-
     ```
     4. Get the S3 Bucket Policy
     ```
      aws s3api get-bucket-policy --bucket
-
     ```
     5. Ensure the policy does not contain a `Statement` having an `Effect` set to `Allow` and a `Principal` set to \"\\*\" or {\"AWS\" : \"\\*\"}
-
     Note: Principal set to \"\\*\" or {\"AWS\" : \"\\*\"} allows anonymous access."
   desc  "fix", "Perform the following to remove any public access that has been granted to the bucket via an ACL or S3 bucket policy:
-
     1. Go to Amazon S3 console at [https://console.aws.amazon.com/s3/home](https://console.aws.amazon.com/s3/home)
     2. Right-click on the bucket and click Properties
     3. In the `Properties` pane, click the `Permissions` tab.
@@ -87,5 +79,11 @@ control "2.3" do
       it { should_not be_public }
     end
   end
-end
 
+  # Use this after skeletal aws_cloudtrail_trails is enhanced to expose s3_bucket_name
+  # aws_cloudtrail_trails.s3_bucket_name.uniq.each do |bucket|
+  #   describe aws_s3_bucket( bucket ) do
+  #     it{ should_not be_public }
+  #   end
+  # end
+end

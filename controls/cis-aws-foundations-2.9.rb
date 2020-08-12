@@ -7,7 +7,6 @@ control "2.9" do
   desc  "check", "Perform the following to determine if VPC Flow logs is enabled:
 
     Via the Management Console:
-
     1. Sign into the management console
     2. Select `Services` then `VPC`
     3. In the left navigation pane, select `Your VPCs`
@@ -17,7 +16,6 @@ control "2.9" do
   desc  "fix", "Perform the following to determine if VPC Flow logs is enabled:
 
     Via the Management Console:
-
     1. Sign into the management console
     2. Select `Services` then `VPC`
     3. In the left navigation pane, select `Your VPCs`

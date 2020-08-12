@@ -7,14 +7,12 @@ control "2.7" do
   desc  "check", "Perform the following to determine if CloudTrail is configured to use SSE-KMS:
 
     Via the Management Console
-
     1. Sign in to the AWS Management Console and open the CloudTrail console at [https://console.aws.amazon.com/cloudtrail](https://console.aws.amazon.com/cloudtrail)
     2. In the left navigation pane, choose `Trails` .
     3. Select a Trail
     4. Under the `S3` section, ensure `Encrypt log files` is set to `Yes` and a KMS key ID is specified in the `KSM Key Id` field.
 
     Via CLI
-
     1. Run the following command:
     ```
      aws cloudtrail describe-trails
@@ -23,7 +21,6 @@ control "2.7" do
   desc  "fix", "Perform the following to configure CloudTrail to use SSE-KMS:
 
     Via the Management Console
-
     1. Sign in to the AWS Management Console and open the CloudTrail console at [https://console.aws.amazon.com/cloudtrail](https://console.aws.amazon.com/cloudtrail)
     2. In the left navigation pane, choose `Trails` .
     3. Click on a Trail

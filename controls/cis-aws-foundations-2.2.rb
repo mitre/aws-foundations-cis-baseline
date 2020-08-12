@@ -7,7 +7,6 @@ control "2.2" do
   desc  "check", "Perform the following on each trail to determine if log file validation is enabled:
 
     Via the management Console
-
     1. Sign in to the AWS Management Console and open the IAM console at [https://console.aws.amazon.com/cloudtrail](https://console.aws.amazon.com/cloudtrail)
     2. Click on `Trails` on the left navigation pane
     3. For Every Trail:
@@ -22,7 +21,6 @@ control "2.2" do
   desc  "fix", "Perform the following to enable log file validation on a given trail:
 
     Via the management Console
-
     1. Sign in to the AWS Management Console and open the IAM console at [https://console.aws.amazon.com/cloudtrail](https://console.aws.amazon.com/cloudtrail)
     2. Click on `Trails` on the left navigation pane
     3. Click on target trail

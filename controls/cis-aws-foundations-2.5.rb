@@ -4,11 +4,9 @@ control "2.5" do
   title "Ensure AWS Config is enabled in all regions"
   desc  "AWS Config is a web service that performs configuration management of supported AWS resources within your account and delivers log files to you. The recorded information includes the configuration item (AWS resource), relationships between configuration items (AWS resources), any configuration changes between resources. It is recommended to enable AWS Config be enabled in all regions."
   desc  "rationale", "The AWS configuration item history captured by AWS Config enables security analysis, resource change tracking, and compliance auditing."
-  desc  "check", "
-    Process to evaluate AWS Config configuration per region
+  desc  "check", "Process to evaluate AWS Config configuration per region
 
     Via AWS Management Console:
-
     1. Sign in to the AWS Management Console and open the AWS Config console at [https://console.aws.amazon.com/config/](https://console.aws.amazon.com/config/).
     2. On the top right of the console select target Region.
     3. If presented with Setup AWS Config - follow remediation procedure:
@@ -25,11 +23,8 @@ control "2.5" do
     aws configservice describe-configuration-recorders
     ```
     2. Evaluate the output to ensure that there's at least one recorder for which `recordingGroup` object includes `\"allSupported\": true` AND `\"includeGlobalResourceTypes\": true`
-
     Note: There is one more parameter \"ResourceTypes\" in recordingGroup object. We don't need to check the same as whenever we set \"allSupported\": true, AWS enforces resource types to be empty (\"ResourceTypes\":[])
-
     Sample Output:
-
     ```
     {
      \"ConfigurationRecorders\": [
@@ -45,7 +40,6 @@ control "2.5" do
      ]
     }
     ```
-
     3. Run this command to show the status for all AWS Config recorders:
     ```
     aws configservice describe-configuration-recorder-status
@@ -54,7 +48,6 @@ control "2.5" do
   desc  "fix", "To implement AWS Config configuration:
 
     Via AWS Management Console:
-
     1. Select the region you want to focus on in the top right of the console
     2. Click `Services`
     3. Click `Config`

@@ -88,7 +88,7 @@ control "3.1" do
 
   next if aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.nil?
 
-  describe aws_cloudtrail_trail("arn:aws:cloudtrail:us-east-2:400122527520:trail/aws-cis") do
+  describe aws_cloudtrail_trail(trail) do
     its ('cloud_watch_logs_log_group_arn') { should_not be_nil }
     it { should be_multi_region_trail }
     it { should have_event_selector_mgmt_events_rw_type_all }

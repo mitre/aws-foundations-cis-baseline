@@ -13,7 +13,6 @@ control "2.8" do
     5. Ensure the `Rotate this key every year` checkbox is checked.
 
     Via CLI
-
     1. Run the following command to get a list of all keys and their associated `KeyIds`
     ```
      aws kms list-keys
@@ -32,7 +31,6 @@ control "2.8" do
     5. Check the `Rotate this key every year` checkbox.
 
     Via CLI
-
     1. Run the following command to enable key rotation:
     ```
      aws kms enable-key-rotation --key-id

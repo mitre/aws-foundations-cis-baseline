@@ -9,7 +9,6 @@ control "2.4" do
   desc  "check", "Perform the following to ensure CloudTrail is configured as prescribed:
 
     Via the AWS management Console
-
     1. Sign in to the AWS Management Console and open the CloudTrail console at [https://console.aws.amazon.com/cloudtrail/](https://console.aws.amazon.com/cloudtrail/)
     2. Under `All Buckets` , click on the target bucket you wish to evaluate
     3. Click `Properties` on the top right of the console
@@ -17,23 +16,19 @@ control "2.4" do
     5. Ensure a `CloudWatch Logs` log group is configured and has a recent (~one day old) `Last log file delivered` timestamp.
 
     Via CLI
-
     1. Run the following command to get a listing of existing trails:
     ```
      aws cloudtrail describe-trails
-
     ```
     2. Ensure `CloudWatchLogsLogGroupArn` is not empty and note the value of the `Name` property.
     3. Using the noted value of the `Name` property, run the following command:
     ```
      aws cloudtrail get-trail-status --name
-
     ```
     4. Ensure the `LatestcloudwatchLogdDeliveryTime` property is set to a recent (~one day old) timestamp."
   desc  "fix", "Perform the following to establish the prescribed state:
 
     Via the AWS management Console
-
     1. Sign in to the AWS Management Console and open the CloudTrail console at [https://console.aws.amazon.com/cloudtrail/](https://console.aws.amazon.com/cloudtrail/)
     2. Under All Buckets, click on the target bucket you wish to evaluate
     3. Click Properties on the top right of the console

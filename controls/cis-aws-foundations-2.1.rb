@@ -4,17 +4,13 @@ control "2.1" do
   title "Ensure CloudTrail is enabled in all regions"
   desc  "AWS CloudTrail is a web service that records AWS API calls for your account and delivers log files to you. The recorded information includes the identity of the API caller, the time of the API call, the source IP address of the API caller, the request parameters, and the response elements returned by the AWS service. CloudTrail provides a history of AWS API calls for an account, including API calls made via the Management Console, SDKs, command line tools, and higher-level AWS services (such as CloudFormation)."
   desc  "rationale", "The AWS API call history produced by CloudTrail enables security analysis, resource change tracking, and compliance auditing. Additionally,
-
     - ensuring that a multi-regions trail exists will ensure that unexpected activity occurring in otherwise unused regions is detected
-
     - ensuring that a multi-regions trail exists will ensure that `Global Service Logging` is enabled for a trail by default to capture recording of events generated on
     AWS global services
-
     - for a multi-regions trail, ensuring that management events configured for all type of Read/Writes ensures recording of management operations that are performed on all resources in an AWS account"
   desc  "check", "Perform the following to determine if CloudTrail is enabled for all regions:
 
     Via the management Console
-
     1. Sign in to the AWS Management Console and open the CloudTrail console at [https://console.aws.amazon.com/cloudtrail](https://console.aws.amazon.com/cloudtrail)
     2. Click on `Trails` on the left navigation pane
      - You will be presented with a list of trails across all regions
@@ -40,7 +36,6 @@ control "2.1" do
   desc  "fix", "Perform the following to enable global (Multi-region) CloudTrail logging:
 
     Via the management Console
-
     1. Sign in to the AWS Management Console and open the IAM console at [https://console.aws.amazon.com/cloudtrail](https://console.aws.amazon.com/cloudtrail)
     2. Click on _Trails_ on the left navigation pane
     3. Click `Get Started Now` , if presented
@@ -77,18 +72,16 @@ control "2.1" do
   tag cis_controls: "TITLE:Activate audit logging CONTROL:6.2 DESCRIPTION:Ensure that local logging has been enabled on all systems and networking devices.;"
   tag ref: "CIS CSC v6.0 #14.6:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-concepts.html#cloudtrail-concepts-management-events:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-management-and-data-events-with-cloudtrail.html?icmpid=docs_cloudtrail_console#logging-management-events:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-supported-services.html#cloud-trail-supported-services-data-events"
 
+
+  trail = input('aws_cloudtrail_trail')
+
   describe aws_cloudtrail_trails do
     it { should exist }
   end
-  # QR: Should the block above be an if statement along with an else that leads to a skip statement? | If approved, reflect changes in other controls too
 
-  aws_cloudtrail_trails.trail_arns.each do |trail|
-    describe aws_cloudtrail_trail(trail) do
-      # SK: Logic change proposal - at least one result should pass
-      it { should be_multi_region_trail }
-      its('status.is_logging') { should be true }
-      # QR: Property listed in AWS resource pack (https://github.com/inspec/inspec-aws/blob/master/libraries/aws_cloudtrail_trail.rb#L74)
-      it { should have_event_selector_mgmt_events_rw_type_all }
-    end
+  describe aws_cloudtrail_trail(trail) do
+    it { should be_multi_region_trail }
+    it { should be_logging }
+    it { should have_event_selector_mgmt_events_rw_type_all }
   end
 end

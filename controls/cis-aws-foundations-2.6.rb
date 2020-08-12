@@ -7,7 +7,6 @@ control "2.6" do
   desc  "check", "Perform the following ensure the CloudTrail S3 bucket has access logging is enabled:
 
     Via the management Console
-
     1. Go to the Amazon CloudTrail console at [https://console.aws.amazon.com/cloudtrail/home](https://console.aws.amazon.com/cloudtrail/home)
     2. In the API activity history pane on the left, click Trails
     3. In the Trails pane, note the bucket names in the S3 bucket column
@@ -18,7 +17,6 @@ control "2.6" do
     8. Ensure `Enabled` is checked.
 
     Via CLI
-
     1. Get the name of the S3 bucket that CloudTrail is logging to:
     ```
     aws cloudtrail describe-trails --query 'trailList[*].S3BucketName'
@@ -28,15 +26,11 @@ control "2.6" do
     aws s3api get-bucket-logging --bucket
     ```
     Ensure command does not returns empty output.
-
     Sample Output for a bucket with logging enabled:
-
     ```
     {
      \"LoggingEnabled\": {
-     \"TargetPrefix\": \"
-
-    \t\",
+     \"TargetPrefix\": \"\t\",
      \"TargetBucket\": \"\"
      }
     }
@@ -44,7 +38,6 @@ control "2.6" do
   desc  "fix", "Perform the following to enable S3 bucket logging:
 
     Via the Management Console
-
     1. Sign in to the AWS Management Console and open the S3 console at [https://console.aws.amazon.com/s3](https://console.aws.amazon.com/s3).
     2. Under `All Buckets` click on the target S3 bucket
     3. Click on `Properties` in the top right of the console
