@@ -1,6 +1,6 @@
 # cis-aws-foundations-baseline
 
-InSpec profile to validate your VPC to the standards of the CIS Amazon Web Services Foundations Benchmark v1.1.0 - 11-29-2016
+InSpec profile to validate your VPC to the standards of the CIS Amazon Web Services Foundations Benchmark v1.2.0 - 05-23-2018
 
 ## Description
 
