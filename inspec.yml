@@ -12,7 +12,7 @@ depends:
   - name: inspec-aws
     git: https://github.com/inspec/inspec-aws.git
 
-attributes:
+inputs:
   - name: default_aws_region
     description: 'primary aws region your resources are deployed.'
     value: 'us-east-1'
@@ -20,7 +20,7 @@ attributes:
   - name: aws_cloudtrail_trail
     description: 'Set the value to CloudTrail trail name that meets the configuration requirements for this benchmark'
     type: string
-    value: ''
+    value:
     required: true
 
   - name: aws_key_age
