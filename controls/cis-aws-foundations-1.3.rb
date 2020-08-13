@@ -51,6 +51,7 @@ control "1.3" do
   tag cis_controls: "TITLE:Disable Dormant Accounts CONTROL:16.9 DESCRIPTION:Automatically disable dormant accounts after a set period of inactivity.;"
   tag ref: "CIS CSC v6.0 #16.6"
 
+  
   # For each user having `password_enabled` set to `TRUE` , ensure `password_last_used_date` is less than `90` days ago.
   describe aws_iam_users.where(has_console_password: true) do
     its('password_last_used_days_ago') { should cmp < 90 }

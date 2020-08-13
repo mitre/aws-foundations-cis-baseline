@@ -125,4 +125,8 @@ attributes:
     description: 'list of service accounts which are exempt from the MFA requirement'
     type: array
     value:
+<<<<<<< HEAD
       - 'service_account_mfa_exceptions'
+=======
+      - 'service_account_mfa_exceptions'
+>>>>>>> bac88233db5a2e820ffc1d6d072f28f370f18d4f
