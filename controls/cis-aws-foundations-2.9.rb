@@ -42,6 +42,7 @@ control "2.9" do
   tag cis_controls: "TITLE:Configure Monitoring Systems to Record Network Packets CONTROL:12.5 DESCRIPTION:Configure monitoring systems to record network packets passing through the boundary at each of the organization's network boundaries.;TITLE:Activate audit logging CONTROL:6.2 DESCRIPTION:Ensure that local logging has been enabled on all systems and networking devices.;"
   tag ref: "CIS CSC v6.0 #6.5, #12.9:http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/flow-logs.html"
 
+  
   aws_vpcs.vpc_ids.each do |vpc|
     describe aws_vpc(vpc) do
       it { should be_flow_logs_enabled }
@@ -61,4 +62,3 @@ control "2.9" do
     end
   end
 end
-
