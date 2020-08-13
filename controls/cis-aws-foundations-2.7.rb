@@ -53,14 +53,14 @@ control "2.7" do
   tag cis_controls: "TITLE:Maintenance, Monitoring and Analysis of Audit Logs CONTROL:6 DESCRIPTION:Maintenance, Monitoring and Analysis of Audit Logs;"
   tag ref: "CIS CSC v6.0 #13.1: Perform an assessment of data to identify sensitive information.:https://docs.aws.amazon.com/awscloudtrail/latest/userguide encrypting-cloudtrail-log-files-with-aws-kms.html:http://docs.aws.amazon.com/kms/latest/developerguide/create-keys.html:CIS CSC v6.0 #6: Maintenance, Monitoring, and Analysis of Audit Logs"
 
+  
   describe aws_cloudtrail_trails do
     it { should exist }
   end
 
   aws_cloudtrail_trails.trail_arns.each do |trail|
     describe aws_cloudtrail_trail(trail) do
-      its('kms_key_id') { should_not be_nil }
+      it { should be_encrypted }
     end
   end
 end
-

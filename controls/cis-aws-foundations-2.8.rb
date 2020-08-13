@@ -49,9 +49,9 @@ control "2.8" do
   tag cis_controls: "TITLE:Maintenance, Monitoring and Analysis of Audit Logs CONTROL:6 DESCRIPTION:Maintenance, Monitoring and Analysis of Audit Logs;"
   tag ref: "https://aws.amazon.com/kms/pricing/:http://csrc.nist.gov/publications/nistpubs/800-57/sp800-57_part1_rev3_general.pdf"
 
+
   aws_kms_keys.key_arns.each do |key|
     next unless aws_kms_key(key).enabled? && !aws_kms_key(key).managed_by_aws?
-
     describe aws_kms_key(key) do
       it { should have_rotation_enabled }
     end
@@ -63,4 +63,3 @@ control "2.8" do
     end
   end
 end
-

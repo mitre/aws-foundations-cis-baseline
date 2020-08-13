@@ -61,6 +61,7 @@ control "2.4" do
   tag cis_controls: "TITLE:Activate audit logging CONTROL:6.2 DESCRIPTION:Ensure that local logging has been enabled on all systems and networking devices.;TITLE:Central Log Management CONTROL:6.5 DESCRIPTION:Ensure that appropriate logs are being aggregated to a central log management system for analysis and review.;"
   tag ref: "https://aws.amazon.com/cloudtrail/:CIS CSC v6.0 #6.6, #14.6"
 
+  
   describe aws_cloudtrail_trails do
     it { should exist }
   end
@@ -72,4 +73,3 @@ control "2.4" do
     end
   end
 end
-

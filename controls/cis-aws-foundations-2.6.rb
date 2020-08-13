@@ -61,6 +61,7 @@ control "2.6" do
   tag cis_controls: "TITLE:Activate audit logging CONTROL:6.2 DESCRIPTION:Ensure that local logging has been enabled on all systems and networking devices.;TITLE:Enforce Detail Logging for Access or Changes to Sensitive Data CONTROL:14.9 DESCRIPTION:Enforce detailed audit logging for access to sensitive data or changes to sensitive data (utilizing tools such as File Integrity Monitoring or Security Information and Event Monitoring).;"
   tag ref: "CIS CSC v6.0 #14.6"
 
+  
   describe aws_cloudtrail_trails do
     it { should exist }
   end
@@ -77,5 +78,11 @@ control "2.6" do
       end
     end
   end
-end
 
+  # Use this after skeletal aws_cloudtrail_trails is enhanced to expose s3_bucket_name
+  # aws_cloudtrail_trails.s3_bucket_name.uniq.each do |bucket|
+  #   describe aws_s3_bucket( bucket ) do
+  #     it{ should be_logging_enabled }
+  #   end
+  # end
+end
