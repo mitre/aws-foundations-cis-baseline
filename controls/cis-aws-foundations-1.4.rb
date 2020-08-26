@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "1.4" do
+control "cis-aws-foundations-1.4" do
   title "Ensure access keys are rotated every 90 days or less"
   desc  "Access keys consist of an access key ID and secret access key, which are used to sign programmatic requests that you make to AWS. AWS users need their own access keys to make programmatic calls to AWS from the AWS Command Line Interface (AWS CLI), Tools for Windows PowerShell, the AWS SDKs, or direct HTTP calls using the APIs for individual AWS services. It is recommended that all access keys be regularly rotated."
   desc  "rationale", "Rotating access keys will reduce the window of opportunity for an access key that is associated with a compromised or terminated account to be used.

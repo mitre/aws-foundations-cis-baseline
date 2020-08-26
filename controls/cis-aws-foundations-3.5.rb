@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "3.5" do
+control "cis-aws-foundations-3.5" do
   title "Ensure a log metric filter and alarm exist for CloudTrail configuration changes"
   desc  "Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch Logs and establishing corresponding metric filters and alarms. It is recommended that a metric filter and alarm be established for detecting changes to CloudTrail's configurations."
   desc  "rationale", "Monitoring changes to CloudTrail's configuration will help ensure sustained visibility to activities performed in the AWS account."

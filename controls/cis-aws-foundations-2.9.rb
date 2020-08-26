@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "2.9" do
+control "cis-aws-foundations-2.9" do
   title "Ensure VPC flow logging is enabled in all VPCs"
   desc  "VPC Flow Logs is a feature that enables you to capture information about the IP traffic going to and from network interfaces in your VPC. After you've created a flow log, you can view and retrieve its data in Amazon CloudWatch Logs. It is recommended that VPC Flow Logs be enabled for packet \"Rejects\" for VPCs."
   desc  "rationale", "VPC Flow Logs provide visibility into network traffic that traverses the VPC and can be used to detect anomalous traffic or insight during security workflows."

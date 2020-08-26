@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "3.8" do
+control "cis-aws-foundations-3.8" do
   title "Ensure a log metric filter and alarm exist for S3 bucket policy changes"
   desc  "Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch Logs and establishing corresponding metric filters and alarms. It is recommended that a metric filter and alarm be established for changes to S3 bucket policies."
   desc  "rationale", "Monitoring changes to S3 bucket policies may reduce time to detect and correct permissive policies on sensitive S3 buckets."

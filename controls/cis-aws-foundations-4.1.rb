@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "4.1" do
+control "cis-aws-foundations-4.1" do
   title "Ensure no security groups allow ingress from 0.0.0.0/0 to port 22"
   desc  "Security groups provide stateful filtering of ingress/egress network traffic to AWS resources. It is recommended that no security group allows unrestricted ingress access to port `22` ."
   desc  "rationale", "Removing unfettered connectivity to remote console services, such as SSH, reduces a server's exposure to risk."

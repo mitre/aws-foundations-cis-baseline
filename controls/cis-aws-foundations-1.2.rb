@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "1.2" do
+control "cis-aws-foundations-1.2" do
   title "Ensure multi-factor authentication (MFA) is enabled for all IAM users that have a console password"
   desc  "Multi-Factor Authentication (MFA) adds an extra layer of protection on top of a user name and password. With MFA enabled, when a user signs in to an AWS website, they will be prompted for their user name and password as well as for an authentication code from their AWS MFA device. It is recommended that MFA be enabled for all accounts that have a console password."
   desc  "rationale", "Enabling MFA provides increased security for console access as it requires the authenticating principal to possess a device that emits a time-sensitive key and have knowledge of a credential."

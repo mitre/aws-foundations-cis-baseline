@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "3.12" do
+control "cis-aws-foundations-3.12" do
   title "Ensure a log metric filter and alarm exist for changes to network gateways"
   desc  "Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch Logs and establishing corresponding metric filters and alarms. Network gateways are required to send/receive traffic to a destination outside of a VPC. It is recommended that a metric filter and alarm be established for changes to network gateways."
   desc  "rationale", "Monitoring changes to network gateways will help ensure that all ingress/egress traffic traverses the VPC border via a controlled path."

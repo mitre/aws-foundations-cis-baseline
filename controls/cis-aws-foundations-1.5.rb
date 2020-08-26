@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "1.5" do
+control "cis-aws-foundations-1.5" do
   title "Ensure IAM password policy requires at least one uppercase letter"
   desc  "Password policies are, in part, used to enforce password complexity
 requirements. IAM password policies can be used to ensure password are

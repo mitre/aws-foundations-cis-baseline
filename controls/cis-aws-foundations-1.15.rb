@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "1.15" do
+control "cis-aws-foundations-1.15" do
   title "Ensure security questions are registered in the AWS account"
   desc  "The AWS support portal allows account owners to establish security questions that can be used to authenticate individuals calling AWS customer service for support. It is recommended that security questions be established."
   desc  "rationale", "When creating a new AWS account, a default super user is automatically created. This account is referred to as the \"root\" account. It is recommended that the use of this account be limited and highly controlled. During events in which the Root password is no longer accessible or the MFA token associated with root is lost/destroyed it is possible, through authentication using secret questions and associated answers, to recover root login access."

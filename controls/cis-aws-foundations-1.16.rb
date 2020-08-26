@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "1.16" do
+control "cis-aws-foundations-1.16" do
   title "Ensure IAM policies are attached only to groups or roles"
   desc  "By default, IAM users, groups, and roles have no access to AWS resources. IAM policies are the means by which privileges are granted to users, groups, or roles. It is recommended that IAM policies be applied directly to groups and roles but not users."
   desc  "rationale", "Assigning privileges at the group or role level reduces the complexity of access management as the number of users grow. Reducing access management complexity may in-turn reduce opportunity for a principal to inadvertently receive or retain excessive privileges."

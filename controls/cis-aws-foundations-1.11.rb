@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "1.11" do
+control "cis-aws-foundations-1.11" do
   title "Ensure IAM password policy expires passwords within 90 days or less"
   desc  "IAM password policies can require passwords to be rotated or expired after a given number of days. It is recommended that the password policy expire passwords after 90 days or less."
   desc  "rationale", "Reducing the password lifetime increases account resiliency against brute force login attempts. Additionally, requiring regular password changes help in the following scenarios:

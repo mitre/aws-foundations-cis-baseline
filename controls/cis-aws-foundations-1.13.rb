@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "1.13" do
+control "cis-aws-foundations-1.13" do
   title "Ensure MFA is enabled for the \"root\" account"
   desc  "The root account is the most privileged user in an AWS account. MFA adds an extra layer of protection on top of a user name and password. With MFA enabled, when a user signs in to an AWS website, they will be prompted for their user name and password as well as for an authentication code from their AWS MFA device.
 

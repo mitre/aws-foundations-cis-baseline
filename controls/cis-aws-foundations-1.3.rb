@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "1.3" do
+control "cis-aws-foundations-1.3" do
   title "Ensure credentials unused for 90 days or greater are disabled"
   desc  "AWS IAM users can access AWS resources using different types of credentials, such as passwords or access keys. It is recommended that all credentials that have been unused in 90 or greater days be removed or deactivated."
   desc  "rationale", "Disabling or removing unnecessary credentials will reduce the window of opportunity for credentials associated with a compromised or abandoned account to be used."

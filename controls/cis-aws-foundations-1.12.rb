@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "1.12" do
+control "cis-aws-foundations-1.12" do
   title "Ensure no root account access key exists"
   desc  "The root account is the most privileged user in an AWS account. AWS Access Keys provide programmatic access to a given AWS account. It is recommended that all access keys associated with the root account be removed."
   desc  "rationale", "Removing access keys associated with the root account limits vectors by which the account can be compromised. Additionally, removing the root access keys encourages the creation and use of role based accounts that are least privileged."

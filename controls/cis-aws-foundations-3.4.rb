@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "3.4" do
+control "cis-aws-foundations-3.4" do
   title "Ensure a log metric filter and alarm exist for IAM policy changes"
   desc  "Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch Logs and establishing corresponding metric filters and alarms. It is recommended that a metric filter and alarm be established changes made to Identity and Access Management (IAM) policies."
   desc  "rationale", "Monitoring changes to IAM policies will help ensure authentication and authorization controls remain intact."

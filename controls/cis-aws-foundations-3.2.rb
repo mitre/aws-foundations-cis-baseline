@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "3.2" do
+control "cis-aws-foundations-3.2" do
   title "Ensure a log metric filter and alarm exist for Management Console sign-in without MFA"
   desc  "Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch Logs and establishing corresponding metric filters and alarms. It is recommended that a metric filter and alarm be established for console logins that are not protected by multi-factor authentication (MFA)."
   desc  "rationale", "Monitoring for single-factor console logins will increase visibility into accounts that are not protected by MFA."

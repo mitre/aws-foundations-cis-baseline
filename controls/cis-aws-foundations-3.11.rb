@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "3.11" do
+control "cis-aws-foundations-3.11" do
   title "Ensure a log metric filter and alarm exist for changes to Network Access Control Lists (NACL)"
   desc  "Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch Logs and establishing corresponding metric filters and alarms. NACLs are used as a stateless packet filter to control ingress and egress traffic for subnets within a VPC. It is recommended that a metric filter and alarm be established for changes made to NACLs."
   desc  "rationale", "Monitoring changes to NACLs will help ensure that AWS resources and services are not unintentionally exposed."

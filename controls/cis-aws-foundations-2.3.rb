@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "2.3" do
+control "cis-aws-foundations-2.3" do
   title "Ensure the S3 bucket used to store CloudTrail logs is not publicly accessible"
   desc  "CloudTrail logs a record of every API call made in your AWS account. These logs file are stored in an S3 bucket. It is recommended that the bucket policy or access control list (ACL) applied to the S3 bucket that CloudTrail logs to prevents public access to the CloudTrail logs."
   desc  "rationale", "Allowing public access to CloudTrail log content may aid an adversary in identifying weaknesses in the affected account's use or configuration."

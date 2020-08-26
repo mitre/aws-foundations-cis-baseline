@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "3.14" do
+control "cis-aws-foundations-3.14" do
   title "Ensure a log metric filter and alarm exist for VPC changes"
   desc  "Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch Logs and establishing corresponding metric filters and alarms. It is possible to have more than 1 VPC within an account, in addition it is also possible to create a peer connection between 2 VPCs enabling network traffic to route between VPCs. It is recommended that a metric filter and alarm be established for changes made to VPCs."
   desc  "rationale", "Monitoring changes to IAM policies will help ensure authentication and authorization controls remain intact."

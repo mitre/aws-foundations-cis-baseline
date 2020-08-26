@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "1.20" do
+control "cis-aws-foundations-1.20" do
   title "Ensure a support role has been created to manage incidents with AWS Support"
   desc  "AWS provides a support center that can be used for incident notification and response, as well as technical support and customer services. Create an IAM Role to allow authorized users to manage incidents with AWS Support."
   desc  "rationale", "By implementing least privilege for access control, an IAM Role will require an appropriate IAM Policy to allow Support Center Access in order to manage Incidents with AWS Support."

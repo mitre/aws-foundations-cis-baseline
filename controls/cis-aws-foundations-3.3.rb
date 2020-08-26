@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "3.3" do
+control "cis-aws-foundations-3.3" do
   title "Ensure a log metric filter and alarm exist for usage of \"root\" account"
   desc  "Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch Logs and establishing corresponding metric filters and alarms. It is recommended that a metric filter and alarm be established for root login attempts."
   desc  "rationale", "Monitoring for root account logins will provide visibility into the use of a fully privileged account and an opportunity to reduce the use of it."

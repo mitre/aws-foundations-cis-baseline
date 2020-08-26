@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "1.19" do
+control "cis-aws-foundations-1.19" do
   title "Ensure IAM instance roles are used for AWS resource access from instances"
   desc  "AWS access from within AWS instances can be done by either encoding AWS keys into AWS API calls or by assigning the instance to a role which has an appropriate permissions policy for the required access. \"AWS Access\" means accessing the APIs of AWS in order to access AWS resources or manage AWS account resources."
   desc  "rationale", "AWS IAM roles reduce the risks associated with sharing and rotating credentials that can be used outside of AWS itself. If credentials are compromised, they can be used from outside of the the AWS account they give access to. In contrast, in order to leverage role permissions an attacker would need to gain and maintain access to a specific instance to use the privileges associated with it.

@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "3.1" do
+control "cis-aws-foundations-3.1" do
   title "Ensure a log metric filter and alarm exist for unauthorized API calls"
   desc  "Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch Logs and establishing corresponding metric filters and alarms. It is recommended that a metric filter and alarm be established for unauthorized API calls."
   desc  "rationale", "Monitoring unauthorized API calls will help reveal application errors and may reduce time to detect malicious activity."

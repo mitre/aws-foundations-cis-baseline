@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "2.6" do
+control "cis-aws-foundations-2.6" do
   title "Ensure S3 bucket access logging is enabled on the CloudTrail S3 bucket"
   desc  "S3 Bucket Access Logging generates a log that contains access records for each request made to your S3 bucket. An access log record contains details about the request, such as the request type, the resources specified in the request worked, and the time and date the request was processed. It is recommended that bucket access logging be enabled on the CloudTrail S3 bucket."
   desc  "rationale", "By enabling S3 bucket logging on target S3 buckets, it is possible to capture all events which may affect objects within an target buckets. Configuring logs to be placed in a separate bucket allows access to log information which can be useful in security and incident response workflows."

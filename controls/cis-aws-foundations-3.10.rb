@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "3.10" do
+control "cis-aws-foundations-3.10" do
   title "Ensure a log metric filter and alarm exist for security group changes"
   desc  "Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch Logs and establishing corresponding metric filters and alarms. Security Groups are a stateful packet filter that controls ingress and egress traffic within a VPC. It is recommended that a metric filter and alarm be established changes to Security Groups."
   desc  "rationale", "Monitoring changes to security group will help ensure that resources and services are not unintentionally exposed."

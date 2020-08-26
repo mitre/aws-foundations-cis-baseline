@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "3.6" do
+control "cis-aws-foundations-3.6" do
   title "Ensure a log metric filter and alarm exist for AWS Management Console authentication failures"
   desc  "Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch Logs and establishing corresponding metric filters and alarms. It is recommended that a metric filter and alarm be established for failed console authentication attempts."
   desc  "rationale", "Monitoring failed console logins may decrease lead time to detect an attempt to brute force a credential, which may provide an indicator, such as source IP, that can be used in other event correlation."

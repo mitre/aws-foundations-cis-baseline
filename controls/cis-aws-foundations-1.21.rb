@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "1.21" do
+control "cis-aws-foundations-1.21" do
   title "Do not setup access keys during initial user setup for all IAM users that have a console password"
   desc  "AWS console defaults the checkbox for creating access keys to enabled. This results in many access keys being generated unnecessarily. In addition to unnecessary credentials, it also generates unnecessary management work in auditing and rotating these keys."
   desc  "rationale", "Requiring that additional steps be taken by the user after their profile has been created will give a stronger indication of intent that access keys are [a] necessary for their work and [b] once the access key is established on an account, that the keys may be in use somewhere in the organization.

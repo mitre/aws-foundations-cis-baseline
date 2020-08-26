@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "4.4" do
+control "cis-aws-foundations-4.4" do
   title "Ensure routing tables for VPC peering are \"least access\""
   desc  "Once a VPC peering connection is estalished, routing tables must be updated to establish any connections between the peered VPCs. These routes can be as specific as desired - even peering a VPC to only a single host on the other side of the connection."
   desc  "rationale", "Being highly selective in peering routing tables is a very effective way of minimizing the impact of breach as resources outside of these routes are inaccessible to the peered VPC."

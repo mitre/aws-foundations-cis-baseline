@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "2.1" do
+control "cis-aws-foundations-2.1" do
   title "Ensure CloudTrail is enabled in all regions"
   desc  "AWS CloudTrail is a web service that records AWS API calls for your account and delivers log files to you. The recorded information includes the identity of the API caller, the time of the API call, the source IP address of the API caller, the request parameters, and the response elements returned by the AWS service. CloudTrail provides a history of AWS API calls for an account, including API calls made via the Management Console, SDKs, command line tools, and higher-level AWS services (such as CloudFormation)."
   desc  "rationale", "The AWS API call history produced by CloudTrail enables security analysis, resource change tracking, and compliance auditing. Additionally,

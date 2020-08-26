@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "1.9" do
+control "cis-aws-foundations-1.9" do
   title "Ensure IAM password policy requires minimum length of 14 or greater"
   desc  "Password policies are, in part, used to enforce password complexity requirements. IAM password policies can be used to ensure password are at least a given length. It is recommended that the password policy require a minimum password length 14."
   desc  "rationale", "Setting a password complexity policy increases account resiliency against brute force login attempts."

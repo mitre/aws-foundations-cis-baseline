@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "1.17" do
+control "cis-aws-foundations-1.17" do
   title "Maintain current contact details"
   desc  "Ensure contact email and telephone details for AWS accounts are current and map to more than one individual in your organisation.
 

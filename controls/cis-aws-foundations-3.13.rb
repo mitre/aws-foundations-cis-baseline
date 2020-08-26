@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "3.13" do
+control "cis-aws-foundations-3.13" do
   title "Ensure a log metric filter and alarm exist for route table changes"
   desc  "Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch Logs and establishing corresponding metric filters and alarms. Routing tables are used to route network traffic between subnets and to network gateways. It is recommended that a metric filter and alarm be established for changes to route tables."
   desc  "rationale", "Monitoring changes to route tables will help ensure that all VPC traffic flows through an expected path."

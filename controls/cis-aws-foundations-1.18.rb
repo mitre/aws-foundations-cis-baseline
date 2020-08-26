@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "1.18" do
+control "cis-aws-foundations-1.18" do
   title "Ensure security contact information is registered"
   desc  "AWS provides customers with the option of specifying the contact information for account's security team. It is recommended that this information be provided."
   desc  "rationale", "Specifying security-specific contact information will help ensure that security advisories sent by AWS reach the team in your organization that is best equipped to respond to them."

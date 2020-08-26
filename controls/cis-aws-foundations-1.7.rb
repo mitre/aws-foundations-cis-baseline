@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "1.7" do
+control "cis-aws-foundations-1.7" do
   title "Ensure IAM password policy require at least one symbol"
   desc  "Password policies are, in part, used to enforce password complexity requirements. IAM password policies can be used to ensure password are comprised of different character sets. It is recommended that the password policy require at least one symbol."
   desc  "rationale", "Setting a password complexity policy increases account resiliency against brute force login attempts."

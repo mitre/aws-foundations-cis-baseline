@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "3.7" do
+control "cis-aws-foundations-3.7" do
   title "Ensure a log metric filter and alarm exist for disabling or scheduled deletion of customer created CMKs"
   desc  "Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch Logs and establishing corresponding metric filters and alarms. It is recommended that a metric filter and alarm be established for customer created CMKs which have changed state to disabled or scheduled deletion."
   desc  "rationale", "Data encrypted with disabled or deleted keys will no longer be accessible."

@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-control "1.10" do
+control "cis-aws-foundations-1.10" do
   title "Ensure IAM password policy prevents password reuse"
   desc  "IAM password policies can prevent the reuse of a given password by the same user. It is recommended that the password policy prevent the reuse of passwords."
   desc  "rationale", "Preventing password reuse increases account resiliency against brute force login attempts."
