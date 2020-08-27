@@ -66,17 +66,19 @@ control "cis-aws-foundations-1.3" do
   end
 
   # For each user having an `access_key_1_active` or `access_key_2_active` to `TRUE` , ensure the corresponding `access_key_n_last_used_date` is less than `90` days ago.
+  # When a user having an `access_key_x_active` (where x is 1 or 2) to `TRUE` and corresponding access_key_x_last_used_date is set to `N/A', ensure `access_key_x_last_rotated` is less than 90 days ago
+      
   aws_iam_access_keys.where(active: true).entries.each do |key|
     describe key.username do
-      context key do
-        its('last_used_days_ago') { should cmp < 90 }
-      end
-  # When a user having an `access_key_x_active` (where x is 1 or 2) to `TRUE` and corresponding access_key_x_last_used_date is set to `N/A', ensure `access_key_x_last_rotated` is less than 90 days ago
       if key.last_used_days_ago.nil?
         describe key.username do
           context key do
             its('created_days_ago') { should cmp < 90 }
           end
+        end
+      else
+        context key do
+          its('last_used_days_ago') { should cmp < 90 }
         end
       end
     end
