@@ -58,12 +58,17 @@ control "cis-aws-foundations-1.3" do
   end
 
   # When `password_enabled` is set to `TRUE` and `password_last_used` is set to `No_Information` , ensure `password_last_changed` is less than 90 days ago.
-  describe aws_iam_users.where(has_console_password: true).where(password_last_used_days_ago: -1) do
-  # its('password_last_changed') { should cmp < 90 } # property not exposed in AWS Ruby SDK: https://github.com/aws/aws-sdk-ruby/issues/2375
-    describe "This check is skipped due to lack of password_last_changed property accessibility using an API. Verify that 'password_last_changed' is less than 90 days ago if 'password_enabled is 'TRUE' and 'password_last_used' is 'No_Information' in the credential report" do
-      skip "This check is skipped due to lack of password_last_changed property accessibility using an API. Verify that 'password_last_changed' is less than 90 days ago if 'password_enabled is 'TRUE' and 'password_last_used' is 'No_Information' in the credential report"
+  # 'password_last_changed' property not exposed in AWS Ruby SDK: https://github.com/aws/aws-sdk-ruby/issues/2375
+
+  no_information_users = aws_iam_users.where(has_console_password: true).where(password_last_used_days_ago: -1).entries
+  unless no_information_users.empty?
+    no_information_users.each do |user|
+      describe "Manually validate the password has been changed less than 90 days ago for user: #{user.username}" do
+        skip "Manually validate the password has been changed less than 90 days ago for user: #{user.username}"
+      end
     end
   end
+  
 
   # For each user having an `access_key_1_active` or `access_key_2_active` to `TRUE` , ensure the corresponding `access_key_n_last_used_date` is less than `90` days ago.
   # When a user having an `access_key_x_active` (where x is 1 or 2) to `TRUE` and corresponding access_key_x_last_used_date is set to `N/A', ensure `access_key_x_last_rotated` is less than 90 days ago
