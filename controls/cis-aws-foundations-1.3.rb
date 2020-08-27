@@ -63,8 +63,8 @@ control "cis-aws-foundations-1.3" do
   no_information_users = aws_iam_users.where(has_console_password: true).where(password_last_used_days_ago: -1).entries
   unless no_information_users.empty?
     no_information_users.each do |user|
-      describe "Manually validate the password has been changed less than 90 days ago for user: #{user.username}" do
-        skip "Manually validate the password has been changed less than 90 days ago for user: #{user.username}"
+      describe "Manually validate that the password has been changed less than 90 days ago for user: #{user.username}" do
+        skip "Manually validate that the password has been changed less than 90 days ago for user: #{user.username}"
       end
     end
   end
