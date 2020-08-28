@@ -17,12 +17,6 @@ inputs:
     description: 'primary aws region your resources are deployed.'
     value: 'us-east-1'
 
-  - name: aws_cloudtrail_trail
-    description: 'Set the value to CloudTrail trail name that meets the configuration requirements for this benchmark'
-    type: string
-    value:
-    required: true
-
   - name: aws_key_age
     description: 'The maximum allowed key age'
     type: numeric

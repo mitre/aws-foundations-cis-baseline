@@ -99,9 +99,6 @@ These attributes are generated if the profile is used with the Terraform hardeni
 - Primary aws region (2.5), <br>
 `default_aws_region: 'us-east-1'`
 
-- Compliant CloudTrail trail name (3.x), <br>
-`aws_cloudtrail_trail: "aws_cloudtrail_trail"`
-
 - Maximum aws key age (1.4), <br>
 `aws_key_age: 90`
 

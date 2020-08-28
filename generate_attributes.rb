@@ -9,7 +9,7 @@ aws_regions = [
   'us-west-2'
 ]
 
-attributes_file = {}
+inputs_file = {}
 
 config_delivery_channels = {}
 aws_regions.each do |region|
@@ -24,34 +24,6 @@ aws_regions.each do |region|
   end
 end
 
-sns_topics = {}
-aws_regions.each do |region|
-  topics = JSON.parse(`aws sns list-topics --region #{region}`)
-  topics['Topics'].each do |topic|
-    attrs = JSON.parse(`aws sns get-topic-attributes --topic-arn #{topic['TopicArn']} --region #{topic['TopicArn'].scan(/^arn:aws:sns:([\w\-]+):\d{12}:[\S]+$/).last.first}`)
-    sns_topics[topic['TopicArn']] =
-      {
-        'owner' => attrs['Attributes']['Owner'],
-        'region' => topic['TopicArn'].scan(/^arn:aws:sns:([\w\-]+):\d{12}:[\S]+$/).last.first
-      }
-  end
-end
+inputs_file['config_delivery_channels'] = config_delivery_channels
 
-sns_subscriptions = {}
-aws_regions.each do |region|
-  subscriptions = JSON.parse(`aws sns list-subscriptions --region #{region}`)
-  subscriptions['Subscriptions'].each do |subscription|
-    sns_subscriptions[subscription['SubscriptionArn']] =
-      {
-        'endpoint' => subscription['Endpoint'],
-        'owner' => subscription['Owner'],
-        'protocol' => subscription['Protocol']
-      }
-  end
-end
-
-attributes_file['config_delivery_channels'] = config_delivery_channels
-attributes_file['sns_topics'] = sns_topics
-attributes_file['sns_subscriptions'] = sns_subscriptions
-
-puts attributes_file.to_yaml
+puts inputs_file.to_yaml

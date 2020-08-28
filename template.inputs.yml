@@ -1,0 +1,43 @@
+# encoding: utf-8
+#
+# This is an example of an inputs file that can be passed to the profile
+# to override the defaults of the inputs defined in each of the tests.
+# You can use this to automatically adjust your tests when using automation or
+# progromatic deployment or validation of differnt deployment patterns without
+# having to adjust the core profile.
+
+# The followiing inputs must be set to accepted/documented values which is
+# then verified by the applicable controls.
+
+# description: 'primary aws region your resources are deployed.',
+default_aws_region: 'us-east-1'
+
+# default aws key age (1.4)
+aws_key_age: 90
+
+# Make the password length (1.9)
+pwd_length: 14
+
+# make the aws_cred_age an input (1.11)
+aws_cred_age: 90
+
+#description: 'list of buckets exempted from inspection',
+exception_bucket_list: ["exception_bucket_name"]
+
+# description: 'list of security groups exempted from inspection',
+exception_security_group_list: ["exception_security_group_name"]
+
+# description: 'Config delivery channel list and settings in all relevant regions',
+config_delivery_channels:
+    us-east-1:  
+      s3_bucket_name: "s3_bucket_name_value"
+      sns_topic_arn: "sns_topic_arn_value"
+    us-east-2:
+      s3_bucket_name:  "s3_bucket_name_value"
+      sns_topic_arn: "sns_topic_arn_value"
+    us-west-1:
+      s3_bucket_name:  "s3_bucket_name_value"
+      sns_topic_arn: "sns_topic_arn_value"
+    us-west-2:
+      s3_bucket_name:  "s3_bucket_name_value"
+      sns_topic_arn: "sns_topic_arn_value"
