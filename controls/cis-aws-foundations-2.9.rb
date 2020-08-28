@@ -51,7 +51,7 @@ control "cis-aws-foundations-2.9" do
       aws_vpc(vpc).flow_logs.each do |flow_log|
         describe 'flow log settings' do
           subject { flow_log }
-          its('traffic_type') { should cmp 'REJECT' }
+          its('flow_log_status') { should cmp 'ACTIVE' }
         end
       end
     end
