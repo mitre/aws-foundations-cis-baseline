@@ -78,33 +78,40 @@ control "cis-aws-foundations-3.5" do
   tag ref: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/sns/latest/dg/SubscribeTopic.html"
 
   
-  trail = input('aws_cloudtrail_trail')
-
-  describe aws_cloudtrail_trails do
-    it { should exist }
-  end
-
-  describe aws_cloudtrail_trail(trail) do
-    its ('cloud_watch_logs_log_group_arn') { should_not be_nil }
-    it { should be_multi_region_trail }
-    it { should have_event_selector_mgmt_events_rw_type_all }
-    it { should be_logging }
-  end
-
-  next if aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.nil?
-  
-  trail_log_group_name = aws_cloudtrail_trail(trail).cloud_watch_logs_log_group_arn.scan(/log-group:(.+):/).last.first
   pattern = '{ ($.eventName = CreateTrail) || ($.eventName = UpdateTrail) || ($.eventName = DeleteTrail) || ($.eventName = StartLogging) || ($.eventName = StopLogging) }'
 
-  describe aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name) do
+  describe aws_cloudwatch_log_metric_filter(pattern: pattern) do
     it { should exist }
   end
 
-  metric_name = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name).metric_name
-  metric_namespace = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: trail_log_group_name).metric_namespace
+  # Find the log_group_name associated with the aws_cloudwatch_log_metric_filter that has the pattern
+  log_group_name = aws_cloudwatch_log_metric_filter(pattern: pattern).log_group_name
 
-  next if metric_name.nil? && metric_namespace.nil?
+  # Find cloudtrails associated with with `log_group_name` parsed above
+  associated_trails = aws_cloudtrail_trails.names.select{ |x| aws_cloudtrail_trail(x).cloud_watch_logs_log_group_arn =~ /log-group:#{log_group_name}:/ }
 
+  # Ensure log_group is associated atleast one cloudtrail
+  describe "Cloudtrails associated with log-group: #{log_group_name}" do
+    subject { associated_trails }
+    it { should_not be_empty }
+  end
+
+  # Ensure atleast one of the associated cloudtrail meet the requirements.
+  describe.one do
+    associated_trails.each do |trail|
+      describe aws_cloudtrail_trail(trail) do
+        it { should be_multi_region_trail }
+        it { should have_event_selector_mgmt_events_rw_type_all }
+        it { should be_logging }
+      end
+    end
+  end
+
+  # Parse out `metric_name` and `metric_namespace` for the specified pattern.
+  metric_name = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: log_group_name).metric_name
+  metric_namespace = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: log_group_name).metric_namespace
+
+  # Ensure aws_cloudwatch_alarm for the specified pattern meets requirements.
   describe aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace) do
     it { should exist }
     its ('alarm_actions') { should_not be_empty }
