@@ -38,7 +38,7 @@ inputs:
     value:
       - 'exception_bucket_name'
 
-    - name: exception_security_group_list
+  - name: exception_security_group_list
     description: 'list of security groups exempted from inspection'
     type: array
     value:
