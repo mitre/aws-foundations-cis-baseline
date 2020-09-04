@@ -2,7 +2,6 @@
 *.gem
 *.rbc
 
-!Gemfile.lock
 .attribute.yml
 
 /.config
