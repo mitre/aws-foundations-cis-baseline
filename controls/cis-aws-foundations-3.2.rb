@@ -108,19 +108,22 @@ control "cis-aws-foundations-3.2" do
   end
 
   # Parse out `metric_name` and `metric_namespace` for the specified pattern.
-  metric_name = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: log_group_name).metric_name
-  metric_namespace = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: log_group_name).metric_namespace
+  associated_metric_filter = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: log_group_name)
+  metric_name = associated_metric_filter.metric_name
+  metric_namespace = associated_metric_filter.metric_namespace
 
   # Ensure aws_cloudwatch_alarm for the specified pattern meets requirements.
-  describe aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace) do
-    it { should exist }
-    its ('alarm_actions') { should_not be_empty }
-  end
-
-  aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace).alarm_actions.each do |sns|
-    describe aws_sns_topic(sns) do
+  if associated_metric_filter.exists?
+    describe aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace) do
       it { should exist }
-      its('confirmed_subscription_count') { should cmp >= 1 }
+      its ('alarm_actions') { should_not be_empty }
+    end
+
+    aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace).alarm_actions.each do |sns|
+      describe aws_sns_topic(sns) do
+        it { should exist }
+        its('confirmed_subscription_count') { should cmp >= 1 }
+      end
     end
   end
 end
