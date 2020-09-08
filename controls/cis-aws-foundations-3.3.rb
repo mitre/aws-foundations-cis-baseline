@@ -78,7 +78,7 @@ control "cis-aws-foundations-3.3" do
   tag ref: "CIS CSC v6.0 #4.6, #5.1, #5.5:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/sns/latest/dg/SubscribeTopic.html"
 
 
-  pattern = '{ $.userIdentity.type = \"Root\" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != \"AwsServiceEvent\" }'
+  pattern = '{ $.userIdentity.type = "Root" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != "AwsServiceEvent" }'
 
   describe aws_cloudwatch_log_metric_filter(pattern: pattern) do
     it { should exist }
