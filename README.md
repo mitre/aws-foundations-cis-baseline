@@ -90,11 +90,11 @@ To generate credentials using an AWS Profile you will need to use the following 
 
 ### Building your `inputs.yml` file
 
-We use a yml attribute file to steer the configuration, the following options are available:
-The followiing attributes must be set to accepted/documented values which is
+We use a yml inputs file to steer the configuration, the following options are available:
+The following inputs must be set to accepted/documented values which is
 then verified by the applicable controls.
 
-These attributes are generated if the profile is used with the Terraform hardening receipe (https://github.com/mitre/cis-aws-foundations-hardening) with kitchen-terraform.
+These inputs are generated if the profile is used with the Terraform hardening receipe (https://github.com/mitre/cis-aws-foundations-hardening) with kitchen-terraform.
 
 - Primary aws region (2.5), <br>
 `default_aws_region: 'us-east-1'`
@@ -132,23 +132,23 @@ config_delivery_channels:
 
 ```
 
-## Generate Attributes
+## Generate Inputs
 
-The repo includes a script : generate_attributes.rb to generate part of the attributes required for the profile.
-The script will inspect aws regions: us-east-1, us-east-2, us-west-1, us-west-2 to generate the following attribute to STDOUT.
+The repo includes a script : generate_inputs.rb to generate part of the inputs required for the profile.
+The script will inspect aws regions: us-east-1, us-east-2, us-west-1, us-west-2 to generate the following input to STDOUT.
 
 ```
 - config_delivery_channels
 ```
-The generated attributes __must be reviewed carefully__. 
+The generated inputs __must be reviewed carefully__. 
 Only __valid__ channels should be placed in the inputs.yml file.
 
 Usage:
 ```
-  ruby generate_attributes.rb
+  ruby generate_inputs.rb
 ```
 
-## Additional optional attributes the user may add to their inputs file:
+## Additional optional inputs the user may add to their inputs file:
 
 ```
 # description: 'list of buckets exempted from inspection' (2.3, 2.6),
@@ -175,9 +175,9 @@ $ export AWS_SECRET_ACCESS_KEY=access-key
 $ export AWS_SESSION_TOKEN=session_token
 $ export AWS_REGION=us-west-1
 
-# Run the `generate_attributes.rb` 
-$ ruby generate_attributes.rb
-# The generated attributes __must be reviewed carefully__. 
+# Run the `generate_inputs.rb` 
+$ ruby generate_inputs.rb
+# The generated inputs __must be reviewed carefully__. 
 # Only __valid__ channels should be placed in the inputs.yml file.
 
 # To run profile locally and directly from Github
