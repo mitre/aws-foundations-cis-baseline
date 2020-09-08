@@ -82,6 +82,7 @@ control "cis-aws-foundations-2.5" do
 
   
   region = input('default_aws_region')
+  config_delivery_channels = input('config_delivery_channels')
 
   describe aws_config_recorder do
     it { should exist }
