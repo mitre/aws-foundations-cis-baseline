@@ -72,16 +72,16 @@ control "cis-aws-foundations-2.1" do
   tag cis_controls: "TITLE:Activate audit logging CONTROL:6.2 DESCRIPTION:Ensure that local logging has been enabled on all systems and networking devices.;"
   tag ref: "CIS CSC v6.0 #14.6:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-concepts.html#cloudtrail-concepts-management-events:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-management-and-data-events-with-cloudtrail.html?icmpid=docs_cloudtrail_console#logging-management-events:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-supported-services.html#cloud-trail-supported-services-data-events"
 
-
-  trail = input('aws_cloudtrail_trail')
-
+  
   describe aws_cloudtrail_trails do
     it { should exist }
   end
 
-  describe aws_cloudtrail_trail(trail) do
-    it { should be_multi_region_trail }
-    it { should be_logging }
-    it { should have_event_selector_mgmt_events_rw_type_all }
+  aws_cloudtrail_trails.names.each do |trail|
+    describe aws_cloudtrail_trail(trail) do
+      it { should be_multi_region_trail }
+      it { should be_logging }
+      it { should have_event_selector_mgmt_events_rw_type_all }
+    end
   end
 end
