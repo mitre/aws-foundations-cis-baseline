@@ -1,10 +1,10 @@
-# cis-aws-foundations-baseline
+# aws-foundations-cis-baseline
 
 InSpec profile to validate your VPC to the standards of the CIS Amazon Web Services Foundations Benchmark v1.2.0 - 05-23-2018
 
 ## Description
 
-This [InSpec](https://github.com/chef/inspec) compliance profile implement the [CIS AWS Foundations Benchmark](https://github.com/mitre/cis-aws-foundations-baseline) in an automated way to provide security best-practice tests in an AWS environment.
+This [InSpec](https://github.com/chef/inspec) compliance profile implement the [CIS AWS Foundations Benchmark](https://github.com/mitre/aws-foundations-cis-baseline) in an automated way to provide security best-practice tests in an AWS environment.
 
 InSpec is an open-source run-time framework and rule language used to specify compliance, security, and policy requirements for testing any node in your infrastructure.
 
@@ -49,7 +49,7 @@ If needed - install inspec on your 'runner' system - i.e. your orchestration ser
 
 You will need to download the InSpec Profile to your `runner` system. You can do this via `git` or the GitHub Web interface, etc.
 
-  a. `git clone https://github.com/mitre/cis-aws-foundations-baseline`, or 
+  a. `git clone https://github.com/mitre/aws-foundations-cis-baseline`, or 
   
   b. Save a Zip or tar.gz copy of the master branch from the `Clone or Download` button of this project
 
@@ -57,7 +57,7 @@ You will need to download the InSpec Profile to your `runner` system. You can do
 
 The profile uses Bundler to manage needed dependencies - so you will need to installed the needed gems via bundler before you run the profile. Change directories to your your cloned inspec profile then do a `bundle install`. 
 
-  a. `cd cis-aws-foundations-baseline` 
+  a. `cd aws-foundations-cis-baseline` 
   
   b. `bundle install`
 
@@ -164,7 +164,7 @@ InSpec makes it easy to run your tests wherever you need. More options listed he
 
 ```
 # Clone Inspec Profile
-$ git clone https://github.com/mitre/cis-aws-foundations-baseline
+$ git clone https://github.com/mitre/aws-foundations-cis-baseline
 
 # Install Gems
 $ bundle install
@@ -196,7 +196,7 @@ $ inspec exec /path/to/profile -t aws://us-east-1/<mycreds-profile> --input-file
 In order to verify individual controls, just provide the control ids to InSpec:
 
 ```
-$ inspec exec /path/to/profile --input-file=inputs.yml --controls cis-aws-foundations-1.10
+$ inspec exec /path/to/profile --input-file=inputs.yml --controls 1.10
 ```
 
 ## Contributors + Kudos

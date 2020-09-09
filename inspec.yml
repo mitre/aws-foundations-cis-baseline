@@ -1,5 +1,5 @@
-name: cis-aws-foundations-baseline
-title: cis-aws-foundations-baseline
+name: aws-foundations-cis-baseline
+title: aws-foundations-cis-baseline
 maintainer: MITRE InSpec Team
 copyright: MITRE, 2020
 copyright_email: inspec@mitre.org
