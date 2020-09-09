@@ -10,7 +10,7 @@ supports:
   - platform: aws
 depends:
   - name: inspec-aws
-    git: https://github.com/inspec/inspec-aws.git
+    url: https://github.com/inspec/inspec-aws/archive/master.tar.gz
 
 inputs:
   - name: default_aws_region
@@ -19,40 +19,40 @@ inputs:
 
   - name: aws_key_age
     description: 'The maximum allowed key age'
-    type: numeric
+    type: Numeric
     value: 90
 
   - name: pwd_length
     description: 'Required password length'
-    type: numeric
+    type: Numeric
     value: 14
 
   - name: aws_cred_age
     description: 'The maximum allowed IAM account age'
-    type: numeric
+    type: Numeric
     value: 90
 
   - name: exception_bucket_list
     description: 'list of buckets exempted from inspection'
-    type: array
+    type: Array
     value:
       - 'exception_bucket_name'
 
   - name: exception_security_group_list
     description: 'list of security groups exempted from inspection'
-    type: array
+    type: Array
     value:
       - 'exception_security_group_name'
 
   - name: service_account_mfa_exceptions
     description: 'list of service accounts which are exempt from the MFA requirement'
-    type: array
+    type: Array
     value:
       - 'service_account_mfa_exceptions'
 
   - name: config_delivery_channels
     description: 'Config service settings'
-    type: hash
+    type: Hash
     value:
       us-east-1:
         s3_bucket_name: s3_bucket_name_value
