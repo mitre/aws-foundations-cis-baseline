@@ -53,14 +53,6 @@ You will need to download the InSpec Profile to your `runner` system. You can do
   
   b. Save a Zip or tar.gz copy of the master branch from the `Clone or Download` button of this project
 
-### Setting up dependencies in your Ruby and InSpec Environments
-
-The profile uses Bundler to manage needed dependencies - so you will need to installed the needed gems via bundler before you run the profile. Change directories to your your cloned inspec profile then do a `bundle install`. 
-
-  a. `cd aws-foundations-cis-baseline` 
-  
-  b. `bundle install`
-
 ### Minimum Permissions needed to Run this Profile
 
 The IAM account used to run this profile against the AWS environment needs to attached through a group or role with at least `AWS IAM "ReadOnlyAccess" Managed Policy` 
@@ -165,9 +157,6 @@ InSpec makes it easy to run your tests wherever you need. More options listed he
 ```
 # Clone Inspec Profile
 $ git clone https://github.com/mitre/aws-foundations-cis-baseline
-
-# Install Gems
-$ bundle install
 
 # Set required ENV variables
 $ export AWS_ACCESS_KEY_ID=key-id

@@ -6,6 +6,7 @@ copyright_email: inspec@mitre.org
 license: Apache-2.0
 summary: 'InSpec Profile to validate the CIS AWS Foundations Benchmark v1.1.0'
 version: 1.2.0
+inspec_version: ">= 4.0"
 supports:
   - platform: aws
 depends:
