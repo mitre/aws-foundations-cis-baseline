@@ -55,7 +55,7 @@ control "aws-foundations-cis-2.6" do
   tag stig_id: nil
   tag fix_id: nil
   tag cci: nil
-  tag nist: nil
+  tag nist: ['AU-12', 'AU-2']
   tag notes: nil
   tag comment: nil
   tag cis_controls: "TITLE:Activate audit logging CONTROL:6.2 DESCRIPTION:Ensure that local logging has been enabled on all systems and networking devices.;TITLE:Enforce Detail Logging for Access or Changes to Sensitive Data CONTROL:14.9 DESCRIPTION:Enforce detailed audit logging for access to sensitive data or changes to sensitive data (utilizing tools such as File Integrity Monitoring or Security Information and Event Monitoring).;"

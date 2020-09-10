@@ -69,13 +69,13 @@ control "aws-foundations-cis-3.12" do
   tag stig_id: nil
   tag fix_id: nil
   tag cci: nil
-  tag nist: nil
+  tag nist: ['CM-6(2)', 'AU-12']
   tag notes: "Configuring log metric filter and alarm on Multi-region (global) CloudTrail
   - ensures that activities from all regions (used as well as unused) are monitored
   - ensures that activities on all supported global services are monitored
   - ensures that all management events across all regions are monitored"
   tag comment: nil
-  tag cis_controls: "TITLE:Use Automated Tools to Verify Standard DeviceConfigurations and Detect Changes CONTROL:11.3 DESCRIPTION:Compare all network device configuration against approved security configurations defined for each network device in use and alert when any deviations are discovered.;TITLE:Activate audit logging CONTROL:6.2 DESCRIPTION:Ensure that local logging has been enabled on all systems and networking devices.;"
+  tag cis_controls: "TITLE:Use Automated Tools to Verify Standard Device Configurations and Detect Changes CONTROL:11.3 DESCRIPTION:Compare all network device configuration against approved security configurations defined for each network device in use and alert when any deviations are discovered.;TITLE:Activate audit logging CONTROL:6.2 DESCRIPTION:Ensure that local logging has been enabled on all systems and networking devices.;"
   tag ref: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/sns/latest/dg/SubscribeTopic.html"
 
 

@@ -54,7 +54,7 @@ control "aws-foundations-cis-2.4" do
   tag stig_id: nil
   tag fix_id: nil
   tag cci: nil
-  tag nist: nil
+  tag nist: ['AU-12', 'SI-4(2)']
   tag notes: nil
   tag comment: "Note: By default, CloudWatch Logs will store Logs indefinitely unless a specific retention period is defined for the log group. When choosing the number of days to retain, keep in mind the average days it takes an organization to realize they have been breached is 210 days (at the time of this writing). Since additional time is required to research a breach, a minimum 365 day retention policy allows time for detection and research. You may also wish to archive the logs to a cheaper storage service rather than simply deleting them. See the following AWS resource to manage CloudWatch Logs retention periods:
   1. http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/SettingLogRetention.html"

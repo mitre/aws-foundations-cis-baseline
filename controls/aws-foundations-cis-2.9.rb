@@ -36,7 +36,7 @@ control "aws-foundations-cis-2.9" do
   tag stig_id: nil
   tag fix_id: nil
   tag cci: nil
-  tag nist: nil
+  tag nist: ['SI-4(2)', 'AU-12']
   tag notes: nil
   tag comment: nil
   tag cis_controls: "TITLE:Configure Monitoring Systems to Record Network Packets CONTROL:12.5 DESCRIPTION:Configure monitoring systems to record network packets passing through the boundary at each of the organization's network boundaries.;TITLE:Activate audit logging CONTROL:6.2 DESCRIPTION:Ensure that local logging has been enabled on all systems and networking devices.;"

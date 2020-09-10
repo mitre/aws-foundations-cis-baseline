@@ -43,7 +43,7 @@ control "aws-foundations-cis-2.8" do
   tag stig_id: nil
   tag fix_id: nil
   tag cci: nil
-  tag nist: nil
+  tag nist: ['AU-6']
   tag notes: nil
   tag comment: nil
   tag cis_controls: "TITLE:Maintenance, Monitoring and Analysis of Audit Logs CONTROL:6 DESCRIPTION:Maintenance, Monitoring and Analysis of Audit Logs;"

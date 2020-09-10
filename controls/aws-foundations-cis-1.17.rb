@@ -30,7 +30,7 @@ control "aws-foundations-cis-1.17" do
   tag stig_id: nil
   tag fix_id: nil
   tag cci: nil
-  tag nist: nil
+  tag nist: ['AU-3']
   tag notes: nil
   tag comment: nil
   tag cis_controls: "TITLE:Enable Detailed Logging CONTROL:6.3 DESCRIPTION:Enable system logging to include detailed information such as a event source, date, user, timestamp, source addresses, destination addresses, and other useful elements.;"

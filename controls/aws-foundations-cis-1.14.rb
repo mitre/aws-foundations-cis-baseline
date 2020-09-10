@@ -47,7 +47,7 @@ control "aws-foundations-cis-1.14" do
   tag stig_id: nil
   tag fix_id: nil
   tag cci: nil
-  tag nist: nil
+  tag nist: ['IA-2(1)']
   tag notes: nil
   tag comment: nil
   tag cis_controls: "TITLE:Use Multifactor Authentication For All Administrative Access CONTROL:4.5 DESCRIPTION:Use multi-factor authentication and encrypted channels for all administrative account access.;"

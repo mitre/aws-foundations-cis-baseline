@@ -68,7 +68,7 @@ control "aws-foundations-cis-3.10" do
   tag stig_id: nil
   tag fix_id: nil
   tag cci: nil
-  tag nist: nil
+  tag nist: ['AC-2(4)']
   tag notes: nil
   tag comment: nil
   tag cis_controls: "TITLE:Log and Alert on Changes to Administrative Group Membership CONTROL:4.8 DESCRIPTION:Configure systems to issue a log entry and alert when an account is added to or removed from any group assigned administrative privileges.;"

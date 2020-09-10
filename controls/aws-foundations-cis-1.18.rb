@@ -26,7 +26,7 @@ control "aws-foundations-cis-1.18" do
   tag stig_id: nil
   tag fix_id: nil
   tag cci: nil
-  tag nist: nil
+  tag nist: ['IR-1']
   tag notes: nil
   tag comment: nil
   tag cis_controls: "TITLE:Incident Response and Management CONTROL:19 DESCRIPTION:Incident Response and Management;"

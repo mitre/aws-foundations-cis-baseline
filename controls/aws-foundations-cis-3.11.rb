@@ -68,7 +68,7 @@ control "aws-foundations-cis-3.11" do
   tag stig_id: nil
   tag fix_id: nil
   tag cci: nil
-  tag nist: nil
+  tag nist: ['CM-6(2)']
   tag notes: nil
   tag comment: nil
   tag cis_controls: "TITLE:Use Automated Tools to Verify Standard Device Configurations and Detect Changes CONTROL:11.3 DESCRIPTION:Compare all network device configuration against approved security configurations defined for each network device in use and alert when any deviations are discovered.;"
