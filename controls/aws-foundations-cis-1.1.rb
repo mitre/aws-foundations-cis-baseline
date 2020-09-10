@@ -21,7 +21,7 @@ control "aws-foundations-cis-1.1" do
   tag stig_id: nil
   tag fix_id: nil
   tag cci: nil
-  tag nist: nil
+  tag nist: ['AC-6(9)']
   tag notes: nil
   tag comment: nil
   tag cis_controls: "TITLE:Ensure the Use of Dedicated Administrative Accounts CONTROL:4.3 DESCRIPTION:Ensure that all users with administrative account access use a dedicated or secondary account for elevated activities. This account should only be used for administrative activities and not internet browsing, email, or similar activities.;"
