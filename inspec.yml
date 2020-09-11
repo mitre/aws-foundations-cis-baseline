@@ -1,77 +1,59 @@
-name: cis-aws-foundations-baseline
-title: cis-aws-foundations-baseline
+name: aws-foundations-cis-baseline
+title: aws-foundations-cis-baseline
 maintainer: MITRE InSpec Team
-copyright: MITRE, 2018
+copyright: MITRE, 2020
 copyright_email: inspec@mitre.org
 license: Apache-2.0
 summary: 'InSpec Profile to validate the CIS AWS Foundations Benchmark v1.1.0'
-version: 1.0.5
+version: 1.2.0
+inspec_version: ">= 4.0"
 supports:
   - platform: aws
-
 depends:
   - name: inspec-aws
-    git: https://github.com/inspec/inspec-aws.git
+    url: https://github.com/inspec/inspec-aws/archive/master.tar.gz
 
-attributes:
+inputs:
   - name: default_aws_region
     description: 'primary aws region your resources are deployed.'
     value: 'us-east-1'
 
   - name: aws_key_age
     description: 'The maximum allowed key age'
-    type: numeric
+    type: Numeric
     value: 90
 
   - name: pwd_length
     description: 'Required password length'
-    type: numeric
+    type: Numeric
     value: 14
 
   - name: aws_cred_age
     description: 'The maximum allowed IAM account age'
-    type: numeric
+    type: Numeric
     value: 90
-
-  - name: iam_manager_role_name
-    description: 'iam manager role name'
-    type: string
-    value: 'iam-manager-role-name'
-
-  - name: iam_master_role_name
-    description: 'iam master role name'
-    type: string
-    value: 'iam-master-role-name'
-
-  - name: iam_manager_user_name
-    description: 'iam manager user name'
-    type: string
-    value: 'iam-manager-user-name'
-
-  - name: iam_master_user_name
-    description: 'iam master user name'
-    type: string
-    value: 'iam-master-user-name'
-
-  - name: iam_manager_policy_name
-    description: 'iam manager policy'
-    type: string
-    value: 'iam-manager-policy'
-
-  - name: iam_master_policy_name
-    description: 'iam master policy'
-    type: string
-    value: 'iam-master-policy'
 
   - name: exception_bucket_list
     description: 'list of buckets exempted from inspection'
-    type: array
+    type: Array
     value:
       - 'exception_bucket_name'
 
+  - name: exception_security_group_list
+    description: 'list of security groups exempted from inspection'
+    type: Array
+    value:
+      - 'exception_security_group_name'
+
+  - name: service_account_mfa_exceptions
+    description: 'list of service accounts which are exempt from the MFA requirement'
+    type: Array
+    value:
+      - 'service_account_mfa_exceptions'
+
   - name: config_delivery_channels
     description: 'Config service settings'
-    type: hash
+    type: Hash
     value:
       us-east-1:
         s3_bucket_name: s3_bucket_name_value
@@ -85,39 +67,3 @@ attributes:
       us-west-2:
         s3_bucket_name: s3_bucket_name_value
         sns_topic_arn: sns_topic_arn_value
-
-  - name: sns_topics
-    description: 'SNS topics list and details'
-    type: hash
-    value:
-      topic_arn1:
-        owner: owner_value
-        region: region_value
-      topic_arn2:
-        owner: owner_value
-        region: region_value
-
-  - name: sns_subscriptions
-    description: 'SNS subscription list and details'
-    type: hash
-    value:
-      subscription_arn1:
-        endpoint: endpoint_value
-        owner: owner_value
-        protocol: protocol_value
-      subscription_arn2:
-        endpoint: endpoint_value
-        owner: owner_value
-        protocol: protocol_value
-
-  - name: exception_security_group_list
-    description: 'list of security groups exempted from inspection'
-    type: array
-    value:
-      - 'exception_security_group_name'
-
-  - name: service_account_mfa_exceptions
-    description: 'list of service accounts which are exempt from the MFA requirement'
-    type: array
-    value:
-      - 'service_account_mfa_exceptions'

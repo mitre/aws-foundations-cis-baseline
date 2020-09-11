@@ -2,8 +2,7 @@
 *.gem
 *.rbc
 
-!Gemfile.lock
-.attribute.yml
+inputs.yml
 
 /.config
 /coverage/
