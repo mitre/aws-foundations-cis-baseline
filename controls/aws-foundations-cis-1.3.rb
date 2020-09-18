@@ -53,8 +53,11 @@ control "aws-foundations-cis-1.3" do
 
   
   # For each user having `password_enabled` set to `TRUE` , ensure `password_last_used_date` is less than `90` days ago.
-  describe aws_iam_users.where(has_console_password: true) do
-    its('password_last_used_days_ago') { should cmp < 90 }
+  aws_iam_users.where(has_console_password: true).where(password_ever_used?: true).entries.each do |user|
+    describe user.username do
+      subject { user }
+      its('password_last_used_days_ago') { should cmp < 90 }
+    end
   end
 
   # When `password_enabled` is set to `TRUE` and `password_last_used` is set to `No_Information` , ensure `password_last_changed` is less than 90 days ago.
