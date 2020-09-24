@@ -55,7 +55,6 @@ control "aws-foundations-cis-1.14" do
 
   
   describe aws_iam_root_user do
-    it { should_not have_virtual_mfa_enabled }
     it { should have_hardware_mfa_enabled }
   end
 end
