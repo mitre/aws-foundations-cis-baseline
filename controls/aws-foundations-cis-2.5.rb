@@ -97,8 +97,8 @@ control "aws-foundations-cis-2.5" do
 
   if aws_config_delivery_channel.exists?
     describe aws_config_delivery_channel do
-      its('s3_bucket_name') { should cmp config_delivery_channels[region]['s3_bucket_name'] }
-      its('sns_topic_arn') { should cmp config_delivery_channels[region]['sns_topic_arn'] }
+      its('s3_bucket_name') { should cmp config_delivery_channels[:"#{region}"][:'s3_bucket_name'] }
+      its('sns_topic_arn') { should cmp config_delivery_channels[:"#{region}"][:'sns_topic_arn'] }
     end
   end
 end
