@@ -17,6 +17,7 @@ inputs:
   - name: default_aws_region
     description: 'primary aws region your resources are deployed.'
     value: 'us-east-1'
+    sensitive: true
 
   - name: aws_key_age
     description: 'The maximum allowed key age'
