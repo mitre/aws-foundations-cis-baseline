@@ -19,4 +19,4 @@ MITRE’s licensed products include third-party materials that are subject to op
 
 CIS Benchmarks. Please visit www.cisecurity.org for full terms of use.
 
-The Open Source Materials are licensed under the terms of the applicable third-party licenses that accompany the Open Source Materials. MITTRE’s license does not limit a licensee’s rights under the terms of the Open Source Materials license. MITRE’s license also does not grant licensee rights to the Open Source Materials that supersede the terms and conditions of the Open Source Materials license.
+The Open Source Materials are licensed under the terms of the applicable third-party licenses that accompany the Open Source Materials. MITRE’s license does not limit a licensee’s rights under the terms of the Open Source Materials license. MITRE’s license also does not grant licensee rights to the Open Source Materials that supersede the terms and conditions of the Open Source Materials license.
