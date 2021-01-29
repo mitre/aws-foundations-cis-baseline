@@ -96,13 +96,6 @@ $ export AWS_REGION=us-west-1
 $ ruby generate_inputs.rb
 # The generated inputs __must be reviewed carefully__. 
 # Only __valid__ channels should be placed in the inputs.yml file.
-
-# To run profile locally and directly from Github with cli & json output 
-$ inspec exec /path/to/profile -t aws:// --input-file=inputs.yml --reporter cli json:aws-results.json
-
-# To run profile locally and directly from Github with cli & json output, in a specific region with a specific AWS profile
-$ inspec exec /path/to/profile -t aws://us-east-1/<mycreds-profile> --input-file=inputs.yml --reporter cli json:aws-results.json
-
 ```
 
 # Running This Baseline Directly from Github
