@@ -5,14 +5,14 @@ copyright: MITRE, 2020
 copyright_email: inspec@mitre.org
 license: Apache-2.0
 summary: 'InSpec Validation Profile for AWS Foundations CIS'
-version: 1.2.2
+version: 1.2.3
 inspec_version: ">= 4.0"
 supports:
   - platform: aws
 
 depends:
   - name: inspec-aws
-    git: https://github.com/inspec/inspec-aws
+    url: https://github.com/inspec/inspec-aws/archive/main.tar.gz
 
 inputs:
   - name: default_aws_region
