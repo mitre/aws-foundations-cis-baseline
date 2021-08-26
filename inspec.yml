@@ -12,7 +12,7 @@ supports:
 
 depends:
   - name: inspec-aws
-    url: https://github.com/inspec/inspec-aws/archive/master.tar.gz
+    url: https://github.com/inspec/inspec-aws/archive/main.tar.gz
 
 inputs:
   - name: default_aws_region
