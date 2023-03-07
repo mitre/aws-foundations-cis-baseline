@@ -54,7 +54,7 @@ control "aws-foundations-cis-1.20" do
   tag ref: "http://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html:https://aws.amazon.com/premiumsupport/pricing/:http://docs.aws.amazon.com/cli/latest/reference/iam/list-policies.html:http://docs.aws.amazon.com/cli/latest/reference/iam/attach-role-policy.html:http://docs.aws.amazon.com/cli/latest/reference/iam/list-entities-for-policy.html"
 
   
-  describe aws_iam_policy('AWSSupportAccess') do
+  describe aws_iam_policy(policy_name: 'AWSSupportAccess') do
     it { should be_attached }
   end
 end
