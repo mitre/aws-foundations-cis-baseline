@@ -64,19 +64,16 @@ control "aws-foundations-cis-1.22" do
 
   attached_policies = aws_iam_policies.where { attachment_count > 0 }.policy_names
 
-  if attached_policies.empty? == true
+  if attached_policies.empty?
     impact 0.0
-    describe 'Control not applicable since no attached iam policies were detected' do
-      skip 'Not applicable since no policies are detected as attached to anything within this account.'
+    describe 'Control not applicable since no attached IAM policies were detected' do
+      skip 'Not applicable since no IAM policies were detected as attached to anything within this account.'
     end
   else
     attached_policies.each do |policy|
       describe "Attached Policies #{policy} allows full '*:*' privileges?" do
-        subject do
-          aws_iam_policy(policy_name: policy).document.where(Effect: 'Allow').actions.flatten.include?('*') &&
-            aws_iam_policy(policy_name: policy).document.where(Effect: 'Allow').resources.flatten.include?('*')
-        end
-        it { should be false }
+        subject { aws_iam_policy(policy_name: policy) }
+        it { should_not have_statement('Effect' => 'Allow', 'Resource' => '*', 'Action' => '*') }
       end
     end
   end
