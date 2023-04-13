@@ -15,15 +15,7 @@ control "aws-foundations-cis-1.1" do
   desc  "fix", "Follow the remediation instructions of the `Ensure IAM policies are attached only to groups or roles` recommendation"
   impact 0.5
   tag severity: "Low"
-  tag gtitle: nil
-  tag gid: nil
-  tag rid: nil
-  tag stig_id: nil
-  tag fix_id: nil
-  tag cci: nil
   tag nist: ['AC-6(9)']
-  tag notes: nil
-  tag comment: nil
   tag cis_controls: "TITLE:Ensure the Use of Dedicated Administrative Accounts CONTROL:4.3 DESCRIPTION:Ensure that all users with administrative account access use a dedicated or secondary account for elevated activities. This account should only be used for administrative activities and not internet browsing, email, or similar activities.;"
   tag ref: "http://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html:CIS CSC v6.0 #5.1"
 
