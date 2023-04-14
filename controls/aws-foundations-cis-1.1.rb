@@ -23,8 +23,12 @@ control "aws-foundations-cis-1.1" do
   pattern = '{ $.userIdentity.type = "Root" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != "AwsServiceEvent" }'
   metric_filter = aws_cloudwatch_log_metric_filter(pattern: pattern)
 
-  describe metric_filter do
-    it { should exist }
+  describe "The metric filter" do
+    subject { metric_filter }
+    it "should exist." do
+      failure_message = "A metric filter with pattern '#{pattern}' should exist in CloudWatch."
+      expect(subject).to exist, failure_message
+    end
   end
 
   if metric_filter.exists?
