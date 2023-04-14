@@ -59,15 +59,7 @@ control "aws-foundations-cis-1.2" do
     [How to Delegate Management of Multi-Factor Authentication to AWS IAM Users](http://blogs.aws.amazon.com/security/post/Tx2SJJYE082KBUK/How-to-Delegate-Management-of-Multi-Factor-Authentication-to-AWS-IAM-Users)"
   impact 0.5
   tag severity: "Low"
-  tag gtitle: nil
-  tag gid: nil
-  tag rid: nil
-  tag stig_id: nil
-  tag fix_id: nil
-  tag cci: nil
   tag nist: ['IA-2(1)']
-  tag notes: nil
-  tag comment: nil
   tag cis_controls: "TITLE:Use Multifactor Authentication For All Administrative Access CONTROL:4.5 DESCRIPTION:Use multi-factor authentication and encrypted channels for all administrative account access.;"
   tag ref: "http://tools.ietf.org/html/rfc6238:http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html:CIS CSC v6.0 #5.6, #11.4, #12.6, #16.11"
 
