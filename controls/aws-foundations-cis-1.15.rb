@@ -7,15 +7,15 @@ control "aws-foundations-cis-1.15" do
   desc  "check", "Perform the following in the AWS Management Console:
 
     1. Login to the AWS account as root
-    2. On the top right you will see the __
-    3. Click on the __
+    2. On the top right you will see the <Root_Account_Name>
+    3. Click on the <Root_Account_Name>
     4. From the drop-down menu Click `My Account`
     5. In the `Configure Security Challenge Questions` section on the `Personal Information` page, configure three security challenge questions.
-    6. Click `Save questions` ."
+    6. Click `Save questions`."
   desc  "fix", "Perform the following in the AWS Management Console:
 
     1. Login to the AWS Account as root
-    2. Click on the __ from the top right of the console
+    2. Click on the <Root_Account_Name> from the top right of the console
     3. From the drop-down menu Click _My Account_
     4. Scroll down to the `Configure Security Questions` section
     5. Click on `Edit`
@@ -28,18 +28,9 @@ control "aws-foundations-cis-1.15" do
     8. Place Questions and Answers and place in a secure physical location"
   impact 0.5
   tag severity: "Low"
-  tag gtitle: nil
-  tag gid: nil
-  tag rid: nil
-  tag stig_id: nil
-  tag fix_id: nil
-  tag cci: nil
   tag nist: ['AC-2']
-  tag notes: nil
-  tag comment: nil
   tag cis_controls: "TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;"
 
-  
   describe 'Control has to be tested manually' do
     skip 'This control must be manually reviewed'
   end
