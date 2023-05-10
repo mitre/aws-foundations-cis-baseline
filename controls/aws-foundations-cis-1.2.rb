@@ -42,7 +42,7 @@ control "aws-foundations-cis-1.2" do
     5. In the Manage MFA Device wizard, choose A virtual MFA device, and then choose Next Step.
 
      IAM generates and displays configuration information for the virtual MFA device, including a QR code graphic. The graphic is a representation of the 'secret configuration key' that is available for manual entry on devices that do not support QR codes.
-      
+
     6. Open your virtual MFA application. (For a list of apps that you can use for hosting virtual MFA devices, see [Virtual MFA Applications](http://aws.amazon.com/iam/details/mfa/#Virtual_MFA_Applications).) If the virtual MFA application supports multiple accounts (multiple virtual MFA devices), choose the option to create a new account (a new virtual MFA device).
     7. Determine whether the MFA app supports QR codes, and then do one of the following:
 
