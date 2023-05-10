@@ -41,19 +41,10 @@ control "aws-foundations-cis-1.14" do
     8. Choose `Next Step` . The MFA device is now associated with the AWS account. The next time you use your AWS account credentials to sign in, you must type a code from the hardware MFA device."
   impact 0.5
   tag severity: "Medium"
-  tag gtitle: nil
-  tag gid: nil
-  tag rid: nil
-  tag stig_id: nil
-  tag fix_id: nil
-  tag cci: nil
   tag nist: ['IA-2(1)']
-  tag notes: nil
-  tag comment: nil
   tag cis_controls: "TITLE:Use Multifactor Authentication For All Administrative Access CONTROL:4.5 DESCRIPTION:Use multi-factor authentication and encrypted channels for all administrative account access.;"
   tag ref: "CIS CSC v6.0 #5.6, #11.4, #12.6, #16.11:Order Hardware MFA: http://onlinenoram.gemalto.com/:http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html:http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_physical.html#enable-hw-mfa-for-root"
 
-  
   describe aws_iam_root_user do
     it { should have_hardware_mfa_enabled }
   end
