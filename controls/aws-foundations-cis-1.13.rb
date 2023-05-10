@@ -34,20 +34,11 @@ control "aws-foundations-cis-1.13" do
     1. In the Manage MFA Device wizard, in the Authentication Code 1 box, type the one-time password that currently appears in the virtual MFA device. Wait up to 30 seconds for the device to generate a new one-time password. Then type the second one-time password into the Authentication Code 2 box. Choose Active Virtual MFA."
   impact 0.5
   tag severity: "Low"
-  tag gtitle: nil
-  tag gid: nil
-  tag rid: nil
-  tag stig_id: nil
-  tag fix_id: nil
-  tag cci: nil
   tag nist: ['IA-2(1)']
-  tag notes: nil
-  tag comment: nil
   tag cis_controls: "TITLE:Use Multifactor Authentication For All Administrative Access CONTROL:4.5 DESCRIPTION:Use multi-factor authentication and encrypted channels for all administrative account access.;"
   tag ref: "CIS CSC v6.0 #5.6, #11.4, #12.6, #16.11"
 
-  
-  describe aws_iam_root_user do
-    it { should have_mfa_enabled }
+  describe aws_iam_credential_report.where(user: '<root_account>').entries.first do
+    its('mfa_active') { should eq false }
   end
 end
