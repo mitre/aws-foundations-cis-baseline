@@ -39,6 +39,6 @@ control "aws-foundations-cis-1.13" do
   tag ref: "CIS CSC v6.0 #5.6, #11.4, #12.6, #16.11"
 
   describe aws_iam_credential_report.where(user: '<root_account>').entries.first do
-    its('mfa_active') { should eq false }
+    its('mfa_active') { should eq true }
   end
 end
