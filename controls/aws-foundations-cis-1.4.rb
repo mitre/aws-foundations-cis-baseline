@@ -45,29 +45,54 @@ control "aws-foundations-cis-1.4" do
     ```"
   impact 0.5
   tag severity: "Low"
-  tag gtitle: nil
-  tag gid: nil
-  tag rid: nil
-  tag stig_id: nil
-  tag fix_id: nil
-  tag cci: nil
   tag nist: ['AC-2']
-  tag notes: nil
-  tag comment: nil
   tag cis_controls: "TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;"
 
 
-  if aws_iam_access_keys.where(active: true).entries.empty?
-    describe 'Control skipped because no active iam access keys were found' do
-      skip 'This control is skipped since the aws_iam_access_keys resource returned an empty active access key list'
+  aws_iam_credential_report.where(access_key_1_active: false).entries.each do |user|
+    describe "Access key 1 disabled for user (#{user.user})" do
+      skip "Test not applicable since user's (#{user.user}) access key 1 is disabled"
     end
-  else
-    aws_iam_access_keys.where(active: true).entries.each do |key|
-      describe key.username do
-        context key do
-          its('created_days_ago') { should cmp <= input("aws_key_age") }
-          its('ever_used') { should be true }
-        end
+  end
+
+  aws_iam_credential_report.where(access_key_1_active: true).entries.each do |user|
+    describe "The user (#{user.user})" do
+      if user.access_key_1_last_used_date.is_a? DateTime
+       subject { ((Time.current - user.access_key_1_last_used_date) / (24*60*60)).to_i }
+       it "must have used access key 1 within the last 90 days." do
+         expect(subject).to be < 90
+       end
+      elsif user.access_key_1_last_rotated.is_a? DateTime
+       subject { ((Time.current - user.access_key_1_last_rotated) / (24*60*60)).to_i }
+       it "must have rotated access key 1 within the last 90 days if they have not used it within the last 90 days." do
+         expect(subject).to be < 90
+       end
+      else
+        RSpec::Expectatations.fail_with("must have rotated access key 1 within the last 90 days if they have not used it within the last 90 days.")
+      end
+    end
+  end
+
+  aws_iam_credential_report.where(access_key_2_active: false).entries.each do |user|
+    describe "Access key 2 disabled for user (#{user.user})" do
+      skip "Test not applicable since user's (#{user.user}) access key 2 is disabled"
+    end
+  end
+
+  aws_iam_credential_report.where(access_key_2_active: true).entries.each do |user|
+    describe "The user (#{user.user})" do
+      if user.access_key_2_last_used_date.is_a? DateTime
+       subject { ((Time.current - user.access_key_2_last_used_date) / (24*60*60)).to_i }
+       it "must have used access key 2 within the last 90 days." do
+         expect(subject).to be < 90
+       end
+      elsif user.access_key_2_last_rotated.is_a? DateTime
+       subject { ((Time.current - user.access_key_2_last_rotated) / (24*60*60)).to_i }
+       it "must have rotated access key 2 within the last 90 days if they have not used it within the last 90 days." do
+         expect(subject).to be < 90
+       end
+      else
+        RSpec::Expectatations.fail_with("must have rotated access key 2 within the last 90 days if they have not used it within the last 90 days.")
       end
     end
   end
