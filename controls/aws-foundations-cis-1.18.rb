@@ -20,19 +20,15 @@ control "aws-foundations-cis-1.18" do
     Note: Consider specifying an internal email distribution list to ensure emails are regularly monitored by more than one individual."
   impact 0.5
   tag severity: "Low"
-  tag gtitle: nil
-  tag gid: nil
-  tag rid: nil
-  tag stig_id: nil
-  tag fix_id: nil
-  tag cci: nil
   tag nist: ['IR-1']
-  tag notes: nil
-  tag comment: nil
   tag cis_controls: "TITLE:Incident Response and Management CONTROL:19 DESCRIPTION:Incident Response and Management;"
 
-  
-  describe 'Control has to be tested manually' do
-    skip 'This control must be manually reviewed'
+  contact_info = aws_account.security_contact_information
+  describe contact_info do
+    if contact_info
+      it { should cmp input('security_contact_information') }
+    else
+      skip 'The Security section of the Alternate Contacts page must be manually reviewed'
+    end
   end
 end

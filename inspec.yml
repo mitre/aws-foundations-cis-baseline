@@ -69,3 +69,23 @@ inputs:
       us-west-2:
         s3_bucket_name: s3_bucket_name_value
         sns_topic_arn: sns_topic_arn_value
+
+  - name: contact_information
+    description: 'Account contact information'
+    type: Hash
+    value:
+      address_line_1: '1600 Pennsylvania Avenue NW'
+      city: 'Washington, D.C.'
+      country_code: 'US'
+      full_name: 'Mr. President'
+      phone_number: '202-456-1111'
+      postal_code: '20500'
+
+  - name: security_contact_information
+    description: 'Account security contact information'
+    type: Hash
+    value:
+      full_name: 'Example'
+      title: 'The'
+      phone_number: '000-000-0000'
+      email_address: 'example@example.com'
