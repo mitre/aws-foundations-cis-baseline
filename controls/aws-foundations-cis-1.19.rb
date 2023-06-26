@@ -39,18 +39,9 @@ control "aws-foundations-cis-1.19" do
     Note: if your environment has dependencies on a dynamically assigned PUBLIC IP address there is not a way ensure the address is retained and assign an instance role. Dependencies on dynamically assigned public IP addresses are a bad practice and, if possible, you may wish to rebuild the instance with a new elastic IP address and make the investment to remediate affected systems while assigning the system to a role."
   impact 0.5
   tag severity: "Medium"
-  tag gtitle: nil
-  tag gid: nil
-  tag rid: nil
-  tag stig_id: nil
-  tag fix_id: nil
-  tag cci: nil
   tag nist: ['IR-1']
-  tag notes: nil
-  tag comment: nil
   tag ref: "http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html:http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html:CIS CSC v6.0 #16.14 (someone please check the applicability of this for me)"
 
-  
   describe 'Control has to be tested manually' do
     skip 'This control must be manually reviewed'
   end
