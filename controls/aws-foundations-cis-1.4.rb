@@ -1,12 +1,10 @@
-# encoding: UTF-8
-
-control "aws-foundations-cis-1.4" do
-  title "Ensure access keys are rotated every 90 days or less"
-  desc  "Access keys consist of an access key ID and secret access key, which are used to sign programmatic requests that you make to AWS. AWS users need their own access keys to make programmatic calls to AWS from the AWS Command Line Interface (AWS CLI), Tools for Windows PowerShell, the AWS SDKs, or direct HTTP calls using the APIs for individual AWS services. It is recommended that all access keys be regularly rotated."
-  desc  "rationale", "Rotating access keys will reduce the window of opportunity for an access key that is associated with a compromised or terminated account to be used.
+control 'aws-foundations-cis-1.4' do
+  title 'Ensure access keys are rotated every 90 days or less'
+  desc  'Access keys consist of an access key ID and secret access key, which are used to sign programmatic requests that you make to AWS. AWS users need their own access keys to make programmatic calls to AWS from the AWS Command Line Interface (AWS CLI), Tools for Windows PowerShell, the AWS SDKs, or direct HTTP calls using the APIs for individual AWS services. It is recommended that all access keys be regularly rotated.'
+  desc  'rationale', "Rotating access keys will reduce the window of opportunity for an access key that is associated with a compromised or terminated account to be used.
 
     Access keys should be rotated to ensure that data cannot be accessed with an old key which might have been lost, cracked, or stolen."
-  desc  "check", "Perform the following to determine if access keys are rotated as prescribed:
+  desc  'check', "Perform the following to determine if access keys are rotated as prescribed:
 
     1. Login to the AWS Management Console
     2. Click `Services`
@@ -23,7 +21,7 @@ control "aws-foundations-cis-1.4" do
     aws iam generate-credential-report
     aws iam get-credential-report --query 'Content' --output text | base64 -d
     ```"
-  desc  "fix", "Perform the following to rotate access keys:
+  desc  'fix', "Perform the following to rotate access keys:
 
     1. Login to the AWS Management Console:
     2. Click `Services`
@@ -44,10 +42,9 @@ control "aws-foundations-cis-1.4" do
     aws iam delete-access-key
     ```"
   impact 0.5
-  tag severity: "Low"
+  tag severity: 'Low'
   tag nist: ['AC-2']
-  tag cis_controls: "TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;"
-
+  tag cis_controls: 'TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;'
 
   aws_iam_credential_report.where(access_key_1_active: false).entries.each do |user|
     describe "Access key 1 disabled for user (#{user.user})" do
@@ -58,17 +55,17 @@ control "aws-foundations-cis-1.4" do
   aws_iam_credential_report.where(access_key_1_active: true).entries.each do |user|
     describe "The user (#{user.user})" do
       if user.access_key_1_last_used_date.is_a? DateTime
-       subject { ((Time.current - user.access_key_1_last_used_date) / (24*60*60)).to_i }
-       it "must have used access key 1 within the last 90 days." do
-         expect(subject).to be < 90
-       end
+        subject { ((Time.current - user.access_key_1_last_used_date) / (24 * 60 * 60)).to_i }
+        it 'must have used access key 1 within the last 90 days.' do
+          expect(subject).to be < 90
+        end
       elsif user.access_key_1_last_rotated.is_a? DateTime
-       subject { ((Time.current - user.access_key_1_last_rotated) / (24*60*60)).to_i }
-       it "must have rotated access key 1 within the last 90 days if they have not used it within the last 90 days." do
-         expect(subject).to be < 90
-       end
+        subject { ((Time.current - user.access_key_1_last_rotated) / (24 * 60 * 60)).to_i }
+        it 'must have rotated access key 1 within the last 90 days if they have not used it within the last 90 days.' do
+          expect(subject).to be < 90
+        end
       else
-        RSpec::Expectatations.fail_with("must have rotated access key 1 within the last 90 days if they have not used it within the last 90 days.")
+        RSpec::Expectatations.fail_with('must have rotated access key 1 within the last 90 days if they have not used it within the last 90 days.')
       end
     end
   end
@@ -82,17 +79,17 @@ control "aws-foundations-cis-1.4" do
   aws_iam_credential_report.where(access_key_2_active: true).entries.each do |user|
     describe "The user (#{user.user})" do
       if user.access_key_2_last_used_date.is_a? DateTime
-       subject { ((Time.current - user.access_key_2_last_used_date) / (24*60*60)).to_i }
-       it "must have used access key 2 within the last 90 days." do
-         expect(subject).to be < 90
-       end
+        subject { ((Time.current - user.access_key_2_last_used_date) / (24 * 60 * 60)).to_i }
+        it 'must have used access key 2 within the last 90 days.' do
+          expect(subject).to be < 90
+        end
       elsif user.access_key_2_last_rotated.is_a? DateTime
-       subject { ((Time.current - user.access_key_2_last_rotated) / (24*60*60)).to_i }
-       it "must have rotated access key 2 within the last 90 days if they have not used it within the last 90 days." do
-         expect(subject).to be < 90
-       end
+        subject { ((Time.current - user.access_key_2_last_rotated) / (24 * 60 * 60)).to_i }
+        it 'must have rotated access key 2 within the last 90 days if they have not used it within the last 90 days.' do
+          expect(subject).to be < 90
+        end
       else
-        RSpec::Expectatations.fail_with("must have rotated access key 2 within the last 90 days if they have not used it within the last 90 days.")
+        RSpec::Expectatations.fail_with('must have rotated access key 2 within the last 90 days if they have not used it within the last 90 days.')
       end
     end
   end

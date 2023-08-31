@@ -1,12 +1,10 @@
-# encoding: UTF-8
-
-control "aws-foundations-cis-1.21" do
-  title "Do not setup access keys during initial user setup for all IAM users that have a console password"
-  desc  "AWS console defaults the checkbox for creating access keys to enabled. This results in many access keys being generated unnecessarily. In addition to unnecessary credentials, it also generates unnecessary management work in auditing and rotating these keys."
-  desc  "rationale", "Requiring that additional steps be taken by the user after their profile has been created will give a stronger indication of intent that access keys are [a] necessary for their work and [b] once the access key is established on an account, that the keys may be in use somewhere in the organization.
+control 'aws-foundations-cis-1.21' do
+  title 'Do not setup access keys during initial user setup for all IAM users that have a console password'
+  desc  'AWS console defaults the checkbox for creating access keys to enabled. This results in many access keys being generated unnecessarily. In addition to unnecessary credentials, it also generates unnecessary management work in auditing and rotating these keys.'
+  desc  'rationale', "Requiring that additional steps be taken by the user after their profile has been created will give a stronger indication of intent that access keys are [a] necessary for their work and [b] once the access key is established on an account, that the keys may be in use somewhere in the organization.
 
     **Note**: Even if it is known the user will need access keys, require them to create the keys themselves or put in a support ticket to have the created as a separate step from user creation."
-  desc  "check", "Perform the following to determine if access keys are rotated as prescribed:
+  desc  'check', "Perform the following to determine if access keys are rotated as prescribed:
 
     1. Login to the AWS Management Console
     2. Click `Services`
@@ -37,7 +35,7 @@ control "aws-foundations-cis-1.21" do
      anitha,true,true,2016-06-08T11:43:00+00:00,true,N/A
     ```
     3. For any user having `access_key_last_used_date` set to `N/A` , ensure that access key is deleted `.`"
-  desc  "fix", "Perform the following to delete access keys that do not pass the audit:
+  desc 'fix', "Perform the following to delete access keys that do not pass the audit:
 
     1. Login to the AWS Management Console:
     2. Click `Services`
@@ -54,7 +52,7 @@ control "aws-foundations-cis-1.21" do
     aws iam delete-access-key
     ```"
   impact 0.5
-  tag severity: "Low"
+  tag severity: 'Low'
   tag gtitle: nil
   tag gid: nil
   tag rid: nil
@@ -64,9 +62,8 @@ control "aws-foundations-cis-1.21" do
   tag nist: ['AC-2']
   tag notes: nil
   tag comment: nil
-  tag cis_controls: "TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;"
+  tag cis_controls: 'TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;'
 
-  
   if aws_iam_access_keys.where(active: true).entries.empty?
     describe 'Control skipped because no iam access keys were found' do
       skip 'This control is skipped since the aws_iam_access_keys resource returned an empty access key list'
@@ -76,7 +73,7 @@ control "aws-foundations-cis-1.21" do
       describe key.username do
         context key do
           its('last_used_days_ago') { should_not be_nil }
-          its('created_with_user') { should be false }  
+          its('created_with_user') { should be false }
         end
       end
     end

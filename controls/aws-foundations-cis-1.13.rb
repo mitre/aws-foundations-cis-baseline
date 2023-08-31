@@ -1,19 +1,17 @@
-# encoding: UTF-8
-
-control "aws-foundations-cis-1.13" do
-  title "Ensure MFA is enabled for the \"root\" account"
+control 'aws-foundations-cis-1.13' do
+  title 'Ensure MFA is enabled for the "root" account'
   desc  "The root account is the most privileged user in an AWS account. MFA adds an extra layer of protection on top of a user name and password. With MFA enabled, when a user signs in to an AWS website, they will be prompted for their user name and password as well as for an authentication code from their AWS MFA device.
 
     **Note:** When virtual MFA is used for root accounts, it is recommended that the device used is NOT a personal device, but rather a dedicated mobile device (tablet or phone) that is managed to be kept charged and secured independent of any individual personal devices. (\"non-personal virtual MFA\") This lessens the risks of losing access to the MFA due to device loss, device trade-in or if the individual owning the device is no longer employed at the company."
-  desc  "rationale", "Enabling MFA provides increased security for console access as it requires the authenticating principal to possess a device that emits a time-sensitive key and have knowledge of a credential."
-  desc  "check", "Perform the following to determine if the root account has MFA setup:
+  desc  'rationale', 'Enabling MFA provides increased security for console access as it requires the authenticating principal to possess a device that emits a time-sensitive key and have knowledge of a credential.'
+  desc  'check', "Perform the following to determine if the root account has MFA setup:
 
     1. Run the following command:
     ```
      aws iam get-account-summary | grep \"AccountMFAEnabled\"
     ```
     2. Ensure the AccountMFAEnabled property is set to 1"
-  desc  "fix", "Perform the following to establish MFA for the root account:
+  desc  'fix', "Perform the following to establish MFA for the root account:
 
     1. Sign in to the AWS Management Console and open the IAM console at [https://console.aws.amazon.com/iam/](https://console.aws.amazon.com/iam/).
 
@@ -33,10 +31,10 @@ control "aws-foundations-cis-1.13" do
 
     1. In the Manage MFA Device wizard, in the Authentication Code 1 box, type the one-time password that currently appears in the virtual MFA device. Wait up to 30 seconds for the device to generate a new one-time password. Then type the second one-time password into the Authentication Code 2 box. Choose Active Virtual MFA."
   impact 0.5
-  tag severity: "Low"
+  tag severity: 'Low'
   tag nist: ['IA-2(1)']
-  tag cis_controls: "TITLE:Use Multifactor Authentication For All Administrative Access CONTROL:4.5 DESCRIPTION:Use multi-factor authentication and encrypted channels for all administrative account access.;"
-  tag ref: "CIS CSC v6.0 #5.6, #11.4, #12.6, #16.11"
+  tag cis_controls: 'TITLE:Use Multifactor Authentication For All Administrative Access CONTROL:4.5 DESCRIPTION:Use multi-factor authentication and encrypted channels for all administrative account access.;'
+  tag ref: 'CIS CSC v6.0 #5.6, #11.4, #12.6, #16.11'
 
   describe aws_iam_credential_report.where(user: '<root_account>').entries.first do
     its('mfa_active') { should eq true }

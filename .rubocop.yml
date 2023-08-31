@@ -1,0 +1,21 @@
+Style/WordArray:
+  Description: 'Use %w or %W for an array of words. (https://rubystyle.guide#percent-w)'
+  Enabled : false
+
+Style/RedundantPercentQ:
+  Enabled: true
+
+Style/NestedParenthesizedCalls:
+  Enabled: false
+
+Style/TrailingCommaInHashLiteral:
+  Description: 'https://docs.rubocop.org/rubocop/cops_style.html#styletrailingcommainhashliteral'
+  Enabled: true
+  EnforcedStyleForMultiline: no_comma
+
+Style/TrailingCommaInArrayLiteral:
+  Enabled: true
+  EnforcedStyleForMultiline: no_comma
+
+Style/BlockDelimiters:
+  Enabled: false

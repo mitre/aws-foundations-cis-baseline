@@ -1,10 +1,8 @@
-# encoding: UTF-8
-
-control "aws-foundations-cis-2.6" do
-  title "Ensure S3 bucket access logging is enabled on the CloudTrail S3 bucket"
-  desc  "S3 Bucket Access Logging generates a log that contains access records for each request made to your S3 bucket. An access log record contains details about the request, such as the request type, the resources specified in the request worked, and the time and date the request was processed. It is recommended that bucket access logging be enabled on the CloudTrail S3 bucket."
-  desc  "rationale", "By enabling S3 bucket logging on target S3 buckets, it is possible to capture all events which may affect objects within an target buckets. Configuring logs to be placed in a separate bucket allows access to log information which can be useful in security and incident response workflows."
-  desc  "check", "Perform the following ensure the CloudTrail S3 bucket has access logging is enabled:
+control 'aws-foundations-cis-2.6' do
+  title 'Ensure S3 bucket access logging is enabled on the CloudTrail S3 bucket'
+  desc  'S3 Bucket Access Logging generates a log that contains access records for each request made to your S3 bucket. An access log record contains details about the request, such as the request type, the resources specified in the request worked, and the time and date the request was processed. It is recommended that bucket access logging be enabled on the CloudTrail S3 bucket.'
+  desc  'rationale', 'By enabling S3 bucket logging on target S3 buckets, it is possible to capture all events which may affect objects within an target buckets. Configuring logs to be placed in a separate bucket allows access to log information which can be useful in security and incident response workflows.'
+  desc  'check', "Perform the following ensure the CloudTrail S3 bucket has access logging is enabled:
 
     Via the management Console
     1. Go to the Amazon CloudTrail console at [https://console.aws.amazon.com/cloudtrail/home](https://console.aws.amazon.com/cloudtrail/home)
@@ -35,7 +33,7 @@ control "aws-foundations-cis-2.6" do
      }
     }
     ```"
-  desc  "fix", "Perform the following to enable S3 bucket logging:
+  desc  'fix', "Perform the following to enable S3 bucket logging:
 
     Via the Management Console
     1. Sign in to the AWS Management Console and open the S3 console at [https://console.aws.amazon.com/s3](https://console.aws.amazon.com/s3).
@@ -48,7 +46,7 @@ control "aws-foundations-cis-2.6" do
      3. Enter a Target Prefix
     6. Click `Save`"
   impact 0.5
-  tag severity: "Low"
+  tag severity: 'Low'
   tag gtitle: nil
   tag gid: nil
   tag rid: nil
@@ -58,17 +56,16 @@ control "aws-foundations-cis-2.6" do
   tag nist: ['AU-12', 'AU-2']
   tag notes: nil
   tag comment: nil
-  tag cis_controls: "TITLE:Activate audit logging CONTROL:6.2 DESCRIPTION:Ensure that local logging has been enabled on all systems and networking devices.;TITLE:Enforce Detail Logging for Access or Changes to Sensitive Data CONTROL:14.9 DESCRIPTION:Enforce detailed audit logging for access to sensitive data or changes to sensitive data (utilizing tools such as File Integrity Monitoring or Security Information and Event Monitoring).;"
-  tag ref: "CIS CSC v6.0 #14.6"
+  tag cis_controls: 'TITLE:Activate audit logging CONTROL:6.2 DESCRIPTION:Ensure that local logging has been enabled on all systems and networking devices.;TITLE:Enforce Detail Logging for Access or Changes to Sensitive Data CONTROL:14.9 DESCRIPTION:Enforce detailed audit logging for access to sensitive data or changes to sensitive data (utilizing tools such as File Integrity Monitoring or Security Information and Event Monitoring).;'
+  tag ref: 'CIS CSC v6.0 #14.6'
 
-  
   describe aws_cloudtrail_trails do
     it { should exist }
   end
 
   aws_cloudtrail_trails.trail_arns.each do |trail|
     bucket_name = aws_cloudtrail_trail(trail).s3_bucket_name
-    if input("exception_bucket_list").include?(bucket_name)
+    if input('exception_bucket_list').include?(bucket_name)
       describe 'Bucket not inspected because it is defined as an exception' do
         skip "Bucket: #{bucket_name} not inspected because it is defined in exception_bucket_list."
       end
