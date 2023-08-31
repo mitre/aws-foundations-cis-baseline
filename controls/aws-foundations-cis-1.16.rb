@@ -1,10 +1,8 @@
-# encoding: UTF-8
-
-control "aws-foundations-cis-1.16" do
-  title "Ensure IAM policies are attached only to groups or roles"
-  desc  "By default, IAM users, groups, and roles have no access to AWS resources. IAM policies are the means by which privileges are granted to users, groups, or roles. It is recommended that IAM policies be applied directly to groups and roles but not users."
-  desc  "rationale", "Assigning privileges at the group or role level reduces the complexity of access management as the number of users grow. Reducing access management complexity may in-turn reduce opportunity for a principal to inadvertently receive or retain excessive privileges."
-  desc  "check", "Perform the following to determine if policies are attached directly to users:
+control 'aws-foundations-cis-1.16' do
+  title 'Ensure IAM policies are attached only to groups or roles'
+  desc  'By default, IAM users, groups, and roles have no access to AWS resources. IAM policies are the means by which privileges are granted to users, groups, or roles. It is recommended that IAM policies be applied directly to groups and roles but not users.'
+  desc  'rationale', 'Assigning privileges at the group or role level reduces the complexity of access management as the number of users grow. Reducing access management complexity may in-turn reduce opportunity for a principal to inadvertently receive or retain excessive privileges.'
+  desc  'check', "Perform the following to determine if policies are attached directly to users:
 
     1. Run the following to get a list of IAM users:
     ```
@@ -16,7 +14,7 @@ control "aws-foundations-cis-1.16" do
      aws iam list-user-policies --user-name
     ```
     3. If any policies are returned, the user has a direct policy attachment."
-  desc  "fix", "Perform the following to create an IAM group and assign a policy to it:
+  desc  'fix', "Perform the following to create an IAM group and assign a policy to it:
 
     1. Sign in to the AWS Management Console and open the IAM console at [https://console.aws.amazon.com/iam/](https://console.aws.amazon.com/iam/).
     2. In the navigation pane, click `Groups` and then click `Create New Group`.
@@ -45,11 +43,10 @@ control "aws-foundations-cis-1.16" do
      5. Expand `Inline Policies`
      6. Click `Remove Policy` for each policy"
   impact 0.5
-  tag severity: "Low"
+  tag severity: 'Low'
   tag nist: ['AC-2']
-  tag cis_controls: "TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;"
-  tag ref: "http://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html:http://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html"
-
+  tag cis_controls: 'TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;'
+  tag ref: 'http://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html:http://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html'
 
   if aws_iam_users.entries.empty?
     describe 'Control skipped because no iam users were found' do
@@ -58,8 +55,8 @@ control "aws-foundations-cis-1.16" do
   else
     aws_iam_users.entries.each do |user|
       describe aws_iam_user(user_name: user.username) do
-        its ('inline_policy_names') { should be_empty }
-        its ('attached_policy_names') { should be_empty }
+        its('inline_policy_names') { should be_empty }
+        its('attached_policy_names') { should be_empty }
       end
     end
   end

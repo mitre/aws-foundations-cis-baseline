@@ -1,10 +1,8 @@
-# encoding: UTF-8
-
-control "aws-foundations-cis-3.11" do
-  title "Ensure a log metric filter and alarm exist for changes to Network Access Control Lists (NACL)"
-  desc  "Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch Logs and establishing corresponding metric filters and alarms. NACLs are used as a stateless packet filter to control ingress and egress traffic for subnets within a VPC. It is recommended that a metric filter and alarm be established for changes made to NACLs."
-  desc  "rationale", "Monitoring changes to NACLs will help ensure that AWS resources and services are not unintentionally exposed."
-  desc  "check", "Perform the following to ensure that there is at least one active multi-region CloudTrail with prescribed metric filters and alarms configured:
+control 'aws-foundations-cis-3.11' do
+  title 'Ensure a log metric filter and alarm exist for changes to Network Access Control Lists (NACL)'
+  desc  'Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch Logs and establishing corresponding metric filters and alarms. NACLs are used as a stateless packet filter to control ingress and egress traffic for subnets within a VPC. It is recommended that a metric filter and alarm be established for changes made to NACLs.'
+  desc  'rationale', 'Monitoring changes to NACLs will help ensure that AWS resources and services are not unintentionally exposed.'
+  desc  'check', "Perform the following to ensure that there is at least one active multi-region CloudTrail with prescribed metric filters and alarms configured:
     1. Identify the log group name configured for use with active multi-region CloudTrail:
     - List all CloudTrails:
     `aws cloudtrail describe-trails`
@@ -40,7 +38,7 @@ control "aws-foundations-cis-3.11" do
     ```
     Example of valid \"SubscriptionArn\": \"arn:aws:sns::::\"
     ```"
-  desc  "fix", "Perform the following to setup the metric filter, alarm, SNS topic, and subscription:
+  desc  'fix', "Perform the following to setup the metric filter, alarm, SNS topic, and subscription:
     1. Create a metric filter based on filter pattern provided which checks for NACL changes and the `` taken from audit step 1.
     ```
     aws logs put-metric-filter --log-group-name  --filter-name `` --metric-transformations metricName= `` ,metricNamespace='CISBenchmark',metricValue=1 --filter-pattern '{ ($.eventName = CreateNetworkAcl) || ($.eventName = CreateNetworkAclEntry) || ($.eventName = DeleteNetworkAcl) || ($.eventName = DeleteNetworkAclEntry) || ($.eventName = ReplaceNetworkAclEntry) || ($.eventName = ReplaceNetworkAclAssociation) }'
@@ -61,7 +59,7 @@ control "aws-foundations-cis-3.11" do
     aws cloudwatch put-metric-alarm --alarm-name `` --metric-name `` --statistic Sum --period 300 --threshold 1 --comparison-operator GreaterThanOrEqualToThreshold --evaluation-periods 1 --namespace 'CISBenchmark' --alarm-actions
     ```"
   impact 0.5
-  tag severity: "Medium"
+  tag severity: 'Medium'
   tag gtitle: nil
   tag gid: nil
   tag rid: nil
@@ -71,9 +69,8 @@ control "aws-foundations-cis-3.11" do
   tag nist: ['CM-6(2)']
   tag notes: nil
   tag comment: nil
-  tag cis_controls: "TITLE:Use Automated Tools to Verify Standard Device Configurations and Detect Changes CONTROL:11.3 DESCRIPTION:Compare all network device configuration against approved security configurations defined for each network device in use and alert when any deviations are discovered.;"
-  tag ref: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/sns/latest/dg/SubscribeTopic.html"
-
+  tag cis_controls: 'TITLE:Use Automated Tools to Verify Standard Device Configurations and Detect Changes CONTROL:11.3 DESCRIPTION:Compare all network device configuration against approved security configurations defined for each network device in use and alert when any deviations are discovered.;'
+  tag ref: 'https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/sns/latest/dg/SubscribeTopic.html'
 
   pattern = '{ ($.eventName = CreateNetworkAcl) || ($.eventName = CreateNetworkAclEntry) || ($.eventName = DeleteNetworkAcl) || ($.eventName = DeleteNetworkAclEntry) || ($.eventName = ReplaceNetworkAclEntry) || ($.eventName = ReplaceNetworkAclAssociation) }'
 
@@ -85,7 +82,7 @@ control "aws-foundations-cis-3.11" do
   log_group_name = aws_cloudwatch_log_metric_filter(pattern: pattern).log_group_name
 
   # Find cloudtrails associated with with `log_group_name` parsed above
-  associated_trails = aws_cloudtrail_trails.names.select{ |x| aws_cloudtrail_trail(x).cloud_watch_logs_log_group_arn =~ /log-group:#{log_group_name}:/ }
+  associated_trails = aws_cloudtrail_trails.names.select { |x| aws_cloudtrail_trail(x).cloud_watch_logs_log_group_arn =~ /log-group:#{log_group_name}:/ }
 
   # Ensure log_group is associated atleast one cloudtrail
   describe "Cloudtrails associated with log-group: #{log_group_name}" do
@@ -113,7 +110,7 @@ control "aws-foundations-cis-3.11" do
   if associated_metric_filter.exists?
     describe aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace) do
       it { should exist }
-      its ('alarm_actions') { should_not be_empty }
+      its('alarm_actions') { should_not be_empty }
     end
 
     aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace).alarm_actions.each do |sns|

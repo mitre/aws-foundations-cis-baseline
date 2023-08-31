@@ -1,14 +1,12 @@
-# encoding: UTF-8
-
-control "aws-foundations-cis-2.1" do
-  title "Ensure CloudTrail is enabled in all regions"
-  desc  "AWS CloudTrail is a web service that records AWS API calls for your account and delivers log files to you. The recorded information includes the identity of the API caller, the time of the API call, the source IP address of the API caller, the request parameters, and the response elements returned by the AWS service. CloudTrail provides a history of AWS API calls for an account, including API calls made via the Management Console, SDKs, command line tools, and higher-level AWS services (such as CloudFormation)."
-  desc  "rationale", "The AWS API call history produced by CloudTrail enables security analysis, resource change tracking, and compliance auditing. Additionally,
+control 'aws-foundations-cis-2.1' do
+  title 'Ensure CloudTrail is enabled in all regions'
+  desc  'AWS CloudTrail is a web service that records AWS API calls for your account and delivers log files to you. The recorded information includes the identity of the API caller, the time of the API call, the source IP address of the API caller, the request parameters, and the response elements returned by the AWS service. CloudTrail provides a history of AWS API calls for an account, including API calls made via the Management Console, SDKs, command line tools, and higher-level AWS services (such as CloudFormation).'
+  desc  'rationale', "The AWS API call history produced by CloudTrail enables security analysis, resource change tracking, and compliance auditing. Additionally,
     - ensuring that a multi-regions trail exists will ensure that unexpected activity occurring in otherwise unused regions is detected
     - ensuring that a multi-regions trail exists will ensure that `Global Service Logging` is enabled for a trail by default to capture recording of events generated on
     AWS global services
     - for a multi-regions trail, ensuring that management events configured for all type of Read/Writes ensures recording of management operations that are performed on all resources in an AWS account"
-  desc  "check", "Perform the following to determine if CloudTrail is enabled for all regions:
+  desc  'check', "Perform the following to determine if CloudTrail is enabled for all regions:
 
     Via the management Console
     1. Sign in to the AWS Management Console and open the CloudTrail console at [https://console.aws.amazon.com/cloudtrail](https://console.aws.amazon.com/cloudtrail)
@@ -33,7 +31,7 @@ control "aws-foundations-cis-2.1" do
     aws cloudtrail get-event-selectors --trail-name
     ```
     Ensure there is at least one Event Selector for a Trail with `IncludeManagementEvents` set to `true` and `ReadWriteType` set to `All`"
-  desc  "fix", "Perform the following to enable global (Multi-region) CloudTrail logging:
+  desc  'fix', "Perform the following to enable global (Multi-region) CloudTrail logging:
 
     Via the management Console
     1. Sign in to the AWS Management Console and open the IAM console at [https://console.aws.amazon.com/cloudtrail](https://console.aws.amazon.com/cloudtrail)
@@ -58,7 +56,7 @@ control "aws-foundations-cis-2.1" do
 
     Note: Creating CloudTrail via CLI without providing any overriding options configures `Management Events` to set `All` type of `Read/Writes` by default."
   impact 0.5
-  tag severity: "Low"
+  tag severity: 'Low'
   tag gtitle: nil
   tag gid: nil
   tag rid: nil
@@ -69,10 +67,9 @@ control "aws-foundations-cis-2.1" do
   tag notes: nil
   tag comment: "S3 lifecycle features can be used to manage the accumulation and management of logs over time. See the following AWS resource for more information on these features:
   1. http://docs.aws.amazon.com/AmazonS3/latest/dev/object-lifecycle-mgmt.html"
-  tag cis_controls: "TITLE:Activate audit logging CONTROL:6.2 DESCRIPTION:Ensure that local logging has been enabled on all systems and networking devices.;"
-  tag ref: "CIS CSC v6.0 #14.6:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-concepts.html#cloudtrail-concepts-management-events:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-management-and-data-events-with-cloudtrail.html?icmpid=docs_cloudtrail_console#logging-management-events:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-supported-services.html#cloud-trail-supported-services-data-events"
+  tag cis_controls: 'TITLE:Activate audit logging CONTROL:6.2 DESCRIPTION:Ensure that local logging has been enabled on all systems and networking devices.;'
+  tag ref: 'CIS CSC v6.0 #14.6:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-concepts.html#cloudtrail-concepts-management-events:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-management-and-data-events-with-cloudtrail.html?icmpid=docs_cloudtrail_console#logging-management-events:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-supported-services.html#cloud-trail-supported-services-data-events'
 
-  
   describe aws_cloudtrail_trails do
     it { should exist }
   end
