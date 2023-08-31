@@ -1,10 +1,8 @@
-# encoding: UTF-8
-
-control "aws-foundations-cis-3.12" do
-  title "Ensure a log metric filter and alarm exist for changes to network gateways"
-  desc  "Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch Logs and establishing corresponding metric filters and alarms. Network gateways are required to send/receive traffic to a destination outside of a VPC. It is recommended that a metric filter and alarm be established for changes to network gateways."
-  desc  "rationale", "Monitoring changes to network gateways will help ensure that all ingress/egress traffic traverses the VPC border via a controlled path."
-  desc  "check", "Perform the following to ensure that there is at least one active multi-region CloudTrail with prescribed metric filters and alarms configured:
+control 'aws-foundations-cis-3.12' do
+  title 'Ensure a log metric filter and alarm exist for changes to network gateways'
+  desc  'Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch Logs and establishing corresponding metric filters and alarms. Network gateways are required to send/receive traffic to a destination outside of a VPC. It is recommended that a metric filter and alarm be established for changes to network gateways.'
+  desc  'rationale', 'Monitoring changes to network gateways will help ensure that all ingress/egress traffic traverses the VPC border via a controlled path.'
+  desc  'check', "Perform the following to ensure that there is at least one active multi-region CloudTrail with prescribed metric filters and alarms configured:
     1. Identify the log group name configured for use with active multi-region CloudTrail:
     - List all CloudTrails:
     `aws cloudtrail describe-trails`
@@ -40,7 +38,7 @@ control "aws-foundations-cis-3.12" do
     ```
     Example of valid \"SubscriptionArn\": \"arn:aws:sns::::\"
     ```"
-  desc  "fix", "Perform the following to setup the metric filter, alarm, SNS topic, and subscription:
+  desc  'fix', "Perform the following to setup the metric filter, alarm, SNS topic, and subscription:
     1. Create a metric filter based on filter pattern provided which checks for network gateways changes and the `` taken from audit step 1.
     ```
     aws logs put-metric-filter --log-group-name  --filter-name `` --metric-transformations metricName= `` ,metricNamespace='CISBenchmark',metricValue=1 --filter-pattern '{ ($.eventName = CreateCustomerGateway) || ($.eventName = DeleteCustomerGateway) || ($.eventName = AttachInternetGateway) || ($.eventName = CreateInternetGateway) || ($.eventName = DeleteInternetGateway) || ($.eventName = DetachInternetGateway) }'
@@ -62,7 +60,7 @@ control "aws-foundations-cis-3.12" do
     aws cloudwatch put-metric-alarm --alarm-name `` --metric-name `` --statistic Sum --period 300 --threshold 1 --comparison-operator GreaterThanOrEqualToThreshold --evaluation-periods 1 --namespace 'CISBenchmark' --alarm-actions
     ```"
   impact 0.5
-  tag severity: "Low"
+  tag severity: 'Low'
   tag gtitle: nil
   tag gid: nil
   tag rid: nil
@@ -75,9 +73,8 @@ control "aws-foundations-cis-3.12" do
   - ensures that activities on all supported global services are monitored
   - ensures that all management events across all regions are monitored"
   tag comment: nil
-  tag cis_controls: "TITLE:Use Automated Tools to Verify Standard Device Configurations and Detect Changes CONTROL:11.3 DESCRIPTION:Compare all network device configuration against approved security configurations defined for each network device in use and alert when any deviations are discovered.;TITLE:Activate audit logging CONTROL:6.2 DESCRIPTION:Ensure that local logging has been enabled on all systems and networking devices.;"
-  tag ref: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/sns/latest/dg/SubscribeTopic.html"
-
+  tag cis_controls: 'TITLE:Use Automated Tools to Verify Standard Device Configurations and Detect Changes CONTROL:11.3 DESCRIPTION:Compare all network device configuration against approved security configurations defined for each network device in use and alert when any deviations are discovered.;TITLE:Activate audit logging CONTROL:6.2 DESCRIPTION:Ensure that local logging has been enabled on all systems and networking devices.;'
+  tag ref: 'https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/sns/latest/dg/SubscribeTopic.html'
 
   pattern = '{ ($.eventName = CreateCustomerGateway) || ($.eventName = DeleteCustomerGateway) || ($.eventName = AttachInternetGateway) || ($.eventName = CreateInternetGateway) || ($.eventName = DeleteInternetGateway) || ($.eventName = DetachInternetGateway) }'
 
@@ -89,7 +86,7 @@ control "aws-foundations-cis-3.12" do
   log_group_name = aws_cloudwatch_log_metric_filter(pattern: pattern).log_group_name
 
   # Find cloudtrails associated with with `log_group_name` parsed above
-  associated_trails = aws_cloudtrail_trails.names.select{ |x| aws_cloudtrail_trail(x).cloud_watch_logs_log_group_arn =~ /log-group:#{log_group_name}:/ }
+  associated_trails = aws_cloudtrail_trails.names.select { |x| aws_cloudtrail_trail(x).cloud_watch_logs_log_group_arn =~ /log-group:#{log_group_name}:/ }
 
   # Ensure log_group is associated atleast one cloudtrail
   describe "Cloudtrails associated with log-group: #{log_group_name}" do
@@ -117,7 +114,7 @@ control "aws-foundations-cis-3.12" do
   if associated_metric_filter.exists?
     describe aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace) do
       it { should exist }
-      its ('alarm_actions') { should_not be_empty }
+      its('alarm_actions') { should_not be_empty }
     end
 
     aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace).alarm_actions.each do |sns|

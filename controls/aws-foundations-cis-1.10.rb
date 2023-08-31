@@ -1,10 +1,8 @@
-# encoding: UTF-8
-
-control "aws-foundations-cis-1.10" do
-  title "Ensure IAM password policy prevents password reuse"
-  desc  "IAM password policies can prevent the reuse of a given password by the same user. It is recommended that the password policy prevent the reuse of passwords."
-  desc  "rationale", "Preventing password reuse increases account resiliency against brute force login attempts."
-  desc  "check", "Perform the following to ensure the password policy is configured as prescribed:
+control 'aws-foundations-cis-1.10' do
+  title 'Ensure IAM password policy prevents password reuse'
+  desc  'IAM password policies can prevent the reuse of a given password by the same user. It is recommended that the password policy prevent the reuse of passwords.'
+  desc  'rationale', 'Preventing password reuse increases account resiliency against brute force login attempts.'
+  desc  'check', "Perform the following to ensure the password policy is configured as prescribed:
 
     Via AWS Console
 
@@ -19,7 +17,7 @@ control "aws-foundations-cis-1.10" do
     aws iam get-account-password-policy
     ```
     Ensure the output of the above command includes \"PasswordReusePrevention\": 24"
-  desc  "fix", "Perform the following to set the password policy as prescribed:
+  desc  'fix', "Perform the following to set the password policy as prescribed:
 
     Via AWS Console
 
@@ -35,9 +33,9 @@ control "aws-foundations-cis-1.10" do
     ```
     Note: All commands starting with \"aws iam update-account-password-policy\" can be combined into a single command."
   impact 0.5
-  tag severity: "Low"
+  tag severity: 'Low'
   tag nist: ['IA-5(1)']
-  tag cis_controls: "TITLE:Use Unique Passwords CONTROL:4.4 DESCRIPTION:Where multi-factor authentication is not supported (such as local administrator, root, or service accounts), accounts will use passwords that are unique to that system.;"
+  tag cis_controls: 'TITLE:Use Unique Passwords CONTROL:4.4 DESCRIPTION:Where multi-factor authentication is not supported (such as local administrator, root, or service accounts), accounts will use passwords that are unique to that system.;'
 
   describe aws_iam_password_policy do
     it { should exist }

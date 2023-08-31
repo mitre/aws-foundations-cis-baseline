@@ -1,10 +1,8 @@
-# encoding: UTF-8
-
-control "aws-foundations-cis-3.6" do
-  title "Ensure a log metric filter and alarm exist for AWS Management Console authentication failures"
-  desc  "Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch Logs and establishing corresponding metric filters and alarms. It is recommended that a metric filter and alarm be established for failed console authentication attempts."
-  desc  "rationale", "Monitoring failed console logins may decrease lead time to detect an attempt to brute force a credential, which may provide an indicator, such as source IP, that can be used in other event correlation."
-  desc  "check", "Perform the following to ensure that there is at least one active multi-region CloudTrail with prescribed metric filters and alarms configured:
+control 'aws-foundations-cis-3.6' do
+  title 'Ensure a log metric filter and alarm exist for AWS Management Console authentication failures'
+  desc  'Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch Logs and establishing corresponding metric filters and alarms. It is recommended that a metric filter and alarm be established for failed console authentication attempts.'
+  desc  'rationale', 'Monitoring failed console logins may decrease lead time to detect an attempt to brute force a credential, which may provide an indicator, such as source IP, that can be used in other event correlation.'
+  desc  'check', "Perform the following to ensure that there is at least one active multi-region CloudTrail with prescribed metric filters and alarms configured:
     1. Identify the log group name configured for use with active multi-region CloudTrail:
     - List all CloudTrails:
     `aws cloudtrail describe-trails`
@@ -40,7 +38,7 @@ control "aws-foundations-cis-3.6" do
     ```
     Example of valid \"SubscriptionArn\": \"arn:aws:sns::::\"
     ```"
-  desc  "fix", "Perform the following to setup the metric filter, alarm, SNS topic, and subscription:
+  desc  'fix', "Perform the following to setup the metric filter, alarm, SNS topic, and subscription:
     1. Create a metric filter based on filter pattern provided which checks for AWS management Console Login Failures and the `` taken from audit step 1.
     ```
     aws logs put-metric-filter --log-group-name  --filter-name `` --metric-transformations metricName= `` ,metricNamespace='CISBenchmark',metricValue=1 --filter-pattern '{ ($.eventName = ConsoleLogin) && ($.errorMessage = \"Failed authentication\") }'
@@ -61,7 +59,7 @@ control "aws-foundations-cis-3.6" do
     aws cloudwatch put-metric-alarm --alarm-name `` --metric-name `` --statistic Sum --period 300 --threshold 1 --comparison-operator GreaterThanOrEqualToThreshold --evaluation-periods 1 --namespace 'CISBenchmark' --alarm-actions
     ```"
   impact 0.5
-  tag severity: "Medium"
+  tag severity: 'Medium'
   tag gtitle: nil
   tag gid: nil
   tag rid: nil
@@ -71,9 +69,8 @@ control "aws-foundations-cis-3.6" do
   tag nist: ['AC-2']
   tag notes: nil
   tag comment: nil
-  tag cis_controls: "TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;"
-  tag ref: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/sns/latest/dg/SubscribeTopic.html"
-
+  tag cis_controls: 'TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;'
+  tag ref: 'https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/sns/latest/dg/SubscribeTopic.html'
 
   pattern = '{ ($.eventName = ConsoleLogin) && ($.errorMessage = "Failed authentication") }'
 
@@ -85,7 +82,7 @@ control "aws-foundations-cis-3.6" do
   log_group_name = aws_cloudwatch_log_metric_filter(pattern: pattern).log_group_name
 
   # Find cloudtrails associated with with `log_group_name` parsed above
-  associated_trails = aws_cloudtrail_trails.names.select{ |x| aws_cloudtrail_trail(x).cloud_watch_logs_log_group_arn =~ /log-group:#{log_group_name}:/ }
+  associated_trails = aws_cloudtrail_trails.names.select { |x| aws_cloudtrail_trail(x).cloud_watch_logs_log_group_arn =~ /log-group:#{log_group_name}:/ }
 
   # Ensure log_group is associated atleast one cloudtrail
   describe "Cloudtrails associated with log-group: #{log_group_name}" do
@@ -113,7 +110,7 @@ control "aws-foundations-cis-3.6" do
   if associated_metric_filter.exists?
     describe aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace) do
       it { should exist }
-      its ('alarm_actions') { should_not be_empty }
+      its('alarm_actions') { should_not be_empty }
     end
 
     aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace).alarm_actions.each do |sns|

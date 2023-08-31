@@ -1,10 +1,8 @@
-# encoding: UTF-8
-
-control "aws-foundations-cis-1.6" do
-  title "Ensure IAM password policy require at least one lowercase letter"
-  desc  "Password policies are, in part, used to enforce password complexity requirements. IAM password policies can be used to ensure password are comprised of different character sets. It is recommended that the password policy require at least one lowercase letter."
-  desc  "rationale", "Setting a password complexity policy increases account resiliency against brute force login attempts."
-  desc  "check", "Perform the following to ensure the password policy is configured as prescribed:
+control 'aws-foundations-cis-1.6' do
+  title 'Ensure IAM password policy require at least one lowercase letter'
+  desc  'Password policies are, in part, used to enforce password complexity requirements. IAM password policies can be used to ensure password are comprised of different character sets. It is recommended that the password policy require at least one lowercase letter.'
+  desc  'rationale', 'Setting a password complexity policy increases account resiliency against brute force login attempts.'
+  desc  'check', "Perform the following to ensure the password policy is configured as prescribed:
 
     Via the AWS Console
 
@@ -18,7 +16,7 @@ control "aws-foundations-cis-1.6" do
     aws iam get-account-password-policy
     ```
     Ensure the output of the above command includes \"RequireLowercaseCharacters\": true"
-  desc  "fix", "Perform the following to set the password policy as prescribed:
+  desc  'fix', "Perform the following to set the password policy as prescribed:
 
     Via the AWS Console
 
@@ -34,11 +32,10 @@ control "aws-foundations-cis-1.6" do
     ```
     Note: All commands starting with \"aws iam update-account-password-policy\" can be combined into a single command."
   impact 0.5
-  tag severity: "Low"
+  tag severity: 'Low'
   tag nist: ['AC-2']
-  tag cis_controls: "TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;"
+  tag cis_controls: 'TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;'
 
- 
   describe aws_iam_password_policy do
     it { should exist }
     it { should require_lowercase_characters }

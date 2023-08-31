@@ -1,10 +1,8 @@
-# encoding: UTF-8
-
-control "aws-foundations-cis-2.5" do
-  title "Ensure AWS Config is enabled in all regions"
-  desc  "AWS Config is a web service that performs configuration management of supported AWS resources within your account and delivers log files to you. The recorded information includes the configuration item (AWS resource), relationships between configuration items (AWS resources), any configuration changes between resources. It is recommended to enable AWS Config be enabled in all regions."
-  desc  "rationale", "The AWS configuration item history captured by AWS Config enables security analysis, resource change tracking, and compliance auditing."
-  desc  "check", "Process to evaluate AWS Config configuration per region
+control 'aws-foundations-cis-2.5' do
+  title 'Ensure AWS Config is enabled in all regions'
+  desc  'AWS Config is a web service that performs configuration management of supported AWS resources within your account and delivers log files to you. The recorded information includes the configuration item (AWS resource), relationships between configuration items (AWS resources), any configuration changes between resources. It is recommended to enable AWS Config be enabled in all regions.'
+  desc  'rationale', 'The AWS configuration item history captured by AWS Config enables security analysis, resource change tracking, and compliance auditing.'
+  desc  'check', "Process to evaluate AWS Config configuration per region
 
     Via AWS Management Console:
     1. Sign in to the AWS Management Console and open the AWS Config console at [https://console.aws.amazon.com/config/](https://console.aws.amazon.com/config/).
@@ -45,7 +43,7 @@ control "aws-foundations-cis-2.5" do
     aws configservice describe-configuration-recorder-status
     ```
     4. In the output, find recorders with `name` key matching the recorders that met criteria in step 2. Ensure that at least one of them includes `\"recording\": true` and `\"lastStatus\": \"SUCCESS\"`"
-  desc  "fix", "To implement AWS Config configuration:
+  desc  'fix', "To implement AWS Config configuration:
 
     Via AWS Management Console:
     1. Select the region you want to focus on in the top right of the console
@@ -67,7 +65,7 @@ control "aws-foundations-cis-2.5" do
     start-configuration-recorder --configuration-recorder-name
     ```"
   impact 0.5
-  tag severity: "Low"
+  tag severity: 'Low'
   tag gtitle: nil
   tag gid: nil
   tag rid: nil
@@ -78,8 +76,7 @@ control "aws-foundations-cis-2.5" do
   tag notes: nil
   tag comment: nil
   tag cis_controls: "TITLE:Maintain Detailed Asset Inventory CONTROL:1.4 DESCRIPTION:Maintain an accurate and up-to-date inventory of all technology assets with the potential to store or process information. This inventory shall include all hardware assets, whether connected to the organization's network or not.;TITLE:Document Traffic Configuration Rules CONTROL:11.2 DESCRIPTION:All configuration rules that allow traffic to flow through network devices should be documented in a configuration management system with a specific business reason for each rule, a specific individual\'s name responsible for that business need, and an expected duration of the need.;TITLE:Maintain an Inventory of Authentication Systems CONTROL:16.1 DESCRIPTION:Maintain an inventory of each of the organization's authentication systems, including those located onsite or at a remote service provider.;"
-  tag ref: "CIS CSC v6.0 #1.1, #1.3, #1.4, #5.2, #11.1 - #11.3, #14.6:http://docs.aws.amazon.com/cli/latest/reference/configservice/describe-configuration-recorder-status.html"
-
+  tag ref: 'CIS CSC v6.0 #1.1, #1.3, #1.4, #5.2, #11.1 - #11.3, #14.6:http://docs.aws.amazon.com/cli/latest/reference/configservice/describe-configuration-recorder-status.html'
 
   config_delivery_channels = input('config_delivery_channels')
 
@@ -96,8 +93,8 @@ control "aws-foundations-cis-2.5" do
 
   if aws_config_delivery_channel.exists?
     describe aws_config_delivery_channel do
-      its('s3_bucket_name') { should cmp config_delivery_channels[:"#{input('default_aws_region')}"][:'s3_bucket_name'] }
-      its('sns_topic_arn') { should cmp config_delivery_channels[:"#{input('default_aws_region')}"][:'sns_topic_arn'] }
+      its('s3_bucket_name') { should cmp config_delivery_channels[:"#{input('default_aws_region')}"][:s3_bucket_name] }
+      its('sns_topic_arn') { should cmp config_delivery_channels[:"#{input('default_aws_region')}"][:sns_topic_arn] }
     end
   end
 end

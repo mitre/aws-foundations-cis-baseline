@@ -1,10 +1,8 @@
-# encoding: UTF-8
-
-control "aws-foundations-cis-1.12" do
-  title "Ensure no root account access key exists"
-  desc  "The root account is the most privileged user in an AWS account. AWS Access Keys provide programmatic access to a given AWS account. It is recommended that all access keys associated with the root account be removed."
-  desc  "rationale", "Removing access keys associated with the root account limits vectors by which the account can be compromised. Additionally, removing the root access keys encourages the creation and use of role based accounts that are least privileged."
-  desc  "check", "Perform the following to determine if the root account has access keys:
+control 'aws-foundations-cis-1.12' do
+  title 'Ensure no root account access key exists'
+  desc  'The root account is the most privileged user in an AWS account. AWS Access Keys provide programmatic access to a given AWS account. It is recommended that all access keys associated with the root account be removed.'
+  desc  'rationale', 'Removing access keys associated with the root account limits vectors by which the account can be compromised. Additionally, removing the root access keys encourages the creation and use of role based accounts that are least privileged.'
+  desc  'check', "Perform the following to determine if the root account has access keys:
 
     Via the AWS Console
 
@@ -23,7 +21,7 @@ control "aws-foundations-cis-1.12" do
      aws iam get-credential-report --query 'Content' --output text | base64 -d | cut -d, -f1,9,14 | grep -B1 ''
     ```
     2. For the `` user, ensure the `access_key_1_active` and `access_key_2_active` fields are set to `FALSE` ."
-  desc  "fix", "Perform the following to delete or disable active root access keys being
+  desc  'fix', "Perform the following to delete or disable active root access keys being
 
     Via the AWS Console
 
@@ -35,12 +33,12 @@ control "aws-foundations-cis-1.12" do
      1. Click on `Make Inactive` - (Temporarily disable Key - may be needed again)
      2. Click `Delete` - (Deleted keys cannot be recovered)"
   impact 0.5
-  tag severity: "Low"
+  tag severity: 'Low'
   tag nist: ['AC-6(9)']
-  tag cis_controls: "TITLE:Ensure the Use of Dedicated Administrative Accounts CONTROL:4.3 DESCRIPTION:Ensure that all users with administrative account access use a dedicated or secondary account for elevated activities. This account should only be used for administrative activities and not internet browsing, email, or similar activities.;"
-  tag ref: "http://docs.aws.amazon.com/general/latest/gr/aws-access-keys-best-practices.html:http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html:http://docs.aws.amazon.com/IAM/latest/APIReference/API_GetAccountSummary.html:CIS CSC v6.0 #5.1"
+  tag cis_controls: 'TITLE:Ensure the Use of Dedicated Administrative Accounts CONTROL:4.3 DESCRIPTION:Ensure that all users with administrative account access use a dedicated or secondary account for elevated activities. This account should only be used for administrative activities and not internet browsing, email, or similar activities.;'
+  tag ref: 'http://docs.aws.amazon.com/general/latest/gr/aws-access-keys-best-practices.html:http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html:http://docs.aws.amazon.com/IAM/latest/APIReference/API_GetAccountSummary.html:CIS CSC v6.0 #5.1'
 
-  describe "The root account should not have active access keys." do
+  describe 'The root account should not have active access keys.' do
     subject { aws_iam_credential_report.where(user: '<root_account>').entries.first }
     its('access_key_1_active') { should eq false }
     its('access_key_2_active') { should eq false }

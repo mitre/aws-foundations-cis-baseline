@@ -1,10 +1,8 @@
-# encoding: UTF-8
-
-control "aws-foundations-cis-1.2" do
-  title "Ensure multi-factor authentication (MFA) is enabled for all IAM users that have a console password"
-  desc  "Multi-Factor Authentication (MFA) adds an extra layer of protection on top of a user name and password. With MFA enabled, when a user signs in to an AWS website, they will be prompted for their user name and password as well as for an authentication code from their AWS MFA device. It is recommended that MFA be enabled for all accounts that have a console password."
-  desc  "rationale", "Enabling MFA provides increased security for console access as it requires the authenticating principal to possess a device that emits a time-sensitive key and have knowledge of a credential."
-  desc  "check", "Perform the following to determine if a MFA device is enabled for all IAM users having a console password:
+control 'aws-foundations-cis-1.2' do
+  title 'Ensure multi-factor authentication (MFA) is enabled for all IAM users that have a console password'
+  desc  'Multi-Factor Authentication (MFA) adds an extra layer of protection on top of a user name and password. With MFA enabled, when a user signs in to an AWS website, they will be prompted for their user name and password as well as for an authentication code from their AWS MFA device. It is recommended that MFA be enabled for all accounts that have a console password.'
+  desc  'rationale', 'Enabling MFA provides increased security for console access as it requires the authenticating principal to possess a device that emits a time-sensitive key and have knowledge of a credential.'
+  desc  'check', "Perform the following to determine if a MFA device is enabled for all IAM users having a console password:
 
     Via Management Console
 
@@ -33,7 +31,7 @@ control "aws-foundations-cis-1.2" do
      anitha,false,false
     ```
     3. For any column having `password_enabled` set to `true` , ensure `mfa_active` is also set to `true.`"
-  desc  "fix", "Perform the following to enable MFA:
+  desc  'fix', "Perform the following to enable MFA:
 
     1. Sign in to the AWS Management Console and open the IAM console at [https://console.aws.amazon.com/iam/](https://console.aws.amazon.com/iam/).
     2. In the navigation pane, choose Users.
@@ -58,10 +56,10 @@ control "aws-foundations-cis-1.2" do
 
     [How to Delegate Management of Multi-Factor Authentication to AWS IAM Users](http://blogs.aws.amazon.com/security/post/Tx2SJJYE082KBUK/How-to-Delegate-Management-of-Multi-Factor-Authentication-to-AWS-IAM-Users)"
   impact 0.5
-  tag severity: "Low"
+  tag severity: 'Low'
   tag nist: ['IA-2(1)']
-  tag cis_controls: "TITLE:Use Multifactor Authentication For All Administrative Access CONTROL:4.5 DESCRIPTION:Use multi-factor authentication and encrypted channels for all administrative account access.;"
-  tag ref: "http://tools.ietf.org/html/rfc6238:http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html:CIS CSC v6.0 #5.6, #11.4, #12.6, #16.11"
+  tag cis_controls: 'TITLE:Use Multifactor Authentication For All Administrative Access CONTROL:4.5 DESCRIPTION:Use multi-factor authentication and encrypted channels for all administrative account access.;'
+  tag ref: 'http://tools.ietf.org/html/rfc6238:http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html:CIS CSC v6.0 #5.6, #11.4, #12.6, #16.11'
 
   service_account_mfa_exceptions = input('service_account_mfa_exceptions')
 
