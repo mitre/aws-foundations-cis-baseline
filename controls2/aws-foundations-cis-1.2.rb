@@ -57,7 +57,7 @@ put-alternate-contact --alternate-contact-type SECURITY
 specifying an internal email distribution list to ensure emails are regularly monitored by 
 more than one individual. "
   impact 0.5
-  tag nist: [IR-6]
+  tag nist: ['IR-6']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["17.2"]}
