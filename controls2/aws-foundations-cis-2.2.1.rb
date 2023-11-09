@@ -67,7 +67,7 @@ volumes are **not** converted automatically. "
 able to access the volumes. "
   impact 0.5
   ref 'https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html:https://aws.amazon.com/blogs/aws/new-opt-in-to-default-encryption-for-new-ebs-volumes/'
-  tag nist: []
+  tag nist: ['SC-28','SC-28(1)']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["3.11"]}
