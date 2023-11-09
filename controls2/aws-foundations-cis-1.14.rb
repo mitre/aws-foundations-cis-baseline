@@ -103,9 +103,57 @@ delete-access-key
 ``` "
   impact 0.5
   ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#rotate-credentials:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_finding-unused.html:https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html'
-  tag nist: []
+  tag nist: ['AC-2']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["5"]}
   ]
+
+  aws_iam_credential_report.where(access_key_1_active: false).entries.each do |user|
+    describe "Access key 1 disabled for user (#{user.user})" do
+      skip "Test not applicable since user's (#{user.user}) access key 1 is disabled"
+    end
+  end
+
+  aws_iam_credential_report.where(access_key_1_active: true).entries.each do |user|
+    describe "The user (#{user.user})" do
+      if user.access_key_1_last_used_date.is_a? DateTime
+        subject { ((Time.current - user.access_key_1_last_used_date) / (24 * 60 * 60)).to_i }
+        it 'must have used access key 1 within the last 90 days.' do
+          expect(subject).to be < 90
+        end
+      elsif user.access_key_1_last_rotated.is_a? DateTime
+        subject { ((Time.current - user.access_key_1_last_rotated) / (24 * 60 * 60)).to_i }
+        it 'must have rotated access key 1 within the last 90 days if they have not used it within the last 90 days.' do
+          expect(subject).to be < 90
+        end
+      else
+        RSpec::Expectatations.fail_with('must have rotated access key 1 within the last 90 days if they have not used it within the last 90 days.')
+      end
+    end
+  end
+
+  aws_iam_credential_report.where(access_key_2_active: false).entries.each do |user|
+    describe "Access key 2 disabled for user (#{user.user})" do
+      skip "Test not applicable since user's (#{user.user}) access key 2 is disabled"
+    end
+  end
+
+  aws_iam_credential_report.where(access_key_2_active: true).entries.each do |user|
+    describe "The user (#{user.user})" do
+      if user.access_key_2_last_used_date.is_a? DateTime
+        subject { ((Time.current - user.access_key_2_last_used_date) / (24 * 60 * 60)).to_i }
+        it 'must have used access key 2 within the last 90 days.' do
+          expect(subject).to be < 90
+        end
+      elsif user.access_key_2_last_rotated.is_a? DateTime
+        subject { ((Time.current - user.access_key_2_last_rotated) / (24 * 60 * 60)).to_i }
+        it 'must have rotated access key 2 within the last 90 days if they have not used it within the last 90 days.' do
+          expect(subject).to be < 90
+        end
+      else
+        RSpec::Expectatations.fail_with('must have rotated access key 2 within the last 90 days if they have not used it within the last 90 days.')
+      end
+    end
+  end
 end
