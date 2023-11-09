@@ -122,9 +122,33 @@ file://<FileName.Json>
   desc "default_value", "Logging is disabled. "
   impact 0.5
   ref 'https://docs.aws.amazon.com/AmazonS3/latest/dev/ServerLogs.html'
-  tag nist: []
+  tag nist: ['AU-12', 'AU-2']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["3.14"]}
   ]
+
+  describe aws_cloudtrail_trails do
+    it { should exist }
+  end
+
+  aws_cloudtrail_trails.trail_arns.each do |trail|
+    bucket_name = aws_cloudtrail_trail(trail).s3_bucket_name
+    if input('exception_bucket_list').include?(bucket_name)
+      describe 'Bucket not inspected because it is defined as an exception' do
+        skip "Bucket: #{bucket_name} not inspected because it is defined in exception_bucket_list."
+      end
+    else
+      describe aws_s3_bucket(bucket_name) do
+        it { should have_access_logging_enabled }
+      end
+    end
+  end
+
+  # Use this after skeletal aws_cloudtrail_trails is enhanced to expose s3_bucket_name
+  # aws_cloudtrail_trails.s3_bucket_name.uniq.each do |bucket|
+  #   describe aws_s3_bucket( bucket ) do
+  #     it{ should be_logging_enabled }
+  #   end
+  # end
 end
