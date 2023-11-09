@@ -95,7 +95,7 @@ functionality. "
   desc "default_value", "By default, expired certificates won't get deleted. "
   impact 0.5
   ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_server-certs.html:https://docs.aws.amazon.com/cli/latest/reference/iam/delete-server-certificate.html'
-  tag nist: []
+  tag nist: ['SI-12']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["3.1"]}
