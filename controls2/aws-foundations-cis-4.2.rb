@@ -191,9 +191,58 @@ events across all regions are monitored
 raised when user logs in via SSO account. "
   impact 0.5
   ref 'https://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/viewing_metrics_with_cloudwatch.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/sns/latest/dg/SubscribeTopic.html'
-  tag nist: []
+  tag nist: ['AU-6','AU-6(1)','AU-7(1)']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["8.11"]}
   ]
+
+  pattern = '{ ($.eventName = "ConsoleLogin") && ($.additionalEventData.MFAUsed != "Yes") }'
+
+  describe aws_cloudwatch_log_metric_filter(pattern: pattern) do
+    it { should exist }
+  end
+
+  # Find the log_group_name associated with the aws_cloudwatch_log_metric_filter that has the pattern
+  log_group_name = aws_cloudwatch_log_metric_filter(pattern: pattern).log_group_name
+
+  # Find cloudtrails associated with with `log_group_name` parsed above
+  associated_trails = aws_cloudtrail_trails.names.select { |x| aws_cloudtrail_trail(x).cloud_watch_logs_log_group_arn =~ /log-group:#{log_group_name}:/ }
+
+  # Ensure log_group is associated atleast one cloudtrail
+  describe "Cloudtrails associated with log-group: #{log_group_name}" do
+    subject { associated_trails }
+    it { should_not be_empty }
+  end
+
+  # Ensure atleast one of the associated cloudtrail meet the requirements.
+  describe.one do
+    associated_trails.each do |trail|
+      describe aws_cloudtrail_trail(trail) do
+        it { should be_multi_region_trail }
+        it { should have_event_selector_mgmt_events_rw_type_all }
+        it { should be_logging }
+      end
+    end
+  end
+
+  # Parse out `metric_name` and `metric_namespace` for the specified pattern.
+  associated_metric_filter = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: log_group_name)
+  metric_name = associated_metric_filter.metric_name
+  metric_namespace = associated_metric_filter.metric_namespace
+
+  # Ensure aws_cloudwatch_alarm for the specified pattern meets requirements.
+  if associated_metric_filter.exists?
+    describe aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace) do
+      it { should exist }
+      its('alarm_actions') { should_not be_empty }
+    end
+
+    aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace).alarm_actions.each do |sns|
+      describe aws_sns_topic(sns) do
+        it { should exist }
+        its('confirmed_subscription_count') { should cmp >= 1 }
+      end
+    end
+  end
 end
