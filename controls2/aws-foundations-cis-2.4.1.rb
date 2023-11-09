@@ -134,7 +134,7 @@ Console. Encryption at rest is not enabled by default when creating a new file s
 AWS CLI, API, and SDKs. "
   impact 0.5
   ref 'https://docs.aws.amazon.com/efs/latest/ug/encryption-at-rest.html:https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/index.html#efs'
-  tag nist: []
+  tag nist: ['SC-28','SC-28(1)']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["3.11"]}
