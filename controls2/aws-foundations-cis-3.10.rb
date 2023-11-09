@@ -120,7 +120,7 @@ region by updating the `--region` command parameter and perform the process for 
 regions. "
   impact 0.5
   ref 'https://docs.aws.amazon.com/AmazonS3/latest/user-guide/enable-cloudtrail-events.html'
-  tag nist: []
+  tag nist: ['AU-3','AU-3(1)','AU-12']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["8.5"]}
