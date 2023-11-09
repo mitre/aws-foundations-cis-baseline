@@ -106,7 +106,7 @@ recommendation.
 4. Repeat steps no. 1 – 3 for each IAM user in your AWS account. "
   impact 0.5
   ref 'https://docs.aws.amazon.com/general/latest/gr/aws-access-keys-best-practices.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html'
-  tag nist: []
+  tag nist: ['AC-2']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["5"]}
