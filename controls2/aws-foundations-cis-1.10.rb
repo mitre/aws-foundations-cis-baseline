@@ -112,9 +112,26 @@ allowed to use this feature. We recommend that existing customers switch to one 
 following alternative methods of MFA. "
   impact 0.5
   ref 'https://tools.ietf.org/html/rfc6238:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#enable-mfa-for-privileged-users:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html:https://blogs.aws.amazon.com/security/post/Tx2SJJYE082KBUK/How-to-Delegate-Management-of-Multi-Factor-Authentication-to-AWS-IAM-Users'
-  tag nist: []
+  tag nist: ['IA-2(1)']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["6.5"]}
   ]
+
+  service_account_mfa_exceptions = input('service_account_mfa_exceptions')
+
+  users_without_mfa = aws_iam_users.where(has_console_password: true).where(has_mfa_enabled: false).usernames
+
+  if service_account_mfa_exceptions.compact.empty?
+    describe 'The active IAM users that do not have MFA enabled' do
+      subject { users_without_mfa }
+      it { should be_empty }
+    end
+  else
+    describe "The active IAM users that do not have MFA enabled
+    (except for the documented service accounts: #{service_account_mfa_exceptions})" do
+      subject { users_without_mfa - service_account_mfa_exceptions }
+      it { should be_empty }
+    end
+  end
 end
