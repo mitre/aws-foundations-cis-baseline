@@ -105,4 +105,7 @@ delete-access-key
   ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#rotate-credentials:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_finding-unused.html:https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["5"]}
+  ]
 end

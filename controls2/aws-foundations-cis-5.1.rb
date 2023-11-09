@@ -47,4 +47,7 @@ Click `Save` "
   ref 'https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html:https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Security.html#VPC_Security_Comparison'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"7" => ["9.2"]}
+  ]
 end

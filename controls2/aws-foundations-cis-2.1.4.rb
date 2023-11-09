@@ -171,4 +171,7 @@ simultaneously, but they eventually propagate to all Regions. "
   ref 'https://docs.aws.amazon.com/AmazonS3/latest/user-guide/block-public-access-account.html'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["3.3"]}
+  ]
 end

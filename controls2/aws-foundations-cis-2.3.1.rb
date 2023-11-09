@@ -157,4 +157,7 @@ aws rds describe-db-instances
   ref 'https://aws.amazon.com/rds/features/security/'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["3.11"]}
+  ]
 end

@@ -76,4 +76,7 @@ click Detach or Remove (depending on policy type) "
   ref 'http://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html:http://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["6.8"]}
+  ]
 end

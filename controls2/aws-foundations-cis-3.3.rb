@@ -96,4 +96,7 @@ Remove any `Statement` having an `Effect` set to `Allow` and a `Principal` set t
   ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_principal.html'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["3.3"]}
+  ]
 end

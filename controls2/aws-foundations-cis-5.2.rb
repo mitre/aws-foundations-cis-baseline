@@ -50,4 +50,7 @@ the 0.0.0.0/0 inbound rule. "
   ref 'https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security-groups.html#deleting-security-group-rule'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"7" => ["9.2"]}
+  ]
 end
