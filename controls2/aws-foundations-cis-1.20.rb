@@ -85,7 +85,7 @@ please see AWS's [documentation on managing AWS
 Regions](https://docs.aws.amazon.com/general/latest/gr/rande-manage.html). "
   impact 0.5
   ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-getting-started.html:https://docs.aws.amazon.com/cli/latest/reference/accessanalyzer/get-analyzer.html:https://docs.aws.amazon.com/cli/latest/reference/accessanalyzer/create-analyzer.html'
-  tag nist: []
+  tag nist: ['AC-6']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["3.3"]}
