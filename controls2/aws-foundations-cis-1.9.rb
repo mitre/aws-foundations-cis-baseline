@@ -51,9 +51,15 @@ commands starting with \"aws iam update-account-password-policy\" can be combine
 single command. "
   impact 0.5
   ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#configure-strong-password-policy'
-  tag nist: []
+  tag nist: ['IA-5(1)']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["5.2"]}
   ]
+
+  describe aws_iam_password_policy do
+    it { should exist }
+    it { should prevent_password_reuse }
+    its('number_of_passwords_to_remember') { should cmp == 24 }
+  end
 end
