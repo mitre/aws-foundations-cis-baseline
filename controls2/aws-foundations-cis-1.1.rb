@@ -54,7 +54,7 @@ Information`, choose `Edit`.
 information, and then choose `Update`. "
   impact 0.5
   ref 'https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/manage-account-payment.html#contact-info'
-  tag nist: [IR-6]
+  tag nist: ['IR-6']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["17.2"]}
