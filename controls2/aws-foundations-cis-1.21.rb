@@ -54,7 +54,7 @@ of identity federation and/or AWS Organizations with the acceptance criteria tha
 non-service IAM users, and non-root accounts, are present outside the account providing 
 centralized IAM user management. "
   impact 0.5
-  tag nist: []
+  tag nist: ['AC-2(1)']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["5.6"]}
