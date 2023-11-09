@@ -171,9 +171,28 @@ resource to manage CloudWatch Logs retention periods:
 1. https://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/SettingLogRetention.html "
   impact 0.5
   ref 'https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/flow-logs.html'
-  tag nist: []
+  tag nist: ['AU-2','AU-7','AU-12']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["8.2"]}
   ]
+
+  aws_vpcs.vpc_ids.each do |vpc|
+    describe aws_vpc(vpc) do
+      it { should be_flow_logs_enabled }
+    end
+    describe.one do
+      aws_vpc(vpc).flow_logs.each do |flow_log|
+        describe 'flow log settings' do
+          subject { flow_log }
+          its('flow_log_status') { should cmp 'ACTIVE' }
+        end
+      end
+    end
+  end
+  if aws_vpcs.vpc_ids.empty?
+    describe 'Control skipped because no vpcs were found' do
+      skip 'This control is skipped since the aws_vpcs resource returned an empty vpc list'
+    end
+  end
 end
