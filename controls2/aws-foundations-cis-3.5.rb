@@ -143,9 +143,29 @@ start-configuration-recorder --configuration-recorder-name default
   desc "impact", "It is recommended AWS Config be enabled in all regions. "
   impact 0.5
   ref 'https://docs.aws.amazon.com/cli/latest/reference/configservice/describe-configuration-recorder-status.html:https://docs.aws.amazon.com/cli/latest/reference/configservice/describe-configuration-recorders.html:https://docs.aws.amazon.com/config/latest/developerguide/gs-cli-prereq.html'
-  tag nist: []
+  tag nist: ['CM-8']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["1.1"]}
   ]
+
+  config_delivery_channels = input('config_delivery_channels')
+
+  describe aws_config_recorder do
+    it { should exist }
+    it { should be_recording }
+    it { should be_recording_all_resource_types }
+    it { should be_recording_all_global_types }
+  end
+
+  describe aws_config_delivery_channel do
+    it { should exist }
+  end
+
+  if aws_config_delivery_channel.exists?
+    describe aws_config_delivery_channel do
+      its('s3_bucket_name') { should cmp config_delivery_channels[:"#{input('default_aws_region')}"][:s3_bucket_name] }
+      its('sns_topic_arn') { should cmp config_delivery_channels[:"#{input('default_aws_region')}"][:sns_topic_arn] }
+    end
+  end
 end
