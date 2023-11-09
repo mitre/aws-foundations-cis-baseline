@@ -1,126 +1,113 @@
-control 'aws-foundations-cis-3.4' do
-  title 'Ensure a log metric filter and alarm exist for IAM policy changes'
-  desc  'Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch Logs and establishing corresponding metric filters and alarms. It is recommended that a metric filter and alarm be established changes made to Identity and Access Management (IAM) policies.'
-  desc  'rationale', 'Monitoring changes to IAM policies will help ensure authentication and authorization controls remain intact.'
-  desc  'check', "Perform the following to ensure that there is at least one active multi-region CloudTrail with prescribed metric filters and alarms configured:
-    1. Identify the log group name configured for use with active multi-region CloudTrail:
-    - List all CloudTrails:
-    `aws cloudtrail describe-trails`
-    - Identify Multi region Cloudtrails: `Trails with \"IsMultiRegionTrail\" set to true`
-    - From value associated with CloudWatchLogsLogGroupArn note ``
-    Example: for CloudWatchLogsLogGroupArn that looks like `arn:aws:logs:::log-group:NewGroup:*`, `` would be `NewGroup`
-    - Ensure Identified Multi region CloudTrail is active
-    `aws cloudtrail get-trail-status --name `
-    ensure `IsLogging` is set to `TRUE`
-    - Ensure identified Multi-region Cloudtrail captures all Management Events
-    `aws cloudtrail get-event-selectors --trail-name
-    `
-    Ensure there is at least one Event Selector for a Trail with `IncludeManagementEvents` set to `true` and `ReadWriteType` set to `All`
-    2. Get a list of all associated metric filters for this ``:
-    ```
-    aws logs describe-metric-filters --log-group-name \"\"
-    ```
-    3. Ensure the output from the above command contains the following:
-    ```
-    \"filterPattern\": \"{($.eventName=DeleteGroupPolicy)||($.eventName=DeleteRolePolicy)||($.eventName=DeleteUserPolicy)||($.eventName=PutGroupPolicy)||($.eventName=PutRolePolicy)||($.eventName=PutUserPolicy)||($.eventName=CreatePolicy)||($.eventName=DeletePolicy)||($.eventName=CreatePolicyVersion)||($.eventName=DeletePolicyVersion)||($.eventName=AttachRolePolicy)||($.eventName=DetachRolePolicy)||($.eventName=AttachUserPolicy)||($.eventName=DetachUserPolicy)||($.eventName=AttachGroupPolicy)||($.eventName=DetachGroupPolicy)}\"
-    ```
-    4. Note the `` value associated with the `filterPattern` found in step 3.
-    5. Get a list of CloudWatch alarms and filter on the `` captured in step 4.
-    ```
-    aws cloudwatch describe-alarms --query 'MetricAlarms[?MetricName== ``]'
-    ```
-    6. Note the `AlarmActions` value - this will provide the SNS topic ARN value.
-    7. Ensure there is at least one active subscriber to the SNS topic
-    ```
-    aws sns list-subscriptions-by-topic --topic-arn
-    ```
-    at least one subscription should have \"SubscriptionArn\" with valid aws ARN.
-    ```
-    Example of valid \"SubscriptionArn\": \"arn:aws:sns::::\"
-    ```"
-  desc  'fix', "Perform the following to setup the metric filter, alarm, SNS topic, and subscription:
-    1. Create a metric filter based on filter pattern provided which checks for IAM policy changes and the `` taken from audit step 1.
-    ```
-    aws logs put-metric-filter --log-group-name `` --filter-name `` --metric-transformations metricName= `` ,metricNamespace='CISBenchmark',metricValue=1 --filter-pattern '{($.eventName=DeleteGroupPolicy)||($.eventName=DeleteRolePolicy)||($.eventName=DeleteUserPolicy)||($.eventName=PutGroupPolicy)||($.eventName=PutRolePolicy)||($.eventName=PutUserPolicy)||($.eventName=CreatePolicy)||($.eventName=DeletePolicy)||($.eventName=CreatePolicyVersion)||($.eventName=DeletePolicyVersion)||($.eventName=AttachRolePolicy)||($.eventName=DetachRolePolicy)||($.eventName=AttachUserPolicy)||($.eventName=DetachUserPolicy)||($.eventName=AttachGroupPolicy)||($.eventName=DetachGroupPolicy)}'
-    ```
-    **Note**: You can choose your own metricName and metricNamespace strings. Using the same metricNamespace for all Foundations Benchmark metrics will group them together.
-    2. Create an SNS topic that the alarm will notify
-    ```
-    aws sns create-topic --name
-    ```
-    **Note**: you can execute this command once and then re-use the same topic for all monitoring alarms.
-    3. Create an SNS subscription to the topic created in step 2
-    ```
-    aws sns subscribe --topic-arn  --protocol `` --notification-endpoint ``
-    ```
-    **Note**: you can execute this command once and then re-use the SNS subscription for all monitoring alarms.
-    4. Create an alarm that is associated with the CloudWatch Logs Metric Filter created in step 1 and an SNS topic created in step 2
-    ```
-    aws cloudwatch put-metric-alarm --alarm-name `` --metric-name `` --statistic Sum --period 300 --threshold 1 --comparison-operator GreaterThanOrEqualToThreshold --evaluation-periods 1 --namespace 'CISBenchmark' --alarm-actions
-    ```"
+# encoding: UTF-8
+
+control "aws-foundations-cis-3.4" do
+  title "Ensure CloudTrail trails are integrated with CloudWatch Logs "
+  desc "AWS CloudTrail is a web service that records AWS API calls made in a given AWS account. The 
+recorded information includes the identity of the API caller, the time of the API call, the 
+source IP address of the API caller, the request parameters, and the response elements 
+returned by the AWS service. CloudTrail uses Amazon S3 for log file storage and delivery, so 
+log files are stored durably. In addition to capturing CloudTrail logs within a specified S3 
+bucket for long term analysis, real time analysis can be performed by configuring CloudTrail 
+to send logs to CloudWatch Logs. For a trail that is enabled in all regions in an account, 
+CloudTrail sends log files from all those regions to a CloudWatch Logs log group. It is 
+recommended that CloudTrail logs be sent to CloudWatch Logs.
+
+Note: The intent of this 
+recommendation is to ensure AWS account activity is being captured, monitored, and 
+appropriately alarmed on. CloudWatch Logs is a native way to accomplish this using AWS 
+services but does not preclude the use of an alternate solution. "
+  desc "rationale", "Sending CloudTrail logs to CloudWatch Logs will facilitate real-time and historic activity 
+logging based on user, API, resource, and IP address, and provides opportunity to establish 
+alarms and notifications for anomalous or sensitivity account activity. "
+  desc "check", "Perform the following to ensure CloudTrail is configured as prescribed:
+
+**From 
+Console:**
+
+1. Login to the CloudTrail console at 
+`https://console.aws.amazon.com/cloudtrail/`
+2. Under `Trails` , click on the 
+CloudTrail you wish to evaluate
+3. Under the `CloudWatch Logs` section.
+4. Ensure a 
+`CloudWatch Logs` log group is configured and listed.
+5. Under `General details` confirm 
+`Last log file delivered` has a recent (~one day old) timestamp.
+
+**From Command 
+Line:**
+
+1. Run the following command to get a listing of existing trails:
+```
+ aws 
+cloudtrail describe-trails
+```
+2. Ensure `CloudWatchLogsLogGroupArn` is not empty 
+and note the value of the `Name` property.
+3. Using the noted value of the `Name` property, 
+run the following command:
+```
+ aws cloudtrail get-trail-status --name 
+<trail_name>
+```
+4. Ensure the `LatestcloudwatchLogdDeliveryTime` property is set to 
+a recent (~one day old) timestamp.
+
+If the `CloudWatch Logs` log group is not setup and the 
+delivery time is not recent refer to the remediation below. "
+  desc "fix", "Perform the following to establish the prescribed state:
+
+**From Console:**
+
+1. 
+Login to the CloudTrail console at `https://console.aws.amazon.com/cloudtrail/`
+2. 
+Select the `Trail` the needs to be updated.
+3. Scroll down to `CloudWatch Logs`
+4. Click 
+`Edit`
+5. Under `CloudWatch Logs` click the box `Enabled`
+6. Under `Log Group` pick new or 
+select an existing log group
+7. Edit the `Log group name` to match the CloudTrail or pick the 
+existing CloudWatch Group.
+8. Under `IAM Role` pick new or select an existing.
+9. Edit the 
+`Role name` to match the CloudTrail or pick the existing IAM Role.
+10. Click `Save 
+changes.
+
+**From Command Line:**
+```
+aws cloudtrail update-trail --name 
+<trail_name> --cloudwatch-logs-log-group-arn <cloudtrail_log_group_arn> 
+--cloudwatch-logs-role-arn <cloudtrail_cloudwatchLogs_role_arn>
+``` "
+  desc "impact", "Note: By default, CloudWatch Logs will store Logs indefinitely unless a specific retention 
+period is defined for the log group. When choosing the number of days to retain, keep in mind the 
+average days it takes an organization to realize they have been breached is 210 days (at the 
+time of this writing). Since additional time is required to research a breach, a minimum 365 
+day retention policy allows time for detection and research. You may also wish to archive the 
+logs to a cheaper storage service rather than simply deleting them. See the following AWS 
+resource to manage CloudWatch Logs retention periods:
+
+1. https://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/SettingLogRetention.html "
   impact 0.5
-  tag severity: 'Low'
-  tag gtitle: nil
-  tag gid: nil
-  tag rid: nil
-  tag stig_id: nil
-  tag fix_id: nil
-  tag cci: nil
-  tag nist: ['AC-2']
-  tag notes: "Configuring log metric filter and alarm on Multi-region (global) CloudTrail
-  - ensures that activities from all regions (used as well as unused) are monitored
-  - ensures that activities on all supported global services are monitored
-  - ensures that all management events across all regions are monitored"
-  tag comment: nil
-  tag cis_controls: 'TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;'
-  tag ref: 'https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/sns/latest/dg/SubscribeTopic.html'
+  ref 'https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/how-cloudtrail-works.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-aws-service-specific-topics.html'
+  tag nist: ['AU-12']
+  tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["8.5"]}
+  ]
 
-  pattern = '{ ($.eventName=DeleteGroupPolicy)||($.eventName=DeleteRolePolicy)||($.eventName=DeleteUserPolicy)||($.eventName=PutGroupPolicy)||($.eventName=PutRolePolicy)||($.eventName=PutUserPolicy)||($.eventName=CreatePolicy)||($.eventName=DeletePolicy)||($.eventName=CreatePolicyVersion)||($.eventName=DeletePolicyVersion)||($.eventName=AttachRolePolicy)||($.eventName=DetachRolePolicy)||($.eventName=AttachUserPolicy)||($.eventName=DetachUserPolicy)||($.eventName=AttachGroupPolicy)||($.eventName=DetachGroupPolicy) }'
-
-  describe aws_cloudwatch_log_metric_filter(pattern: pattern) do
+  describe aws_cloudtrail_trails do
     it { should exist }
   end
 
-  # Find the log_group_name associated with the aws_cloudwatch_log_metric_filter that has the pattern
-  log_group_name = aws_cloudwatch_log_metric_filter(pattern: pattern).log_group_name
-
-  # Find cloudtrails associated with with `log_group_name` parsed above
-  associated_trails = aws_cloudtrail_trails.names.select { |x| aws_cloudtrail_trail(x).cloud_watch_logs_log_group_arn =~ /log-group:#{log_group_name}:/ }
-
-  # Ensure log_group is associated atleast one cloudtrail
-  describe "Cloudtrails associated with log-group: #{log_group_name}" do
-    subject { associated_trails }
-    it { should_not be_empty }
-  end
-
-  # Ensure atleast one of the associated cloudtrail meet the requirements.
-  describe.one do
-    associated_trails.each do |trail|
-      describe aws_cloudtrail_trail(trail) do
-        it { should be_multi_region_trail }
-        it { should have_event_selector_mgmt_events_rw_type_all }
-        it { should be_logging }
-      end
-    end
-  end
-
-  # Parse out `metric_name` and `metric_namespace` for the specified pattern.
-  associated_metric_filter = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: log_group_name)
-  metric_name = associated_metric_filter.metric_name
-  metric_namespace = associated_metric_filter.metric_namespace
-
-  # Ensure aws_cloudwatch_alarm for the specified pattern meets requirements.
-  if associated_metric_filter.exists?
-    describe aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace) do
-      it { should exist }
-      its('alarm_actions') { should_not be_empty }
-    end
-
-    aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace).alarm_actions.each do |sns|
-      describe aws_sns_topic(sns) do
-        it { should exist }
-        its('confirmed_subscription_count') { should cmp >= 1 }
-      end
+  aws_cloudtrail_trails.trail_arns.each do |trail|
+    describe aws_cloudtrail_trail(trail) do
+      its('cloud_watch_logs_log_group_arn') { should_not be_nil }
+      its('delivered_logs_days_ago') { should cmp <= 1 }
     end
   end
 end

@@ -1,44 +1,65 @@
-control 'aws-foundations-cis-1.9' do
-  title 'Ensure IAM password policy requires minimum length of 14 or greater'
-  desc  'Password policies are, in part, used to enforce password complexity requirements. IAM password policies can be used to ensure password are at least a given length. It is recommended that the password policy require a minimum password length 14.'
-  desc  'rationale', 'Setting a password complexity policy increases account resiliency against brute force login attempts.'
-  desc  'check', "Perform the following to ensure the password policy is configured as prescribed:
+# encoding: UTF-8
 
-    Via AWS Console
+control "aws-foundations-cis-1.9" do
+  title "Ensure IAM password policy prevents password reuse "
+  desc "IAM password policies can prevent the reuse of a given password by the same user. It is 
+recommended that the password policy prevent the reuse of passwords. "
+  desc "rationale", "Preventing password reuse increases account resiliency against brute force login 
+attempts. "
+  desc "check", "Perform the following to ensure the password policy is configured as prescribed:
 
-    1. Login to AWS Console (with appropriate permissions to View Identity Access Management Account Settings)
-    2. Go to IAM Service on the AWS Console
-    3. Click on Account Settings on the Left Pane
-    4. Ensure \"Minimum password length\" is set to 14 or greater.
+**From 
+Console:**
 
-    Via CLI
-    ```
-    aws iam get-account-password-policy
-    ```
-    Ensure the output of the above command includes \"MinimumPasswordLength\": 14 (or higher)"
-  desc  'fix', "Perform the following to set the password policy as prescribed:
+1. Login to AWS Console (with appropriate permissions to View Identity 
+Access Management Account Settings)
+2. Go to IAM Service on the AWS Console
+3. Click on 
+Account Settings on the Left Pane
+4. Ensure \"Prevent password reuse\" is checked
+5. Ensure 
+\"Number of passwords to remember\" is set to 24
 
-    Via AWS Console
+**From Command Line:**
+```
+aws iam 
+get-account-password-policy 
+```
+Ensure the output of the above command includes 
+\"PasswordReusePrevention\": 24 "
+  desc "fix", "Perform the following to set the password policy as prescribed:
 
-    1. Login to AWS Console (with appropriate permissions to View Identity Access Management Account Settings)
-    2. Go to IAM Service on the AWS Console
-    3. Click on Account Settings on the Left Pane
-    4. Set \"Minimum password length\" to `14` or greater.
-    5. Click \"Apply password policy\"
+**From 
+Console:**
 
-     Via CLI
-    ```
-     aws iam update-account-password-policy --minimum-password-length 14
-    ```
-    Note: All commands starting with \"aws iam update-account-password-policy\" can be combined into a single command."
+1. Login to AWS Console (with appropriate permissions to View Identity 
+Access Management Account Settings)
+2. Go to IAM Service on the AWS Console
+3. Click on 
+Account Settings on the Left Pane
+4. Check \"Prevent password reuse\"
+5. Set \"Number of 
+passwords to remember\" is set to `24` 
+
+**From Command Line:**
+```
+ aws iam 
+update-account-password-policy --password-reuse-prevention 24
+```
+Note: All 
+commands starting with \"aws iam update-account-password-policy\" can be combined into a 
+single command. "
   impact 0.5
-  tag severity: 'Low'
-  tag nist: ['AC-2']
-  tag cis_controls: 'TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;'
-  tag ref: 'CIS CSC v6.0 #5.7, #16.12'
+  ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#configure-strong-password-policy'
+  tag nist: ['IA-5(1)']
+  tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["5.2"]}
+  ]
 
   describe aws_iam_password_policy do
     it { should exist }
-    its('minimum_password_length') { should cmp >= input('pwd_length') }
+    it { should prevent_password_reuse }
+    its('number_of_passwords_to_remember') { should cmp == 24 }
   end
 end

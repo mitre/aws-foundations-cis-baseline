@@ -1,78 +1,57 @@
-control 'aws-foundations-cis-1.22' do
-  title 'Ensure IAM policies that allow full "*:*" administrative privileges are not created'
-  desc  'IAM policies are the means by which privileges are granted to users, groups, or roles. It is recommended and considered a standard security advice to grant _least privilege_ that is, granting only the permissions required to perform a task. Determine what users need to do and then craft policies for them that let the users perform _only_ those tasks, instead of allowing full administrative privileges.'
-  desc  'rationale', "It's more secure to start with a minimum set of permissions and grant additional permissions as necessary, rather than starting with permissions that are too lenient and then trying to tighten them later.
+# encoding: UTF-8
 
-    Providing full administrative privileges instead of restricting to the minimum set of permissions that the user is required to do exposes the resources to potentially unwanted actions.
+control "aws-foundations-cis-1.22" do
+  title "Ensure access to AWSCloudShellFullAccess is restricted "
+  desc "AWS CloudShell is a convenient way of running CLI commands against AWS services; a managed IAM 
+policy ('AWSCloudShellFullAccess') provides full access to CloudShell, which allows file 
+upload and download capability between a user's local system and the CloudShell 
+environment. Within the CloudShell environment a user has sudo permissions, and can access 
+the internet. So it is feasible to install file transfer software (for example) and move data 
+from CloudShell to external internet servers. "
+  desc "rationale", "Access to this policy should be restricted as it presents a potential channel for data 
+exfiltration by malicious cloud admins that are given full permissions to the service. AWS 
+documentation describes how to create a more restrictive IAM policy which denies file 
+transfer permissions. "
+  desc "check", "**From Console**
+1. Open the IAM console at https://console.aws.amazon.com/iam/
+2. In 
+the left pane, select Policies
+3. Search for and select AWSCloudShellFullAccess
+4. On 
+the Entities attached tab, ensure that there are no entities using this policy
 
-    IAM policies that have a statement with \"Effect\": \"Allow\" with \"Action\": \"\\*\" over \"Resource\": \"\\*\" should be removed."
-  desc  'check', "Perform the following to determine what policies are created:
+**From 
+Command Line**
+1. List IAM policies, filter for the 'AWSCloudShellFullAccess' managed 
+policy, and note the \"Arn\" element value:
+```
+aws iam list-policies --query 
+\"Policies[?PolicyName == 'AWSCloudShellFullAccess']\"
+```
+2. Check if the 
+'AWSCloudShellFullAccess' policy is attached to any role:
+```
+aws iam 
+list-entities-for-policy --policy-arn 
+arn:aws:iam::aws:policy/AWSCloudShellFullAccess
+```
+3. In Output, Ensure 
+PolicyRoles returns empty. 'Example: Example: PolicyRoles: [ ]'
 
-    1. Run the following to get a list of IAM policies:
-    ```
-     aws iam list-policies --output text
-    ```
-    2. For each policy returned, run the following command to determine if any policies is allowing full administrative privileges on the account:
-    ```
-     aws iam get-policy-version --policy-arn
-    \t --version-id
-    ```
-    3. In output ensure policy should not have any Statement block with `\"Effect\": \"Allow\"` and `Action` set to `\"*\"` and `Resource` set to `\"*\"`"
-  desc  'fix', "Using the GUI, perform the following to detach the policy that has full administrative privileges:
+If it does not return 
+empty refer to the remediation below.
 
-    1. Sign in to the AWS Management Console and open the IAM console at [https://console.aws.amazon.com/iam/](https://console.aws.amazon.com/iam/).
-    2. In the navigation pane, click Policies and then search for the policy name found in the audit step.
-    3. Select the policy that needs to be deleted.
-    4. In the policy action menu, select first `Detach`
-    5. Select all Users, Groups, Roles that have this policy attached
-    6. Click `Detach Policy`
-    7. In the policy action menu, select `Detach`
-
-    Using the CLI, perform the following to detach the policy that has full administrative privileges as found in the audit step:
-
-    1\\. Lists all IAM users, groups, and roles that the specified managed policy is attached to.
-    ```
-     aws iam list-entities-for-policy --policy-arn
-    ```
-    2\\. Detach the policy from all IAM Users:
-    ```
-     aws iam detach-user-policy --user-name  --policy-arn
-    ```
-    3\\. Detach the policy from all IAM Groups:
-    ```
-     aws iam detach-group-policy --group-name  --policy-arn
-    ```
-    4\\. Detach the policy from all IAM Roles:
-    ```
-     aws iam detach-role-policy --role-name  --policy-arn
-    ```"
+Note: Keep in mind that other policies may grant 
+access. "
+  desc "fix", "**From Console**
+1. Open the IAM console at https://console.aws.amazon.com/iam/
+2. In 
+the left pane, select Policies
+3. Search for and select AWSCloudShellFullAccess
+4. On 
+the Entities attached tab, for each item, check the box and select Detach "
   impact 0.5
-  tag severity: 'Low'
-  tag gtitle: nil
-  tag gid: nil
-  tag rid: nil
-  tag stig_id: nil
-  tag fix_id: nil
-  tag cci: nil
+  ref 'https://docs.aws.amazon.com/cloudshell/latest/userguide/sec-auth-with-identities.html'
   tag nist: ['AC-6']
-  tag notes: nil
-  tag comment: nil
-  tag cis_controls: 'TITLE:Controlled Use of Administrative Privileges CONTROL:4 DESCRIPTION:Controlled Use of Administrative Privileges;'
-  tag ref: 'http://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html:http://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html:http://docs.aws.amazon.com/cli/latest/reference/iam/index.html#cli-aws-iam'
-
-  attached_policies = aws_iam_policies.where { attachment_count > 0 }.policy_names
-
-  if attached_policies.empty?
-    impact 0.0
-    describe 'Control not applicable since no attached IAM policies were detected' do
-      skip 'Not applicable since no IAM policies were detected as attached to anything within this account.'
-    end
-  else
-    attached_policies.each do |policy|
-      describe "Attached Policies #{policy} allows full '*:*' privileges?" do
-        subject { aws_iam_policy(policy_name: policy) }
-        it { should_not have_statement('Effect' => 'Allow', 'Resource' => '*', 'Action' => '*') }
-      end
-    end
-  end
+  tag severity: "medium "
 end
