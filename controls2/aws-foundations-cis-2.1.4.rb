@@ -169,7 +169,7 @@ Regions globally. The settings might not take effect in all Regions immediately 
 simultaneously, but they eventually propagate to all Regions. "
   impact 0.5
   ref 'https://docs.aws.amazon.com/AmazonS3/latest/user-guide/block-public-access-account.html'
-  tag nist: []
+  tag nist: ['AC-3']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["3.3"]}
