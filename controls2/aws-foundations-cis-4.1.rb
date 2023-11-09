@@ -173,7 +173,7 @@ system - any additional access given should be reviewed for alignment with the o
 limited IAM user intent. "
   impact 0.5
   ref 'https://aws.amazon.com/sns/:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/sns/latest/dg/SubscribeTopic.html'
-  tag nist: ['AU-6','AU-6(1)',AU-7(1)']
+  tag nist: ['AU-6','AU-6(1)','AU-7(1)']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["8.11"]}
