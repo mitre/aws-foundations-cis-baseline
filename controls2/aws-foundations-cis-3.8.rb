@@ -75,9 +75,22 @@ rotation:
 administrator. "
   impact 0.5
   ref 'https://aws.amazon.com/kms/pricing/:https://csrc.nist.gov/publications/detail/sp/800-57-part-1/rev-5/final'
-  tag nist: []
+  tag nist: ['IA-5(1)','SC-28','SC-28(1)']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["3.11"]}
   ]
+
+  aws_kms_keys.key_arns.each do |key|
+    next unless aws_kms_key(key).enabled? && !aws_kms_key(key).managed_by_aws?
+    describe aws_kms_key(key) do
+      it { should have_rotation_enabled }
+    end
+  end
+
+  if aws_kms_keys.key_arns.none? { |key| aws_kms_key(key).enabled? && !aws_kms_key(key).managed_by_aws? }
+    describe 'Control skipped because no enabled kms keys were found' do
+      skip 'This control is skipped since the aws_kms_keys resource returned an empty coustomer managed and enabled kms key list'
+    end
+  end
 end
