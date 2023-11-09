@@ -74,9 +74,22 @@ the `Permissions` tab
 click Detach or Remove (depending on policy type) "
   impact 0.5
   ref 'http://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html:http://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html'
-  tag nist: []
+  tag nist: ['AC-6']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["6.8"]}
   ]
+
+  if aws_iam_users.entries.empty?
+    describe 'Control skipped because no iam users were found' do
+      skip 'This control is skipped since the aws_iam_users resource returned an empty user list'
+    end
+  else
+    aws_iam_users.entries.each do |user|
+      describe aws_iam_user(user_name: user.username) do
+        its('inline_policy_names') { should be_empty }
+        its('attached_policy_names') { should be_empty }
+      end
+    end
+  end
 end
