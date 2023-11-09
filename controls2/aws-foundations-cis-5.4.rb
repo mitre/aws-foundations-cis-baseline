@@ -102,4 +102,7 @@ for each instance to communicate successfully. "
   ref 'https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html:https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security-groups.html#default-security-group'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["3.3"]}
+  ]
 end

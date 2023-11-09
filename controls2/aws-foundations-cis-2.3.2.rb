@@ -105,4 +105,7 @@ upgrades will be applied to the selected RDS instance. "
   ref 'https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_RDS_Managing.html:https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_UpgradeDBInstance.Upgrading.html:https://aws.amazon.com/rds/faqs/'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["7.4"]}
+  ]
 end

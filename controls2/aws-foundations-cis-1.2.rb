@@ -59,4 +59,7 @@ more than one individual. "
   impact 0.5
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["17.2"]}
+  ]
 end

@@ -97,4 +97,7 @@ regions. "
   ref 'https://docs.aws.amazon.com/AmazonS3/latest/user-guide/enable-cloudtrail-events.html'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["8.5"]}
+  ]
 end

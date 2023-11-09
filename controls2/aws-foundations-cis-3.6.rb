@@ -124,4 +124,7 @@ file://<FileName.Json>
   ref 'https://docs.aws.amazon.com/AmazonS3/latest/dev/ServerLogs.html'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["3.14"]}
+  ]
 end

@@ -156,4 +156,7 @@ aws cloudwatch put-metric-alarm --alarm-name `<organizations_changes>`
   ref 'https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/organizations/latest/userguide/orgs_security_incident-response.html'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["8.11"]}
+  ]
 end
