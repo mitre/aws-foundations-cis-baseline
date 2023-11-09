@@ -1,46 +1,103 @@
-control 'aws-foundations-cis-1.19' do
-  title 'Ensure IAM instance roles are used for AWS resource access from instances'
-  desc  'AWS access from within AWS instances can be done by either encoding AWS keys into AWS API calls or by assigning the instance to a role which has an appropriate permissions policy for the required access. "AWS Access" means accessing the APIs of AWS in order to access AWS resources or manage AWS account resources.'
-  desc  'rationale', "AWS IAM roles reduce the risks associated with sharing and rotating credentials that can be used outside of AWS itself. If credentials are compromised, they can be used from outside of the the AWS account they give access to. In contrast, in order to leverage role permissions an attacker would need to gain and maintain access to a specific instance to use the privileges associated with it.
+# encoding: UTF-8
 
-    Additionally, if credentials are encoded into compiled applications or other hard to change mechanisms, then they are even more unlikely to be properly rotated due to service disruption risks. As time goes on, credentials that cannot be rotated are more likely to be known by an increasing number of individuals who no longer work for the organization owning the credentials."
-  desc  'check', "Whether an Instance Is Associated With a Role
+control "aws-foundations-cis-1.19" do
+  title "Ensure that all the expired SSL/TLS certificates stored in AWS IAM are removed "
+  desc "To enable HTTPS connections to your website or application in AWS, you need an SSL/TLS server 
+certificate. You can use ACM or IAM to store and deploy server certificates. 
+Use IAM as a 
+certificate manager only when you must support HTTPS connections in a region that is not 
+supported by ACM. IAM securely encrypts your private keys and stores the encrypted version in 
+IAM SSL certificate storage. IAM supports deploying server certificates in all regions, but 
+you must obtain your certificate from an external provider for use with AWS. You cannot upload 
+an ACM certificate to IAM. Additionally, you cannot manage your certificates from the IAM 
+Console. "
+  desc "rationale", "Removing expired SSL/TLS certificates eliminates the risk that an invalid certificate will 
+be deployed accidentally to a resource such as AWS Elastic Load Balancer (ELB), which can 
+damage the credibility of the application/website behind the ELB. As a best practice, it is 
+recommended to delete expired certificates. "
+  desc "check", "**From Console:**
 
-    For instances that are known to perform AWS actions, ensure that they belong to an instance role that has the necessary permissions:
+Getting the certificates expiration information via AWS Management 
+Console is not currently supported. 
+To request information about the SSL/TLS 
+certificates stored in IAM via the AWS API use the Command Line Interface (CLI).
 
-    1. Login to AWS Console (with appropriate permissions to View Identity Access Management Account Settings)
-    2. Open the EC2 Dashboard and choose \"Instances\"
-    3. Click the EC2 instance that performs AWS actions, in the lower pane details find \"IAM Role\"
-    4. If the Role is blank, the instance is not assigned to one.
-    5. If the Role is filled in, it does not mean the instance might not \\*also\\* have credentials encoded on it for some activities.
+**From 
+Command Line:**
 
-    Whether an Instance Contains Embedded Credentials
+Run list-server-certificates command to list all the IAM-stored 
+server certificates:
 
-    On the instance that is known to perform AWS actions, audit all scripts and environment variables to ensure that none of them contain AWS credentials.
+```
+aws iam list-server-certificates
+```
 
-    Whether an Instance Application Contains Embedded Credentials
+The command 
+output should return an array that contains all the SSL/TLS certificates currently stored in 
+IAM and their metadata (name, ID, expiration date, etc):
 
-    Applications that run on an instance may also have credentials embedded. This is a bad practice, but even worse if the source code is stored in a public code repository such as github. When an application contains credentials can be determined by eliminating all other sources of credentials and if the application can still access AWS resources - it likely contains embedded credentials. Another method is to examine all source code and configuration files of the application."
-  desc  'fix', "IAM roles can only be associated at the launch of an instance. To remediate an instance to add it to a role you must create a new instance.
+```
+{
+ 
+\"ServerCertificateMetadataList\": [
+ {
+ \"ServerCertificateId\": 
+\"EHDGFRW7EJFYTE88D\",
+ \"ServerCertificateName\": \"MyServerCertificate\",
+ 
+\"Expiration\": \"2018-07-10T23:59:59Z\",
+ \"Path\": \"/\",
+ \"Arn\": 
+\"arn:aws:iam::012345678910:server-certificate/MySSLCertificate\",
+ \"UploadDate\": 
+\"2018-06-10T11:56:08Z\"
+ }
+ ]
+}
+```
 
-    If the instance has no external dependencies on its current private ip or public addresses are elastic IPs:
+Verify the `ServerCertificateName` and 
+`Expiration` parameter value (expiration date) for each SSL/TLS certificate returned by 
+the list-server-certificates command and determine if there are any expired server 
+certificates currently stored in AWS IAM. If so, use the AWS API to remove them.
 
-    1. In AWS IAM create a new role. Assign a permissions policy if needed permissions are already known.
-    2. In the AWS console launch a new instance with identical settings to the existing instance, and ensure that the newly created role is selected.
-    3. Shutdown both the existing instance and the new instance.
-    4. Detach disks from both instances.
-    5. Attach the existing instance disks to the new instance.
-    6. Boot the new instance and you should have the same machine, but with the associated role.
+If this 
+command returns:
+```
+{ { \"ServerCertificateMetadataList\": [] }
+```
+This means that 
+there are no expired certificates, It DOES NOT mean that no certificates exist. "
+  desc "fix", "**From Console:**
 
-    Note: if your environment has dependencies on a dynamically assigned PRIVATE IP address you can create an AMI from the existing instance, destroy the old one and then when launching from the AMI, manually assign the previous private IP address.
+Removing expired certificates via AWS Management Console is not 
+currently supported. To delete SSL/TLS certificates stored in IAM via the AWS API use the 
+Command Line Interface (CLI).
 
-    Note: if your environment has dependencies on a dynamically assigned PUBLIC IP address there is not a way ensure the address is retained and assign an instance role. Dependencies on dynamically assigned public IP addresses are a bad practice and, if possible, you may wish to rebuild the instance with a new elastic IP address and make the investment to remediate affected systems while assigning the system to a role."
+**From Command Line:**
+
+To delete Expired 
+Certificate run following command by replacing <CERTIFICATE_NAME> with the name of the 
+certificate to delete:
+
+```
+aws iam delete-server-certificate 
+--server-certificate-name <CERTIFICATE_NAME>
+```
+
+When the preceding command is 
+successful, it does not return any output. "
+  desc "impact", "Deleting the certificate could have implications for your application if you are using an 
+expired server certificate with Elastic Load Balancing, CloudFront, etc.
+One has to make 
+configurations at respective services to ensure there is no interruption in application 
+functionality. "
+  desc "default_value", "By default, expired certificates won't get deleted. "
   impact 0.5
-  tag severity: 'Medium'
-  tag nist: ['IR-1']
-  tag ref: 'http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html:http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html:CIS CSC v6.0 #16.14 (someone please check the applicability of this for me)'
-
-  describe 'Control has to be tested manually' do
-    skip 'This control must be manually reviewed'
-  end
+  ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_server-certs.html:https://docs.aws.amazon.com/cli/latest/reference/iam/delete-server-certificate.html'
+  tag nist: ['SI-12']
+  tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["3.1"]}
+  ]
 end

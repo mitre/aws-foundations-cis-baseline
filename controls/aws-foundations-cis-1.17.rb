@@ -1,41 +1,90 @@
-control 'aws-foundations-cis-1.17' do
-  title 'Maintain current contact details'
-  desc  "Ensure contact email and telephone details for AWS accounts are current and map to more than one individual in your organisation.
+# encoding: UTF-8
 
-    An AWS account supports a number of contact details, and AWS will use these to contact the account owner if activity judged to be in breach of Acceptable Use Policy or indicative of likely security compromise is observed by the AWS Abuse team. Contact details should not be for a single individual, as circumstances may arise where that individual is unavailable. Email contact details should point to a mail alias which forwards email to multiple individuals within the organisation; where feasible, phone contact details should point to a PABX hunt group or other call-forwarding system."
-  desc  'rationale', 'If an AWS account is observed to be behaving in a prohibited or suspicious manner, AWS will attempt to contact the account owner by email and phone using the contact details listed. If this is unsuccessful and the account behaviour needs urgent mitigation, proactive measures may be taken, including throttling of traffic between the account exhibiting suspicious behaviour and the AWS API endpoints and the Internet. This will result in impaired service to and from the account in question, so it is in both the customers and AWS best interests that prompt contact can be established. This is best achieved by setting AWS account contact details to point to resources which have multiple individuals as recipients, such as email aliases and PABX hunt groups.'
-  desc  'check', "This activity can only be performed via the AWS Console, with a user who has permission to read and write Billing information (aws-portal:*Billing ).
+control "aws-foundations-cis-1.17" do
+  title "Ensure a support role has been created to manage incidents with AWS Support "
+  desc "AWS provides a support center that can be used for incident notification and response, as well 
+as technical support and customer services. Create an IAM Role, with the appropriate policy 
+assigned, to allow authorized users to manage incidents with AWS Support. "
+  desc "rationale", "By implementing least privilege for access control, an IAM Role will require an appropriate 
+IAM Policy to allow Support Center Access in order to manage Incidents with AWS Support. "
+  desc "check", "**From Command Line:**
 
-    - Sign in to the AWS Management Console and open the Billing and Cost Management console at https://console.aws.amazon.com/billing/home#/.
-    - On the navigation bar, choose your account name, and then choose My Account.
-    - On the Account Settings page, review and verify the current details.
-    - Under Contact Information, review and verify the current details."
-  desc  'fix', "This activity can only be performed via the AWS Console, with a user who has permission to read and write Billing information (aws-portal:*Billing ).
+1. List IAM policies, filter for the 'AWSSupportAccess' managed 
+policy, and note the \"Arn\" element value:
+```
+aws iam list-policies --query 
+\"Policies[?PolicyName == 'AWSSupportAccess']\"
+```
+2. Check if the 
+'AWSSupportAccess' policy is attached to any role:
 
-    - Sign in to the AWS Management Console and open the Billing and Cost Management console at https://console.aws.amazon.com/billing/home#/.
-    - On the navigation bar, choose your account name, and then choose My Account.
-    - On the Account Settings page, next to Account Settings, choose Edit.
-    - Next to the field that you need to update, choose Edit.
-    - After you have entered your changes, choose Save changes.
-    - After you have made your changes, choose Done.
-    - To edit your contact information, under Contact Information, choose Edit.
-    - For the fields that you want to change, type your updated information, and then choose Update."
+```
+aws iam 
+list-entities-for-policy --policy-arn 
+arn:aws:iam::aws:policy/AWSSupportAccess
+```
+
+3. In Output, Ensure `PolicyRoles` 
+does not return empty. 'Example: Example: PolicyRoles: [ ]'
+
+If it returns empty refer to 
+the remediation below. "
+  desc "fix", "**From Command Line:**
+
+1. Create an IAM role for managing incidents with AWS:
+ - Create a 
+trust relationship policy document that allows <iam_user> to manage AWS incidents, and save 
+it locally as /tmp/TrustPolicy.json:
+```
+ {
+ \"Version\": \"2012-10-17\",
+ 
+\"Statement\": [
+ {
+ \"Effect\": \"Allow\",
+ \"Principal\": {
+ \"AWS\": \"<iam_user>\"
+ },
+ 
+\"Action\": \"sts:AssumeRole\"
+ }
+ ]
+ }
+```
+2. Create the IAM role using the above trust 
+policy:
+```
+aws iam create-role --role-name <aws_support_iam_role> 
+--assume-role-policy-document file:///tmp/TrustPolicy.json
+```
+3. Attach 
+'AWSSupportAccess' managed policy to the created IAM role:
+```
+aws iam 
+attach-role-policy --policy-arn arn:aws:iam::aws:policy/AWSSupportAccess 
+--role-name <aws_support_iam_role>
+``` "
+  desc "additional_information", "AWSSupportAccess policy is a global AWS resource. It has same ARN as 
+`arn:aws:iam::aws:policy/AWSSupportAccess` for every account. "
+  desc "impact", "All AWS Support plans include an unlimited number of account and billing support cases, with 
+no long-term contracts. Support billing calculations are performed on a per-account basis 
+for all plans. Enterprise Support plan customers have the option to include multiple enabled 
+accounts in an aggregated monthly billing calculation. Monthly charges for the Business and 
+Enterprise support plans are based on each month's AWS usage charges, subject to a monthly 
+minimum, billed in advance.
+
+When assigning rights, keep in mind that other policies may 
+grant access to Support as well. This may include AdministratorAccess and other policies 
+including customer managed policies. "
   impact 0.5
-  tag severity: 'Low'
-  tag nist: ['AU-3']
-  tag cis_controls: 'TITLE:Enable Detailed Logging CONTROL:6.3 DESCRIPTION:Enable system logging to include detailed information such as a event source, date, user, timestamp, source addresses, destination addresses, and other useful elements.;'
-  tag ref: 'https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/manage-account-payment.html#contact-info'
+  ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html:https://aws.amazon.com/premiumsupport/pricing/:https://docs.aws.amazon.com/cli/latest/reference/iam/list-policies.html:https://docs.aws.amazon.com/cli/latest/reference/iam/attach-role-policy.html:https://docs.aws.amazon.com/cli/latest/reference/iam/list-entities-for-policy.html'
+  tag nist: ['IR-7']
+  tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["17.1"]}
+  ]
 
-  describe 'The Account Settings page must be tested manually' do
-    skip 'The Account Settings page must be manually reviewed'
-  end
-
-  contact_info = aws_account.contact_information
-  describe contact_info do
-    if contact_info
-      it { should cmp input('contact_information') }
-    else
-      skip 'The Contact Information page must be manually reviewed'
-    end
+  describe aws_iam_policy(policy_name: 'AWSSupportAccess') do
+    it { should be_attached }
   end
 end

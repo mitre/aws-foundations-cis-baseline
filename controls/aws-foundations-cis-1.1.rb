@@ -1,75 +1,74 @@
-control 'aws-foundations-cis-1.1' do
-  title 'Avoid the use of the "root" account'
-  desc  'The "root" account has unrestricted access to all resources in the AWS account. It is highly recommended that the use of this account be avoided.'
-  desc  'rationale', 'The "root" account is the most privileged AWS account. Minimizing the use of this account and adopting the principle of least privilege for access management will reduce the risk of accidental changes and unintended disclosure of highly privileged credentials.'
-  desc  'check', "Implement the `Ensure a log metric filter and alarm exist for usage of \"root\" account` recommendation in the `Monitoring` section of this benchmark to receive notifications of root account usage. Additionally, executing the following commands will provide ad-hoc means for determining the last time the root account was used:
-    ```
-    aws iam generate-credential-report
-    ```
-    ```
-    aws iam get-credential-report --query 'Content' --output text | base64 -d | cut -d, -f1,5,11,16 | grep -B1 ''
-    ```
-    Note: there are a few conditions under which the use of the root account is required, such as requesting a penetration test or creating a CloudFront private key."
-  desc  'fix', 'Follow the remediation instructions of the `Ensure IAM policies are attached only to groups or roles` recommendation'
+# encoding: UTF-8
+
+control "aws-foundations-cis-1.1" do
+  title "Maintain current contact details "
+  desc "Ensure contact email and telephone details for AWS accounts are current and map to more than 
+one individual in your organization.
+
+An AWS account supports a number of contact 
+details, and AWS will use these to contact the account owner if activity judged to be in breach 
+of Acceptable Use Policy or indicative of likely security compromise is observed by the AWS 
+Abuse team. Contact details should not be for a single individual, as circumstances may arise 
+where that individual is unavailable. Email contact details should point to a mail alias 
+which forwards email to multiple individuals within the organization; where feasible, 
+phone contact details should point to a PABX hunt group or other call-forwarding system. "
+  desc "rationale", "If an AWS account is observed to be behaving in a prohibited or suspicious manner, AWS will 
+attempt to contact the account owner by email and phone using the contact details listed. If 
+this is unsuccessful and the account behavior needs urgent mitigation, proactive measures 
+may be taken, including throttling of traffic between the account exhibiting suspicious 
+behavior and the AWS API endpoints and the Internet. This will result in impaired service to 
+and from the account in question, so it is in both the customers' and AWS' best interests that 
+prompt contact can be established. This is best achieved by setting AWS account contact 
+details to point to resources which have multiple individuals as recipients, such as email 
+aliases and PABX hunt groups. "
+  desc "check", "This activity can only be performed via the AWS Console, with a user who has permission to read 
+and write Billing information (aws-portal:\\*Billing )
+
+1. Sign in to the AWS Management 
+Console and open the `Billing and Cost Management` console at 
+https://console.aws.amazon.com/billing/home#/.
+2. On the navigation bar, choose your 
+account name, and then choose `Account`.
+3. On the `Account Settings` page, review and 
+verify the current details.
+4. Under `Contact Information`, review and verify the current 
+details. "
+  desc "fix", "This activity can only be performed via the AWS Console, with a user who has permission to read 
+and write Billing information (aws-portal:\\*Billing ).
+
+1. Sign in to the AWS Management 
+Console and open the `Billing and Cost Management` console at 
+https://console.aws.amazon.com/billing/home#/.
+2. On the navigation bar, choose your 
+account name, and then choose `Account`.
+3. On the `Account Settings` page, next to 
+`Account Settings`, choose `Edit`.
+4. Next to the field that you need to update, choose 
+`Edit`.
+5. After you have entered your changes, choose `Save changes`.
+6. After you have 
+made your changes, choose `Done`.
+7. To edit your contact information, under `Contact 
+Information`, choose `Edit`.
+8. For the fields that you want to change, type your updated 
+information, and then choose `Update`. "
   impact 0.5
-  tag severity: 'Low'
-  tag nist: ['AC-6(9)']
-  tag cis_controls: 'TITLE:Ensure the Use of Dedicated Administrative Accounts CONTROL:4.3 DESCRIPTION:Ensure that all users with administrative account access use a dedicated or secondary account for elevated activities. This account should only be used for administrative activities and not internet browsing, email, or similar activities.;'
-  tag ref: 'http://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html:CIS CSC v6.0 #5.1'
-
-  pattern = '{ $.userIdentity.type = "Root" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != "AwsServiceEvent" }'
-  metric_filter = aws_cloudwatch_log_metric_filter(pattern: pattern)
-
-  describe 'The metric filter' do
-    subject { metric_filter }
-    it 'should exist.' do
-      failure_message = "A metric filter with pattern '#{pattern}' should exist in CloudWatch."
-      expect(subject).to exist, failure_message
-    end
+  ref 'https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/manage-account-payment.html#contact-info'
+  tag nist: ['IR-6']
+  tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["17.2"]}
+  ]
+  describe 'The Account Settings page must be tested manually' do
+    skip 'The Account Settings page must be manually reviewed'
   end
 
-  if metric_filter.exists?
-    # Find the log_group_name associated with the aws_cloudwatch_log_metric_filter that has the pattern
-    log_group_name = aws_cloudwatch_log_metric_filter(pattern: pattern).log_group_name
-
-    # Find cloudtrails associated with with `log_group_name` parsed above
-    associated_trails = aws_cloudtrail_trails.names.select { |x| aws_cloudtrail_trail(x).cloud_watch_logs_log_group_arn =~ /log-group:#{log_group_name}:/ }
-
-    # Ensure log_group is associated atleast one cloudtrail
-    describe "Cloudtrails associated with log-group: #{log_group_name}" do
-      subject { associated_trails }
-      it { should_not be_empty }
-    end
-
-    # Ensure atleast one of the associated cloudtrail meet the requirements.
-    describe.one do
-      associated_trails.each do |trail|
-        describe aws_cloudtrail_trail(trail) do
-          it { should be_multi_region_trail }
-          it { should have_event_selector_mgmt_events_rw_type_all }
-          it { should be_logging }
-        end
-      end
-    end
-
-    # Parse out `metric_name` and `metric_namespace` for the specified pattern.
-    associated_metric_filter = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: log_group_name)
-    metric_name = associated_metric_filter.metric_name
-    metric_namespace = associated_metric_filter.metric_namespace
-
-    # Ensure aws_cloudwatch_alarm for the specified pattern meets requirements.
-    if associated_metric_filter.exists?
-      describe aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace) do
-        it { should exist }
-        its('alarm_actions') { should_not be_empty }
-      end
-
-      aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace).alarm_actions.each do |sns|
-        describe aws_sns_topic(sns) do
-          it { should exist }
-          its('confirmed_subscription_count') { should cmp >= 1 }
-        end
-      end
+  contact_info = aws_account.contact_information
+  describe contact_info do
+    if contact_info
+      it { should cmp input('contact_information') }
+    else
+      skip 'The Contact Information page must be manually reviewed'
     end
   end
 end

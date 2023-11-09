@@ -1,81 +1,62 @@
-control 'aws-foundations-cis-1.21' do
-  title 'Do not setup access keys during initial user setup for all IAM users that have a console password'
-  desc  'AWS console defaults the checkbox for creating access keys to enabled. This results in many access keys being generated unnecessarily. In addition to unnecessary credentials, it also generates unnecessary management work in auditing and rotating these keys.'
-  desc  'rationale', "Requiring that additional steps be taken by the user after their profile has been created will give a stronger indication of intent that access keys are [a] necessary for their work and [b] once the access key is established on an account, that the keys may be in use somewhere in the organization.
+# encoding: UTF-8
 
-    **Note**: Even if it is known the user will need access keys, require them to create the keys themselves or put in a support ticket to have the created as a separate step from user creation."
-  desc  'check', "Perform the following to determine if access keys are rotated as prescribed:
+control "aws-foundations-cis-1.21" do
+  title "Ensure IAM users are managed centrally via identity federation or AWS Organizations for 
+multi-account environments "
+  desc "In multi-account environments, IAM user centralization facilitates greater user control. 
+User access beyond the initial account is then provided via role assumption. Centralization 
+of users can be accomplished through federation with an external identity provider or 
+through the use of AWS Organizations. "
+  desc "rationale", "Centralizing IAM user management to a single identity store reduces complexity and thus the 
+likelihood of access management errors. "
+  desc "check", "For multi-account AWS environments with an external identity provider... 
 
-    1. Login to the AWS Management Console
-    2. Click `Services`
-    3. Click `IAM`
-    4. Click onA User
-    5. Compare the user creation date to the key 1 creation date.
-    6. For any that match, the key was created during initial user setup.
+1. Determine 
+the master account for identity federation or IAM user management
+2. Login to that account 
+through the AWS Management Console
+3. Click `Services` 
+4. Click `IAM` 
+5. Click 
+`Identity providers`
+6. Verify the configuration
 
-    - - Keys that were created at the same time as the user profile and do not have a last used date should be deleted.
+Then..., determine all accounts 
+that should not have local users present. For each account...
 
-    Via the CLI
+1. Determine all accounts 
+that should not have local users present
+2. Log into the AWS Management Console
+3. Switch 
+role into each identified account
+4. Click `Services` 
+5. Click `IAM` 
+6. Click 
+`Users`
+7. Confirm that no IAM users representing individuals are present
 
-    1. Run the following command (OSX/Linux/UNIX) to generate a list of all IAM users along with their access keys utilization:
-    ```
-     aws iam generate-credential-report
-    ```
-    ```
-     aws iam get-credential-report --query 'Content' --output text | base64 -d | cut -d, -f1,4,9,11,14,16
-    ```
-    2. The output of this command will produce a table similar to the following:
-    ```
-  user,password_enabled,access_key_1_active,access_key_1_last_used_date,access_key_2_active,access_key_2_last_used_date
-     elise,false,true,2015-04-16T15:14:00+00:00,false,N/A
-     brandon,true,true,N/A,false,N/A
-     rakesh,false,false,N/A,false,N/A
-     helene,false,true,2015-11-18T17:47:00+00:00,false,N/A
-     paras,true,true,2016-08-28T12:04:00+00:00,true,2016-03-04T10:11:00+00:00
-     anitha,true,true,2016-06-08T11:43:00+00:00,true,N/A
-    ```
-    3. For any user having `access_key_last_used_date` set to `N/A` , ensure that access key is deleted `.`"
-  desc 'fix', "Perform the following to delete access keys that do not pass the audit:
+For 
+multi-account AWS environments implementing AWS Organizations without an external 
+identity provider... 
 
-    1. Login to the AWS Management Console:
-    2. Click `Services`
-    3. Click `IAM`
-    4. Click on `Users`
-    5. Click on `Security Credentials`
-    6. As an Administrator
-     - Click on `Delete` for keys that were created at the same time as the user profile but have not been used.
-    7. As an IAM User
-     - Click on `Delete` for keys that were created at the same time as the user profile but have not been used.
-
-    Via CLI
-    ```
-    aws iam delete-access-key
-    ```"
+1. Determine all accounts that should not have local users 
+present
+2. Log into the AWS Management Console
+3. Switch role into each identified 
+account
+4. Click `Services` 
+5. Click `IAM` 
+6. Click `Users`
+7. Confirm that no IAM 
+users representing individuals are present "
+  desc "fix", "The remediation procedure will vary based on the individual organization's implementation 
+of identity federation and/or AWS Organizations with the acceptance criteria that no 
+non-service IAM users, and non-root accounts, are present outside the account providing 
+centralized IAM user management. "
   impact 0.5
-  tag severity: 'Low'
-  tag gtitle: nil
-  tag gid: nil
-  tag rid: nil
-  tag stig_id: nil
-  tag fix_id: nil
-  tag cci: nil
-  tag nist: ['AC-2']
-  tag notes: nil
-  tag comment: nil
-  tag cis_controls: 'TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;'
-
-  if aws_iam_access_keys.where(active: true).entries.empty?
-    describe 'Control skipped because no iam access keys were found' do
-      skip 'This control is skipped since the aws_iam_access_keys resource returned an empty access key list'
-    end
-  else
-    aws_iam_access_keys.where(active: true).entries.each do |key|
-      describe key.username do
-        context key do
-          its('last_used_days_ago') { should_not be_nil }
-          its('created_with_user') { should be false }
-        end
-      end
-    end
-  end
+  tag nist: ['AC-2(1)']
+  tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["5.6"]}
+  ]
 end

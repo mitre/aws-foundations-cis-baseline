@@ -1,96 +1,75 @@
-control 'aws-foundations-cis-1.4' do
-  title 'Ensure access keys are rotated every 90 days or less'
-  desc  'Access keys consist of an access key ID and secret access key, which are used to sign programmatic requests that you make to AWS. AWS users need their own access keys to make programmatic calls to AWS from the AWS Command Line Interface (AWS CLI), Tools for Windows PowerShell, the AWS SDKs, or direct HTTP calls using the APIs for individual AWS services. It is recommended that all access keys be regularly rotated.'
-  desc  'rationale', "Rotating access keys will reduce the window of opportunity for an access key that is associated with a compromised or terminated account to be used.
+# encoding: UTF-8
 
-    Access keys should be rotated to ensure that data cannot be accessed with an old key which might have been lost, cracked, or stolen."
-  desc  'check', "Perform the following to determine if access keys are rotated as prescribed:
+control "aws-foundations-cis-1.4" do
+  title "Ensure no 'root' user account access key exists "
+  desc "The 'root' user account is the most privileged user in an AWS account. AWS Access Keys provide 
+programmatic access to a given AWS account. It is recommended that all access keys associated 
+with the 'root' user account be deleted. "
+  desc "rationale", "Deleting access keys associated with the 'root' user account limits vectors by which the 
+account can be compromised. Additionally, deleting the 'root' access keys encourages the 
+creation and use of role based accounts that are least privileged. "
+  desc "check", "Perform the following to determine if the 'root' user account has access keys:
 
-    1. Login to the AWS Management Console
-    2. Click `Services`
-    3. Click `IAM`
-    4. Click on `Credential Report`
-    5. This will download an `.xls` file which contains Access Key usage for all IAM users within an AWS Account - open this file
-    6. Focus on the following columns (where x = 1 or 2)
-     - `access_key_X_active`
-     - `access_key_X_last_rotated`
-    7. Ensure all active keys have been rotated within `90` days
+**From 
+Console:**
 
-    Via CLI
-    ```
-    aws iam generate-credential-report
-    aws iam get-credential-report --query 'Content' --output text | base64 -d
-    ```"
-  desc  'fix', "Perform the following to rotate access keys:
+1. Login to the AWS Management Console.
+2. Click `Services`.
+3. Click 
+`IAM`.
+4. Click on `Credential Report`.
+5. This will download a `.csv` file which 
+contains credential usage for all IAM users within an AWS Account - open this file.
+6. For the 
+`<root_account>` user, ensure the `access_key_1_active` and `access_key_2_active` 
+fields are set to `FALSE`.
 
-    1. Login to the AWS Management Console:
-    2. Click `Services`
-    3. Click `IAM`
-    4. Click on `Users`
-    5. Click on `Security Credentials`
-    6. As an Administrator
-     - Click on `Make Inactive` for keys that have not been rotated in `90` Days
-    7. As an IAM User
-     - Click on `Make` `Inactive` or `Delete` for keys which have not been rotated or used in `90` Days
-    8. Click on `` Create Access ` Key`
-    9. Update programmatic call with new Access Key credentials
+**From Command Line:**
 
-    Via CLI
-    ```
-    aws iam update-access-key
-    aws iam create-access-key
-    aws iam delete-access-key
-    ```"
+Run the following 
+command:
+```
+aws iam get-account-summary | grep \"AccountAccessKeysPresent\" 
+
+```
+If no 'root' access keys exist the output will show `\"AccountAccessKeysPresent\": 
+0,`. 
+
+If the output shows a \"1\", then 'root' keys exist and should be deleted. "
+  desc "fix", "Perform the following to delete active 'root' user access keys.
+
+**From 
+Console:**
+
+1. Sign in to the AWS Management Console as 'root' and open the IAM console at 
+[https://console.aws.amazon.com/iam/](https://console.aws.amazon.com/iam/).
+2. 
+Click on `<root_account>` at the top right and select `My Security Credentials` from the drop 
+down list.
+3. On the pop out screen Click on `Continue to Security Credentials`.
+4. Click 
+on `Access Keys` (Access Key ID and Secret Access Key).
+5. Under the `Status` column (if 
+there are any Keys which are active).
+6. Click `Delete` (Note: Deleted keys cannot be 
+recovered).
+
+Note: While a key can be made inactive, this inactive key will still show up in 
+the CLI command from the audit procedure, and may lead to a key being falsely flagged as being 
+non-compliant. "
+  desc "additional_information", "IAM User account \"root\" for us-gov cloud regions is not enabled by default. However, on 
+request to AWS support enables 'root' access only through access-keys (CLI, API methods) for 
+us-gov cloud region. "
   impact 0.5
-  tag severity: 'Low'
-  tag nist: ['AC-2']
-  tag cis_controls: 'TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;'
-
-  aws_iam_credential_report.where(access_key_1_active: false).entries.each do |user|
-    describe "Access key 1 disabled for user (#{user.user})" do
-      skip "Test not applicable since user's (#{user.user}) access key 1 is disabled"
-    end
-  end
-
-  aws_iam_credential_report.where(access_key_1_active: true).entries.each do |user|
-    describe "The user (#{user.user})" do
-      if user.access_key_1_last_used_date.is_a? DateTime
-        subject { ((Time.current - user.access_key_1_last_used_date) / (24 * 60 * 60)).to_i }
-        it 'must have used access key 1 within the last 90 days.' do
-          expect(subject).to be < 90
-        end
-      elsif user.access_key_1_last_rotated.is_a? DateTime
-        subject { ((Time.current - user.access_key_1_last_rotated) / (24 * 60 * 60)).to_i }
-        it 'must have rotated access key 1 within the last 90 days if they have not used it within the last 90 days.' do
-          expect(subject).to be < 90
-        end
-      else
-        RSpec::Expectatations.fail_with('must have rotated access key 1 within the last 90 days if they have not used it within the last 90 days.')
-      end
-    end
-  end
-
-  aws_iam_credential_report.where(access_key_2_active: false).entries.each do |user|
-    describe "Access key 2 disabled for user (#{user.user})" do
-      skip "Test not applicable since user's (#{user.user}) access key 2 is disabled"
-    end
-  end
-
-  aws_iam_credential_report.where(access_key_2_active: true).entries.each do |user|
-    describe "The user (#{user.user})" do
-      if user.access_key_2_last_used_date.is_a? DateTime
-        subject { ((Time.current - user.access_key_2_last_used_date) / (24 * 60 * 60)).to_i }
-        it 'must have used access key 2 within the last 90 days.' do
-          expect(subject).to be < 90
-        end
-      elsif user.access_key_2_last_rotated.is_a? DateTime
-        subject { ((Time.current - user.access_key_2_last_rotated) / (24 * 60 * 60)).to_i }
-        it 'must have rotated access key 2 within the last 90 days if they have not used it within the last 90 days.' do
-          expect(subject).to be < 90
-        end
-      else
-        RSpec::Expectatations.fail_with('must have rotated access key 2 within the last 90 days if they have not used it within the last 90 days.')
-      end
-    end
+  ref 'http://docs.aws.amazon.com/general/latest/gr/aws-access-keys-best-practices.html:http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html:http://docs.aws.amazon.com/IAM/latest/APIReference/API_GetAccountSummary.html:https://aws.amazon.com/blogs/security/an-easier-way-to-determine-the-presence-of-aws-account-access-keys/'
+  tag nist: ['AC-6']
+  tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["3.3"]}
+  ]
+  describe 'The root account should not have active access keys.' do
+    subject { aws_iam_credential_report.where(user: '<root_account>').entries.first }
+    its('access_key_1_active') { should eq false }
+    its('access_key_2_active') { should eq false }
   end
 end

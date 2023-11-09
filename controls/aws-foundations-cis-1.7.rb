@@ -1,43 +1,72 @@
-control 'aws-foundations-cis-1.7' do
-  title 'Ensure IAM password policy require at least one symbol'
-  desc  'Password policies are, in part, used to enforce password complexity requirements. IAM password policies can be used to ensure password are comprised of different character sets. It is recommended that the password policy require at least one symbol.'
-  desc  'rationale', 'Setting a password complexity policy increases account resiliency against brute force login attempts.'
-  desc  'check', "Perform the following to ensure the password policy is configured as prescribed:
+# encoding: UTF-8
 
-    Via AWS Console
+control "aws-foundations-cis-1.7" do
+  title "Eliminate use of the 'root' user for administrative and daily tasks "
+  desc "With the creation of an AWS account, a 'root user' is created that cannot be disabled or 
+deleted. That user has unrestricted access to and control over all resources in the AWS 
+account. It is highly recommended that the use of this account be avoided for everyday tasks. "
+  desc "rationale", "The 'root user' has unrestricted access to and control over all account resources. Use of it is 
+inconsistent with the principles of least privilege and separation of duties, and can lead to 
+unnecessary harm due to error or account compromise. "
+  desc "check", "**From Console:**
 
-    1. Login to AWS Console (with appropriate permissions to View Identity Access Management Account Settings)
-    2. Go to IAM Service on the AWS Console
-    3. Click on Account Settings on the Left Pane
-    4. Ensure \"Require at least one non-alphanumeric character\" is checked under \"Password Policy\"
+1. Login to the AWS Management Console at 
+`https://console.aws.amazon.com/iam/`
+2. In the left pane, click `Credential 
+Report`
+3. Click on `Download Report`
+4. Open of Save the file locally
+5. Locate the 
+`<root account>` under the user column
+6. Review `password_last_used, 
+access_key_1_last_used_date, access_key_2_last_used_date` to determine when the 'root 
+user' was last used.
 
-    Via CLI
-    ```
-    aws iam get-account-password-policy
-    ```
-    Ensure the output of the above command includes \"RequireSymbols\": true"
-  desc  'fix', "Perform the following to set the password policy as prescribed:
+**From Command Line:**
 
-    Via AWS Console
+Run the following CLI commands to 
+provide a credential report for determining the last time the 'root user' was 
+used:
+```
+aws iam generate-credential-report
+```
+```
+aws iam 
+get-credential-report --query 'Content' --output text | base64 -d | cut -d, -f1,5,11,16 | 
+grep -B1 '<root_account>'
+```
 
-    1. Login to AWS Console (with appropriate permissions to View Identity Access Management Account Settings)
-    2. Go to IAM Service on the AWS Console
-    3. Click on Account Settings on the Left Pane
-    4. Check \"Require at least one non-alphanumeric character\"
-    5. Click \"Apply password policy\"
+Review `password_last_used`, 
+`access_key_1_last_used_date`, `access_key_2_last_used_date` to determine when the 
+_root user_ was last used.
 
-     Via CLI
-    ```
-     aws iam update-account-password-policy --require-symbols
-    ```
-    Note: All commands starting with \"aws iam update-account-password-policy\" can be combined into a single command."
+**Note:** There are a few conditions under which the use of the 
+'root' user account is required. Please see the reference links for all of the tasks that 
+require use of the 'root' user. "
+  desc "fix", "If you find that the 'root' user account is being used for daily activity to include 
+administrative tasks that do not require the 'root' user:
+
+1. Change the 'root' user 
+password.
+2. Deactivate or delete any access keys associate with the 'root' 
+user.
+
+**Remember, anyone who has 'root' user credentials for your AWS account has 
+unrestricted access to and control of all the resources in your account, including billing 
+information. "
+  desc "additional_information", "The 'root' user for us-gov cloud regions is not enabled by default. However, on request to AWS 
+support, they can enable the 'root' user and grant access only through access-keys (CLI, API 
+methods) for us-gov cloud region. If the 'root' user for us-gov cloud regions is enabled, this 
+recommendation is applicable.
+
+Monitoring usage of the 'root' user can be accomplished 
+by implementing recommendation 3.3 Ensure a log metric filter and alarm exist for usage of the 
+'root' user. "
   impact 0.5
-  tag severity: 'Low'
-  tag nist: ['AC-2']
-  tag cis_controls: 'TITLE:Account Monitoring and Control CONTROL:16 DESCRIPTION:Account Monitoring and Control;'
-
-  describe aws_iam_password_policy do
-    it { should exist }
-    it { should require_symbols }
-  end
+  ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html:https://docs.aws.amazon.com/general/latest/gr/aws_tasks-that-require-root.html'
+  tag nist: ['AC-6(2)','AC-6(5)']
+  tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["5.4"]}
+  ]
 end

@@ -1,126 +1,171 @@
-control 'aws-foundations-cis-3.5' do
-  title 'Ensure a log metric filter and alarm exist for CloudTrail configuration changes'
-  desc  "Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch Logs and establishing corresponding metric filters and alarms. It is recommended that a metric filter and alarm be established for detecting changes to CloudTrail's configurations."
-  desc  'rationale', "Monitoring changes to CloudTrail's configuration will help ensure sustained visibility to activities performed in the AWS account."
-  desc  'check', "Perform the following to ensure that there is at least one active multi-region CloudTrail with prescribed metric filters and alarms configured:
-    1. Identify the log group name configured for use with active multi-region CloudTrail:
-    - List all CloudTrails:
-    `aws cloudtrail describe-trails`
-    - Identify Multi region Cloudtrails: `Trails with \"IsMultiRegionTrail\" set to true`
-    - From value associated with CloudWatchLogsLogGroupArn note ``
-    Example: for CloudWatchLogsLogGroupArn that looks like `arn:aws:logs:::log-group:NewGroup:*`, `` would be `NewGroup`
-    - Ensure Identified Multi region CloudTrail is active
-    `aws cloudtrail get-trail-status --name `
-    ensure `IsLogging` is set to `TRUE`
-    - Ensure identified Multi-region Cloudtrail captures all Management Events
-    `aws cloudtrail get-event-selectors --trail-name
-    `
-    Ensure there is at least one Event Selector for a Trail with `IncludeManagementEvents` set to `true` and `ReadWriteType` set to `All`
-    2. Get a list of all associated metric filters for this ``:
-    ```
-    aws logs describe-metric-filters --log-group-name \"\"
-    ```
-    3. Ensure the output from the above command contains the following:
-    ```
-    \"filterPattern\": \"{ ($.eventName = CreateTrail) || ($.eventName = UpdateTrail) || ($.eventName = DeleteTrail) || ($.eventName = StartLogging) || ($.eventName = StopLogging) }\"
-    ```
-    4. Note the `` value associated with the `filterPattern` found in step 3.
-    5. Get a list of CloudWatch alarms and filter on the `` captured in step 4.
-    ```
-    aws cloudwatch describe-alarms --query 'MetricAlarms[?MetricName== ``]'
-    ```
-    6. Note the `AlarmActions` value - this will provide the SNS topic ARN value.
-    7. Ensure there is at least one active subscriber to the SNS topic
-    ```
-    aws sns list-subscriptions-by-topic --topic-arn
-    ```
-    at least one subscription should have \"SubscriptionArn\" with valid aws ARN.
-    ```
-    Example of valid \"SubscriptionArn\": \"arn:aws:sns::::\"
-    ```"
-  desc  'fix', "Perform the following to setup the metric filter, alarm, SNS topic, and subscription:
-    1. Create a metric filter based on filter pattern provided which checks for cloudtrail configuration changes and the `` taken from audit step 1.
-    ```
-    aws logs put-metric-filter --log-group-name  --filter-name `` --metric-transformations metricName= `` ,metricNamespace='CISBenchmark',metricValue=1 --filter-pattern '{ ($.eventName = CreateTrail) || ($.eventName = UpdateTrail) || ($.eventName = DeleteTrail) || ($.eventName = StartLogging) || ($.eventName = StopLogging) }'
-    ```
-    **Note**: You can choose your own metricName and metricNamespace strings. Using the same metricNamespace for all Foundations Benchmark metrics will group them together.
-    2. Create an SNS topic that the alarm will notify
-    ```
-    aws sns create-topic --name
-    ```
-    **Note**: you can execute this command once and then re-use the same topic for all monitoring alarms.
-    3. Create an SNS subscription to the topic created in step 2
-    ```
-    aws sns subscribe --topic-arn  --protocol `` --notification-endpoint ``
-    ```
-    **Note**: you can execute this command once and then re-use the SNS subscription for all monitoring alarms.
-    4. Create an alarm that is associated with the CloudWatch Logs Metric Filter created in step 1 and an SNS topic created in step 2
-    ```
-    aws cloudwatch put-metric-alarm --alarm-name `` --metric-name `` --statistic Sum --period 300 --threshold 1 --comparison-operator GreaterThanOrEqualToThreshold --evaluation-periods 1 --namespace 'CISBenchmark' --alarm-actions
-    ```"
+# encoding: UTF-8
+
+control "aws-foundations-cis-3.5" do
+  title "Ensure AWS Config is enabled in all regions "
+  desc "AWS Config is a web service that performs configuration management of supported AWS 
+resources within your account and delivers log files to you. The recorded information 
+includes the configuration item (AWS resource), relationships between configuration 
+items (AWS resources), any configuration changes between resources. It is recommended AWS 
+Config be enabled in all regions. "
+  desc "rationale", "The AWS configuration item history captured by AWS Config enables security analysis, 
+resource change tracking, and compliance auditing. "
+  desc "check", "Process to evaluate AWS Config configuration per region
+
+**From Console:**
+
+1. Sign 
+in to the AWS Management Console and open the AWS Config console at [https://console.aws.amazon.com/config/](https://console.aws.amazon.com/config/).
+1. 
+On the top right of the console select target Region.
+1. If a Config recorder is enabled in 
+this region, you should navigate to the Settings page from the navigation menu on the left hand 
+side. If a Config recorder is not yet enabled in this region then you should select \"Get 
+Started\".
+1. Ensure \"Record all resources supported in this region\" is checked.
+1. 
+Ensure \"Include global resources (e.g., AWS IAM resources)\" is checked, unless it is enabled 
+in another region (this is only required in one region)
+1. Ensure the correct S3 bucket has 
+been defined.
+1. Ensure the correct SNS topic has been defined.
+1. Repeat steps 2 to 7 for 
+each region.
+
+**From Command Line:**
+
+1. Run this command to show all AWS Config 
+recorders and their properties:
+```
+aws configservice 
+describe-configuration-recorders
+```
+2. Evaluate the output to ensure that all 
+recorders have a `recordingGroup` object which includes `\"allSupported\": true`. 
+Additionally, ensure that at least one recorder has `\"includeGlobalResourceTypes\": 
+true`
+
+Note: There is one more parameter \"ResourceTypes\" in recordingGroup object. We 
+don't need to check the same as whenever we set \"allSupported\": true, AWS enforces resource 
+types to be empty (\"ResourceTypes\":[])
+
+Sample Output:
+
+```
+{
+ 
+\"ConfigurationRecorders\": [
+ {
+ \"recordingGroup\": {
+ \"allSupported\": true,
+ 
+\"resourceTypes\": [],
+ \"includeGlobalResourceTypes\": true
+ },
+ \"roleARN\": 
+\"arn:aws:iam::<AWS_Account_ID>:role/service-role/<config-role-name>\",
+ \"name\": 
+\"default\"
+ }
+ ]
+}
+```
+
+3. Run this command to show the status for all AWS Config 
+recorders:
+```
+aws configservice 
+describe-configuration-recorder-status
+```
+4. In the output, find recorders with 
+`name` key matching the recorders that were evaluated in step 2. Ensure that they include 
+`\"recording\": true` and `\"lastStatus\": \"SUCCESS\"` "
+  desc "fix", "To implement AWS Config configuration:
+
+**From Console:**
+
+1. Select the region you 
+want to focus on in the top right of the console
+2. Click Services
+3. Click Config
+4. If a 
+Config recorder is enabled in this region, you should navigate to the Settings page from the 
+navigation menu on the left hand side. If a Config recorder is not yet enabled in this region 
+then you should select \"Get Started\".
+5. Select \"Record all resources supported in this 
+region\"
+6. Choose to include global resources (IAM resources)
+7. Specify an S3 bucket in 
+the same account or in another managed AWS account
+8. Create an SNS Topic from the same AWS 
+account or another managed AWS account
+
+**From Command Line:**
+
+1. Ensure there is an 
+appropriate S3 bucket, SNS topic, and IAM role per the [AWS Config Service prerequisites](http://docs.aws.amazon.com/config/latest/developerguide/gs-cli-prereq.html).
+2. 
+Run this command to create a new configuration recorder:
+```
+aws configservice 
+put-configuration-recorder --configuration-recorder 
+name=default,roleARN=arn:aws:iam::012345678912:role/myConfigRole 
+--recording-group allSupported=true,includeGlobalResourceTypes=true
+```
+3. 
+Create a delivery channel configuration file locally which specifies the channel 
+attributes, populated from the prerequisites set up previously:
+```
+{
+ \"name\": 
+\"default\",
+ \"s3BucketName\": \"my-config-bucket\",
+ \"snsTopicARN\": 
+\"arn:aws:sns:us-east-1:012345678912:my-config-notice\",
+ 
+\"configSnapshotDeliveryProperties\": {
+ \"deliveryFrequency\": \"Twelve_Hours\"
+ 
+}
+}
+```
+4. Run this command to create a new delivery channel, referencing the json 
+configuration file made in the previous step:
+```
+aws configservice 
+put-delivery-channel --delivery-channel file://deliveryChannel.json
+```
+5. Start 
+the configuration recorder by running the following command:
+```
+aws configservice 
+start-configuration-recorder --configuration-recorder-name default
+``` "
+  desc "impact", "It is recommended AWS Config be enabled in all regions. "
   impact 0.5
-  tag severity: 'Low'
-  tag gtitle: nil
-  tag gid: nil
-  tag rid: nil
-  tag stig_id: nil
-  tag fix_id: nil
-  tag cci: nil
-  tag nist: ['AU-6']
-  tag notes: "Configuring log metric filter and alarm on Multi-region (global) CloudTrail
-  - ensures that activities from all regions (used as well as unused) are monitored
-  - ensures that activities on all supported global services are monitored
-  - ensures that all management events across all regions are monitored"
-  tag comment: nil
-  tag cis_controls: 'TITLE:Maintenance, Monitoring and Analysis of Audit Logs CONTROL:6 DESCRIPTION:Maintenance, Monitoring and Analysis of Audit Logs;'
-  tag ref: 'https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/sns/latest/dg/SubscribeTopic.html'
+  ref 'https://docs.aws.amazon.com/cli/latest/reference/configservice/describe-configuration-recorder-status.html:https://docs.aws.amazon.com/cli/latest/reference/configservice/describe-configuration-recorders.html:https://docs.aws.amazon.com/config/latest/developerguide/gs-cli-prereq.html'
+  tag nist: ['CM-8']
+  tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["1.1"]}
+  ]
 
-  pattern = '{ ($.eventName = CreateTrail) || ($.eventName = UpdateTrail) || ($.eventName = DeleteTrail) || ($.eventName = StartLogging) || ($.eventName = StopLogging) }'
+  config_delivery_channels = input('config_delivery_channels')
 
-  describe aws_cloudwatch_log_metric_filter(pattern: pattern) do
+  describe aws_config_recorder do
+    it { should exist }
+    it { should be_recording }
+    it { should be_recording_all_resource_types }
+    it { should be_recording_all_global_types }
+  end
+
+  describe aws_config_delivery_channel do
     it { should exist }
   end
 
-  # Find the log_group_name associated with the aws_cloudwatch_log_metric_filter that has the pattern
-  log_group_name = aws_cloudwatch_log_metric_filter(pattern: pattern).log_group_name
-
-  # Find cloudtrails associated with with `log_group_name` parsed above
-  associated_trails = aws_cloudtrail_trails.names.select { |x| aws_cloudtrail_trail(x).cloud_watch_logs_log_group_arn =~ /log-group:#{log_group_name}:/ }
-
-  # Ensure log_group is associated atleast one cloudtrail
-  describe "Cloudtrails associated with log-group: #{log_group_name}" do
-    subject { associated_trails }
-    it { should_not be_empty }
-  end
-
-  # Ensure atleast one of the associated cloudtrail meet the requirements.
-  describe.one do
-    associated_trails.each do |trail|
-      describe aws_cloudtrail_trail(trail) do
-        it { should be_multi_region_trail }
-        it { should have_event_selector_mgmt_events_rw_type_all }
-        it { should be_logging }
-      end
-    end
-  end
-
-  # Parse out `metric_name` and `metric_namespace` for the specified pattern.
-  associated_metric_filter = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: log_group_name)
-  metric_name = associated_metric_filter.metric_name
-  metric_namespace = associated_metric_filter.metric_namespace
-
-  # Ensure aws_cloudwatch_alarm for the specified pattern meets requirements.
-  if associated_metric_filter.exists?
-    describe aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace) do
-      it { should exist }
-      its('alarm_actions') { should_not be_empty }
-    end
-
-    aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace).alarm_actions.each do |sns|
-      describe aws_sns_topic(sns) do
-        it { should exist }
-        its('confirmed_subscription_count') { should cmp >= 1 }
-      end
+  if aws_config_delivery_channel.exists?
+    describe aws_config_delivery_channel do
+      its('s3_bucket_name') { should cmp config_delivery_channels[:"#{input('default_aws_region')}"][:s3_bucket_name] }
+      its('sns_topic_arn') { should cmp config_delivery_channels[:"#{input('default_aws_region')}"][:sns_topic_arn] }
     end
   end
 end
