@@ -109,9 +109,13 @@ aws ec2 describe-instances
 each EC2 instance in your AWS account that requires an IAM role to be attached. "
   impact 0.5
   ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html:https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html'
-  tag nist: []
+  tag nist: ['AC-2']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["6.8"]}
   ]
+
+  describe 'Control has to be tested manually' do
+    skip 'This control must be manually reviewed'
+  end
 end
