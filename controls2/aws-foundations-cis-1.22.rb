@@ -52,6 +52,6 @@ the left pane, select Policies
 the Entities attached tab, for each item, check the box and select Detach "
   impact 0.5
   ref 'https://docs.aws.amazon.com/cloudshell/latest/userguide/sec-auth-with-identities.html'
-  tag nist: []
+  tag nist: ['AC-6']
   tag severity: "medium "
 end
