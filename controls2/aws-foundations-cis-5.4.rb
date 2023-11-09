@@ -100,9 +100,22 @@ environment that is known to be breach free will reveal the current pattern of p
 for each instance to communicate successfully. "
   impact 0.5
   ref 'https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html:https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security-groups.html#default-security-group'
-  tag nist: []
+  tag nist: ['AC-3']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["3.3"]}
   ]
+
+  if aws_vpcs.vpc_ids.empty?
+    describe 'Control skipped because no vpcs were found' do
+      skip 'This control is skipped since the aws_vpcs resource returned an empty vpc list'
+    end
+  else
+    aws_vpcs.vpc_ids.each do |vpc|
+      describe aws_security_group(group_name: 'default', vpc_id: vpc) do
+        its('inbound_rules') { should be_empty }
+        its('outbound_rules') { should be_empty }
+      end
+    end
+  end
 end
