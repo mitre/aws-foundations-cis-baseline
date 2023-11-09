@@ -101,7 +101,7 @@ implementing and configuring that tool. "
 with 3rd Party tools that perform similar processes and protection. "
   impact 0.5
   ref 'https://aws.amazon.com/macie/getting-started/:https://docs.aws.amazon.com/workspaces/latest/adminguide/data-protection.html:https://docs.aws.amazon.com/macie/latest/user/data-classification.html'
-  tag nist: []
+  tag nist: ['CM-12','SI-12']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["3.1"]}
