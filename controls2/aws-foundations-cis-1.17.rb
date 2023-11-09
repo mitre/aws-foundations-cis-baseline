@@ -78,9 +78,13 @@ grant access to Support as well. This may include AdministratorAccess and other 
 including customer managed policies. "
   impact 0.5
   ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html:https://aws.amazon.com/premiumsupport/pricing/:https://docs.aws.amazon.com/cli/latest/reference/iam/list-policies.html:https://docs.aws.amazon.com/cli/latest/reference/iam/attach-role-policy.html:https://docs.aws.amazon.com/cli/latest/reference/iam/list-entities-for-policy.html'
-  tag nist: []
+  tag nist: ['IR-7']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["17.1"]}
   ]
+
+  describe aws_iam_policy(policy_name: 'AWSSupportAccess') do
+    it { should be_attached }
+  end
 end
