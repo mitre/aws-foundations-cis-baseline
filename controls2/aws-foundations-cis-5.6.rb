@@ -46,6 +46,6 @@ aws ec2 modify-instance-metadata-options
 ``` "
   impact 0.5
   ref 'https://aws.amazon.com/blogs/security/defense-in-depth-open-firewalls-reverse-proxies-ssrf-vulnerabilities-ec2-instance-metadata-service/:https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-instances.html'
-  tag nist: []
+  tag nist: ['SI-10','SC-8']
   tag severity: "medium "
 end
