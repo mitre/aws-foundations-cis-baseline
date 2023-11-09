@@ -55,4 +55,7 @@ route table. "
   ref 'https://docs.aws.amazon.com/AmazonVPC/latest/PeeringGuide/peering-configurations-partial-access.html:https://docs.aws.amazon.com/cli/latest/reference/ec2/create-vpc-peering-connection.html'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["3.3"]}
+  ]
 end

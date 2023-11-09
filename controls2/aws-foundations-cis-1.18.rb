@@ -111,4 +111,7 @@ each EC2 instance in your AWS account that requires an IAM role to be attached. 
   ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html:https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["6.8"]}
+  ]
 end

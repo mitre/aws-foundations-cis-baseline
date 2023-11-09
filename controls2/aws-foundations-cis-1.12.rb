@@ -106,4 +106,7 @@ business and would likely be unused for more than 45 days. "
   ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#remove-credentials:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_finding-unused.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_admin-change-user.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["5.3"]}
+  ]
 end

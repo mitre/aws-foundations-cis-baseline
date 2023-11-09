@@ -150,4 +150,7 @@ aws s3api put-bucket-policy --bucket <bucket_name>
   ref 'https://aws.amazon.com/premiumsupport/knowledge-center/s3-bucket-policy-for-config-rule/:https://aws.amazon.com/blogs/security/how-to-use-bucket-policies-and-apply-defense-in-depth-to-help-secure-your-amazon-s3-data/:https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3api/get-bucket-policy.html'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["3.10"]}
+  ]
 end

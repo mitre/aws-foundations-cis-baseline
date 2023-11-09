@@ -173,4 +173,7 @@ resource to manage CloudWatch Logs retention periods:
   ref 'https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/flow-logs.html'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["8.2"]}
+  ]
 end

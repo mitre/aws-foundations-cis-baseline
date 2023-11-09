@@ -66,4 +66,7 @@ by implementing recommendation 3.3 Ensure a log metric filter and alarm exist fo
   ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html:https://docs.aws.amazon.com/general/latest/gr/aws_tasks-that-require-root.html'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["5.4"]}
+  ]
 end

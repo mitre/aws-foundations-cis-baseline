@@ -64,4 +64,7 @@ us-gov cloud region. "
   ref 'http://docs.aws.amazon.com/general/latest/gr/aws-access-keys-best-practices.html:http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html:http://docs.aws.amazon.com/IAM/latest/APIReference/API_GetAccountSummary.html:https://aws.amazon.com/blogs/security/an-easier-way-to-determine-the-presence-of-aws-account-access-keys/'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["3.3"]}
+  ]
 end

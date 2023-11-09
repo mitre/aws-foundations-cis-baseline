@@ -136,4 +136,7 @@ AWS CLI, API, and SDKs. "
   ref 'https://docs.aws.amazon.com/efs/latest/ug/encryption-at-rest.html:https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/index.html#efs'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["3.11"]}
+  ]
 end

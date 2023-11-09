@@ -80,4 +80,7 @@ including customer managed policies. "
   ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html:https://aws.amazon.com/premiumsupport/pricing/:https://docs.aws.amazon.com/cli/latest/reference/iam/list-policies.html:https://docs.aws.amazon.com/cli/latest/reference/iam/attach-role-policy.html:https://docs.aws.amazon.com/cli/latest/reference/iam/list-entities-for-policy.html'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["17.1"]}
+  ]
 end

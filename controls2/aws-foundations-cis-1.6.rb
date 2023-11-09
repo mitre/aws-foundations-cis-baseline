@@ -76,4 +76,7 @@ not applicable for us-gov cloud regions. "
   ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_physical.html#enable-hw-mfa-for-root'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["6.5"]}
+  ]
 end

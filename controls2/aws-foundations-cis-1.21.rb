@@ -56,4 +56,7 @@ centralized IAM user management. "
   impact 0.5
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["5.6"]}
+  ]
 end

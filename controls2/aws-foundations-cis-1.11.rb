@@ -103,4 +103,7 @@ iam delete-access-key --access-key-id <access-key-id-listed> --user-name
   ref 'https://docs.aws.amazon.com/cli/latest/reference/iam/delete-access-key.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["3.3"]}
+  ]
 end

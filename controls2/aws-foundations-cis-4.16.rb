@@ -94,4 +94,7 @@ Config to be enabled. "
   ref 'https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-get-started.html:https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-enable.html#securityhub-enable-api:https://awscli.amazonaws.com/v2/documentation/api/latest/reference/securityhub/enable-security-hub.html'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"7" => ["11.3"]}
+  ]
 end

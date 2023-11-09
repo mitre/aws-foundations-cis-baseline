@@ -69,4 +69,7 @@ able to access the volumes. "
   ref 'https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html:https://aws.amazon.com/blogs/aws/new-opt-in-to-default-encryption-for-new-ebs-volumes/'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["3.11"]}
+  ]
 end

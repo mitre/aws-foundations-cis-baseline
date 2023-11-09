@@ -63,4 +63,7 @@ validate-logs --trail-arn <trail_arn> --start-time <start_time> --end-time
   ref 'https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-enabling.html'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["8.11"]}
+  ]
 end

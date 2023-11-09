@@ -145,4 +145,7 @@ start-configuration-recorder --configuration-recorder-name default
   ref 'https://docs.aws.amazon.com/cli/latest/reference/configservice/describe-configuration-recorder-status.html:https://docs.aws.amazon.com/cli/latest/reference/configservice/describe-configuration-recorders.html:https://docs.aws.amazon.com/config/latest/developerguide/gs-cli-prereq.html'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["1.1"]}
+  ]
 end

@@ -77,4 +77,7 @@ administrator. "
   ref 'https://aws.amazon.com/kms/pricing/:https://csrc.nist.gov/publications/detail/sp/800-57-part-1/rev-5/final'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["3.11"]}
+  ]
 end

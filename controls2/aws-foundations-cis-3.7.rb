@@ -137,4 +137,7 @@ for more information. "
   ref 'https://docs.aws.amazon.com/awscloudtrail/latest/userguide/encrypting-cloudtrail-log-files-with-aws-kms.html:https://docs.aws.amazon.com/kms/latest/developerguide/create-keys.html'
   tag nist: []
   tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["3.11"]}
+  ]
 end
