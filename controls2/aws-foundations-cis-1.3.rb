@@ -44,7 +44,7 @@ questions
 8. Save Questions and Answers and place in a 
 secure physical location "
   impact 0.5
-  tag nist: [IR-6]
+  tag nist: ['IR-6']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["17.2"]}
