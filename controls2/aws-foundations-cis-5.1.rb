@@ -45,9 +45,26 @@ a range other than 0.0.0.0/0, or, B) Click `Delete` to remove the offending inbo
 Click `Save` "
   impact 0.5
   ref 'https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html:https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Security.html#VPC_Security_Comparison'
-  tag nist: []
+  tag nist: ['CM-7(1)']
   tag severity: "medium "
   tag cis_controls: [
     {"7" => ["9.2"]}
   ]
+
+  exception_security_group_list = input('exception_security_group_list')
+
+  aws_security_groups.group_ids.each do |group_id|
+    if exception_security_group_list.include?(group_id)
+      describe 'Security Group not inspected because it is defined as an exception' do
+        skip "Security Group:: #{group_id} not inspected because it is defined in exception_security_group_list."
+      end
+    end
+
+    next if exception_security_group_list.include?(group_id)
+
+    describe aws_security_group(group_id) do
+      it { should_not allow_in(port: 22, ipv4_range: '0.0.0.0/0') }
+      it { should_not allow_in(port: 3389, ipv4_range: '0.0.0.0/0') }
+    end
+  end
 end
