@@ -46,7 +46,7 @@ server administration ports through another mechanism before removing access by 
 the ::/0 inbound rule. "
   impact 0.5
   ref 'https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security-groups.html#deleting-security-group-rule'
-  tag nist: []
+  tag nist: ['CM-7(1)']
   tag severity: "medium "
   tag cis_controls: [
     {"7" => ["9.2"]}
