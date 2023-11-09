@@ -103,7 +103,7 @@ the feature current status set to `true`, the feature is `enabled` and the minor
 upgrades will be applied to the selected RDS instance. "
   impact 0.5
   ref 'https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_RDS_Managing.html:https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_UpgradeDBInstance.Upgrading.html:https://aws.amazon.com/rds/faqs/'
-  tag nist: []
+  tag nist: ['SI-2(2)']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["7.4"]}
