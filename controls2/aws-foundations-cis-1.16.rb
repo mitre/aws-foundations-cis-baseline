@@ -87,9 +87,25 @@ Roles:
 ``` "
   impact 0.5
   ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html:https://docs.aws.amazon.com/cli/latest/reference/iam/index.html#cli-aws-iam'
-  tag nist: []
+  tag nist: ['AC-6']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["3.3"]}
   ]
+
+  attached_policies = aws_iam_policies.where { attachment_count > 0 }.policy_names
+
+  if attached_policies.empty?
+    impact 0.0
+    describe 'Control not applicable since no attached IAM policies were detected' do
+      skip 'Not applicable since no IAM policies were detected as attached to anything within this account.'
+    end
+  else
+    attached_policies.each do |policy|
+      describe "Attached Policies #{policy} allows full '*:*' privileges?" do
+        subject { aws_iam_policy(policy_name: policy) }
+        it { should_not have_statement('Effect' => 'Allow', 'Resource' => '*', 'Action' => '*') }
+      end
+    end
+  end
 end
