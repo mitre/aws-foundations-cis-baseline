@@ -135,9 +135,19 @@ normal;\">{
 for more information. "
   impact 0.5
   ref 'https://docs.aws.amazon.com/awscloudtrail/latest/userguide/encrypting-cloudtrail-log-files-with-aws-kms.html:https://docs.aws.amazon.com/kms/latest/developerguide/create-keys.html'
-  tag nist: []
+  tag nist: ['IA-5(1)','SC-28','SC-28(1)']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["3.11"]}
   ]
+
+  describe aws_cloudtrail_trails do
+    it { should exist }
+  end
+
+  aws_cloudtrail_trails.trail_arns.each do |trail|
+    describe aws_cloudtrail_trail(trail) do
+      it { should be_encrypted }
+    end
+  end
 end
