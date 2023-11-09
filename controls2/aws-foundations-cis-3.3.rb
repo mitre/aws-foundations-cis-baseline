@@ -94,9 +94,33 @@ Remove any `Statement` having an `Effect` set to `Allow` and a `Principal` set t
   desc "default_value", "By default, S3 buckets are not publicly accessible. "
   impact 0.5
   ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_principal.html'
-  tag nist: []
+  tag nist: ['AC-3']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["3.3"]}
   ]
+
+  describe aws_cloudtrail_trails do
+    it { should exist }
+  end
+
+  aws_cloudtrail_trails.trail_arns.each do |trail|
+    bucket_name = aws_cloudtrail_trail(trail).s3_bucket_name
+    if input('exception_bucket_list').include?(bucket_name)
+      describe 'Bucket not inspected because it is defined as an exception' do
+        skip "Bucket: #{bucket_name} not inspected because it is defined in exception_bucket_list."
+      end
+    else
+      describe aws_s3_bucket(bucket_name) do
+        it { should_not be_public }
+      end
+    end
+  end
+
+  # Use this after skeletal aws_cloudtrail_trails is enhanced to expose s3_bucket_name
+  # aws_cloudtrail_trails.s3_bucket_name.uniq.each do |bucket|
+  #   describe aws_s3_bucket( bucket ) do
+  #     it{ should_not be_public }
+  #   end
+  # end
 end
