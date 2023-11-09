@@ -101,9 +101,24 @@ iam delete-access-key --access-key-id <access-key-id-listed> --user-name
   desc "additional_information", "Credential report does not appear to contain \"Key Creation Date\" "
   impact 0.5
   ref 'https://docs.aws.amazon.com/cli/latest/reference/iam/delete-access-key.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html'
-  tag nist: []
+  tag nist: ['AC-6']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["3.3"]}
   ]
+
+  if aws_iam_access_keys.where(active: true).entries.empty?
+    describe 'Control skipped because no iam access keys were found' do
+      skip 'This control is skipped since the aws_iam_access_keys resource returned an empty access key list'
+    end
+  else
+    aws_iam_access_keys.where(active: true).entries.each do |key|
+      describe key.username do
+        context key do
+          its('last_used_days_ago') { should_not be_nil }
+          its('created_with_user') { should be false }
+        end
+      end
+    end
+  end
 end
