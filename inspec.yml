@@ -74,12 +74,12 @@ inputs:
     description: 'Account contact information'
     type: Hash
     value:
-      address_line_1: '1600 Pennsylvania Avenue NW'
+      address_line_1: '1234 My Avenue WW'
       city: 'Washington, D.C.'
       country_code: 'US'
-      full_name: 'Mr. President'
-      phone_number: '202-456-1111'
-      postal_code: '20500'
+      full_name: 'Json Doe'
+      phone_number: '202-555-1111'
+      postal_code: '10101'
 
   - name: security_contact_information
     description: 'Account security contact information'
