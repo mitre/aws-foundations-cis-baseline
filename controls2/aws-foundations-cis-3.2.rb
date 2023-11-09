@@ -61,9 +61,19 @@ validate-logs --trail-arn <trail_arn> --start-time <start_time> --end-time
   desc "default_value", "Not Enabled "
   impact 0.5
   ref 'https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-enabling.html'
-  tag nist: []
+  tag nist: ['AU-6']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["8.11"]}
   ]
+
+  describe aws_cloudtrail_trails do
+    it { should exist }
+  end
+
+  aws_cloudtrail_trails.trail_arns.each do |trail|
+    describe aws_cloudtrail_trail(trail) do
+      it { should be_log_file_validation_enabled }
+    end
+  end
 end
