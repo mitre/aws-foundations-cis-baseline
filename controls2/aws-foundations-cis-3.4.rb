@@ -94,9 +94,20 @@ resource to manage CloudWatch Logs retention periods:
 1. https://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/SettingLogRetention.html "
   impact 0.5
   ref 'https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/how-cloudtrail-works.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-aws-service-specific-topics.html'
-  tag nist: []
+  tag nist: ['AU-12']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["8.5"]}
   ]
+
+  describe aws_cloudtrail_trails do
+    it { should exist }
+  end
+
+  aws_cloudtrail_trails.trail_arns.each do |trail|
+    describe aws_cloudtrail_trail(trail) do
+      its('cloud_watch_logs_log_group_arn') { should_not be_nil }
+      its('delivered_logs_days_ago') { should cmp <= 1 }
+    end
+  end
 end
