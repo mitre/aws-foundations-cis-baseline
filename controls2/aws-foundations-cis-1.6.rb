@@ -74,7 +74,7 @@ Remediation for this recommendation is not available through AWS CLI. "
 not applicable for us-gov cloud regions. "
   impact 0.5
   ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_physical.html#enable-hw-mfa-for-root'
-  tag nist: []
+  tag nist: ['IA-2(1)']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["6.5"]}
