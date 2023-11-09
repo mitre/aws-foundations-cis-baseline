@@ -57,9 +57,17 @@ put-alternate-contact --alternate-contact-type SECURITY
 specifying an internal email distribution list to ensure emails are regularly monitored by 
 more than one individual. "
   impact 0.5
-  tag nist: []
+  tag nist: [IR-6]
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["17.2"]}
   ]
+  contact_info = aws_account.security_contact_information
+  describe contact_info do
+    if contact_info
+      it { should cmp input('security_contact_information') }
+    else
+      skip 'The Security section of the Alternate Contacts page must be manually reviewed'
+    end
+  end
 end
