@@ -64,7 +64,7 @@ by implementing recommendation 3.3 Ensure a log metric filter and alarm exist fo
 'root' user. "
   impact 0.5
   ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html:https://docs.aws.amazon.com/general/latest/gr/aws_tasks-that-require-root.html'
-  tag nist: []
+  tag nist: ['AC-6(2)','AC-6(5)']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["5.4"]}
