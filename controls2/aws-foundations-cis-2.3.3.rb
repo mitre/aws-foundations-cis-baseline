@@ -187,7 +187,7 @@ each RDS instance provisioned in the current region.
 --region filter to repeat the process for other regions. "
   impact 0.5
   ref 'https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.html:https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Scenario2.html:https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_VPC.WorkingWithRDSInstanceinaVPC.html:https://aws.amazon.com/rds/faqs/'
-  tag nist: []
+  tag nist: ['AC-3']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["3.3"]}
