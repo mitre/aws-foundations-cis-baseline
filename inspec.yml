@@ -1,8 +1,8 @@
 name: "aws-foundations-cis-baseline"
 title: "aws-foundations-cis-baseline"
-maintainer: "MITRE InSpec Team"
-copyright: "MITRE, 2020"
-copyright_email: "inspec@mitre.org"
+maintainer: "MITRE SAF Team"
+copyright: "MITRE, 2023"
+copyright_email: "saf@groups.mitre.org"
 license: "Apache-2.0"
 summary: 'InSpec Validation Profile for AWS Foundations CIS'
 version: 3.0.0

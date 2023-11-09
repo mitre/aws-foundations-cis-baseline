@@ -1,128 +1,125 @@
-control 'aws-foundations-cis-3.1' do
-  title 'Ensure a log metric filter and alarm exist for unauthorized API calls'
-  desc  'Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch Logs and establishing corresponding metric filters and alarms. It is recommended that a metric filter and alarm be established for unauthorized API calls.'
-  desc  'rationale', 'Monitoring unauthorized API calls will help reveal application errors and may reduce time to detect malicious activity.'
-  desc  'check', "Perform the following to ensure that there is at least one active multi-region CloudTrail with prescribed metric filters and alarms configured:
+# encoding: UTF-8
 
-    1. Identify the log group name configured for use with active multi-region CloudTrail:
-    - List all CloudTrails:
-    `aws cloudtrail describe-trails`
-    - Identify Multi region Cloudtrails: `Trails with \"IsMultiRegionTrail\" set to true`
-    - From value associated with CloudWatchLogsLogGroupArn note ``
-    Example: for CloudWatchLogsLogGroupArn that looks like `arn:aws:logs:::log-group:NewGroup:*`, `` would be `NewGroup`
-    - Ensure Identified Multi region CloudTrail is active
-    `aws cloudtrail get-trail-status --name ` ensure `IsLogging` is set to `TRUE`
-    - Ensure identified Multi-region Cloudtrail captures all Management Events
-    `aws cloudtrail get-event-selectors --trail-name`
-    Ensure there is at least one Event Selector for a Trail with `IncludeManagementEvents` set to `true` and `ReadWriteType` set to `All`
-    2. Get a list of all associated metric filters for this ``:
-    ```
-    aws logs describe-metric-filters --log-group-name \"\"
-    ```
-    3. Ensure the output from the above command contains the following:
-    ```
-    \"filterPattern\": \"{ ($.errorCode = \"*UnauthorizedOperation\") || ($.errorCode = \"AccessDenied*\") }\"
-    ```
-    4. Note the `` value associated with the `filterPattern` found in step 3.
-    5. Get a list of CloudWatch alarms and filter on the `` captured in step 4.
-    ```
-    aws cloudwatch describe-alarms --query 'MetricAlarms[?MetricName== ``]'
-    ```
-    6. Note the `AlarmActions` value - this will provide the SNS topic ARN value.
-    7. Ensure there is at least one active subscriber to the SNS topic
-    ```
-    aws sns list-subscriptions-by-topic --topic-arn
-    ```
-    atleast one subscription should have \"SubscriptionArn\" with valid aws ARN.
-    ```
-    Example of valid \"SubscriptionArn\": \"arn:aws:sns::::\"
-    ```"
-  desc  'fix', "Perform the following to setup the metric filter, alarm, SNS topic, and subscription:
+control "aws-foundations-cis-3.1" do
+  title "Ensure CloudTrail is enabled in all regions "
+  desc "AWS CloudTrail is a web service that records AWS API calls for your account and delivers log 
+files to you. The recorded information includes the identity of the API caller, the time of the 
+API call, the source IP address of the API caller, the request parameters, and the response 
+elements returned by the AWS service. CloudTrail provides a history of AWS API calls for an 
+account, including API calls made via the Management Console, SDKs, command line tools, and 
+higher-level AWS services (such as CloudFormation). "
+  desc "rationale", "The AWS API call history produced by CloudTrail enables security analysis, resource change 
+tracking, and compliance auditing. Additionally, 
 
-    1. Create a metric filter based on filter pattern provided which checks for unauthorized API calls and the `` taken from audit step 1.
-    ```
-    aws logs put-metric-filter --log-group-name  --filter-name `` --metric-transformations metricName= `` ,metricNamespace='CISBenchmark',metricValue=1 --filter-pattern '{ ($.errorCode = \"*UnauthorizedOperation\") || ($.errorCode = \"AccessDenied*\") }'
-    ```
-    **Note**: You can choose your own metricName and metricNamespace strings. Using the same metricNamespace for all Foundations Benchmark metrics will group them together.
-    2. Create an SNS topic that the alarm will notify
-    ```
-    aws sns create-topic --name
-    ```
-    **Note**: you can execute this command once and then re-use the same topic for all monitoring alarms.
-    3. Create an SNS subscription to the topic created in step 2
-    ```
-    aws sns subscribe --topic-arn  --protocol `` --notification-endpoint ``
-    ```
-    **Note**: you can execute this command once and then re-use the SNS subscription for all monitoring alarms.
-    4. Create an alarm that is associated with the CloudWatch Logs Metric Filter created in step 1 and an SNS topic created in step 2
-    ```
-    aws cloudwatch put-metric-alarm --alarm-name `` --metric-name `` --statistic Sum --period 300 --threshold 1 --comparison-operator GreaterThanOrEqualToThreshold --evaluation-periods 1 --namespace 'CISBenchmark' --alarm-actions
-    ```"
+- ensuring that a multi-regions 
+trail exists will ensure that unexpected activity occurring in otherwise unused regions is 
+detected
+
+- ensuring that a multi-regions trail exists will ensure that `Global Service 
+Logging` is enabled for a trail by default to capture recording of events generated on 
+AWS 
+global services
+
+- for a multi-regions trail, ensuring that management events 
+configured for all type of Read/Writes ensures recording of management operations that are 
+performed on all resources in an AWS account "
+  desc "check", "Perform the following to determine if CloudTrail is enabled for all regions:
+
+**From 
+Console:**
+
+1. Sign in to the AWS Management Console and open the CloudTrail console at [https://console.aws.amazon.com/cloudtrail](https://console.aws.amazon.com/cloudtrail)
+2. 
+Click on `Trails` on the left navigation pane
+ - You will be presented with a list of trails 
+across all regions
+3. Ensure at least one Trail has `All` specified in the `Region` 
+column
+4. Click on a trail via the link in the _Name_ column
+5. Ensure `Logging` is set to 
+`ON` 
+6. Ensure `Apply trail to all regions` is set to `Yes`
+7. In section `Management 
+Events` ensure `Read/Write Events` set to `ALL`
+
+**From Command Line:**
+```
+ aws 
+cloudtrail describe-trails
+```
+Ensure `IsMultiRegionTrail` is set to `true` 
+
+```
+aws cloudtrail get-trail-status --name <trailname shown in 
+describe-trails>
+```
+Ensure `IsLogging` is set to `true`
+```
+aws cloudtrail 
+get-event-selectors --trail-name <trailname shown in describe-trails>
+```
+Ensure 
+there is at least one Event Selector for a Trail with `IncludeManagementEvents` set to `true` 
+and `ReadWriteType` set to `All` "
+  desc "fix", "Perform the following to enable global (Multi-region) CloudTrail logging:
+
+**From 
+Console:**
+
+1. Sign in to the AWS Management Console and open the IAM console at [https://console.aws.amazon.com/cloudtrail](https://console.aws.amazon.com/cloudtrail)
+2. 
+Click on _Trails_ on the left navigation pane
+3. Click `Get Started Now` , if presented
+ - 
+Click `Add new trail` 
+ - Enter a trail name in the `Trail name` box
+ - Set the `Apply trail to 
+all regions` option to `Yes` 
+ - Specify an S3 bucket name in the `S3 bucket` box
+ - Click 
+`Create` 
+4. If 1 or more trails already exist, select the target trail to enable for global 
+logging
+5. Click the edit icon (pencil) next to `Apply trail to all regions` , Click `Yes` and 
+Click `Save`.
+6. Click the edit icon (pencil) next to `Management Events` click `All` for 
+setting `Read/Write Events` and Click `Save`.
+
+**From Command Line:**
+```
+aws 
+cloudtrail create-trail --name <trail_name> --bucket-name <s3_bucket_for_cloudtrail> 
+--is-multi-region-trail 
+aws cloudtrail update-trail --name <trail_name> 
+--is-multi-region-trail
+```
+
+Note: Creating CloudTrail via CLI without providing 
+any overriding options configures `Management Events` to set `All` type of `Read/Writes` by 
+default. "
+  desc "impact", "S3 lifecycle features can be used to manage the accumulation and management of logs over time. 
+See the following AWS resource for more information on these features:
+
+1. 
+https://docs.aws.amazon.com/AmazonS3/latest/dev/object-lifecycle-mgmt.html "
+  desc "default_value", "Not Enabled "
   impact 0.5
-  tag severity: 'Low'
-  tag gtitle: nil
-  tag gid: nil
-  tag rid: nil
-  tag stig_id: nil
-  tag fix_id: nil
-  tag cci: nil
-  tag nist: ['AU-6', 'SI-4(2)']
-  tag notes: "Configuring log metric filter and alarm on Multi-region (global) CloudTrail
-  - ensures that activities from all regions (used as well as unused) are monitored
-  - ensures that activities on all supported global services are monitored
-  - ensures that all management events across all regions are monitored"
-  tag comment: "This alert may be triggered by normal read-only console activities that attempt to opportunistically gather optional information, but gracefully fail if they don't have permissions.
-  If an excessive number of alerts are being generated then an organization may wish to consider adding read access to the limited IAM user permissions simply to quiet the alerts.
-  In some cases doing this may allow the users to actually view some areas of the system - any additional access given should be reviewed for alignment with the original limited IAM user intent."
-  tag cis_controls: 'TITLE:Regularly Review Logs CONTROL:6.7 DESCRIPTION:On a regular basis, review logs to identify anomalies or abnormal events.;TITLE:Central Log Management CONTROL:6.5 DESCRIPTION:Ensure that appropriate logs are being aggregated to a central log management system for analysis and review.;'
-  tag ref: 'https://aws.amazon.com/sns/:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/sns/latest/dg/SubscribeTopic.html'
+  ref 'https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-concepts.html#cloudtrail-concepts-management-events:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-management-and-data-events-with-cloudtrail.html?icmpid=docs_cloudtrail_console#logging-management-events:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-supported-services.html#cloud-trail-supported-services-data-events'
+  tag nist: ['AU-12']
+  tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["8.5"]}
+  ]
 
-  pattern = '{ ($.errorCode = "*UnauthorizedOperation") || ($.errorCode = "AccessDenied*") }'
-
-  describe aws_cloudwatch_log_metric_filter(pattern: pattern) do
+  describe aws_cloudtrail_trails do
     it { should exist }
   end
 
-  # Find the log_group_name associated with the aws_cloudwatch_log_metric_filter that has the pattern
-  log_group_name = aws_cloudwatch_log_metric_filter(pattern: pattern).log_group_name
-
-  # Find cloudtrails associated with with `log_group_name` parsed above
-  associated_trails = aws_cloudtrail_trails.names.select { |x| aws_cloudtrail_trail(x).cloud_watch_logs_log_group_arn =~ /log-group:#{log_group_name}:/ }
-
-  # Ensure log_group is associated atleast one cloudtrail
-  describe "Cloudtrails associated with log-group: #{log_group_name}" do
-    subject { associated_trails }
-    it { should_not be_empty }
-  end
-
-  # Ensure atleast one of the associated cloudtrail meet the requirements.
-  describe.one do
-    associated_trails.each do |trail|
-      describe aws_cloudtrail_trail(trail) do
-        it { should be_multi_region_trail }
-        it { should have_event_selector_mgmt_events_rw_type_all }
-        it { should be_logging }
-      end
-    end
-  end
-
-  # Parse out `metric_name` and `metric_namespace` for the specified pattern.
-  associated_metric_filter = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: log_group_name)
-  metric_name = associated_metric_filter.metric_name
-  metric_namespace = associated_metric_filter.metric_namespace
-
-  # Ensure aws_cloudwatch_alarm for the specified pattern meets requirements.
-  if associated_metric_filter.exists?
-    describe aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace) do
-      it { should exist }
-      its('alarm_actions') { should_not be_empty }
-    end
-
-    aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace).alarm_actions.each do |sns|
-      describe aws_sns_topic(sns) do
-        it { should exist }
-        its('confirmed_subscription_count') { should cmp >= 1 }
-      end
+  aws_cloudtrail_trails.names.each do |trail|
+    describe aws_cloudtrail_trail(trail) do
+      it { should be_multi_region_trail }
+      it { should be_logging }
+      it { should have_event_selector_mgmt_events_rw_type_all }
     end
   end
 end

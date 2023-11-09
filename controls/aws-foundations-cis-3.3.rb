@@ -1,126 +1,126 @@
-control 'aws-foundations-cis-3.3' do
-  title 'Ensure a log metric filter and alarm exist for usage of "root" account'
-  desc  'Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch Logs and establishing corresponding metric filters and alarms. It is recommended that a metric filter and alarm be established for root login attempts.'
-  desc  'rationale', 'Monitoring for root account logins will provide visibility into the use of a fully privileged account and an opportunity to reduce the use of it.'
-  desc  'check', "Perform the following to ensure that there is at least one active multi-region CloudTrail with prescribed metric filters and alarms configured:
-    1. Identify the log group name configured for use with active multi-region CloudTrail:
-    - List all CloudTrails:
-    `aws cloudtrail describe-trails`
-    - Identify Multi region Cloudtrails: `Trails with \"IsMultiRegionTrail\" set to true`
-    - From value associated with CloudWatchLogsLogGroupArn note ``
-    Example: for CloudWatchLogsLogGroupArn that looks like `arn:aws:logs:::log-group:NewGroup:*`, `` would be `NewGroup`
-    - Ensure Identified Multi region CloudTrail is active
-    `aws cloudtrail get-trail-status --name `
-    ensure `IsLogging` is set to `TRUE`
-    - Ensure identified Multi-region Cloudtrail captures all Management Events
-    `aws cloudtrail get-event-selectors --trail-name
-    `
-    Ensure there is at least one Event Selector for a Trail with `IncludeManagementEvents` set to `true` and `ReadWriteType` set to `All`
-    2. Get a list of all associated metric filters for this ``:
-    ```
-    aws logs describe-metric-filters --log-group-name \"\"
-    ```
-    3. Ensure the output from the above command contains the following:
-    ```
-    \"filterPattern\": \"{ $.userIdentity.type = \"Root\" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != \"AwsServiceEvent\" }\"
-    ```
-    4. Note the `` value associated with the `filterPattern` found in step 3.
-    5. Get a list of CloudWatch alarms and filter on the `` captured in step 4.
-    ```
-    aws cloudwatch describe-alarms --query 'MetricAlarms[?MetricName== ``]'
-    ```
-    6. Note the `AlarmActions` value - this will provide the SNS topic ARN value.
-    7. Ensure there is at least one active subscriber to the SNS topic
-    ```
-    aws sns list-subscriptions-by-topic --topic-arn
-    ```
-    atleast one subscription should have \"SubscriptionArn\" with valid aws ARN.
-    ```
-    Example of valid \"SubscriptionArn\": \"arn:aws:sns::::\"
-    ```"
-  desc  'fix', "Perform the following to setup the metric filter, alarm, SNS topic, and subscription:
-    1. Create a metric filter based on filter pattern provided which checks for \"Root\" account usage and the `` taken from audit step 1.
-    ```
-    aws logs put-metric-filter --log-group-name `` --filter-name `` --metric-transformations metricName= `` ,metricNamespace='CISBenchmark',metricValue=1 --filter-pattern '{ $.userIdentity.type = \"Root\" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != \"AwsServiceEvent\" }'
-    ```
-    **Note**: You can choose your own metricName and metricNamespace strings. Using the same metricNamespace for all Foundations Benchmark metrics will group them together.
-    2. Create an SNS topic that the alarm will notify
-    ```
-    aws sns create-topic --name
-    ```
-    **Note**: you can execute this command once and then re-use the same topic for all monitoring alarms.
-    3. Create an SNS subscription to the topic created in step 2
-    ```
-    aws sns subscribe --topic-arn  --protocol `` --notification-endpoint ``
-    ```
-    **Note**: you can execute this command once and then re-use the SNS subscription for all monitoring alarms.
-    4. Create an alarm that is associated with the CloudWatch Logs Metric Filter created in step 1 and an SNS topic created in step 2
-    ```
-    aws cloudwatch put-metric-alarm --alarm-name `` --metric-name `` --statistic Sum --period 300 --threshold 1 --comparison-operator GreaterThanOrEqualToThreshold --evaluation-periods 1 --namespace 'CISBenchmark' --alarm-actions
-    ```"
+# encoding: UTF-8
+
+control "aws-foundations-cis-3.3" do
+  title "Ensure the S3 bucket used to store CloudTrail logs is not publicly accessible "
+  desc "CloudTrail logs a record of every API call made in your AWS account. These logs file are stored 
+in an S3 bucket. It is recommended that the bucket policy or access control list (ACL) applied 
+to the S3 bucket that CloudTrail logs to prevent public access to the CloudTrail logs. "
+  desc "rationale", "Allowing public access to CloudTrail log content may aid an adversary in identifying 
+weaknesses in the affected account's use or configuration. "
+  desc "check", "Perform the following to determine if any public access is granted to an S3 bucket via an ACL or 
+S3 bucket policy:
+
+**From Console:**
+
+1. Go to the Amazon CloudTrail console at [https://console.aws.amazon.com/cloudtrail/home](https://console.aws.amazon.com/cloudtrail/home).
+2. 
+In the `API activity history` pane on the left, click `Trails`.
+3. In the `Trails` pane, note 
+the bucket names in the `S3 bucket` column
+4. Go to Amazon S3 console at [https://console.aws.amazon.com/s3/home](https://console.aws.amazon.com/s3/home).
+5. 
+For each bucket noted in step 3, right-click on the bucket and click `Properties`.
+6. In the 
+`Properties` pane, click the `Permissions` tab.
+7. The tab shows a list of grants, one row 
+per grant, in the bucket ACL. Each row identifies the grantee and the permissions 
+granted.
+8. Ensure no rows exists that have the `Grantee` set to `Everyone` or the `Grantee` 
+set to `Any Authenticated User.`
+9. If the `Edit bucket policy` button is present, click it 
+to review the bucket policy.
+10. Ensure the policy does not contain a `Statement` having an 
+`Effect` set to `Allow` and a `Principal` set to \"\\*\" or {\"AWS\": \"\\*\"}, or if it does, ensure 
+that it has a condition in place to restrict access, such as 
+`aws:PrincipalOrgID`.
+
+**From Command Line:**
+
+1. Get the name of the S3 bucket that 
+CloudTrail is logging to:
+```
+ aws cloudtrail describe-trails --query 
+'trailList[*].S3BucketName'
+```
+2. Ensure the `AllUsers` principal is not granted 
+privileges to that `<bucket>` :
+```
+ aws s3api get-bucket-acl --bucket 
+<s3_bucket_for_cloudtrail> --query 'Grants[?Grantee.URI== 
+`https://acs.amazonaws.com/groups/global/AllUsers` ]'
+```
+3. Ensure the 
+`AuthenticatedUsers` principal is not granted privileges to that `<bucket>`:
+```
+ aws 
+s3api get-bucket-acl --bucket <s3_bucket_for_cloudtrail> --query 
+'Grants[?Grantee.URI== `https://acs.amazonaws.com/groups/global/Authenticated 
+Users`]'
+```
+4. Get the S3 Bucket Policy
+```
+ aws s3api get-bucket-policy --bucket 
+<s3_bucket_for_cloudtrail> 
+```
+5. Ensure the policy does not contain a `Statement` 
+having an `Effect` set to `Allow` and a `Principal` set to \"\\*\" or {\"AWS\": \"\\*\"}. 
+Additionally, check to see whether a condition has been added to the bucket policy covering 
+`aws:PrincipalOrgID`, as having this (in the StringEquals or StringEqualsIgnoreCase) 
+would restrict access to only the named Org ID.
+
+**Note:** Principal set to \"\\*\" or {\"AWS\": 
+\"\\*\"}, without any conditions, allows anonymous access. "
+  desc "fix", "Perform the following to remove any public access that has been granted to the bucket via an ACL 
+or S3 bucket policy:
+
+1. Go to Amazon S3 console at [https://console.aws.amazon.com/s3/home](https://console.aws.amazon.com/s3/home).
+2. 
+Right-click on the bucket and click Properties
+3. In the `Properties` pane, click the 
+`Permissions` tab.
+4. The tab shows a list of grants, one row per grant, in the bucket ACL. 
+Each row identifies the grantee and the permissions granted.
+5. Select the row that grants 
+permission to `Everyone` or `Any Authenticated User`.
+6. Uncheck all the permissions 
+granted to `Everyone` or `Any Authenticated User` (click `x` to delete the row).
+7. Click 
+`Save` to save the ACL.
+8. If the `Edit bucket policy` button is present, click it.
+9. 
+Remove any `Statement` having an `Effect` set to `Allow` and a `Principal` set to \"\\*\" or 
+{\"AWS\": \"\\*\"}, that doesn't also have a condition to restrict access, such as 
+`aws:PrincipalOrgID`. "
+  desc "default_value", "By default, S3 buckets are not publicly accessible. "
   impact 0.5
-  tag severity: 'Low'
-  tag gtitle: nil
-  tag gid: nil
-  tag rid: nil
-  tag stig_id: nil
-  tag fix_id: nil
-  tag cci: nil
-  tag nist: ['AU-2']
-  tag notes: "Configuring log metric filter and alarm on Multi-region (global) CloudTrail
-  - ensures that activities from all regions (used as well as unused) are monitored
-  - ensures that activities on all supported global services are monitored
-  - ensures that all management events across all regions are monitored"
-  tag comment: nil
-  tag cis_controls: 'TITLE:Log and Alert on Unsuccessful Administrative Account Login CONTROL:4.9 DESCRIPTION:Configure systems to issue a log entry and alert on unsuccessful logins to an administrative account.;'
-  tag ref: 'CIS CSC v6.0 #4.6, #5.1, #5.5:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/sns/latest/dg/SubscribeTopic.html'
+  ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_principal.html'
+  tag nist: ['AC-3']
+  tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["3.3"]}
+  ]
 
-  pattern = '{ $.userIdentity.type = "Root" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != "AwsServiceEvent" }'
-
-  describe aws_cloudwatch_log_metric_filter(pattern: pattern) do
+  describe aws_cloudtrail_trails do
     it { should exist }
   end
 
-  # Find the log_group_name associated with the aws_cloudwatch_log_metric_filter that has the pattern
-  log_group_name = aws_cloudwatch_log_metric_filter(pattern: pattern).log_group_name
-
-  # Find cloudtrails associated with with `log_group_name` parsed above
-  associated_trails = aws_cloudtrail_trails.names.select { |x| aws_cloudtrail_trail(x).cloud_watch_logs_log_group_arn =~ /log-group:#{log_group_name}:/ }
-
-  # Ensure log_group is associated atleast one cloudtrail
-  describe "Cloudtrails associated with log-group: #{log_group_name}" do
-    subject { associated_trails }
-    it { should_not be_empty }
-  end
-
-  # Ensure atleast one of the associated cloudtrail meet the requirements.
-  describe.one do
-    associated_trails.each do |trail|
-      describe aws_cloudtrail_trail(trail) do
-        it { should be_multi_region_trail }
-        it { should have_event_selector_mgmt_events_rw_type_all }
-        it { should be_logging }
+  aws_cloudtrail_trails.trail_arns.each do |trail|
+    bucket_name = aws_cloudtrail_trail(trail).s3_bucket_name
+    if input('exception_bucket_list').include?(bucket_name)
+      describe 'Bucket not inspected because it is defined as an exception' do
+        skip "Bucket: #{bucket_name} not inspected because it is defined in exception_bucket_list."
+      end
+    else
+      describe aws_s3_bucket(bucket_name) do
+        it { should_not be_public }
       end
     end
   end
 
-  # Parse out `metric_name` and `metric_namespace` for the specified pattern.
-  associated_metric_filter = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: log_group_name)
-  metric_name = associated_metric_filter.metric_name
-  metric_namespace = associated_metric_filter.metric_namespace
-
-  # Ensure aws_cloudwatch_alarm for the specified pattern meets requirements.
-  if associated_metric_filter.exists?
-    describe aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace) do
-      it { should exist }
-      its('alarm_actions') { should_not be_empty }
-    end
-
-    aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace).alarm_actions.each do |sns|
-      describe aws_sns_topic(sns) do
-        it { should exist }
-        its('confirmed_subscription_count') { should cmp >= 1 }
-      end
-    end
-  end
+  # Use this after skeletal aws_cloudtrail_trails is enhanced to expose s3_bucket_name
+  # aws_cloudtrail_trails.s3_bucket_name.uniq.each do |bucket|
+  #   describe aws_s3_bucket( bucket ) do
+  #     it{ should_not be_public }
+  #   end
+  # end
 end

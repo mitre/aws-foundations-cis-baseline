@@ -1,123 +1,103 @@
-control 'aws-foundations-cis-3.11' do
-  title 'Ensure a log metric filter and alarm exist for changes to Network Access Control Lists (NACL)'
-  desc  'Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch Logs and establishing corresponding metric filters and alarms. NACLs are used as a stateless packet filter to control ingress and egress traffic for subnets within a VPC. It is recommended that a metric filter and alarm be established for changes made to NACLs.'
-  desc  'rationale', 'Monitoring changes to NACLs will help ensure that AWS resources and services are not unintentionally exposed.'
-  desc  'check', "Perform the following to ensure that there is at least one active multi-region CloudTrail with prescribed metric filters and alarms configured:
-    1. Identify the log group name configured for use with active multi-region CloudTrail:
-    - List all CloudTrails:
-    `aws cloudtrail describe-trails`
-    - Identify Multi region Cloudtrails: `Trails with \"IsMultiRegionTrail\" set to true`
-    - From value associated with CloudWatchLogsLogGroupArn note ``
-    Example: for CloudWatchLogsLogGroupArn that looks like `arn:aws:logs:::log-group:NewGroup:*`, `` would be `NewGroup`
-    - Ensure Identified Multi region CloudTrail is active
-    `aws cloudtrail get-trail-status --name `
-    ensure `IsLogging` is set to `TRUE`
-    - Ensure identified Multi-region Cloudtrail captures all Management Events
-    `aws cloudtrail get-event-selectors --trail-name
-    `
-    Ensure there is at least one Event Selector for a Trail with `IncludeManagementEvents` set to `true` and `ReadWriteType` set to `All`
-    2. Get a list of all associated metric filters for this ``:
-    ```
-    aws logs describe-metric-filters --log-group-name \"\"
-    ```
-    3. Ensure the output from the above command contains the following:
-    ```
-    \"filterPattern\": \"{ ($.eventName = CreateNetworkAcl) || ($.eventName = CreateNetworkAclEntry) || ($.eventName = DeleteNetworkAcl) || ($.eventName = DeleteNetworkAclEntry) || ($.eventName = ReplaceNetworkAclEntry) || ($.eventName = ReplaceNetworkAclAssociation) }\"
-    ```
-    4. Note the `` value associated with the `filterPattern` found in step 3.
-    5. Get a list of CloudWatch alarms and filter on the `` captured in step 4.
-    ```
-    aws cloudwatch describe-alarms --query 'MetricAlarms[?MetricName== ``]'
-    ```
-    6. Note the `AlarmActions` value - this will provide the SNS topic ARN value.
-    7. Ensure there is at least one active subscriber to the SNS topic
-    ```
-    aws sns list-subscriptions-by-topic --topic-arn
-    ```
-    at least one subscription should have \"SubscriptionArn\" with valid aws ARN.
-    ```
-    Example of valid \"SubscriptionArn\": \"arn:aws:sns::::\"
-    ```"
-  desc  'fix', "Perform the following to setup the metric filter, alarm, SNS topic, and subscription:
-    1. Create a metric filter based on filter pattern provided which checks for NACL changes and the `` taken from audit step 1.
-    ```
-    aws logs put-metric-filter --log-group-name  --filter-name `` --metric-transformations metricName= `` ,metricNamespace='CISBenchmark',metricValue=1 --filter-pattern '{ ($.eventName = CreateNetworkAcl) || ($.eventName = CreateNetworkAclEntry) || ($.eventName = DeleteNetworkAcl) || ($.eventName = DeleteNetworkAclEntry) || ($.eventName = ReplaceNetworkAclEntry) || ($.eventName = ReplaceNetworkAclAssociation) }'
-    ```
-    **Note**: You can choose your own metricName and metricNamespace strings. Using the same metricNamespace for all Foundations Benchmark metrics will group them together.
-    2. Create an SNS topic that the alarm will notify
-    ```
-    aws sns create-topic --name
-    ```
-    **Note**: you can execute this command once and then re-use the same topic for all monitoring alarms.
-    3. Create an SNS subscription to the topic created in step 2
-    ```
-    aws sns subscribe --topic-arn  --protocol `` --notification-endpoint ``
-    ```
-    **Note**: you can execute this command once and then re-use the SNS subscription for all monitoring alarms.
-    4. Create an alarm that is associated with the CloudWatch Logs Metric Filter created in step 1 and an SNS topic created in step 2
-    ```
-    aws cloudwatch put-metric-alarm --alarm-name `` --metric-name `` --statistic Sum --period 300 --threshold 1 --comparison-operator GreaterThanOrEqualToThreshold --evaluation-periods 1 --namespace 'CISBenchmark' --alarm-actions
-    ```"
+# encoding: UTF-8
+
+control "aws-foundations-cis-3.11" do
+  title "Ensure that Object-level logging for read events is enabled for S3 bucket "
+  desc "S3 object-level API operations such as GetObject, DeleteObject, and PutObject are called 
+data events. By default, CloudTrail trails don't log data events and so it is recommended to 
+enable Object-level logging for S3 buckets. "
+  desc "rationale", "Enabling object-level logging will help you meet data compliance requirements within your 
+organization, perform comprehensive security analysis, monitor specific patterns of user 
+behavior in your AWS account or take immediate actions on any object-level API activity using 
+Amazon CloudWatch Events. "
+  desc "check", "**From Console:**
+
+1. Login to the AWS Management Console and navigate to S3 dashboard at 
+`https://console.aws.amazon.com/s3/`
+2. In the left navigation panel, click `buckets` 
+and then click on the S3 Bucket Name that you want to examine.
+3. Click `Properties` tab to see 
+in detail bucket configuration.
+4. If the current status for `Object-level` logging is set 
+to `Disabled`, then object-level logging of read events for the selected s3 bucket is not 
+set.
+5. If the current status for `Object-level` logging is set to `Enabled`, but the Read 
+event check-box is unchecked, then object-level logging of read events for the selected s3 
+bucket is not set.
+6. Repeat steps 2 to 5 to verify `object-level` logging for `read` events 
+of your other S3 buckets.
+
+**From Command Line:**
+1. Run `describe-trails` command to 
+list the names of all Amazon CloudTrail trails currently available in the selected AWS 
+region:
+```
+aws cloudtrail describe-trails --region <region-name> --output table 
+--query trailList[*].Name
+```
+2. The command output will be table of the requested trail 
+names.
+3. Run `get-event-selectors` command using the name of the trail returned at the 
+previous step and custom query filters to determine if Data events logging feature is enabled 
+within the selected CloudTrail trail configuration for s3 bucket resources:
+```
+aws 
+cloudtrail get-event-selectors --region <region-name> --trail-name <trail-name> 
+--query EventSelectors[*].DataResources[]
+```
+4. The command output should be an 
+array that contains the configuration of the AWS resource(S3 bucket) defined for the Data 
+events selector.
+5. If the `get-event-selectors` command returns an empty array, the Data 
+events are not included into the selected AWS Cloudtrail trail logging configuration, 
+therefore the S3 object-level API operations performed within your AWS account are not 
+recorded.
+6. Repeat steps 1 to 5 for auditing each s3 bucket to identify other trails that are 
+missing the capability to log Data events.
+7. Change the AWS region by updating the 
+`--region` command parameter and perform the audit process for other regions. "
+  desc "fix", "**From Console:**
+
+1. Login to the AWS Management Console and navigate to S3 dashboard at 
+`https://console.aws.amazon.com/s3/`
+2. In the left navigation panel, click `buckets` 
+and then click on the S3 Bucket Name that you want to examine.
+3. Click `Properties` tab to see 
+in detail bucket configuration.
+4. Click on the `Object-level` logging setting, enter the 
+CloudTrail name for the recording activity. You can choose an existing Cloudtrail or create a 
+new one by navigating to the Cloudtrail console link 
+`https://console.aws.amazon.com/cloudtrail/`
+5. Once the Cloudtrail is selected, 
+check the Read event checkbox, so that `object-level` logging for `Read` events is 
+enabled.
+6. Repeat steps 2 to 5 to enable `object-level` logging of read events for other S3 
+buckets.
+
+**From Command Line:**
+1. To enable `object-level` data events logging for 
+S3 buckets within your AWS account, run `put-event-selectors` command using the name of the 
+trail that you want to reconfigure as identifier:
+```
+aws cloudtrail 
+put-event-selectors --region <region-name> --trail-name <trail-name> 
+--event-selectors '[{ \"ReadWriteType\": \"ReadOnly\", \"IncludeManagementEvents\":true, 
+\"DataResources\": [{ \"Type\": \"AWS::S3::Object\", \"Values\": 
+[\"arn:aws:s3:::<s3-bucket-name>/\"] }] }]'
+```
+2. The command output will be 
+`object-level` event trail configuration.
+3. If you want to enable it for all buckets at 
+once then change Values parameter to `[\"arn:aws:s3\"]` in command given above.
+4. Repeat 
+step 1 for each s3 bucket to update `object-level` logging of read events.
+5. Change the AWS 
+region by updating the `--region` command parameter and perform the process for other 
+regions. "
   impact 0.5
-  tag severity: 'Medium'
-  tag gtitle: nil
-  tag gid: nil
-  tag rid: nil
-  tag stig_id: nil
-  tag fix_id: nil
-  tag cci: nil
-  tag nist: ['CM-6(2)']
-  tag notes: nil
-  tag comment: nil
-  tag cis_controls: 'TITLE:Use Automated Tools to Verify Standard Device Configurations and Detect Changes CONTROL:11.3 DESCRIPTION:Compare all network device configuration against approved security configurations defined for each network device in use and alert when any deviations are discovered.;'
-  tag ref: 'https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/sns/latest/dg/SubscribeTopic.html'
-
-  pattern = '{ ($.eventName = CreateNetworkAcl) || ($.eventName = CreateNetworkAclEntry) || ($.eventName = DeleteNetworkAcl) || ($.eventName = DeleteNetworkAclEntry) || ($.eventName = ReplaceNetworkAclEntry) || ($.eventName = ReplaceNetworkAclAssociation) }'
-
-  describe aws_cloudwatch_log_metric_filter(pattern: pattern) do
-    it { should exist }
-  end
-
-  # Find the log_group_name associated with the aws_cloudwatch_log_metric_filter that has the pattern
-  log_group_name = aws_cloudwatch_log_metric_filter(pattern: pattern).log_group_name
-
-  # Find cloudtrails associated with with `log_group_name` parsed above
-  associated_trails = aws_cloudtrail_trails.names.select { |x| aws_cloudtrail_trail(x).cloud_watch_logs_log_group_arn =~ /log-group:#{log_group_name}:/ }
-
-  # Ensure log_group is associated atleast one cloudtrail
-  describe "Cloudtrails associated with log-group: #{log_group_name}" do
-    subject { associated_trails }
-    it { should_not be_empty }
-  end
-
-  # Ensure atleast one of the associated cloudtrail meet the requirements.
-  describe.one do
-    associated_trails.each do |trail|
-      describe aws_cloudtrail_trail(trail) do
-        it { should be_multi_region_trail }
-        it { should have_event_selector_mgmt_events_rw_type_all }
-        it { should be_logging }
-      end
-    end
-  end
-
-  # Parse out `metric_name` and `metric_namespace` for the specified pattern.
-  associated_metric_filter = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: log_group_name)
-  metric_name = associated_metric_filter.metric_name
-  metric_namespace = associated_metric_filter.metric_namespace
-
-  # Ensure aws_cloudwatch_alarm for the specified pattern meets requirements.
-  if associated_metric_filter.exists?
-    describe aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace) do
-      it { should exist }
-      its('alarm_actions') { should_not be_empty }
-    end
-
-    aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace).alarm_actions.each do |sns|
-      describe aws_sns_topic(sns) do
-        it { should exist }
-        its('confirmed_subscription_count') { should cmp >= 1 }
-      end
-    end
-  end
+  ref 'https://docs.aws.amazon.com/AmazonS3/latest/user-guide/enable-cloudtrail-events.html'
+  tag nist: ['AU-3','AU-3(1)','AU-12']
+  tag severity: "medium "
+  tag cis_controls: [
+    {"8" => ["8.5"]}
+  ]
 end
