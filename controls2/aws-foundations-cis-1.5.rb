@@ -85,9 +85,13 @@ password into the Authentication Code 2 box. Choose Assign Virtual MFA. "
 recommendation is not applicable for us-gov cloud regions. "
   impact 0.5
   ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html#id_root-user_manage_mfa:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html#enable-virt-mfa-for-root'
-  tag nist: []
+  tag nist: ['IA-2(1)']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["6.5"]}
   ]
+
+  describe aws_iam_credential_report.where(user: '<root_account>').entries.first do
+    its('mfa_active') { should eq true }
+  end
 end
