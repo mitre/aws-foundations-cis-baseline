@@ -62,9 +62,14 @@ request to AWS support enables 'root' access only through access-keys (CLI, API 
 us-gov cloud region. "
   impact 0.5
   ref 'http://docs.aws.amazon.com/general/latest/gr/aws-access-keys-best-practices.html:http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html:http://docs.aws.amazon.com/IAM/latest/APIReference/API_GetAccountSummary.html:https://aws.amazon.com/blogs/security/an-easier-way-to-determine-the-presence-of-aws-account-access-keys/'
-  tag nist: []
+  tag nist: ['AC-6']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["3.3"]}
   ]
+  describe 'The root account should not have active access keys.' do
+    subject { aws_iam_credential_report.where(user: '<root_account>').entries.first }
+    its('access_key_1_active') { should eq false }
+    its('access_key_2_active') { should eq false }
+  end
 end
