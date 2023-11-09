@@ -71,7 +71,7 @@ Enabling MFA delete may impact other services that automate the creation and/or 
 S3 buckets. "
   impact 0.5
   ref 'https://docs.aws.amazon.com/AmazonS3/latest/dev/Versioning.html#MultiFactorAuthenticationDelete:https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMFADelete.html:https://aws.amazon.com/blogs/security/securing-access-to-aws-using-mfa-part-3/:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_lost-or-broken.html'
-  tag nist: []
+  tag nist: ['AC-3']
   tag severity: "medium "
   tag cis_controls: [
     {"8" => ["3.3"]}
