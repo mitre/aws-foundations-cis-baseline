@@ -1,6 +1,6 @@
 # aws-foundations-cis-baseline
 
-InSpec profile to validate the secure configuration of Amazon Web Services against [CIS'](https://www.cisecurity.org/cis-benchmarks/) Amazon Web Services Foundations Benchmark Version 2.0.0 - 06-28-2023
+InSpec profile to validate the secure configuration of Amazon Web Services against [CIS'](https://www.cisecurity.org/cis-benchmarks/) Amazon Web Services Foundations Benchmark Version 2.0.0 - 06-28-2023 
 
 ## Getting Started
 It is intended and recommended that InSpec and this profile be run from a __"runner"__ host (such as a DevOps orchestration server, an administrative management system, or a developer's workstation/laptop) against the target remotely over __AWS CLI__.
