@@ -1,4 +1,4 @@
-name: EC2 Testing Matrix
+name: CIS AWS Foundations v2.0.0
 
 on:
   push:
@@ -21,7 +21,7 @@ jobs:
     #   fail-fast: false
     steps:
       - name: add needed packages
-        run: sudo apt-get install -y jq
+        run: sudo apt-get install -y jq yq
       - name: Configure AWS credentials
         env:
           AWS_SG_ID: ${{ secrets.SAF_AWS_SG_ID }}
