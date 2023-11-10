@@ -59,7 +59,7 @@ jobs:
       #   run: bundle exec kitchen test --destroy=always ${{ matrix.suite }}-rhel-7 || true
       - name: Run the Profile
         run: |
-          inspec exec . --target aws:// --reporter cli json:${{ env.RESULTS_FILE }}
+          inspec exec . --target aws:// --reporter cli json:${{ env.RESULTS_FILE }} || true
       - name: Save Test Result JSON
         uses: actions/upload-artifact@v3
         with:
@@ -67,11 +67,11 @@ jobs:
             ${{ env.RESULTS_FILE }}
             ${{ env.PROFILE_FILE }}
 
-      - name: Display our ${{ env.RESULTS_FILE }} results summary
+      - name: "Display our ${{ env.RESULTS_FILE }} results summary"
         uses: mitre/saf_action@v1
         with:
           command_string: "view summary -i ${{ env.RESULTS_FILE }}"
-      - name: Ensure the scan meets our ${{ env.RESULTS_FILE }} results threshold
+      - name: "Ensure the scan meets our ${{ env.RESULTS_FILE }} results threshold"
         uses: mitre/saf_action@v1
         with:
           command_string: "validate threshold -i ${{ env.RESULTS_FILE }} -F cis-foundations.threshold.yml"
