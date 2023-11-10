@@ -38,54 +38,51 @@ inputs:
   - name: exception_bucket_list
     description: 'list of buckets exempted from inspection'
     type: Array
-    value:
-      - 'exception_bucket_name'
+    value: []
 
   - name: exception_security_group_list
     description: 'list of security groups exempted from inspection'
     type: Array
-    value:
-      - 'exception_security_group_name'
+    value: []
 
   - name: service_account_mfa_exceptions
     description: 'list of service accounts which are exempt from the MFA requirement'
     type: Array
-    value:
-      - 'service_account_mfa_exceptions'
+    value: []
 
   - name: config_delivery_channels
     description: 'Config service settings'
     type: Hash
     value:
       us-east-1:
-        s3_bucket_name: s3_bucket_name_value
-        sns_topic_arn: sns_topic_arn_value
+        s3_bucket_name: ''
+        sns_topic_arn: ''
       us-east-2:
-        s3_bucket_name: s3_bucket_name_value
-        sns_topic_arn: sns_topic_arn_value
+        s3_bucket_name: ''
+        sns_topic_arn: ''
       us-west-1:
-        s3_bucket_name: s3_bucket_name_value
-        sns_topic_arn: sns_topic_arn_value
+        s3_bucket_name: ''
+        sns_topic_arn: ''
       us-west-2:
-        s3_bucket_name: s3_bucket_name_value
-        sns_topic_arn: sns_topic_arn_value
+        s3_bucket_name: ''
+        sns_topic_arn: ''
 
   - name: contact_information
     description: 'Account contact information'
     type: Hash
     value:
-      address_line_1: '1234 My Avenue WW'
-      city: 'Washington, D.C.'
-      country_code: 'US'
-      full_name: 'Json Doe'
-      phone_number: '202-555-1111'
-      postal_code: '10101'
+      address_line_1: ''
+      city: ''
+      country_code: ''
+      full_name: ''
+      phone_number: ''
+      postal_code: ''
 
   - name: security_contact_information
     description: 'Account security contact information'
     type: Hash
     value:
-      full_name: 'Example'
-      title: 'The'
-      phone_number: '000-000-0000'
-      email_address: 'example@example.com'
+      full_name: ''
+      title: ''
+      phone_number: ''
+      email_address: ''
