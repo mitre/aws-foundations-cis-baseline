@@ -1,7 +1,7 @@
 *.lock
 *.gem
 *.rbc
-
+*results.json
 inputs.yml
 
 /.config
