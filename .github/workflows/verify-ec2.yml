@@ -14,7 +14,7 @@ jobs:
       CHEF_LICENSE: accept-silent
       RESULTS_FILE: inspec_results.json
       PROFILE_FILE: profile.json
-      INPUT_FILE: foundations.input.yml
+      INPUT_FILE: testing.inputs.yml
     #   KITCHEN_LOCAL_YAML: kitchen.ec2.yml
     #   LC_ALL: "en_US.UTF-8"
     # strategy:
@@ -61,7 +61,7 @@ jobs:
       #   run: bundle exec kitchen test --destroy=always ${{ matrix.suite }}-rhel-7 || true
       - name: Run the Profile
         run: |
-          inspec exec . --target aws:// --input-file=foundations.input.yml --reporter cli json:${{ env.RESULTS_FILE }} || true
+          inspec exec . --target aws:// --input-file=$${{ env.INPUT_FILE }} --reporter cli json:${{ env.RESULTS_FILE }} || true
       - name: Save Test Result JSON
         uses: actions/upload-artifact@v3
         with:
