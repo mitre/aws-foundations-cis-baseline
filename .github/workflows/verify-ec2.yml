@@ -13,6 +13,7 @@ jobs:
     env:
       CHEF_LICENSE: accept-silent
       RESULTS_FILE: inspec_results.json
+      PROFILE_FILE: profile.json
     #   KITCHEN_LOCAL_YAML: kitchen.ec2.yml
     #   LC_ALL: "en_US.UTF-8"
     # strategy:
@@ -43,22 +44,29 @@ jobs:
       - name: Disable ri and rdoc
         run: 'echo "gem: --no-document" >> ~/.gemrc'
       - run: bundle install
+      - name: Installed Inspec
+        run: bundle exec inspec version
+      - name: Installed InSpec Plugins
+        run: bundle exec inspec plugin list
       - name: Vendor the InSpec Profile
         run: bundle exec inspec vendor --overwrite
       - name: Regenerate current `profile.json`
         run: |
-          bundle exec inspec json . | jq . > profile.json
+          bundle exec inspec export . --format json | jq . > ${{ env.PROFILE_FILE }}
       - name: Lint the Inspec profile
         run: bundle exec inspec check .
       # - name: Run kitchen test
       #   run: bundle exec kitchen test --destroy=always ${{ matrix.suite }}-rhel-7 || true
       - name: Run the Profile
         run: |
-          inspec exec . aws:// --reporter cli json:${{ env.RESULTS_FILE }}
+          inspec exec . --target aws:// --reporter cli json:${{ env.RESULTS_FILE }}
       - name: Save Test Result JSON
         uses: actions/upload-artifact@v3
         with:
-          path: spec/results/
+          path: |
+            ${{ env.RESULTS_FILE }}
+            ${{ env.PROFILE_FILE }}
+
       - name: Display our ${{ env.RESULTS_FILE }} results summary
         uses: mitre/saf_action@v1
         with:
