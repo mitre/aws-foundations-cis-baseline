@@ -1,10 +1,11 @@
+---
 name: "aws-foundations-cis-baseline"
 title: "aws-foundations-cis-baseline"
 maintainer: "MITRE SAF Team"
 copyright: "MITRE, 2023"
 copyright_email: "saf@groups.mitre.org"
 license: "Apache-2.0"
-summary: 'InSpec Validation Profile for AWS Foundations CIS'
+summary: "InSpec Validation Profile for AWS Foundations CIS"
 version: 2.0.1
 inspec_version: ">= 4.0"
 supports:
@@ -16,73 +17,73 @@ depends:
 
 inputs:
   - name: default_aws_region
-    description: 'primary aws region your resources are deployed.'
-    value: 'us-east-1'
+    description: "primary aws region your resources are deployed."
+    value: "us-east-1"
     sensitive: true
 
   - name: aws_key_age
-    description: 'The maximum allowed key age'
+    description: "The maximum allowed key age"
     type: Numeric
     value: 90
 
   - name: pwd_length
-    description: 'Required password length'
+    description: "Required password length"
     type: Numeric
     value: 14
 
   - name: aws_cred_age
-    description: 'The maximum allowed IAM account age'
+    description: "The maximum allowed IAM account age"
     type: Numeric
     value: 90
 
   - name: exception_bucket_list
-    description: 'list of buckets exempted from inspection'
+    description: "list of buckets exempted from inspection"
     type: Array
     value: []
 
   - name: exception_security_group_list
-    description: 'list of security groups exempted from inspection'
+    description: "list of security groups exempted from inspection"
     type: Array
     value: []
 
   - name: service_account_mfa_exceptions
-    description: 'list of service accounts which are exempt from the MFA requirement'
+    description: "list of service accounts which are exempt from the MFA requirement"
     type: Array
     value: []
 
   - name: config_delivery_channels
-    description: 'Config service settings'
+    description: "Config service settings"
     type: Hash
     value:
       us-east-1:
-        s3_bucket_name: ''
-        sns_topic_arn: ''
+        s3_bucket_name: ""
+        sns_topic_arn: ""
       us-east-2:
-        s3_bucket_name: ''
-        sns_topic_arn: ''
+        s3_bucket_name: ""
+        sns_topic_arn: ""
       us-west-1:
-        s3_bucket_name: ''
-        sns_topic_arn: ''
+        s3_bucket_name: ""
+        sns_topic_arn: ""
       us-west-2:
-        s3_bucket_name: ''
-        sns_topic_arn: ''
+        s3_bucket_name: ""
+        sns_topic_arn: ""
 
   - name: contact_information
-    description: 'Account contact information'
+    description: "Account contact information"
     type: Hash
     value:
-      address_line_1: ''
-      city: ''
-      country_code: ''
-      full_name: ''
-      phone_number: ''
-      postal_code: ''
+      address_line_1: ""
+      city: ""
+      country_code: ""
+      full_name: ""
+      phone_number: ""
+      postal_code: ""
 
   - name: security_contact_information
-    description: 'Account security contact information'
+    description: "Account security contact information"
     type: Hash
     value:
-      full_name: ''
-      title: ''
-      phone_number: ''
-      email_address: ''
+      full_name: ""
+      title: ""
+      phone_number: ""
+      email_address: ""
