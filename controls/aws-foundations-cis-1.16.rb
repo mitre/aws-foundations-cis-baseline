@@ -88,7 +88,7 @@ Roles:
   tag nist: ['AC-6']
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['3.3'] }
+    { '8' => ['3.3'] },
   ]
 
   attached_policies = aws_iam_policies.where { attachment_count > 0 }.policy_names

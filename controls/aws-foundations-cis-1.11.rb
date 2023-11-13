@@ -102,7 +102,7 @@ iam delete-access-key --access-key-id <access-key-id-listed> --user-name
   tag nist: ['AC-6']
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['3.3'] }
+    { '8' => ['3.3'] },
   ]
 
   if aws_iam_access_keys.where(active: true).entries.empty?

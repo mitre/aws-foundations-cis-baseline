@@ -106,7 +106,7 @@ https://docs.aws.amazon.com/AmazonS3/latest/dev/object-lifecycle-mgmt.html "
   tag nist: ['AU-12']
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['8.5'] }
+    { '8' => ['8.5'] },
   ]
 
   describe aws_cloudtrail_trails do

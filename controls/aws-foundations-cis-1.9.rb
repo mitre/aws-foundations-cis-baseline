@@ -52,7 +52,7 @@ single command. "
   tag nist: ['IA-5(1)']
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['5.2'] }
+    { '8' => ['5.2'] },
   ]
 
   describe aws_iam_password_policy do

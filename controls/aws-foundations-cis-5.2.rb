@@ -49,7 +49,7 @@ the 0.0.0.0/0 inbound rule. "
   tag nist: ['CM-7(1)']
   tag severity: 'medium '
   tag cis_controls: [
-    { '7' => ['9.2'] }
+    { '7' => ['9.2'] },
   ]
 
   exception_security_group_list = input('exception_security_group_list')

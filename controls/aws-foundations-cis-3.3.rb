@@ -95,7 +95,7 @@ Remove any `Statement` having an `Effect` set to `Allow` and a `Principal` set t
   tag nist: ['AC-3']
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['3.3'] }
+    { '8' => ['3.3'] },
   ]
 
   describe aws_cloudtrail_trails do

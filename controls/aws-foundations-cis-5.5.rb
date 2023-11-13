@@ -54,7 +54,7 @@ route table. "
   tag nist: ['AC-6']
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['3.3'] }
+    { '8' => ['3.3'] },
   ]
 
   aws_route_tables.route_table_ids.each do |route_table_id|
