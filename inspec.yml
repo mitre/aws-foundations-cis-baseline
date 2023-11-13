@@ -13,9 +13,9 @@ supports:
 
 depends:
   - name: inspec-aws
-    path: ../inspec-aws
-    # git: https://github.com/mitre/inspec-aws.git
-    # branch: resource_updates
+    # path: ../inspec-aws
+    git: https://github.com/mitre/inspec-aws.git
+    branch: resource_updates
     
 inputs:
   - name: default_aws_region
@@ -70,8 +70,8 @@ inputs:
         s3_bucket_name: ""
         sns_topic_arn: ""
 
-  - name: contact_information
-    description: "Account contact information"
+  - name: primary_contact
+    description: "Primary Account contact information"
     type: Hash
     value:
       address_line_1: ""
@@ -81,7 +81,7 @@ inputs:
       phone_number: ""
       postal_code: ""
 
-  - name: security_contact_information
+  - name: security_contact
     description: "Account security contact information"
     type: Hash
     value:

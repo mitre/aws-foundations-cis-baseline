@@ -1,10 +1,10 @@
-control 'aws-foundations-cis-2.4.1' do
-  title 'Ensure that encryption is enabled for EFS file systems '
-  desc 'EFS data should be encrypted at rest using AWS KMS (Key Management Service). '
-  desc 'rationale',
+control "aws-foundations-cis-2.4.1" do
+  title "Ensure that encryption is enabled for EFS file systems "
+  desc "EFS data should be encrypted at rest using AWS KMS (Key Management Service). "
+  desc "rationale",
        "Data should be encrypted at rest to reduce the risk of a data breach via direct access to the
 storage device. "
-  desc 'check',
+  desc "check",
        "**From Console:**
 1. Login to the AWS Management Console and Navigate to `Elastic File
 System (EFS) dashboard.
@@ -36,7 +36,7 @@ aws efs describe-file-systems --region <region> --file-system-id
 command output should return the file system encryption status true or false. If the returned
 value is `false`, the selected AWS EFS file system is not encrypted and if the returned value is
 `true`, the selected AWS EFS file system is encrypted. "
-  desc 'fix',
+  desc "fix",
        "**It is important to note that EFS file system data at rest encryption must be turned on when
 creating the file system.**
 
@@ -130,17 +130,17 @@ aws efs delete-file-system --region <region>
 ```
 11. Change the AWS region by
 updating the --region and repeat the entire process for other aws regions. "
-  desc 'default_value',
+  desc "default_value",
        "EFS file system data is encrypted at rest by default when creating a file system via the
 Console. Encryption at rest is not enabled by default when creating a new file system using the
 AWS CLI, API, and SDKs. "
   impact 0.5
-  ref 'https://docs.aws.amazon.com/efs/latest/ug/encryption-at-rest.html:https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/index.html#efs'
+  ref "https://docs.aws.amazon.com/efs/latest/ug/encryption-at-rest.html:https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/index.html#efs"
   tag nist: %w[SC-28 SC-28(1)]
-  tag severity: 'medium '
-  tag cis_controls: [{ '8' => ['3.11'] }]
+  tag severity: "medium "
+  tag cis_controls: [{ "8" => ["3.11"] }]
 
-  describe 'No Tests Defined Yet' do
-    skip 'No Tests have been written for this control yet'
+  describe "No Tests Defined Yet" do
+    skip "No Tests have been written for this control yet"
   end
 end

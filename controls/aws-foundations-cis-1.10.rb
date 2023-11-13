@@ -1,4 +1,4 @@
-control 'aws-foundations-cis-1.10' do
+control "aws-foundations-cis-1.10" do
   title "Ensure multi-factor authentication (MFA) is enabled for all IAM users that have a console
 password "
   desc "Multi-Factor Authentication (MFA) adds an extra layer of authentication assurance beyond
@@ -6,10 +6,10 @@ traditional credentials. With MFA enabled, when a user signs in to the AWS Conso
 be prompted for their user name and password as well as for an authentication code from their
 physical or virtual MFA token. It is recommended that MFA be enabled for all accounts that have
 a console password. "
-  desc 'rationale', "Enabling MFA provides increased security for console access as it requires the
+  desc "rationale", "Enabling MFA provides increased security for console access as it requires the
 authenticating principal to possess a device that displays a time-sensitive key and have
 knowledge of a credential. "
-  desc 'check', "Perform the following to determine if a MFA device is enabled for all IAM users having a console
+  desc "check", "Perform the following to determine if a MFA device is enabled for all IAM users having a console
 password:
 
 **From Console:**
@@ -52,7 +52,7 @@ paras,true,true
 ```
 3. For any column having
 `password_enabled` set to `true` , ensure `mfa_active` is also set to `true.` "
-  desc 'fix', "Perform the following to enable MFA:
+  desc "fix", "Perform the following to enable MFA:
 
 **From Console:**
 
@@ -97,7 +97,7 @@ for the device to generate a new one-time password. Then type the second `one-ti
 into the `MFA Code 2 box`.
 
 9. Click `Assign MFA`. "
-  desc 'additional_information', "**Forced IAM User Self-Service Remediation**
+  desc "additional_information", "**Forced IAM User Self-Service Remediation**
 
 Amazon has published a pattern that
 forces users to self-service setup MFA before they have access to their complete permissions
@@ -105,23 +105,23 @@ set. Until they complete this step, they cannot access their full permissions. T
 can be used on new AWS accounts. It can also be used on existing accounts - it is recommended
 users are given instructions and a grace period to accomplish MFA enrollment before active
 enforcement on existing AWS accounts. "
-  desc 'impact', "AWS will soon end support for SMS multi-factor authentication (MFA). New customers are not
+  desc "impact", "AWS will soon end support for SMS multi-factor authentication (MFA). New customers are not
 allowed to use this feature. We recommend that existing customers switch to one of the
 following alternative methods of MFA. "
   impact 0.5
-  ref 'https://tools.ietf.org/html/rfc6238:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#enable-mfa-for-privileged-users:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html:https://blogs.aws.amazon.com/security/post/Tx2SJJYE082KBUK/How-to-Delegate-Management-of-Multi-Factor-Authentication-to-AWS-IAM-Users'
-  tag nist: ['IA-2(1)']
-  tag severity: 'medium '
+  ref "https://tools.ietf.org/html/rfc6238:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#enable-mfa-for-privileged-users:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html:https://blogs.aws.amazon.com/security/post/Tx2SJJYE082KBUK/How-to-Delegate-Management-of-Multi-Factor-Authentication-to-AWS-IAM-Users"
+  tag nist: ["IA-2(1)"]
+  tag severity: "medium "
   tag cis_controls: [
-    { '8' => ['6.5'] },
+    { "8" => ["6.5"] },
   ]
 
-  service_account_mfa_exceptions = input('service_account_mfa_exceptions')
+  service_account_mfa_exceptions = input("service_account_mfa_exceptions")
 
   users_without_mfa = aws_iam_users.where(has_console_password: true).where(has_mfa_enabled: false).usernames
 
   if service_account_mfa_exceptions.compact.empty?
-    describe 'The active IAM users that do not have MFA enabled' do
+    describe "The active IAM users that do not have MFA enabled" do
       subject { users_without_mfa }
       it { should be_empty }
     end

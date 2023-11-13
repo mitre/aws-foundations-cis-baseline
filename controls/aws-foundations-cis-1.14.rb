@@ -1,17 +1,17 @@
-control 'aws-foundations-cis-1.14' do
-  title 'Ensure access keys are rotated every 90 days or less '
+control "aws-foundations-cis-1.14" do
+  title "Ensure access keys are rotated every 90 days or less "
   desc "Access keys consist of an access key ID and secret access key, which are used to sign
 programmatic requests that you make to AWS. AWS users need their own access keys to make
 programmatic calls to AWS from the AWS Command Line Interface (AWS CLI), Tools for Windows
 PowerShell, the AWS SDKs, or direct HTTP calls using the APIs for individual AWS services. It
 is recommended that all access keys be regularly rotated. "
-  desc 'rationale', "Rotating access keys will reduce the window of opportunity for an access key that is
+  desc "rationale", "Rotating access keys will reduce the window of opportunity for an access key that is
 associated with a compromised or terminated account to be used.
 
 Access keys should be
 rotated to ensure that data cannot be accessed with an old key which might have been lost,
 cracked, or stolen. "
-  desc 'check', "Perform the following to determine if access keys are rotated as prescribed:
+  desc "check", "Perform the following to determine if access keys are rotated as prescribed:
 
 **From
 Console:**
@@ -38,7 +38,7 @@ The `access_key_1_last_rotated` and the
 `access_key_2_last_rotated` fields in this file notes The date and time, in ISO 8601
 date-time format, when the user's access key was created or last changed. If the user does not
 have an active access key, the value in this field is N/A (not applicable). "
-  desc 'fix', "Perform the following to rotate access keys:
+  desc "fix", "Perform the following to rotate access keys:
 
 **From Console:**
 
@@ -100,11 +100,11 @@ aws iam
 delete-access-key
 ``` "
   impact 0.5
-  ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#rotate-credentials:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_finding-unused.html:https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html'
-  tag nist: ['AC-2']
-  tag severity: 'medium '
+  ref "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#rotate-credentials:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_finding-unused.html:https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html"
+  tag nist: ["AC-2"]
+  tag severity: "medium "
   tag cis_controls: [
-    { '8' => ['5'] },
+    { "8" => ["5"] },
   ]
 
   aws_iam_credential_report.where(access_key_1_active: false).entries.each do |user|
@@ -117,16 +117,16 @@ delete-access-key
     describe "The user (#{user.user})" do
       if user.access_key_1_last_used_date.is_a? DateTime
         subject { ((Time.current - user.access_key_1_last_used_date) / (24 * 60 * 60)).to_i }
-        it 'must have used access key 1 within the last 90 days.' do
+        it "must have used access key 1 within the last 90 days." do
           expect(subject).to be < 90
         end
       elsif user.access_key_1_last_rotated.is_a? DateTime
         subject { ((Time.current - user.access_key_1_last_rotated) / (24 * 60 * 60)).to_i }
-        it 'must have rotated access key 1 within the last 90 days if they have not used it within the last 90 days.' do
+        it "must have rotated access key 1 within the last 90 days if they have not used it within the last 90 days." do
           expect(subject).to be < 90
         end
       else
-        RSpec::Expectatations.fail_with('must have rotated access key 1 within the last 90 days if they have not used it within the last 90 days.')
+        RSpec::Expectatations.fail_with("must have rotated access key 1 within the last 90 days if they have not used it within the last 90 days.")
       end
     end
   end
@@ -141,16 +141,16 @@ delete-access-key
     describe "The user (#{user.user})" do
       if user.access_key_2_last_used_date.is_a? DateTime
         subject { ((Time.current - user.access_key_2_last_used_date) / (24 * 60 * 60)).to_i }
-        it 'must have used access key 2 within the last 90 days.' do
+        it "must have used access key 2 within the last 90 days." do
           expect(subject).to be < 90
         end
       elsif user.access_key_2_last_rotated.is_a? DateTime
         subject { ((Time.current - user.access_key_2_last_rotated) / (24 * 60 * 60)).to_i }
-        it 'must have rotated access key 2 within the last 90 days if they have not used it within the last 90 days.' do
+        it "must have rotated access key 2 within the last 90 days if they have not used it within the last 90 days." do
           expect(subject).to be < 90
         end
       else
-        RSpec::Expectatations.fail_with('must have rotated access key 2 within the last 90 days if they have not used it within the last 90 days.')
+        RSpec::Expectatations.fail_with("must have rotated access key 2 within the last 90 days if they have not used it within the last 90 days.")
       end
     end
   end

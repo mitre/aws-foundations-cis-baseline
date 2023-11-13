@@ -1,16 +1,16 @@
-control 'aws-foundations-cis-4.16' do
-  title 'Ensure AWS Security Hub is enabled '
+control "aws-foundations-cis-4.16" do
+  title "Ensure AWS Security Hub is enabled "
   desc "Security Hub collects security data from across AWS accounts, services, and supported
 third-party partner products and helps you analyze your security trends and identify the
 highest priority security issues. When you enable Security Hub, it begins to consume,
 aggregate, organize, and prioritize findings from AWS services that you have enabled, such
 as Amazon GuardDuty, Amazon Inspector, and Amazon Macie. You can also enable integrations
 with AWS partner security products. "
-  desc 'rationale',
+  desc "rationale",
        "AWS Security Hub provides you with a comprehensive view of your security state in AWS and helps
 you check your environment against security industry standards and best practices -
 enabling you to quickly assess the security posture across your AWS accounts. "
-  desc 'check',
+  desc "check",
        "The process to evaluate AWS Security Hub configuration per region
 
 **From
@@ -56,7 +56,7 @@ An error occurred (InvalidAccessException) when
 calling the DescribeHub operation: Account <Account ID> is not subscribed to AWS Security
 Hub
 ``` "
-  desc 'fix',
+  desc "fix",
        "To grant the permissions required to enable Security Hub, attach the Security Hub managed
 policy AWSSecurityHubFullAccess to an IAM user, group, or role.
 
@@ -89,16 +89,16 @@ standards, include `--no-enable-default-standards`.
 aws securityhub
 enable-security-hub --no-enable-default-standards
 ``` "
-  desc 'impact',
+  desc "impact",
        "It is recommended AWS Security Hub be enabled in all regions. AWS Security Hub requires AWS
 Config to be enabled. "
   impact 0.5
-  ref 'https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-get-started.html:https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-enable.html#securityhub-enable-api:https://awscli.amazonaws.com/v2/documentation/api/latest/reference/securityhub/enable-security-hub.html'
-  tag nist: ['CM-6(1)']
-  tag severity: 'medium '
-  tag cis_controls: [{ '7' => ['11.3'] }]
+  ref "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-get-started.html:https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-enable.html#securityhub-enable-api:https://awscli.amazonaws.com/v2/documentation/api/latest/reference/securityhub/enable-security-hub.html"
+  tag nist: ["CM-6(1)"]
+  tag severity: "medium "
+  tag cis_controls: [{ "7" => ["11.3"] }]
 
-  describe 'No Tests Defined Yet' do
-    skip 'No Tests have been written for this control yet'
+  describe "No Tests Defined Yet" do
+    skip "No Tests have been written for this control yet"
   end
 end

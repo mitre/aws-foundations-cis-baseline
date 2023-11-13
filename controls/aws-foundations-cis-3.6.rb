@@ -1,15 +1,15 @@
-control 'aws-foundations-cis-3.6' do
-  title 'Ensure S3 bucket access logging is enabled on the CloudTrail S3 bucket '
+control "aws-foundations-cis-3.6" do
+  title "Ensure S3 bucket access logging is enabled on the CloudTrail S3 bucket "
   desc "S3 Bucket Access Logging generates a log that contains access records for each request made to
 your S3 bucket. An access log record contains details about the request, such as the request
 type, the resources specified in the request worked, and the time and date the request was
 processed. It is recommended that bucket access logging be enabled on the CloudTrail S3
 bucket. "
-  desc 'rationale', "By enabling S3 bucket logging on target S3 buckets, it is possible to capture all events which
+  desc "rationale", "By enabling S3 bucket logging on target S3 buckets, it is possible to capture all events which
 may affect objects within any target buckets. Configuring logs to be placed in a separate
 bucket allows access to log information which can be useful in security and incident response
 workflows. "
-  desc 'check', "Perform the following ensure the CloudTrail S3 bucket has access logging is
+  desc "check", "Perform the following ensure the CloudTrail S3 bucket has access logging is
 enabled:
 
 **From Console:**
@@ -58,7 +58,7 @@ enabled:
  }
 }
 ``` "
-  desc 'fix', "Perform the following to enable S3 bucket logging:
+  desc "fix", "Perform the following to enable S3 bucket logging:
 
 **From Console:**
 
@@ -117,13 +117,13 @@ aws
 s3api put-bucket-logging --bucket <BucketName> --bucket-logging-status
 file://<FileName.Json>
 ``` "
-  desc 'default_value', 'Logging is disabled. '
+  desc "default_value", "Logging is disabled. "
   impact 0.5
-  ref 'https://docs.aws.amazon.com/AmazonS3/latest/dev/ServerLogs.html'
+  ref "https://docs.aws.amazon.com/AmazonS3/latest/dev/ServerLogs.html"
   tag nist: %w(AU-12 AU-2)
-  tag severity: 'medium '
+  tag severity: "medium "
   tag cis_controls: [
-    { '8' => ['3.14'] },
+    { "8" => ["3.14"] },
   ]
 
   describe aws_cloudtrail_trails do
@@ -132,8 +132,8 @@ file://<FileName.Json>
 
   aws_cloudtrail_trails.trail_arns.each do |trail|
     bucket_name = aws_cloudtrail_trail(trail).s3_bucket_name
-    if input('exception_bucket_list').include?(bucket_name)
-      describe 'Bucket not inspected because it is defined as an exception' do
+    if input("exception_bucket_list").include?(bucket_name)
+      describe "Bucket not inspected because it is defined as an exception" do
         skip "Bucket: #{bucket_name} not inspected because it is defined in exception_bucket_list."
       end
     else

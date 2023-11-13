@@ -1,13 +1,13 @@
-control 'aws-foundations-cis-5.1' do
-  title 'Ensure no Network ACLs allow ingress from 0.0.0.0/0 to remote server administration ports '
+control "aws-foundations-cis-5.1" do
+  title "Ensure no Network ACLs allow ingress from 0.0.0.0/0 to remote server administration ports "
   desc "The Network Access Control List (NACL) function provide stateless filtering of ingress and
 egress network traffic to AWS resources. It is recommended that no NACL allows unrestricted
 ingress access to remote server administration ports, such as SSH to port `22` and RDP to port
 `3389`, using either the TDP (6), UDP (17) or ALL (-1) protocols "
-  desc 'rationale',
+  desc "rationale",
        "Public access to remote server administration ports, such as 22 and 3389, increases resource
 attack surface and unnecessarily raises the risk of resource compromise. "
-  desc 'check',
+  desc "check",
        "**From Console:**
 
 Perform the following to determine if the account is configured as
@@ -27,7 +27,7 @@ for your environment and has a `Source` of `0.0.0.0/0` and shows `ALLOW`
 **Note:** A Port
 value of `ALL` or a port range such as `0-1024` are inclusive of port `22`, `3389`, and other
 remote server administration ports "
-  desc 'fix',
+  desc "fix",
        "**From Console:**
 
 Perform the following:
@@ -45,12 +45,12 @@ a range other than 0.0.0.0/0, or, B) Click `Delete` to remove the offending inbo
  -
 Click `Save` "
   impact 0.5
-  ref 'https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html:https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Security.html#VPC_Security_Comparison'
-  tag nist: ['CM-7(1)']
-  tag severity: 'medium '
-  tag cis_controls: [{ '7' => ['9.2'] }]
+  ref "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html:https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Security.html#VPC_Security_Comparison"
+  tag nist: ["CM-7(1)"]
+  tag severity: "medium "
+  tag cis_controls: [{ "7" => ["9.2"] }]
 
-  describe 'No Tests Defined Yet' do
-    skip 'No Tests have been written for this control yet'
+  describe "No Tests Defined Yet" do
+    skip "No Tests have been written for this control yet"
   end
 end

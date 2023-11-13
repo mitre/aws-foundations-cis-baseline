@@ -1,13 +1,13 @@
-control 'aws-foundations-cis-2.1.1' do
-  title 'Ensure S3 Bucket Policy is set to deny HTTP requests '
+control "aws-foundations-cis-2.1.1" do
+  title "Ensure S3 Bucket Policy is set to deny HTTP requests "
   desc "At the Amazon S3 bucket level, you can configure permissions through a bucket policy making
 the objects accessible only through HTTPS. "
-  desc 'rationale',
+  desc "rationale",
        "By default, Amazon S3 allows both HTTP and HTTPS requests. To achieve only allowing access to
 Amazon S3 objects through HTTPS you also have to explicitly deny access to HTTP requests.
 Bucket policies that allow HTTPS requests without explicitly denying HTTP requests will not
 comply with this recommendation. "
-  desc 'check',
+  desc "check",
        "To allow access to HTTPS you can use a condition that checks for the key
 `\"aws:SecureTransport: true\"`. This means that the request is sent through HTTPS but that
 HTTP can still be used. So to make sure you do not allow HTTP access confirm that there is a bucket
@@ -60,7 +60,7 @@ aws s3api get-bucket-policy --bucket
 is set to false `aws:SecureTransport:false`
 4. Confirm that the policy line has Effect set
 to Deny 'Effect:Deny' "
-  desc 'fix',
+  desc "fix",
        "**From Console:**
 
 1. Login to AWS Management Console and open the Amazon S3 console using
@@ -148,12 +148,12 @@ aws s3api put-bucket-policy --bucket <bucket_name>
 --policy file://policy.json
 ``` "
   impact 0.5
-  ref 'https://aws.amazon.com/premiumsupport/knowledge-center/s3-bucket-policy-for-config-rule/:https://aws.amazon.com/blogs/security/how-to-use-bucket-policies-and-apply-defense-in-depth-to-help-secure-your-amazon-s3-data/:https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3api/get-bucket-policy.html'
+  ref "https://aws.amazon.com/premiumsupport/knowledge-center/s3-bucket-policy-for-config-rule/:https://aws.amazon.com/blogs/security/how-to-use-bucket-policies-and-apply-defense-in-depth-to-help-secure-your-amazon-s3-data/:https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3api/get-bucket-policy.html"
   tag nist: %w[SC-8 SC-8(1)]
-  tag severity: 'medium '
-  tag cis_controls: [{ '8' => ['3.10'] }]
+  tag severity: "medium "
+  tag cis_controls: [{ "8" => ["3.10"] }]
 
-  describe 'No Tests Defined Yet' do
-    skip 'No Tests have been written for this control yet'
+  describe "No Tests Defined Yet" do
+    skip "No Tests have been written for this control yet"
   end
 end

@@ -1,15 +1,15 @@
-control 'aws-foundations-cis-1.3' do
-  title 'Ensure security questions are registered in the AWS account '
+control "aws-foundations-cis-1.3" do
+  title "Ensure security questions are registered in the AWS account "
   desc "The AWS support portal allows account owners to establish security questions that can be used
 to authenticate individuals calling AWS customer service for support. It is recommended
 that security questions be established. "
-  desc 'rationale', "When creating a new AWS account, a default super user is automatically created. This account
+  desc "rationale", "When creating a new AWS account, a default super user is automatically created. This account
 is referred to as the 'root user' or 'root' account. It is recommended that the use of this
 account be limited and highly controlled. During events in which the 'root' password is no
 longer accessible or the MFA token associated with 'root' is lost/destroyed it is possible,
 through authentication using secret questions and associated answers, to recover 'root'
 user login access. "
-  desc 'check', "**From Console:**
+  desc "check", "**From Console:**
 
 1. Login to the AWS account as the 'root' user
 2. On the top right you
@@ -21,7 +21,7 @@ the drop-down menu Click `My Account`
 section on the `Personal Information` page, configure three security challenge
 questions.
 6. Click `Save questions` . "
-  desc 'fix', "**From Console:**
+  desc "fix", "**From Console:**
 
 1. Login to the AWS Account as the 'root' user
 2. Click on the
@@ -42,12 +42,12 @@ questions
 8. Save Questions and Answers and place in a
 secure physical location "
   impact 0.5
-  tag nist: ['IR-6']
-  tag severity: 'medium '
+  tag nist: ["IR-6"]
+  tag severity: "medium "
   tag cis_controls: [
-    { '8' => ['17.2'] },
+    { "8" => ["17.2"] },
   ]
-  describe 'Control has to be tested manually' do
-    skip 'This control must be manually reviewed'
+  describe "Control has to be tested manually" do
+    skip "This control must be manually reviewed"
   end
 end
