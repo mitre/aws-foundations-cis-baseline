@@ -1,12 +1,12 @@
-control 'aws-foundations-cis-1.2' do
-  title 'Ensure security contact information is registered '
+control "aws-foundations-cis-1.2" do
+  title "Ensure security contact information is registered "
   desc "AWS provides customers with the option of specifying the contact information for account's
 security team. It is recommended that this information be provided. "
-  desc 'rationale',
+  desc "rationale",
        "Specifying security-specific contact information will help ensure that security
 advisories sent by AWS reach the team in your organization that is best equipped to respond to
 them. "
-  desc 'check',
+  desc "check",
        "Perform the following to determine if security contact information is present:
 
 **From
@@ -30,7 +30,7 @@ get-alternate-contact --alternate-contact-type SECURITY
 ```
 2. Ensure proper
 contact information is specified for the `Security` contact. "
-  desc 'fix',
+  desc "fix",
        "Perform the following to establish security contact information:
 
 **From
@@ -59,16 +59,16 @@ specifying an internal email distribution list to ensure emails are regularly mo
 more than one individual. "
 
   impact 0.5
-  tag nist: ['IR-6']
-  tag severity: 'medium '
-  tag cis_controls: [{ '8' => ['17.2'] }]
+  tag nist: ["IR-6"]
+  tag severity: "medium "
+  tag cis_controls: [{ "8" => ["17.2"] }]
   if aws_security_contact.configured?
     describe aws_security_contact do
-      its('email_address.first') { should cmp "#{input('primary_contact')[:address_line_1]}" }
-      its('name.fist') { should cmp "#{input('primary_contact')[:city]}" }
-      its('phone_number.first') { should cmp "#{input('primary_contact')[:full_name]}" }
+      its("email_address.first") { should cmp "#{input("primary_contact")[:address_line_1]}" }
+      its("name.fist") { should cmp "#{input("primary_contact")[:city]}" }
+      its("phone_number.first") { should cmp "#{input("primary_contact")[:full_name]}" }
     end
   else
-    raise 'The AWS Security Account is not Configured or cannot be accessed'
+    raise "The AWS Security Account is not Configured or cannot be accessed"
   end
 end

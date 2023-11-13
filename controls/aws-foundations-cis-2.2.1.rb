@@ -1,12 +1,12 @@
-control 'aws-foundations-cis-2.2.1' do
-  title 'Ensure EBS Volume Encryption is Enabled in all Regions '
+control "aws-foundations-cis-2.2.1" do
+  title "Ensure EBS Volume Encryption is Enabled in all Regions "
   desc "Elastic Compute Cloud (EC2) supports encryption at rest when using the Elastic Block Store
 (EBS) service. While disabled by default, forcing encryption at EBS volume creation is
 supported. "
-  desc 'rationale',
+  desc "rationale",
        "Encrypting data at rest reduces the likelihood that it is unintentionally exposed and can
 nullify the impact of disclosure if the encryption remains unbroken. "
-  desc 'check',
+  desc "check",
        "**From Console:**
 
 1. Login to AWS Management Console and open the Amazon EC2 console
@@ -33,7 +33,7 @@ is displayed.
 
 **Note:** EBS volume encryption is
 configured per region. "
-  desc 'fix',
+  desc "fix",
        "**From Console:**
 
 1. Login to AWS Management Console and open the Amazon EC2 console
@@ -62,19 +62,19 @@ aws
 change.
 
 **Note:** EBS volume encryption is configured per region. "
-  desc 'additional_information',
+  desc "additional_information",
        "Default EBS volume encryption only applies to newly created EBS volumes. Existing EBS
 volumes are **not** converted automatically. "
-  desc 'impact',
+  desc "impact",
        "Losing access or removing the KMS key in use by the EBS volumes will result in no longer being
 able to access the volumes. "
   impact 0.5
-  ref 'https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html:https://aws.amazon.com/blogs/aws/new-opt-in-to-default-encryption-for-new-ebs-volumes/'
+  ref "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html:https://aws.amazon.com/blogs/aws/new-opt-in-to-default-encryption-for-new-ebs-volumes/"
   tag nist: %w[SC-28 SC-28(1)]
-  tag severity: 'medium '
-  tag cis_controls: [{ '8' => ['3.11'] }]
+  tag severity: "medium "
+  tag cis_controls: [{ "8" => ["3.11"] }]
 
-  describe 'No Tests Defined Yet' do
-    skip 'No Tests have been written for this control yet'
+  describe "No Tests Defined Yet" do
+    skip "No Tests have been written for this control yet"
   end
 end

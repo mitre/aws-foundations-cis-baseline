@@ -1,12 +1,12 @@
-control 'aws-foundations-cis-3.2' do
-  title 'Ensure CloudTrail log file validation is enabled '
+control "aws-foundations-cis-3.2" do
+  title "Ensure CloudTrail log file validation is enabled "
   desc "CloudTrail log file validation creates a digitally signed digest file containing a hash of
 each log that CloudTrail writes to S3. These digest files can be used to determine whether a log
 file was changed, deleted, or unchanged after CloudTrail delivered the log. It is
 recommended that file validation be enabled on all CloudTrails. "
-  desc 'rationale', "Enabling log file validation will provide additional integrity checking of CloudTrail
+  desc "rationale", "Enabling log file validation will provide additional integrity checking of CloudTrail
 logs. "
-  desc 'check', "Perform the following on each trail to determine if log file validation is
+  desc "check", "Perform the following on each trail to determine if log file validation is
 enabled:
 
 **From Console:**
@@ -27,7 +27,7 @@ aws cloudtrail
 describe-trails
 ```
 Ensure `LogFileValidationEnabled` is set to `true` for each trail "
-  desc 'fix', "Perform the following to enable log file validation on a given trail:
+  desc "fix", "Perform the following to enable log file validation on a given trail:
 
 **From
 Console:**
@@ -56,13 +56,13 @@ aws cloudtrail
 validate-logs --trail-arn <trail_arn> --start-time <start_time> --end-time
 <end_time>
 ``` "
-  desc 'default_value', 'Not Enabled '
+  desc "default_value", "Not Enabled "
   impact 0.5
-  ref 'https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-enabling.html'
-  tag nist: ['AU-6']
-  tag severity: 'medium '
+  ref "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-enabling.html"
+  tag nist: ["AU-6"]
+  tag severity: "medium "
   tag cis_controls: [
-    { '8' => ['8.11'] },
+    { "8" => ["8.11"] },
   ]
 
   describe aws_cloudtrail_trails do

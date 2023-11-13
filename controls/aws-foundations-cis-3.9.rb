@@ -1,12 +1,12 @@
-control 'aws-foundations-cis-3.9' do
-  title 'Ensure VPC flow logging is enabled in all VPCs '
+control "aws-foundations-cis-3.9" do
+  title "Ensure VPC flow logging is enabled in all VPCs "
   desc "VPC Flow Logs is a feature that enables you to capture information about the IP traffic going to
 and from network interfaces in your VPC. After you've created a flow log, you can view and
 retrieve its data in Amazon CloudWatch Logs. It is recommended that VPC Flow Logs be enabled
 for packet \"Rejects\" for VPCs. "
-  desc 'rationale', "VPC Flow Logs provide visibility into network traffic that traverses the VPC and can be used to
+  desc "rationale", "VPC Flow Logs provide visibility into network traffic that traverses the VPC and can be used to
 detect anomalous traffic or insight during security workflows. "
-  desc 'check', "Perform the following to determine if VPC Flow logs are enabled:
+  desc "check", "Perform the following to determine if VPC Flow logs are enabled:
 
 **From
 Console:**
@@ -44,7 +44,7 @@ selected VPC, the command output will return an `empty list []`.
 VPCs available in the same region.
 6. Change the region by updating `--region` and repeat
 steps 1 - 5 for all the VPCs. "
-  desc 'fix', "Perform the following to determine if VPC Flow logs is enabled:
+  desc "fix", "Perform the following to determine if VPC Flow logs is enabled:
 
 **From Console:**
 
@@ -158,7 +158,7 @@ aws ec2 create-flow-logs --resource-type VPC
 available in the selected region.
 10. Change the region by updating --region and repeat
 remediation procedure for other vpcs. "
-  desc 'impact', "By default, CloudWatch Logs will store Logs indefinitely unless a specific retention period
+  desc "impact", "By default, CloudWatch Logs will store Logs indefinitely unless a specific retention period
 is defined for the log group. When choosing the number of days to retain, keep in mind the
 average days it takes an organization to realize they have been breached is 210 days (at the
 time of this writing). Since additional time is required to research a breach, a minimum 365
@@ -168,11 +168,11 @@ resource to manage CloudWatch Logs retention periods:
 
 1. https://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/SettingLogRetention.html "
   impact 0.5
-  ref 'https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/flow-logs.html'
+  ref "https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/flow-logs.html"
   tag nist: %w(AU-2 AU-7 AU-12)
-  tag severity: 'medium '
+  tag severity: "medium "
   tag cis_controls: [
-    { '8' => ['8.2'] },
+    { "8" => ["8.2"] },
   ]
 
   aws_vpcs.vpc_ids.each do |vpc|
@@ -181,16 +181,16 @@ resource to manage CloudWatch Logs retention periods:
     end
     describe.one do
       aws_vpc(vpc).flow_logs.each do |flow_log|
-        describe 'flow log settings' do
+        describe "flow log settings" do
           subject { flow_log }
-          its('flow_log_status') { should cmp 'ACTIVE' }
+          its("flow_log_status") { should cmp "ACTIVE" }
         end
       end
     end
   end
   if aws_vpcs.vpc_ids.empty?
-    describe 'Control skipped because no vpcs were found' do
-      skip 'This control is skipped since the aws_vpcs resource returned an empty vpc list'
+    describe "Control skipped because no vpcs were found" do
+      skip "This control is skipped since the aws_vpcs resource returned an empty vpc list"
     end
   end
 end

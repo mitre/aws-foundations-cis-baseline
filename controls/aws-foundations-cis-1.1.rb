@@ -1,5 +1,5 @@
-control 'aws-foundations-cis-1.1' do
-  title 'Maintain current contact details '
+control "aws-foundations-cis-1.1" do
+  title "Maintain current contact details "
   desc "
     Ensure contact email and telephone details for AWS accounts are current and map to more than
     one individual in your organization.
@@ -12,7 +12,7 @@ control 'aws-foundations-cis-1.1' do
     which forwards email to multiple individuals within the organization; where feasible,
     phone contact details should point to a PABX hunt group or other call-forwarding system. "
 
-  desc 'rationale', "If an AWS account is observed to be behaving in a prohibited or suspicious manner, AWS will
+  desc "rationale", "If an AWS account is observed to be behaving in a prohibited or suspicious manner, AWS will
     attempt to contact the account owner by email and phone using the contact details listed. If
     this is unsuccessful and the account behavior needs urgent mitigation, proactive measures
     may be taken, including throttling of traffic between the account exhibiting suspicious
@@ -21,7 +21,7 @@ control 'aws-foundations-cis-1.1' do
     prompt contact can be established. This is best achieved by setting AWS account contact
     details to point to resources which have multiple individuals as recipients, such as email
     aliases and PABX hunt groups. "
-  desc 'check', %q{
+  desc "check", %q{
     This activity can only be performed via the AWS Console, with a user who has permission to read
     and write Billing information (aws-portal:\\*Billing )
 
@@ -34,7 +34,7 @@ control 'aws-foundations-cis-1.1' do
     verify the current details.
     4. Under `Contact Information`, review and verify the current
     details.}
-  desc 'fix', %q{
+  desc "fix", %q{
     This activity can only be performed via the AWS Console, with a user who has permission to read
     and write Billing information (aws-portal:\\*Billing ).
 
@@ -55,21 +55,21 @@ control 'aws-foundations-cis-1.1' do
     8. For the fields that you want to change, type your updated
     information, and then choose `Update`. }
   impact 0.5
-  ref 'https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/manage-account-payment.html#contact-info'
-  tag nist: ['IR-6']
-  tag severity: 'medium '
+  ref "https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/manage-account-payment.html#contact-info"
+  tag nist: ["IR-6"]
+  tag severity: "medium "
   tag cis_controls: [
-    { '8' => ['17.2'] },
+    { "8" => ["17.2"] },
   ]
 
   if aws_primary_contact.configured?
     describe aws_primary_contact do
       it { should be_configured }
-      its('address_line_1.first') { should cmp "#{input('primary_contact')[:address_line_1]}" }
-      its('city.fist') { should cmp "#{input('primary_contact')[:city]}" }
-      its('full_name.first') { should cmp "#{input('primary_contact')[:full_name]}" }
-      its('phone_numer.first') { should cmp "#{input('primary_contact')[:phone_number]}" }
-      its('postal_code.first') { should cmp "#{input('primary_contact')[:postal_code]}" }
+      its("address_line_1.first") { should cmp "#{input("primary_contact")[:address_line_1]}" }
+      its("city.fist") { should cmp "#{input("primary_contact")[:city]}" }
+      its("full_name.first") { should cmp "#{input("primary_contact")[:full_name]}" }
+      its("phone_numer.first") { should cmp "#{input("primary_contact")[:phone_number]}" }
+      its("postal_code.first") { should cmp "#{input("primary_contact")[:postal_code]}" }
     end
   else
     raise "The AWS Account's Primary Contact information is not configured"
