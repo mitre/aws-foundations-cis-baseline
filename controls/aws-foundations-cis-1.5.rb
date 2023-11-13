@@ -1,4 +1,4 @@
-control 'aws-foundations-cis-1.5' do
+control "aws-foundations-cis-1.5" do
   title "Ensure MFA is enabled for the 'root' user account "
   desc "The 'root' user account is the most privileged user in an AWS account. Multi-factor
 Authentication (MFA) adds an extra layer of protection on top of a username and password. With
@@ -11,10 +11,10 @@ personal device, but rather a dedicated mobile device (tablet or phone) that is 
 kept charged and secured independent of any individual personal devices. (\"non-personal
 virtual MFA\") This lessens the risks of losing access to the MFA due to device loss, device
 trade-in or if the individual owning the device is no longer employed at the company. "
-  desc 'rationale', "Enabling MFA provides increased security for console access as it requires the
+  desc "rationale", "Enabling MFA provides increased security for console access as it requires the
 authenticating principal to possess a device that emits a time-sensitive key and have
 knowledge of a credential. "
-  desc 'check', "Perform the following to determine if the 'root' user account has MFA setup:
+  desc "check", "Perform the following to determine if the 'root' user account has MFA setup:
 
 **From
 Console:**
@@ -38,7 +38,7 @@ Line:**
 \"AccountMFAEnabled\"
 ```
 2. Ensure the AccountMFAEnabled property is set to 1 "
-  desc 'fix', "Perform the following to establish MFA for the 'root' user account:
+  desc "fix", "Perform the following to establish MFA for the 'root' user account:
 
 1. Sign in to the AWS
 Management Console and open the IAM console at
@@ -79,17 +79,17 @@ In the Manage MFA Device wizard, in the Authentication Code 1 box,
 type the one-time password that currently appears in the virtual MFA device. Wait up to 30
 seconds for the device to generate a new one-time password. Then type the second one-time
 password into the Authentication Code 2 box. Choose Assign Virtual MFA. "
-  desc 'additional_information', "IAM User account \"root\" for us-gov cloud regions does not have console access. This
+  desc "additional_information", "IAM User account \"root\" for us-gov cloud regions does not have console access. This
 recommendation is not applicable for us-gov cloud regions. "
   impact 0.5
-  ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html#id_root-user_manage_mfa:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html#enable-virt-mfa-for-root'
-  tag nist: ['IA-2(1)']
-  tag severity: 'medium '
+  ref "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html#id_root-user_manage_mfa:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html#enable-virt-mfa-for-root"
+  tag nist: ["IA-2(1)"]
+  tag severity: "medium "
   tag cis_controls: [
-    { '8' => ['6.5'] },
+    { "8" => ["6.5"] },
   ]
 
-  describe aws_iam_credential_report.where(user: '<root_account>').entries.first do
-    its('mfa_active') { should eq true }
+  describe aws_iam_credential_report.where(user: "<root_account>").entries.first do
+    its("mfa_active") { should eq true }
   end
 end

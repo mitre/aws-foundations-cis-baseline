@@ -1,5 +1,5 @@
-control 'aws-foundations-cis-3.7' do
-  title 'Ensure CloudTrail logs are encrypted at rest using KMS CMKs '
+control "aws-foundations-cis-3.7" do
+  title "Ensure CloudTrail logs are encrypted at rest using KMS CMKs "
   desc "AWS CloudTrail is a web service that records AWS API calls for an account and makes those logs
 available to users and resources in accordance with IAM policies. AWS Key Management Service
 (KMS) is a managed service that helps create and control the encryption keys used to encrypt
@@ -7,10 +7,10 @@ account data, and uses Hardware Security Modules (HSMs) to protect the security 
 encryption keys. CloudTrail logs can be configured to leverage server side encryption (SSE)
 and KMS customer created master keys (CMK) to further protect CloudTrail logs. It is
 recommended that CloudTrail be configured to use SSE-KMS. "
-  desc 'rationale', "Configuring CloudTrail to use SSE-KMS provides additional confidentiality controls on log
+  desc "rationale", "Configuring CloudTrail to use SSE-KMS provides additional confidentiality controls on log
 data as a given user must have S3 read permission on the corresponding log bucket and must be
 granted decrypt permission by the CMK policy. "
-  desc 'check', "Perform the following to determine if CloudTrail is configured to use SSE-KMS:
+  desc "check", "Perform the following to determine if CloudTrail is configured to use SSE-KMS:
 
 **From
 Console:**
@@ -32,7 +32,7 @@ describe-trails
 ```
 2. For each trail listed, SSE-KMS is enabled if the trail has a
 `KmsKeyId` property defined. "
-  desc 'fix', "Perform the following to configure CloudTrail to use SSE-KMS:
+  desc "fix", "Perform the following to configure CloudTrail to use SSE-KMS:
 
 **From Console:**
 
@@ -65,7 +65,7 @@ aws cloudtrail update-trail
 aws kms put-key-policy --key-id
 <cloudtrail_kms_key> --policy <cloudtrail_kms_key_policy>
 ``` "
-  desc 'additional_information', "3 statements which need to be added to the CMK policy:
+  desc "additional_information", "3 statements which need to be added to the CMK policy:
 
 1\\. Enable Cloudtrail to describe
 CMK properties
@@ -129,14 +129,14 @@ normal;\">{
  }
 }
 ``` "
-  desc 'impact', "Customer created keys incur an additional cost. See https://aws.amazon.com/kms/pricing/
+  desc "impact", "Customer created keys incur an additional cost. See https://aws.amazon.com/kms/pricing/
 for more information. "
   impact 0.5
-  ref 'https://docs.aws.amazon.com/awscloudtrail/latest/userguide/encrypting-cloudtrail-log-files-with-aws-kms.html:https://docs.aws.amazon.com/kms/latest/developerguide/create-keys.html'
-  tag nist: ['IA-5(1)', 'SC-28', 'SC-28(1)']
-  tag severity: 'medium '
+  ref "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/encrypting-cloudtrail-log-files-with-aws-kms.html:https://docs.aws.amazon.com/kms/latest/developerguide/create-keys.html"
+  tag nist: ["IA-5(1)", "SC-28", "SC-28(1)"]
+  tag severity: "medium "
   tag cis_controls: [
-    { '8' => ['3.11'] },
+    { "8" => ["3.11"] },
   ]
 
   describe aws_cloudtrail_trails do

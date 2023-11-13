@@ -1,16 +1,16 @@
-control 'aws-foundations-cis-2.3.3' do
-  title 'Ensure that public access is not given to RDS Instance '
+control "aws-foundations-cis-2.3.3" do
+  title "Ensure that public access is not given to RDS Instance "
   desc "Ensure and verify that RDS database instances provisioned in your AWS account do restrict
 unauthorized access in order to minimize security risks. To restrict access to any publicly
 accessible RDS database instance, you must disable the database Publicly Accessible flag
 and update the VPC security group associated with the instance. "
-  desc 'rationale',
+  desc "rationale",
        "Ensure that no public-facing RDS database instances are provisioned in your AWS account and
 restrict unauthorized access in order to minimize security risks. When the RDS instance
 allows unrestricted access (0.0.0.0/0), everyone and everything on the Internet can
 establish a connection to your database and this can increase the opportunity for malicious
 activities such as brute force attacks, PostgreSQL injections, or DoS/DDoS attacks. "
-  desc 'check',
+  desc "check",
        "**From Console:**
 
 1. Log in to the AWS management console and navigate to the RDS
@@ -116,7 +116,7 @@ returned in the output. If the route table contains any entries with the `Gatewa
 to `igw-xxxxxxxx` and the `DestinationCidrBlock` value set to `0.0.0.0/0`, the selected
 RDS database instance was provisioned inside a public subnet, therefore is not running
 within a logically isolated environment and does not adhere to AWS security best practices. "
-  desc 'fix',
+  desc "fix",
        "**From Console:**
 
 1. Log in to the AWS management console and navigate to the RDS
@@ -187,12 +187,12 @@ each RDS instance provisioned in the current region.
 7. Change the AWS region by using the
 --region filter to repeat the process for other regions. "
   impact 0.5
-  ref 'https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.html:https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Scenario2.html:https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_VPC.WorkingWithRDSInstanceinaVPC.html:https://aws.amazon.com/rds/faqs/'
-  tag nist: ['AC-3']
-  tag severity: 'medium '
-  tag cis_controls: [{ '8' => ['3.3'] }]
+  ref "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.html:https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Scenario2.html:https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_VPC.WorkingWithRDSInstanceinaVPC.html:https://aws.amazon.com/rds/faqs/"
+  tag nist: ["AC-3"]
+  tag severity: "medium "
+  tag cis_controls: [{ "8" => ["3.3"] }]
 
-  describe 'No Tests Defined Yet' do
-    skip 'No Tests have been written for this control yet'
+  describe "No Tests Defined Yet" do
+    skip "No Tests have been written for this control yet"
   end
 end

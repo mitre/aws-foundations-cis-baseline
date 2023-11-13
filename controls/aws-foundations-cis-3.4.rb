@@ -1,5 +1,5 @@
-control 'aws-foundations-cis-3.4' do
-  title 'Ensure CloudTrail trails are integrated with CloudWatch Logs '
+control "aws-foundations-cis-3.4" do
+  title "Ensure CloudTrail trails are integrated with CloudWatch Logs "
   desc "AWS CloudTrail is a web service that records AWS API calls made in a given AWS account. The
 recorded information includes the identity of the API caller, the time of the API call, the
 source IP address of the API caller, the request parameters, and the response elements
@@ -14,10 +14,10 @@ Note: The intent of this
 recommendation is to ensure AWS account activity is being captured, monitored, and
 appropriately alarmed on. CloudWatch Logs is a native way to accomplish this using AWS
 services but does not preclude the use of an alternate solution. "
-  desc 'rationale', "Sending CloudTrail logs to CloudWatch Logs will facilitate real-time and historic activity
+  desc "rationale", "Sending CloudTrail logs to CloudWatch Logs will facilitate real-time and historic activity
 logging based on user, API, resource, and IP address, and provides opportunity to establish
 alarms and notifications for anomalous or sensitivity account activity. "
-  desc 'check', "Perform the following to ensure CloudTrail is configured as prescribed:
+  desc "check", "Perform the following to ensure CloudTrail is configured as prescribed:
 
 **From
 Console:**
@@ -53,7 +53,7 @@ a recent (~one day old) timestamp.
 
 If the `CloudWatch Logs` log group is not setup and the
 delivery time is not recent refer to the remediation below. "
-  desc 'fix', "Perform the following to establish the prescribed state:
+  desc "fix", "Perform the following to establish the prescribed state:
 
 **From Console:**
 
@@ -81,7 +81,7 @@ aws cloudtrail update-trail --name
 <trail_name> --cloudwatch-logs-log-group-arn <cloudtrail_log_group_arn>
 --cloudwatch-logs-role-arn <cloudtrail_cloudwatchLogs_role_arn>
 ``` "
-  desc 'impact', "Note: By default, CloudWatch Logs will store Logs indefinitely unless a specific retention
+  desc "impact", "Note: By default, CloudWatch Logs will store Logs indefinitely unless a specific retention
 period is defined for the log group. When choosing the number of days to retain, keep in mind the
 average days it takes an organization to realize they have been breached is 210 days (at the
 time of this writing). Since additional time is required to research a breach, a minimum 365
@@ -91,11 +91,11 @@ resource to manage CloudWatch Logs retention periods:
 
 1. https://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/SettingLogRetention.html "
   impact 0.5
-  ref 'https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/how-cloudtrail-works.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-aws-service-specific-topics.html'
-  tag nist: ['AU-12']
-  tag severity: 'medium '
+  ref "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/how-cloudtrail-works.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-aws-service-specific-topics.html"
+  tag nist: ["AU-12"]
+  tag severity: "medium "
   tag cis_controls: [
-    { '8' => ['8.5'] },
+    { "8" => ["8.5"] },
   ]
 
   describe aws_cloudtrail_trails do
@@ -104,8 +104,8 @@ resource to manage CloudWatch Logs retention periods:
 
   aws_cloudtrail_trails.trail_arns.each do |trail|
     describe aws_cloudtrail_trail(trail) do
-      its('cloud_watch_logs_log_group_arn') { should_not be_nil }
-      its('delivered_logs_days_ago') { should cmp <= 1 }
+      its("cloud_watch_logs_log_group_arn") { should_not be_nil }
+      its("delivered_logs_days_ago") { should cmp <= 1 }
     end
   end
 end

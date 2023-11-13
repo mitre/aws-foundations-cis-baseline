@@ -1,5 +1,5 @@
-control 'aws-foundations-cis-1.20' do
-  title 'Ensure that IAM Access analyzer is enabled for all regions '
+control "aws-foundations-cis-1.20" do
+  title "Ensure that IAM Access analyzer is enabled for all regions "
   desc "Enable IAM Access analyzer for IAM policies about all resources in each active AWS region.
 
 
@@ -10,7 +10,7 @@ KMS keys and IAM roles. So the results allow you to determine if an unintended u
 making it easier for administrators to monitor least privileges access.
 Access Analyzer
 analyzes only policies that are applied to resources in the same AWS Region. "
-  desc 'rationale',
+  desc "rationale",
        "AWS IAM Access Analyzer helps you identify the resources in your organization and accounts,
 such as Amazon S3 buckets or IAM roles, that are shared with an external entity. This lets you
 identify unintended access to your resources and data. Access Analyzer identifies
@@ -18,7 +18,7 @@ resources that are shared with external principals by using logic-based reasonin
 analyze the resource-based policies in your AWS environment. IAM Access Analyzer
 continuously monitors all policies for S3 bucket, IAM roles, KMS (Key Management Service)
 keys, AWS Lambda functions, and Amazon SQS(Simple Queue Service) queues. "
-  desc 'check',
+  desc "check",
        "**From Console:**
 
 1. Open the IAM console at
@@ -46,7 +46,7 @@ Repeat the steps above for each active region.
 
 If an Access analyzer is not listed for each
 region or the status is not set to active refer to the remediation procedure below. "
-  desc 'fix',
+  desc "fix",
        "**From Console:**
 
 Perform the following to enable IAM Access analyzer for IAM
@@ -79,19 +79,19 @@ for each active region.
 
 **Note:** The IAM Access Analyzer is successfully configured
 only when the account you use has the necessary permissions. "
-  desc 'additional_information',
+  desc "additional_information",
        "Some regions in AWS are enabled by default and some are disabled by default. Regions
 introduced prior to March 20, 2019 are enabled by default and cannot be disabled. Regions
 introduced after can be disabled by default. For more information on managing AWS Regions,
 please see AWS's [documentation on managing AWS
 Regions](https://docs.aws.amazon.com/general/latest/gr/rande-manage.html). "
   impact 0.5
-  ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-getting-started.html:https://docs.aws.amazon.com/cli/latest/reference/accessanalyzer/get-analyzer.html:https://docs.aws.amazon.com/cli/latest/reference/accessanalyzer/create-analyzer.html'
-  tag nist: ['AC-6']
-  tag severity: 'medium '
-  tag cis_controls: [{ '8' => ['3.3'] }]
+  ref "https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-getting-started.html:https://docs.aws.amazon.com/cli/latest/reference/accessanalyzer/get-analyzer.html:https://docs.aws.amazon.com/cli/latest/reference/accessanalyzer/create-analyzer.html"
+  tag nist: ["AC-6"]
+  tag severity: "medium "
+  tag cis_controls: [{ "8" => ["3.3"] }]
 
-  describe 'No Tests Defined Yet' do
-    skip 'No Tests have been written for this control yet'
+  describe "No Tests Defined Yet" do
+    skip "No Tests have been written for this control yet"
   end
 end
