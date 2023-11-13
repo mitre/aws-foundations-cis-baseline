@@ -75,7 +75,7 @@ click Detach or Remove (depending on policy type) "
   tag nist: ['AC-6']
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['6.8'] }
+    { '8' => ['6.8'] },
   ]
 
   if aws_iam_users.entries.empty?

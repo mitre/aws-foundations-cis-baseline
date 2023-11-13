@@ -101,7 +101,7 @@ for each instance to communicate successfully. "
   tag nist: ['AC-3']
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['3.3'] }
+    { '8' => ['3.3'] },
   ]
 
   if aws_vpcs.vpc_ids.empty?

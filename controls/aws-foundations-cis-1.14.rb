@@ -104,7 +104,7 @@ delete-access-key
   tag nist: ['AC-2']
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['5'] }
+    { '8' => ['5'] },
   ]
 
   aws_iam_credential_report.where(access_key_1_active: false).entries.each do |user|

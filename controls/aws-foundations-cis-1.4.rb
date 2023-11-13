@@ -63,7 +63,7 @@ us-gov cloud region. "
   tag nist: ['AC-6']
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['3.3'] }
+    { '8' => ['3.3'] },
   ]
   describe 'The root account should not have active access keys.' do
     subject { aws_iam_credential_report.where(user: '<root_account>').entries.first }

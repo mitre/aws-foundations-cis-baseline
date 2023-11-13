@@ -95,7 +95,7 @@ resource to manage CloudWatch Logs retention periods:
   tag nist: ['AU-12']
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['8.5'] }
+    { '8' => ['8.5'] },
   ]
 
   describe aws_cloudtrail_trails do

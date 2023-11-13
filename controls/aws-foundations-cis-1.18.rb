@@ -110,7 +110,7 @@ each EC2 instance in your AWS account that requires an IAM role to be attached. 
   tag nist: ['AC-2']
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['6.8'] }
+    { '8' => ['6.8'] },
   ]
 
   describe 'Control has to be tested manually' do

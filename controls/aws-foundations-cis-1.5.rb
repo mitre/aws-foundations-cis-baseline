@@ -86,7 +86,7 @@ recommendation is not applicable for us-gov cloud regions. "
   tag nist: ['IA-2(1)']
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['6.5'] }
+    { '8' => ['6.5'] },
   ]
 
   describe aws_iam_credential_report.where(user: '<root_account>').entries.first do

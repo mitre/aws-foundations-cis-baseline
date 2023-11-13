@@ -45,7 +45,7 @@ secure physical location "
   tag nist: ['IR-6']
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['17.2'] }
+    { '8' => ['17.2'] },
   ]
   describe 'Control has to be tested manually' do
     skip 'This control must be manually reviewed'

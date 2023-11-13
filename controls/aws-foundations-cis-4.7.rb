@@ -152,7 +152,7 @@ to the use of Provide Managed Keys. "
   tag nist: ['AU-6', 'AU-6(1)', 'AU-7(1)']
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['8.11'] }
+    { '8' => ['8.11'] },
   ]
 
   pattern = '{ ($.eventSource = kms.amazonaws.com) && (($.eventName = DisableKey) || ($.eventName = ScheduleKeyDeletion)) }'

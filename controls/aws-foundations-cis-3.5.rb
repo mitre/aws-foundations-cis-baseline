@@ -144,7 +144,7 @@ start-configuration-recorder --configuration-recorder-name default
   tag nist: ['CM-8']
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['1.1'] }
+    { '8' => ['1.1'] },
   ]
 
   config_delivery_channels = input('config_delivery_channels')
