@@ -66,7 +66,7 @@ control "aws-foundations-cis-1.1" do
     describe aws_primary_contact do
       it { should be_configured }
       its("address_line_1.first") { should cmp "#{input("primary_contact")[:address_line_1]}" }
-      its("city.fist") { should cmp "#{input("primary_contact")[:city]}" }
+      its("city.first") { should cmp "#{input("primary_contact")[:city]}" }
       its("full_name.first") { should cmp "#{input("primary_contact")[:full_name]}" }
       its("phone_numer.first") { should cmp "#{input("primary_contact")[:phone_number]}" }
       its("postal_code.first") { should cmp "#{input("primary_contact")[:postal_code]}" }

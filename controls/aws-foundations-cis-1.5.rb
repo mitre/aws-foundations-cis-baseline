@@ -89,7 +89,13 @@ recommendation is not applicable for us-gov cloud regions. "
     { "8" => ["6.5"] },
   ]
 
-  describe aws_iam_credential_report.where(user: "<root_account>").entries.first do
-    its("mfa_active") { should eq true }
+  if input('disable_slow_controls')
+    describe "Skipping this long running test" do 
+      skip 'Generating a IAM Credential Report can take a while, so skipping it for now.'
+    end
+  else
+    describe aws_iam_credential_report.where(user: "<root_account>").entries.first do
+      its("mfa_active") { should eq true }
+    end
   end
 end
