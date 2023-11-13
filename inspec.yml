@@ -13,8 +13,10 @@ supports:
 
 depends:
   - name: inspec-aws
-    url: https://github.com/mitre/inspec-aws/archive/resource_updates.tar.gz
-
+    path: ../inspec-aws
+    # git: https://github.com/mitre/inspec-aws.git
+    # branch: resource_updates
+    
 inputs:
   - name: default_aws_region
     description: "primary aws region your resources are deployed."

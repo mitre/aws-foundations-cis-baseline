@@ -151,7 +151,7 @@ events across all regions are monitored "
   tag nist: ['AU-6', 'AU-6(1)', 'AU-7(1)']
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['8.11'] }
+    { '8' => ['8.11'] },
   ]
 
   pattern = '{ ($.eventName = CreateCustomerGateway) || ($.eventName = DeleteCustomerGateway) || ($.eventName = AttachInternetGateway) || ($.eventName = CreateInternetGateway) || ($.eventName = DeleteInternetGateway) || ($.eventName = DetachInternetGateway) }'

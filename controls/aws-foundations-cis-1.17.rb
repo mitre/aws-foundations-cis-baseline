@@ -79,7 +79,7 @@ including customer managed policies. "
   tag nist: ['IR-7']
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['17.1'] }
+    { '8' => ['17.1'] },
   ]
 
   describe aws_iam_policy(policy_name: 'AWSSupportAccess') do

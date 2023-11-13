@@ -105,7 +105,7 @@ business and would likely be unused for more than 45 days. "
   tag nist: ['AC-2(3)']
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['5.3'] }
+    { '8' => ['5.3'] },
   ]
 
   aws_iam_credential_report.where(password_enabled: false).entries.each do |user|

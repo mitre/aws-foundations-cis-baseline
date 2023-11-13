@@ -192,7 +192,7 @@ raised when user logs in via SSO account. "
   tag nist: ['AU-6', 'AU-6(1)', 'AU-7(1)']
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['8.11'] }
+    { '8' => ['8.11'] },
   ]
 
   pattern = '{ ($.eventName = "ConsoleLogin") && ($.additionalEventData.MFAUsed != "Yes") }'

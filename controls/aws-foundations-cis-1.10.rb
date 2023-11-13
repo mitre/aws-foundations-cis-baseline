@@ -113,7 +113,7 @@ following alternative methods of MFA. "
   tag nist: ['IA-2(1)']
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['6.5'] }
+    { '8' => ['6.5'] },
   ]
 
   service_account_mfa_exceptions = input('service_account_mfa_exceptions')

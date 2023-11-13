@@ -62,7 +62,7 @@ validate-logs --trail-arn <trail_arn> --start-time <start_time> --end-time
   tag nist: ['AU-6']
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['8.11'] }
+    { '8' => ['8.11'] },
   ]
 
   describe aws_cloudtrail_trails do

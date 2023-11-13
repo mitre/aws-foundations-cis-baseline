@@ -136,7 +136,7 @@ for more information. "
   tag nist: ['IA-5(1)', 'SC-28', 'SC-28(1)']
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['3.11'] }
+    { '8' => ['3.11'] },
   ]
 
   describe aws_cloudtrail_trails do

@@ -2,10 +2,12 @@ control 'aws-foundations-cis-1.2' do
   title 'Ensure security contact information is registered '
   desc "AWS provides customers with the option of specifying the contact information for account's
 security team. It is recommended that this information be provided. "
-  desc 'rationale', "Specifying security-specific contact information will help ensure that security
+  desc 'rationale',
+       "Specifying security-specific contact information will help ensure that security
 advisories sent by AWS reach the team in your organization that is best equipped to respond to
 them. "
-  desc 'check', "Perform the following to determine if security contact information is present:
+  desc 'check',
+       "Perform the following to determine if security contact information is present:
 
 **From
 Console:**
@@ -28,7 +30,8 @@ get-alternate-contact --alternate-contact-type SECURITY
 ```
 2. Ensure proper
 contact information is specified for the `Security` contact. "
-  desc 'fix', "Perform the following to establish security contact information:
+  desc 'fix',
+       "Perform the following to establish security contact information:
 
 **From
 Console:**
@@ -54,18 +57,18 @@ put-alternate-contact --alternate-contact-type SECURITY
 **Note:** Consider
 specifying an internal email distribution list to ensure emails are regularly monitored by
 more than one individual. "
+
   impact 0.5
   tag nist: ['IR-6']
   tag severity: 'medium '
-  tag cis_controls: [
-    { '8' => ['17.2'] }
-  ]
-  contact_info = aws_account.security_contact_information
-  describe contact_info do
-    if contact_info
-      it { should cmp input('security_contact_information') }
-    else
-      skip 'The Security section of the Alternate Contacts page must be manually reviewed'
+  tag cis_controls: [{ '8' => ['17.2'] }]
+  if aws_security_contact.configured?
+    describe aws_security_contact do
+      its('email_address.first') { should cmp "#{input('primary_contact')[:address_line_1]}" }
+      its('name.fist') { should cmp "#{input('primary_contact')[:city]}" }
+      its('phone_number.first') { should cmp "#{input('primary_contact')[:full_name]}" }
     end
+  else
+    raise 'The AWS Security Account is not Configured or cannot be accessed'
   end
 end

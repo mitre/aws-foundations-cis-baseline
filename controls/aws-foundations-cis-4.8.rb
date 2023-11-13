@@ -156,7 +156,7 @@ events across all regions are monitored "
   tag nist: ['AU-6', 'AU-6(1)', 'AU-7(1)']
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['8.11'] }
+    { '8' => ['8.11'] },
   ]
 
   pattern = '{ ($.eventSource = s3.amazonaws.com) && (($.eventName = PutBucketAcl) || ($.eventName = PutBucketPolicy) || ($.eventName = PutBucketCors) || ($.eventName = PutBucketLifecycle) || ($.eventName = PutBucketReplication) || ($.eventName = DeleteBucketPolicy) || ($.eventName = DeleteBucketCors) || ($.eventName = DeleteBucketLifecycle) || ($.eventName = DeleteBucketReplication)) }'

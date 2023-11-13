@@ -158,7 +158,7 @@ erroneous alerts. "
   tag nist: ['AU-6', 'AU-6(1)', 'AU-7(1)']
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['8.11'] }
+    { '8' => ['8.11'] },
   ]
 
   pattern = '{ ($.eventName=DeleteGroupPolicy)||($.eventName=DeleteRolePolicy)||($.eventName=DeleteUserPolicy)||($.eventName=PutGroupPolicy)||($.eventName=PutRolePolicy)||($.eventName=PutUserPolicy)||($.eventName=CreatePolicy)||($.eventName=DeletePolicy)||($.eventName=CreatePolicyVersion)||($.eventName=DeletePolicyVersion)||($.eventName=AttachRolePolicy)||($.eventName=DetachRolePolicy)||($.eventName=AttachUserPolicy)||($.eventName=DetachUserPolicy)||($.eventName=AttachGroupPolicy)||($.eventName=DetachGroupPolicy) }'

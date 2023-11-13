@@ -120,10 +120,10 @@ file://<FileName.Json>
   desc 'default_value', 'Logging is disabled. '
   impact 0.5
   ref 'https://docs.aws.amazon.com/AmazonS3/latest/dev/ServerLogs.html'
-  tag nist: ['AU-12', 'AU-2']
+  tag nist: %w(AU-12 AU-2)
   tag severity: 'medium '
   tag cis_controls: [
-    { '8' => ['3.14'] }
+    { '8' => ['3.14'] },
   ]
 
   describe aws_cloudtrail_trails do
