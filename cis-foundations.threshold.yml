@@ -1,3 +1,6 @@
 ---
-error.total: 0
-compliance.min: 2
+error:
+  total:
+    max: 2
+compliance:
+  min: 0
