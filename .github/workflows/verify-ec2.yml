@@ -1,3 +1,4 @@
+---
 name: CIS AWS Foundations v2.0.0
 
 on:
@@ -48,13 +49,13 @@ jobs:
       - run: bundle install
       - name: Installed Inspec
         run: bundle exec inspec version
-      - name: Installed InSpec Plugins
-        run: bundle exec inspec plugin list
+      # - name: Installed InSpec Plugins
+      #   run: bundle exec inspec plugin list
       - name: Vendor the InSpec Profile
         run: bundle exec inspec vendor --overwrite
-      - name: Regenerate current `profile.json`
-        run: |
-          bundle exec inspec export . --format json | jq . > ${{ env.PROFILE_FILE }}
+      # - name: Regenerate current `profile.json`
+      #   run: |
+      #     bundle exec inspec export . --format json | jq . > ${{ env.PROFILE_FILE }}
       - name: Lint the Inspec profile
         run: bundle exec inspec check .
       # - name: Run kitchen test
@@ -67,7 +68,7 @@ jobs:
         with:
           path: |
             ${{ env.RESULTS_FILE }}
-            ${{ env.PROFILE_FILE }}
+            # ${{ env.PROFILE_FILE }}
 
       - name: "Display our ${{ env.RESULTS_FILE }} results summary"
         uses: mitre/saf_action@v1
