@@ -13,15 +13,15 @@ supports:
 
 depends:
   - name: inspec-aws
-    # path: ../inspec-aws
-    git: https://github.com/mitre/inspec-aws.git
-    branch: resource_updates
-    
+    path: ../inspec-aws
+    # git: https://github.com/mitre/inspec-aws.git
+    # branch: al_resource_updates
+
 inputs:
   - name: disable_slow_controls
     description: "Don't test controls that take a long time for now"
     value: false
-    
+
   - name: default_aws_region
     description: "primary aws region your resources are deployed."
     value: "us-east-1"
