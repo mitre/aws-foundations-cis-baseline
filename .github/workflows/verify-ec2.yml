@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CHEF_LICENSE: accept-silent
+      CHEF_LICENSE_KEY: ${{ secrets.SAF_CHEF_LICENSE_KEY }}
       RESULTS_FILE: inspec_results.json
       PROFILE_FILE: profile.json
       INPUT_FILE: testing.inputs.yml
