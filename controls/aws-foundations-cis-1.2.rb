@@ -63,7 +63,7 @@ more than one individual. "
   tag severity: "medium "
   tag cis_controls: [{ "8" => ["17.2"] }]
 
-  describe aws_security_contact do
+  describe aws_security_contact, :sensitive do
     it { should be_configured }
     its("email_address") do
       should cmp "#{input("primary_contact")[:address_line_1]}"

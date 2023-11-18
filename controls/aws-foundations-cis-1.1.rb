@@ -65,7 +65,7 @@ control "aws-foundations-cis-1.1" do
   tag severity: "medium "
   tag cis_controls: [{ "8" => ["17.2"] }]
 
-  describe aws_primary_contact do
+  describe aws_primary_contact, :sensitive do
     it { should be_configured }
     its("address_line_1") do
       should cmp "#{input("primary_contact")[:address_line_1]}"
