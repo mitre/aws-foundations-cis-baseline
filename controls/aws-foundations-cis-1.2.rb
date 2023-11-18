@@ -62,13 +62,13 @@ more than one individual. "
   tag nist: ["IR-6"]
   tag severity: "medium "
   tag cis_controls: [{ "8" => ["17.2"] }]
-  if aws_security_contact.configured?
-    describe aws_security_contact do
-      its("email_address.first") { should cmp "#{input("primary_contact")[:address_line_1]}" }
-      its("name.fist") { should cmp "#{input("primary_contact")[:city]}" }
-      its("phone_number.first") { should cmp "#{input("primary_contact")[:full_name]}" }
+
+  describe aws_security_contact do
+    it { should be_configured }
+    its("email_address") do
+      should cmp "#{input("primary_contact")[:address_line_1]}"
     end
-  else
-    raise "The AWS Security Account is not Configured or cannot be accessed"
+    its("name") { should cmp "#{input("primary_contact")[:city]}" }
+    its("phone_number") { should cmp "#{input("primary_contact")[:full_name]}" }
   end
 end
