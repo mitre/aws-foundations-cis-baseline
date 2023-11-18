@@ -63,7 +63,7 @@ jobs:
       #   run: bundle exec kitchen test --destroy=always ${{ matrix.suite }}-rhel-7 || true
       - name: Run the Profile
         run: |
-          inspec exec . --target aws:// --input-file=${{ env.INPUT_FILE }} --reporter cli json:${{ env.RESULTS_FILE }} --enhanced-outcomes || true
+          inspec exec . --target aws:// --input-file=${{ env.INPUT_FILE }} --reporter cli json:${{ env.RESULTS_FILE }} --enhanced-outcomes --filter-empty-profiles || true
       - name: Save Test Result JSON
         uses: actions/upload-artifact@v3
         with:
