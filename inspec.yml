@@ -84,6 +84,7 @@ inputs:
       full_name: ""
       phone_number: ""
       postal_code: ""
+    sensitive: true
 
   - name: security_contact
     description: "Account security contact information"
@@ -93,3 +94,4 @@ inputs:
       title: ""
       phone_number: ""
       email_address: ""
+    sensitive: true
