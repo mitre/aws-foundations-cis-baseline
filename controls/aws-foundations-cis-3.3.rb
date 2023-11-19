@@ -3,9 +3,11 @@ control "aws-foundations-cis-3.3" do
   desc "CloudTrail logs a record of every API call made in your AWS account. These logs file are stored
 in an S3 bucket. It is recommended that the bucket policy or access control list (ACL) applied
 to the S3 bucket that CloudTrail logs to prevent public access to the CloudTrail logs. "
-  desc "rationale", "Allowing public access to CloudTrail log content may aid an adversary in identifying
+  desc "rationale",
+       "Allowing public access to CloudTrail log content may aid an adversary in identifying
 weaknesses in the affected account's use or configuration. "
-  desc "check", "Perform the following to determine if any public access is granted to an S3 bucket via an ACL or
+  desc "check",
+       "Perform the following to determine if any public access is granted to an S3 bucket via an ACL or
 S3 bucket policy:
 
 **From Console:**
@@ -68,7 +70,8 @@ would restrict access to only the named Org ID.
 
 **Note:** Principal set to \"\\*\" or {\"AWS\":
 \"\\*\"}, without any conditions, allows anonymous access. "
-  desc "fix", "Perform the following to remove any public access that has been granted to the bucket via an ACL
+  desc "fix",
+       "Perform the following to remove any public access that has been granted to the bucket via an ACL
 or S3 bucket policy:
 
 1. Go to Amazon S3 console at [https://console.aws.amazon.com/s3/home](https://console.aws.amazon.com/s3/home).
@@ -94,9 +97,7 @@ Remove any `Statement` having an `Effect` set to `Allow` and a `Principal` set t
   ref "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_principal.html"
   tag nist: ["AC-3"]
   tag severity: "medium "
-  tag cis_controls: [
-    { "8" => ["3.3"] },
-  ]
+  tag cis_controls: [{ "8" => ["3.3"] }]
 
   describe aws_cloudtrail_trails do
     it { should exist }
@@ -104,9 +105,9 @@ Remove any `Statement` having an `Effect` set to `Allow` and a `Principal` set t
 
   aws_cloudtrail_trails.trail_arns.each do |trail|
     bucket_name = aws_cloudtrail_trail(trail).s3_bucket_name
-    if input("exception_bucket_list").include?(bucket_name)
+    if input("exempt_buckets").include?(bucket_name)
       describe "Bucket not inspected because it is defined as an exception" do
-        skip "Bucket: #{bucket_name} not inspected because it is defined in exception_bucket_list."
+        skip "Bucket: #{bucket_name} not inspected because it is defined in exempt_buckets."
       end
     else
       describe aws_s3_bucket(bucket_name) do
