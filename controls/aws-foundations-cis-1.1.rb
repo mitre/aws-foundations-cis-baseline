@@ -67,16 +67,7 @@ control "aws-foundations-cis-1.1" do
 
   describe aws_primary_contact, :sensitive do
     it { should be_configured }
-    its("address_line_1") do
-      should cmp "#{input("primary_contact")[:address_line_1]}"
-    end
-    its("city") { should cmp "#{input("primary_contact")[:city]}" }
-    its("full_name") { should cmp "#{input("primary_contact")[:full_name]}" }
-    its("phone_number") do
-      should cmp "#{input("primary_contact")[:phone_number]}"
-    end
-    its("postal_code") do
-      should cmp "#{input("primary_contact")[:postal_code]}"
-    end
+    its("email_address") { should cmp input("primary_contact").email_address }
+    its("phone_number") { should cmp input("primary_contact").phone_number }
   end
 end

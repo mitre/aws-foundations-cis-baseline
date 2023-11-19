@@ -1,3 +1,5 @@
+require "pry"
+
 control "aws-foundations-cis-5.6" do
   title "Ensure that EC2 Metadata Service only allows IMDSv2 "
   desc "When enabling the Metadata Service on AWS EC2 instances, users have the option of using either
@@ -51,10 +53,19 @@ aws ec2 modify-instance-metadata-options
   tag severity: "medium"
   ref "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-IMDS-existing-instances.html"
 
-  aws_ec2_instances.instance_ids.each do |instance|
-    describe aws_ec2_instance(instance) do
-      its("metadata_options.http_tokens") { should cmp "required" }
-      its("metadata_options.http_endpoint") { should cmp "enabled" }
+  if aws_ec2_instances.instance_ids.empty?
+    impact 0.0
+    describe "This requirement is Non Applicable since no EC2 instances were found." do
+      skip "This requirement is Non Applicable since no EC2 instances were found."
+    end
+  else
+    aws_ec2_instances.instance_ids.each do |instance|
+      next if input("exempt_ec2s").include?(instance)
+      next if aws_ec2_instance(instance).stopped? && input("skip_stopped_ec2s")
+      describe aws_ec2_instance(instance) do
+        its("metadata_options.http_tokens") { should cmp "required" }
+        its("metadata_options.http_endpoint") { should cmp "enabled" }
+      end
     end
   end
 end

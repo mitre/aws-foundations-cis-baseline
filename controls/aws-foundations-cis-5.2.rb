@@ -5,9 +5,11 @@ ports "
 resources. It is recommended that no security group allows unrestricted ingress access to
 remote server administration ports, such as SSH to port `22` and RDP to port `3389`, using
 either the TDP (6), UDP (17) or ALL (-1) protocols "
-  desc "rationale", "Public access to remote server administration ports, such as 22 and 3389, increases resource
+  desc "rationale",
+       "Public access to remote server administration ports, such as 22 and 3389, increases resource
 attack surface and unnecessarily raises the risk of resource compromise. "
-  desc "check", "Perform the following to determine if the account is configured as prescribed:
+  desc "check",
+       "Perform the following to determine if the account is configured as prescribed:
 
 1. Login
 to the AWS Management Console at [https://console.aws.amazon.com/vpc/home](https://console.aws.amazon.com/vpc/home)
@@ -24,7 +26,8 @@ UDP (17) or ALL (-1) or other remote server administration ports for your enviro
 
 **Note:** A Port value of `ALL` or a port range such as `0-1024`
 are inclusive of port `22`, `3389`, and other remote server administration ports. "
-  desc "fix", "Perform the following to implement the prescribed state:
+  desc "fix",
+       "Perform the following to implement the prescribed state:
 
 1. Login to the AWS Management
 Console at [https://console.aws.amazon.com/vpc/home](https://console.aws.amazon.com/vpc/home)
@@ -41,27 +44,26 @@ following:
 update the Source field to a range other than 0.0.0.0/0, or, B) Click `Delete` to remove the
 offending inbound rule
 6. Click `Save rules` "
-  desc "impact", "When updating an existing environment, ensure that administrators have access to remote
+  desc "impact",
+       "When updating an existing environment, ensure that administrators have access to remote
 server administration ports through another mechanism before removing access by deleting
 the 0.0.0.0/0 inbound rule. "
   impact 0.5
   ref "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security-groups.html#deleting-security-group-rule"
   tag nist: ["CM-7(1)"]
   tag severity: "medium "
-  tag cis_controls: [
-    { "7" => ["9.2"] },
-  ]
+  tag cis_controls: [{ "7" => ["9.2"] }]
 
-  exception_security_group_list = input("exception_security_group_list")
+  exempt_security_groups = input("exempt_security_groups")
 
   aws_security_groups.group_ids.each do |group_id|
-    if exception_security_group_list.include?(group_id)
-      describe "Security Group not inspected because it is defined as an exception" do
-        skip "Security Group:: #{group_id} not inspected because it is defined in exception_security_group_list."
+    if exempt_security_groups.include?(group_id)
+      describe "Security Group was not inspected because it is defined as an exception" do
+        skip "Security Group:: #{group_id} was not inspected because it is defined in exempt_security_groups."
       end
     end
 
-    next if exception_security_group_list.include?(group_id)
+    next if exempt_security_groups.include?(group_id)
 
     describe aws_security_group(group_id) do
       it { should_not allow_in(port: 22, ipv4_range: "0.0.0.0/0") }

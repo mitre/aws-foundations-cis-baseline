@@ -1,3 +1,4 @@
+require "pry"
 control "aws-foundations-cis-1.2" do
   title "Ensure security contact information is registered "
   desc "AWS provides customers with the option of specifying the contact information for account's
@@ -65,10 +66,9 @@ more than one individual. "
 
   describe aws_security_contact, :sensitive do
     it { should be_configured }
-    its("email_address") do
-      should cmp "#{input("primary_contact")[:address_line_1]}"
-    end
-    its("name") { should cmp "#{input("primary_contact")[:city]}" }
-    its("phone_number") { should cmp "#{input("primary_contact")[:full_name]}" }
+    # its("name") { should cmp input("security_contact").name }
+    # its("title") { should cmp input("security_contact").title }
+    its("email_address") { should cmp input("security_contact").email_address }
+    its("phone_number") { should cmp input("security_contact").phone_number }
   end
 end
