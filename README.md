@@ -52,10 +52,10 @@ service_account_mfa_exceptions:
   - ...
 
 - List of buckets exempted from inspection (2.3, 2.6)
-exception_bucket_list: ["exception_bucket_name"]
+exempt_buckets: ["exception_bucket_name"]
 
 - List of security groups exempted from inspection (4.1, 4.2)
-exception_security_group_list: ["exception_security_group_name"]
+exempt_security_groups: ["exception_security_group_name"]
 
 - Config service list and settings in all relevant regions (2.5)
 config_delivery_channels:

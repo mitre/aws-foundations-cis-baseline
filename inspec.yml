@@ -42,12 +42,22 @@ inputs:
     type: Numeric
     value: 90
 
-  - name: exception_bucket_list
+  - name: exempt_buckets
     description: "list of buckets exempted from inspection"
     type: Array
     value: []
 
-  - name: exception_security_group_list
+  - name: exempt_ec2s
+    description: "list of ec2 exempted from inspection"
+    type: Array
+    value:
+      -
+  - name: skip_stopped_ec2s
+    description: "Ignore non-running ec2s durning verification"
+    type: Boolean
+    value: false
+
+  - name: exempt_security_groups
     description: "list of security groups exempted from inspection"
     type: Array
     value: []
@@ -77,21 +87,22 @@ inputs:
   - name: primary_contact
     description: "Primary Account contact information"
     type: Hash
-    value:
-      address_line_1: ""
-      city: ""
-      country_code: ""
-      full_name: ""
-      phone_number: ""
-      postal_code: ""
     sensitive: true
+    value:
+      # address_line_1: "123 Pine St"
+      # city: "Ashburn"
+      # country_code: "US"
+      # full_name: "Jane Doe"
+      email_address: "me@you.com"
+      phone_number: "555-557-6309"
+      postal_code: "12345"
 
   - name: security_contact
     description: "Account security contact information"
     type: Hash
-    value:
-      full_name: ""
-      title: ""
-      phone_number: ""
-      email_address: ""
     sensitive: true
+    value:
+      # name: "John Smith"
+      # title: "Security Guy"
+      phone_number: "555-857-6309"
+      email_address: "me@you.com"
