@@ -47,10 +47,14 @@ aws ec2 modify-instance-metadata-options
 ``` "
   impact 0.5
   ref "https://aws.amazon.com/blogs/security/defense-in-depth-open-firewalls-reverse-proxies-ssrf-vulnerabilities-ec2-instance-metadata-service/:https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-instances.html"
-  tag nist: %w(SI-10 SC-8)
-  tag severity: "medium "
+  tag nist: %w[SI-10 SC-8]
+  tag severity: "medium"
+  ref "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-IMDS-existing-instances.html"
 
-  describe "No Tests Defined Yet" do
-    skip "No Tests have been written for this control yet"
+  aws_ec2_instances.instance_ids.each do |instance|
+    describe aws_ec2_instance(instance) do
+      its("metadata_options.http_tokens") { should cmp "required" }
+      its("metadata_options.http_endpoint") { should cmp "enabled" }
+    end
   end
 end
