@@ -69,7 +69,22 @@ by implementing recommendation 3.3 Ensure a log metric filter and alarm exist fo
   tag nist: %w[AC-6(2) AC-6(5)]
   tag severity: "medium "
   tag cis_controls: [{ "8" => ["5.4"] }]
-  describe "No Tests Defined Yet" do
-    skip "No Tests have been written for this control yet"
+
+  #TODO: get last used key and last used date
+
+  if input('last_root_login_date')
+    last_root_login_date = DateTime.strptime(input('last_root_login_date').to_s, '%Y%m%d')
+    credential_report = aws_iam_credential_report.where( user: '<root_account>' )
+    describe "The root user" do
+      it "should not have logged in since #{last_root_login_date.strftime('%Y%m%d')}" do
+        expect(credential_report.password_last_used.first).to eq("N/A").or be <= last_root_login_date
+        expect(credential_report.access_key_1_last_used_date.first).to eq("N/A").or be <= last_root_login_date
+        expect(credential_report.access_key_2_last_used_date.first).to eq("N/A").or be <= last_root_login_date
+      end
+    end
+  else
+    describe "Manual review required" do
+      skip "Last use date of root access key '#{access_key_id}':\t#{access_key_last_used_date}\nReview to ensure this usage meets security requirements for your organization."
+    end
   end
 end
