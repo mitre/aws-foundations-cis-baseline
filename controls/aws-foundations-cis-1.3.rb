@@ -48,6 +48,6 @@ secure physical location "
     { "8" => ["17.2"] },
   ]
   describe "Control has to be tested manually" do
-    skip "This control must be manually reviewed"
+    skip "This control must be manually reviewed. Examine the root account's security challenge questions settings in the AWS Managment console as described in this control's check description."
   end
 end
