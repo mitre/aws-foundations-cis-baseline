@@ -110,7 +110,13 @@ recommendation.
   tag nist: ["AC-2"]
   tag severity: "medium "
   tag cis_controls: [{ "8" => ["5"] }]
-  describe "No Tests Defined Yet" do
-    skip "No Tests have been written for this control yet"
+
+  failing_users = aws_iam_users.where { access_keys.count > 1 }.usernames
+  fail_message = "The following IAM users have more than one access key:\t#{failing_users}"
+
+  describe "AWS IAM users" do
+    it "should not have more than one access key" do
+      expect(failing_users).to be_empty, fail_message
+    end
   end
 end
