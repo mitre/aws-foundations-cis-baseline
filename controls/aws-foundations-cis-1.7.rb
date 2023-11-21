@@ -70,25 +70,30 @@ by implementing recommendation 3.3 Ensure a log metric filter and alarm exist fo
   tag severity: "medium "
   tag cis_controls: [{ "8" => ["5.4"] }]
 
-  
-  credential_report = aws_iam_credential_report.where( user: '<root_account>' )
-
-  if !input('last_root_login_date').zero?
-    last_root_login_date = DateTime.strptime(input('last_root_login_date').to_s, '%Y%m%d')
-    describe "The root user" do
-      it "should not have logged in via password since #{last_root_login_date.strftime('%Y%m%d')}" do
-        expect(credential_report.password_last_used.first).to eq("N/A").or be <= last_root_login_date
-      end
-      it "should not have logged in via an access key (key 1) since #{last_root_login_date.strftime('%Y%m%d')}" do
-        expect(credential_report.access_key_1_last_used_date.first).to eq("N/A").or be <= last_root_login_date
-      end
-      it "should not have logged in via an access key (key 2) since #{last_root_login_date.strftime('%Y%m%d')}" do
-        expect(credential_report.access_key_2_last_used_date.first).to eq("N/A").or be <= last_root_login_date
-      end
+  if input("disable_slow_controls")
+    describe "Skipping this long running test" do
+      skip "Generating a IAM Credential Report can take a while, so skipping it for now."
     end
   else
-    describe "Manual review required" do
-      skip "Last use date of root password:\t'#{credential_report.password_last_used.first}'\nLast use date of root access key 1:\t'#{credential_report.access_key_1_last_used_date.first}'\nLast use date of root access key 2:\t'#{credential_report.access_key_2_last_used_date.first}'\n\nReview to ensure this usage meets security requirements for your organization."
+    credential_report = aws_iam_credential_report.where( user: '<root_account>' )
+
+    if !input('last_root_login_date').zero?
+      last_root_login_date = DateTime.strptime(input('last_root_login_date').to_s, '%Y%m%d')
+      describe "The root user" do
+        it "should not have logged in via password since #{last_root_login_date.strftime('%Y%m%d')}" do
+          expect(credential_report.password_last_used.first).to eq("N/A").or be <= last_root_login_date
+        end
+        it "should not have logged in via an access key (key 1) since #{last_root_login_date.strftime('%Y%m%d')}" do
+          expect(credential_report.access_key_1_last_used_date.first).to eq("N/A").or be <= last_root_login_date
+        end
+        it "should not have logged in via an access key (key 2) since #{last_root_login_date.strftime('%Y%m%d')}" do
+          expect(credential_report.access_key_2_last_used_date.first).to eq("N/A").or be <= last_root_login_date
+        end
+      end
+    else
+      describe "Manual review required" do
+        skip "Last use date of root password:\t'#{credential_report.password_last_used.first}'\nLast use date of root access key 1:\t'#{credential_report.access_key_1_last_used_date.first}'\nLast use date of root access key 2:\t'#{credential_report.access_key_2_last_used_date.first}'\n\nReview to ensure this usage meets security requirements for your organization."
+      end
     end
   end
 end
