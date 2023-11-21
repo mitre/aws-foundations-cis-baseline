@@ -59,7 +59,7 @@ centralized IAM user management. "
   tag severity: "medium "
   tag cis_controls: [{ "8" => ["5.6"] }]
 
-  describe "No Tests Defined Yet" do
-    skip "No Tests have been written for this control yet"
+  describe "Manual Review" do
+    skip "Manual review - Examine all IAM roles on all accounts to determine if any of them represent individual people"
   end
 end
