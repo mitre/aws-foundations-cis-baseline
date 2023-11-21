@@ -56,7 +56,7 @@ the Entities attached tab, for each item, check the box and select Detach "
   tag nist: ["AC-6"]
   tag severity: "medium "
 
-  describe "No Tests Defined Yet" do
-    skip "No Tests have been written for this control yet"
+  describe aws_iam_policy(policy_name: 'AWSCloudShellFullAccess') do
+    its('attached_roles') { should be_empty }
   end
 end
