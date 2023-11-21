@@ -70,11 +70,11 @@ by implementing recommendation 3.3 Ensure a log metric filter and alarm exist fo
   tag severity: "medium "
   tag cis_controls: [{ "8" => ["5.4"] }]
 
-  #TODO: get last used key and last used date
+  
+  credential_report = aws_iam_credential_report.where( user: '<root_account>' )
 
-  if input('last_root_login_date')
+  if !input('last_root_login_date').zero?
     last_root_login_date = DateTime.strptime(input('last_root_login_date').to_s, '%Y%m%d')
-    credential_report = aws_iam_credential_report.where( user: '<root_account>' )
     describe "The root user" do
       it "should not have logged in via password since #{last_root_login_date.strftime('%Y%m%d')}" do
         expect(credential_report.password_last_used.first).to eq("N/A").or be <= last_root_login_date
@@ -88,7 +88,7 @@ by implementing recommendation 3.3 Ensure a log metric filter and alarm exist fo
     end
   else
     describe "Manual review required" do
-      skip "Last use date of root access key '#{access_key_id}':\t#{access_key_last_used_date}\nReview to ensure this usage meets security requirements for your organization."
+      skip "Last use date of root password:\t'#{credential_report.password_last_used.first}'\nLast use date of root access key 1:\t'#{credential_report.access_key_1_last_used_date.first}'\nLast use date of root access key 2:\t'#{credential_report.access_key_2_last_used_date.first}'\n\nReview to ensure this usage meets security requirements for your organization."
     end
   end
 end
