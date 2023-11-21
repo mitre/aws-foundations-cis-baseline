@@ -94,12 +94,16 @@ Regions](https://docs.aws.amazon.com/general/latest/gr/rande-manage.html). "
   # TODO: aws_iam_access_analyzer/s resource
 
   # check for analyzers specficially within the region we are checking against CIS benchmark
-  analyzers = aws_iam_access_analyzers.where { path ~= input('default_aws_region') }
-  active_analyzers = analyzers.where( status: "ACTIVE" )
+  # analyzers = aws_iam_access_analyzers.where { path ~= input('default_aws_region') }
+  # active_analyzers = analyzers.where( status: "ACTIVE" )
 
-  describe "At least one access analyzer" do
-    it "should be active in the region" do
-      expect(active_analyzers.entries).to_not be_empty, "No active analyzer found in #{input('default_aws_region')}"
-    end
+  # describe "At least one access analyzer" do
+  #   it "should be active in the region" do
+  #     expect(active_analyzers.entries).to_not be_empty, "No active analyzer found in #{input('default_aws_region')}"
+  #   end
+  # end
+
+  describe "need a resource for this" do
+    skip "need a resource for analyzers"
   end
 end
