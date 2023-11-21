@@ -76,9 +76,13 @@ by implementing recommendation 3.3 Ensure a log metric filter and alarm exist fo
     last_root_login_date = DateTime.strptime(input('last_root_login_date').to_s, '%Y%m%d')
     credential_report = aws_iam_credential_report.where( user: '<root_account>' )
     describe "The root user" do
-      it "should not have logged in since #{last_root_login_date.strftime('%Y%m%d')}" do
+      it "should not have logged in via password since #{last_root_login_date.strftime('%Y%m%d')}" do
         expect(credential_report.password_last_used.first).to eq("N/A").or be <= last_root_login_date
+      end
+      it "should not have logged in via an access key (key 1) since #{last_root_login_date.strftime('%Y%m%d')}" do
         expect(credential_report.access_key_1_last_used_date.first).to eq("N/A").or be <= last_root_login_date
+      end
+      it "should not have logged in via an access key (key 2) since #{last_root_login_date.strftime('%Y%m%d')}" do
         expect(credential_report.access_key_2_last_used_date.first).to eq("N/A").or be <= last_root_login_date
       end
     end
