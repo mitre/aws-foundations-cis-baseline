@@ -13,6 +13,7 @@ supports:
 
 depends:
   - name: inspec-aws
+    # path: ../inspec-aws
     git: https://github.com/mitre/inspec-aws.git
     branch: al_resource_updates
 
@@ -109,3 +110,4 @@ inputs:
   - name: last_root_login_date
     description: "Optional - last date that root account should have logged in, formatted year+month+date (ex. Jan 1, 1970 ==> 19700101)"
     type: numeric
+    value: 0
