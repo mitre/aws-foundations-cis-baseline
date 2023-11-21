@@ -13,9 +13,8 @@ supports:
 
 depends:
   - name: inspec-aws
-    path: ../inspec-aws
-    # git: https://github.com/mitre/inspec-aws.git
-    # branch: al_resource_updates
+    git: https://github.com/mitre/inspec-aws.git
+    branch: al_resource_updates
 
 inputs:
   - name: disable_slow_controls
