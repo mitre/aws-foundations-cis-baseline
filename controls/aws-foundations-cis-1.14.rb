@@ -109,11 +109,11 @@ delete-access-key
 
   aws_iam_credential_report.where(access_key_1_active: false).entries.each do |user|
     describe "Access key 1 disabled for user (#{user.user})" do
-      skip "Test not applicable since user's (#{user.user}) access key 1 is disabled"
+      skip "Test not applicable since user's (#{user.user}) access key 1 is disabled" # TODO: make this a single skip
     end
   end
 
-  aws_iam_credential_report.where(access_key_1_active: true).entries.each do |user|
+  aws_iam_credential_report.where(access_key_1_active: true).entries.each do |user| # TODO: don't loop this
     describe "The user (#{user.user})" do
       if user.access_key_1_last_used_date.is_a? DateTime
         subject { ((Time.current - user.access_key_1_last_used_date) / (24 * 60 * 60)).to_i }
