@@ -80,7 +80,23 @@ not applicable for us-gov cloud regions. "
   tag severity: "medium "
   tag cis_controls: [{ "8" => ["6.5"] }]
 
-  describe "No Tests Defined Yet" do
-    skip "No Tests have been written for this control yet"
+  if input("disable_slow_controls")
+    describe "Skipping this long running test" do
+      skip "Generating a IAM Credential Report can take a while, so skipping it for now."
+    end
+  else
+    describe aws_iam_credential_report
+               .where(user: "<root_account>")
+               .entries
+               .first do
+      its("mfa_active") { should eq true }
+
+    hardware_mfa_devices = aws_iam_virtual_mfa_devices.where { serial_number !~ /root-account-mfa-device$/ }
+
+    describe "MFA devices" do
+      it "should include at least one hardware device (a device other than ARN 'arn:aws:iam::_<aws_account_number>_:mfa/root-account-mfa-device')" do
+        expect(hardware_mfa_devices.count).to be >= 1, "No hardware MFA devices discovered"
+      end
+    end
   end
 end
