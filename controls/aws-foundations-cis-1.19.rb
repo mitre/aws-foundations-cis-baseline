@@ -101,7 +101,11 @@ functionality. "
   tag severity: "medium "
   tag cis_controls: [{ "8" => ["3.1"] }]
 
-  describe "No Tests Defined Yet" do
-    skip "No Tests have been written for this control yet"
+  expired_certificates = aws_iam_server_certificates.where { expiration_date < DateTime.now }
+
+  describe "The list of all IAM server certificates" do
+    it "should not include expired certificates" do
+      expect(expired_certificates.entries).to be_empty, "Expired certificates:\t#{expired_certificates.server_certificate_names}"
+    end
   end
 end
