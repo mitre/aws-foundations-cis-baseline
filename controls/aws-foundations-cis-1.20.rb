@@ -103,7 +103,12 @@ Regions](https://docs.aws.amazon.com/general/latest/gr/rande-manage.html). "
   #   end
   # end
 
-  describe "need a resource for this" do
-    skip "need a resource for analyzers"
+  puts aws_regions.region_names
+
+  aws_regions.region_names.each do |region|
+    puts region
+    describe aws_iam_access_analyzers do
+      it { should exist }
+    end
   end
 end
