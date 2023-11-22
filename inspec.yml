@@ -111,3 +111,8 @@ inputs:
     description: "Optional - last date that root account should have logged in, formatted year+month+date (ex. Jan 1, 1970 ==> 19700101)"
     type: numeric
     value: 0
+
+  - name: third_party_data_management_tool
+    description: "If you are using a data management tool other than Amazon Macie (see 2.1.3), indicate its name with this input"
+    type: String
+    value: ""
