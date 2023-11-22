@@ -153,21 +153,17 @@ aws s3api put-bucket-policy --bucket <bucket_name>
   tag severity: "medium "
   tag cis_controls: [{ "8" => ["3.10"] }]
 
-  # s3_buckets = aws_s3_buckets.bucket_names
+  s3_buckets = aws_s3_buckets.bucket_names
 
-  # failing_buckets = s3.buckets.filter { |bucket_policy = aws_s3_bucket_policy(bucket: bucket)| 
-  #   bucket_policy.exists? ||
-  #   # TODO: build out aws_s3_bucket_policy to actually return policy data so that we can check what's in it
-  #   bucket_policy.policy['aws:SecureTransport'] == false
-  # }
+  failing_buckets = s3_buckets.filter { |bucket| 
+    aws_s3_bucket(bucket_name: bucket).bucket_policy.any? { |policy|
+      policy['condition']['Bool']['aws:SecureTransport'] == "false"
+    }
+  }
 
-  # describe "S3 buckets" do
-  #   it "should all explicitly disallow insecure (HTTP) requests by bucket policy" do
-  #     expect(failing_buckets).to be_empty, "Failing buckets:\t#{failing_buckets}"
-  #   end
-  # end
-
-  describe "No Tests Defined Yet" do
-    skip "No Tests have been written for this control yet"
+  describe "S3 buckets" do
+    it "should all explicitly disallow insecure (HTTP) requests by bucket policy" do
+      expect(failing_buckets).to be_empty, "Failing buckets:\t#{failing_buckets}"
+    end
   end
 end
