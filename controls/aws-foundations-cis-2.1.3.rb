@@ -107,6 +107,8 @@ with 3rd Party tools that perform similar processes and protection. "
   tag severity: "medium "
   tag cis_controls: [{ "8" => ["3.1"] }]
 
+  if input('third_party_data_management_tool')
+
   describe "No Tests Defined Yet" do
     skip "No Tests have been written for this control yet"
   end
