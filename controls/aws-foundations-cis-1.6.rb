@@ -90,6 +90,7 @@ not applicable for us-gov cloud regions. "
                .entries
                .first do
       its("mfa_active") { should eq true }
+    end
 
     hardware_mfa_devices = aws_iam_virtual_mfa_devices.where { serial_number !~ /root-account-mfa-device$/ }
 
