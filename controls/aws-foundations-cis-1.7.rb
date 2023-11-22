@@ -70,24 +70,54 @@ by implementing recommendation 3.3 Ensure a log metric filter and alarm exist fo
   tag severity: "medium "
   tag cis_controls: [{ "8" => ["5.4"] }]
 
+  #TODO: get last used key and last used date
+  #TODO: this is a slow control
+
   if input("disable_slow_controls")
-    describe "Skipping this long running test" do
-      skip "Generating a IAM Credential Report can take a while, so skipping it for now."
+    describe "Disabled by 'disable_slow_controls'" do
+      skip "This control can take a long time to run because it collects the IAM Credential Report."
+    end
+  elsif input("last_root_login_date")
+    last_root_login_date =
+      DateTime.strptime(input("last_root_login_date").to_s, "%Y%m%d")
+    credential_report = aws_iam_credential_report.where(user: "<root_account>")
+    describe "The root user" do
+      it "should not have logged in via password since #{last_root_login_date.strftime("%Y%m%d")}" do
+        expect(credential_report.password_last_used.first).to eq("N/A").or be <=
+               last_root_login_date
+      end
+      it "should not have logged in via an access key (key 1) since #{last_root_login_date.strftime("%Y%m%d")}" do
+        expect(credential_report.access_key_1_last_used_date.first).to eq(
+          "N/A"
+        ).or be <= last_root_login_date
+      end
+      it "should not have logged in via an access key (key 2) since #{last_root_login_date.strftime("%Y%m%d")}" do
+        expect(credential_report.access_key_2_last_used_date.first).to eq(
+          "N/A"
+        ).or be <= last_root_login_date
+      end
     end
   else
-    credential_report = aws_iam_credential_report.where( user: '<root_account>' )
+    credential_report = aws_iam_credential_report.where(user: "<root_account>")
 
-    if !input('last_root_login_date').zero?
-      last_root_login_date = DateTime.strptime(input('last_root_login_date').to_s, '%Y%m%d')
+    if !input("last_root_login_date").zero?
+      last_root_login_date =
+        DateTime.strptime(input("last_root_login_date").to_s, "%Y%m%d")
       describe "The root user" do
-        it "should not have logged in via password since #{last_root_login_date.strftime('%Y%m%d')}" do
-          expect(credential_report.password_last_used.first).to eq("N/A").or be <= last_root_login_date
+        it "should not have logged in via password since #{last_root_login_date.strftime("%Y%m%d")}" do
+          expect(credential_report.password_last_used.first).to eq(
+            "N/A"
+          ).or be <= last_root_login_date
         end
-        it "should not have logged in via an access key (key 1) since #{last_root_login_date.strftime('%Y%m%d')}" do
-          expect(credential_report.access_key_1_last_used_date.first).to eq("N/A").or be <= last_root_login_date
+        it "should not have logged in via an access key (key 1) since #{last_root_login_date.strftime("%Y%m%d")}" do
+          expect(credential_report.access_key_1_last_used_date.first).to eq(
+            "N/A"
+          ).or be <= last_root_login_date
         end
-        it "should not have logged in via an access key (key 2) since #{last_root_login_date.strftime('%Y%m%d')}" do
-          expect(credential_report.access_key_2_last_used_date.first).to eq("N/A").or be <= last_root_login_date
+        it "should not have logged in via an access key (key 2) since #{last_root_login_date.strftime("%Y%m%d")}" do
+          expect(credential_report.access_key_2_last_used_date.first).to eq(
+            "N/A"
+          ).or be <= last_root_login_date
         end
       end
     else
