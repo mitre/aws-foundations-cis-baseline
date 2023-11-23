@@ -92,11 +92,16 @@ not applicable for us-gov cloud regions. "
       its("mfa_active") { should eq true }
     end
 
-    hardware_mfa_devices = aws_iam_virtual_mfa_devices.where { serial_number !~ /root-account-mfa-device$/ }
+      hardware_mfa_devices =
+        aws_iam_virtual_mfa_devices.where do
+          serial_number !~ /root-account-mfa-device$/
+        end
 
-    describe "MFA devices" do
-      it "should include at least one hardware device (a device other than ARN 'arn:aws:iam::_<aws_account_number>_:mfa/root-account-mfa-device')" do
-        expect(hardware_mfa_devices.count).to be >= 1, "No hardware MFA devices discovered"
+      describe "MFA devices" do
+        it "should include at least one hardware device (a device other than ARN 'arn:aws:iam::_<aws_account_number>_:mfa/root-account-mfa-device')" do
+          expect(hardware_mfa_devices.count).to be >= 1,
+          "No hardware MFA devices discovered"
+        end
       end
     end
   end
