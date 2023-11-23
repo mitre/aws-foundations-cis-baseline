@@ -1,17 +1,17 @@
-control "aws-foundations-cis-1.22" do
-  title "Ensure access to AWSCloudShellFullAccess is restricted "
+control 'aws-foundations-cis-1.22' do
+  title 'Ensure access to AWSCloudShellFullAccess is restricted '
   desc "AWS CloudShell is a convenient way of running CLI commands against AWS services; a managed IAM
 policy ('AWSCloudShellFullAccess') provides full access to CloudShell, which allows file
 upload and download capability between a user's local system and the CloudShell
 environment. Within the CloudShell environment a user has sudo permissions, and can access
 the internet. So it is feasible to install file transfer software (for example) and move data
 from CloudShell to external internet servers. "
-  desc "rationale",
+  desc 'rationale',
        "Access to this policy should be restricted as it presents a potential channel for data
 exfiltration by malicious cloud admins that are given full permissions to the service. AWS
 documentation describes how to create a more restrictive IAM policy which denies file
 transfer permissions. "
-  desc "check",
+  desc 'check',
        "**From Console**
 1. Open the IAM console at https://console.aws.amazon.com/iam/
 2. In
@@ -43,7 +43,7 @@ empty refer to the remediation below.
 
 Note: Keep in mind that other policies may grant
 access. "
-  desc "fix",
+  desc 'fix',
        "**From Console**
 1. Open the IAM console at https://console.aws.amazon.com/iam/
 2. In
@@ -52,9 +52,9 @@ the left pane, select Policies
 4. On
 the Entities attached tab, for each item, check the box and select Detach "
   impact 0.5
-  ref "https://docs.aws.amazon.com/cloudshell/latest/userguide/sec-auth-with-identities.html"
-  tag nist: ["AC-6"]
-  tag severity: "medium "
+  ref 'https://docs.aws.amazon.com/cloudshell/latest/userguide/sec-auth-with-identities.html'
+  tag nist: ['AC-6']
+  tag severity: 'medium '
 
   describe aws_iam_policy(policy_name: 'AWSCloudShellFullAccess') do
     its('attached_roles') { should be_empty }

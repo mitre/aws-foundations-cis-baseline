@@ -1,7 +1,7 @@
-require "pry-byebug"
+require 'pry-byebug'
 
-control "aws-foundations-cis-1.1" do
-  title "Maintain current contact details "
+control 'aws-foundations-cis-1.1' do
+  title 'Maintain current contact details '
   desc "
     Ensure contact email and telephone details for AWS accounts are current and map to more than
     one individual in your organization.
@@ -14,7 +14,7 @@ control "aws-foundations-cis-1.1" do
     which forwards email to multiple individuals within the organization; where feasible,
     phone contact details should point to a PABX hunt group or other call-forwarding system. "
 
-  desc "rationale",
+  desc 'rationale',
        "If an AWS account is observed to be behaving in a prohibited or suspicious manner, AWS will
     attempt to contact the account owner by email and phone using the contact details listed. If
     this is unsuccessful and the account behavior needs urgent mitigation, proactive measures
@@ -24,8 +24,8 @@ control "aws-foundations-cis-1.1" do
     prompt contact can be established. This is best achieved by setting AWS account contact
     details to point to resources which have multiple individuals as recipients, such as email
     aliases and PABX hunt groups. "
-  desc "check",
-       %q{
+  desc 'check',
+       '
     This activity can only be performed via the AWS Console, with a user who has permission to read
     and write Billing information (aws-portal:\\*Billing )
 
@@ -37,9 +37,9 @@ control "aws-foundations-cis-1.1" do
     3. On the `Account Settings` page, review and
     verify the current details.
     4. Under `Contact Information`, review and verify the current
-    details.}
-  desc "fix",
-       %q{
+    details.'
+  desc 'fix',
+       '
     This activity can only be performed via the AWS Console, with a user who has permission to read
     and write Billing information (aws-portal:\\*Billing ).
 
@@ -58,16 +58,16 @@ control "aws-foundations-cis-1.1" do
     7. To edit your contact information, under `Contact
     Information`, choose `Edit`.
     8. For the fields that you want to change, type your updated
-    information, and then choose `Update`. }
+    information, and then choose `Update`. '
   impact 0.5
-  ref "https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/manage-account-payment.html#contact-info"
-  tag nist: ["IR-6"]
-  tag severity: "medium "
-  tag cis_controls: [{ "8" => ["17.2"] }]
+  ref 'https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/manage-account-payment.html#contact-info'
+  tag nist: ['IR-6']
+  tag severity: 'medium '
+  tag cis_controls: [{ '8' => ['17.2'] }]
 
   describe aws_primary_contact, :sensitive do
     it { should be_configured }
-    its("email_address") { should cmp input("primary_contact").email_address }
-    its("phone_number") { should cmp input("primary_contact").phone_number }
+    its('email_address') { should cmp input('primary_contact').email_address }
+    its('phone_number') { should cmp input('primary_contact').phone_number }
   end
 end

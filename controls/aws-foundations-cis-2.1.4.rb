@@ -1,4 +1,4 @@
-control "aws-foundations-cis-2.1.4" do
+control 'aws-foundations-cis-2.1.4' do
   title "Ensure that S3 Buckets are configured with 'Block public access (bucket settings)' "
   desc "Amazon S3 provides `Block public access (bucket settings)` and `Block public access
 (account settings)` to help you manage public access to Amazon S3 resources. By default, S3
@@ -8,7 +8,7 @@ enabled, `Block public access (bucket settings)` prevents an individual bucket, 
 contained objects, from becoming publicly accessible. Similarly, `Block public access
 (account settings)` prevents all buckets, and contained objects, from becoming publicly
 accessible across the entire account. "
-  desc "rationale",
+  desc 'rationale',
        "Amazon S3 `Block public access (bucket settings)` prevents the accidental or malicious
 public exposure of data contained within the respective bucket(s).
 
@@ -19,7 +19,7 @@ data contained within all buckets of the respective AWS account.
 Whether blocking
 public access to all or some buckets is an organizational decision that should be based on data
 sensitivity, least privilege, and use case. "
-  desc "check",
+  desc 'check',
        "**If utilizing Block Public Access (bucket settings)**
 
 **From Console:**
@@ -103,7 +103,7 @@ Block Public access is enabled:
 
 If the output reads `false` for the
 separate configuration settings then proceed to the remediation. "
-  desc "fix",
+  desc 'fix',
        "**If utilizing Block Public Access (bucket settings)**
 
 **From Console:**
@@ -165,17 +165,17 @@ BlockPublicAcls=true, IgnorePublicAcls=true, BlockPublicPolicy=true,
 RestrictPublicBuckets=true
 --account-id <value>
 ``` "
-  desc "impact",
+  desc 'impact',
        "When you apply Block Public Access settings to an account, the settings apply to all AWS
 Regions globally. The settings might not take effect in all Regions immediately or
 simultaneously, but they eventually propagate to all Regions. "
   impact 0.5
-  ref "https://docs.aws.amazon.com/AmazonS3/latest/user-guide/block-public-access-account.html"
-  tag nist: ["AC-3"]
-  tag severity: "medium "
-  tag cis_controls: [{ "8" => ["3.3"] }]
+  ref 'https://docs.aws.amazon.com/AmazonS3/latest/user-guide/block-public-access-account.html'
+  tag nist: ['AC-3']
+  tag severity: 'medium '
+  tag cis_controls: [{ '8' => ['3.3'] }]
 
-  describe "No Tests Defined Yet" do
-    skip "No Tests have been written for this control yet"
+  describe 'No Tests Defined Yet' do
+    skip 'No Tests have been written for this control yet'
   end
 end

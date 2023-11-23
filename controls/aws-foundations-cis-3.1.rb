@@ -1,12 +1,12 @@
-control "aws-foundations-cis-3.1" do
-  title "Ensure CloudTrail is enabled in all regions "
+control 'aws-foundations-cis-3.1' do
+  title 'Ensure CloudTrail is enabled in all regions '
   desc "AWS CloudTrail is a web service that records AWS API calls for your account and delivers log
 files to you. The recorded information includes the identity of the API caller, the time of the
 API call, the source IP address of the API caller, the request parameters, and the response
 elements returned by the AWS service. CloudTrail provides a history of AWS API calls for an
 account, including API calls made via the Management Console, SDKs, command line tools, and
 higher-level AWS services (such as CloudFormation). "
-  desc "rationale", "The AWS API call history produced by CloudTrail enables security analysis, resource change
+  desc 'rationale', "The AWS API call history produced by CloudTrail enables security analysis, resource change
 tracking, and compliance auditing. Additionally,
 
 - ensuring that a multi-regions
@@ -21,7 +21,7 @@ global services
 - for a multi-regions trail, ensuring that management events
 configured for all type of Read/Writes ensures recording of management operations that are
 performed on all resources in an AWS account "
-  desc "check", "Perform the following to determine if CloudTrail is enabled for all regions:
+  desc 'check', "Perform the following to determine if CloudTrail is enabled for all regions:
 
 **From
 Console:**
@@ -59,7 +59,7 @@ get-event-selectors --trail-name <trailname shown in describe-trails>
 Ensure
 there is at least one Event Selector for a Trail with `IncludeManagementEvents` set to `true`
 and `ReadWriteType` set to `All` "
-  desc "fix", "Perform the following to enable global (Multi-region) CloudTrail logging:
+  desc 'fix', "Perform the following to enable global (Multi-region) CloudTrail logging:
 
 **From
 Console:**
@@ -95,18 +95,18 @@ aws cloudtrail update-trail --name <trail_name>
 Note: Creating CloudTrail via CLI without providing
 any overriding options configures `Management Events` to set `All` type of `Read/Writes` by
 default. "
-  desc "impact", "S3 lifecycle features can be used to manage the accumulation and management of logs over time.
+  desc 'impact', "S3 lifecycle features can be used to manage the accumulation and management of logs over time.
 See the following AWS resource for more information on these features:
 
 1.
 https://docs.aws.amazon.com/AmazonS3/latest/dev/object-lifecycle-mgmt.html "
-  desc "default_value", "Not Enabled "
+  desc 'default_value', 'Not Enabled '
   impact 0.5
-  ref "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-concepts.html#cloudtrail-concepts-management-events:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-management-and-data-events-with-cloudtrail.html?icmpid=docs_cloudtrail_console#logging-management-events:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-supported-services.html#cloud-trail-supported-services-data-events"
-  tag nist: ["AU-12"]
-  tag severity: "medium "
+  ref 'https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-concepts.html#cloudtrail-concepts-management-events:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-management-and-data-events-with-cloudtrail.html?icmpid=docs_cloudtrail_console#logging-management-events:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-supported-services.html#cloud-trail-supported-services-data-events'
+  tag nist: ['AU-12']
+  tag severity: 'medium '
   tag cis_controls: [
-    { "8" => ["8.5"] },
+    { '8' => ['8.5'] },
   ]
 
   describe aws_cloudtrail_trails do

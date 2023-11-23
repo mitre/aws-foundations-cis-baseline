@@ -1,12 +1,12 @@
-control "aws-foundations-cis-2.1.2" do
-  title "Ensure MFA Delete is enabled on S3 buckets "
+control 'aws-foundations-cis-2.1.2' do
+  title 'Ensure MFA Delete is enabled on S3 buckets '
   desc "Once MFA Delete is enabled on your sensitive and classified S3 bucket it requires the user to
 have two forms of authentication. "
-  desc "rationale",
+  desc 'rationale',
        "Adding MFA delete to an S3 bucket, requires additional authentication when you change the
 version state of your bucket or you delete and object version adding another layer of security
 in the event your security credentials are compromised or unauthorized access is granted. "
-  desc "check",
+  desc 'check',
        "Perform the steps below to confirm MFA delete is configured on an S3 Bucket
 
 **From
@@ -47,7 +47,7 @@ xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\">
 If the Console
 or the CLI output does not show Versioning and MFA Delete `enabled` refer to the remediation
 below. "
-  desc "fix",
+  desc 'fix',
        "Perform the steps below to enable MFA delete on an S3 bucket.
 
 Note:
@@ -67,17 +67,17 @@ aws s3api put-bucket-versioning
 Status=Enabled,MFADelete=Enabled --mfa
 “arn:aws:iam::aws_account_id:mfa/root-account-mfa-device passcode”
 ``` "
-  desc "impact",
+  desc 'impact',
        "Enabling MFA delete on an S3 bucket could required additional administrator oversight.
 Enabling MFA delete may impact other services that automate the creation and/or deletion of
 S3 buckets. "
   impact 0.5
-  ref "https://docs.aws.amazon.com/AmazonS3/latest/dev/Versioning.html#MultiFactorAuthenticationDelete:https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMFADelete.html:https://aws.amazon.com/blogs/security/securing-access-to-aws-using-mfa-part-3/:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_lost-or-broken.html"
-  tag nist: ["AC-3"]
-  tag severity: "medium "
-  tag cis_controls: [{ "8" => ["3.3"] }]
+  ref 'https://docs.aws.amazon.com/AmazonS3/latest/dev/Versioning.html#MultiFactorAuthenticationDelete:https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMFADelete.html:https://aws.amazon.com/blogs/security/securing-access-to-aws-using-mfa-part-3/:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_lost-or-broken.html'
+  tag nist: ['AC-3']
+  tag severity: 'medium '
+  tag cis_controls: [{ '8' => ['3.3'] }]
 
-  describe "No Tests Defined Yet" do
-    skip "No Tests have been written for this control yet"
+  describe 'No Tests Defined Yet' do
+    skip 'No Tests have been written for this control yet'
   end
 end

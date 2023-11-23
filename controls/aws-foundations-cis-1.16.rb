@@ -1,11 +1,11 @@
-control "aws-foundations-cis-1.16" do
+control 'aws-foundations-cis-1.16' do
   title 'Ensure IAM policies that allow full "*:*" administrative privileges are not attached '
   desc "IAM policies are the means by which privileges are granted to users, groups, or roles. It is
 recommended and considered a standard security advice to grant _least privilege_ -that is,
 granting only the permissions required to perform a task. Determine what users need to do and
 then craft policies for them that let the users perform _only_ those tasks, instead of
 allowing full administrative privileges. "
-  desc "rationale", "It's more secure to start with a minimum set of permissions and grant additional permissions
+  desc 'rationale', "It's more secure to start with a minimum set of permissions and grant additional permissions
 as necessary, rather than starting with permissions that are too lenient and then trying to
 tighten them later.
 
@@ -15,7 +15,7 @@ potentially unwanted actions.
 
 IAM policies that have a statement with \"Effect\":
 \"Allow\" with \"Action\": \"\\*\" over \"Resource\": \"\\*\" should be removed. "
-  desc "check", "Perform the following to determine what policies are created:
+  desc 'check', "Perform the following to determine what policies are created:
 
 **From Command
 Line:**
@@ -34,7 +34,7 @@ account:
 ```
 3. In output ensure policy should not have any Statement block with
 `\"Effect\": \"Allow\"` and `Action` set to `\"*\"` and `Resource` set to `\"*\"` "
-  desc "fix", "**From Console:**
+  desc 'fix', "**From Console:**
 
 Perform the following to detach the policy that has full
 administrative privileges:
@@ -84,25 +84,25 @@ Roles:
 <policy_arn>
 ``` "
   impact 0.5
-  ref "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html:https://docs.aws.amazon.com/cli/latest/reference/iam/index.html#cli-aws-iam"
-  tag nist: ["AC-6"]
-  tag severity: "medium "
+  ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html:https://docs.aws.amazon.com/cli/latest/reference/iam/index.html#cli-aws-iam'
+  tag nist: ['AC-6']
+  tag severity: 'medium '
   tag cis_controls: [
-    { "8" => ["3.3"] },
+    { '8' => ['3.3'] },
   ]
 
   attached_policies = aws_iam_policies.where { attachment_count > 0 }.policy_names
 
   if attached_policies.empty?
     impact 0.0
-    describe "Control not applicable since no attached IAM policies were detected" do
-      skip "Not applicable since no IAM policies were detected as attached to anything within this account."
+    describe 'Control not applicable since no attached IAM policies were detected' do
+      skip 'Not applicable since no IAM policies were detected as attached to anything within this account.'
     end
   else
     attached_policies.each do |policy|
       describe "Attached Policies #{policy} allows full '*:*' privileges?" do
         subject { aws_iam_policy(policy_name: policy) }
-        it { should_not have_statement("Effect" => "Allow", "Resource" => "*", "Action" => "*") }
+        it { should_not have_statement('Effect' => 'Allow', 'Resource' => '*', 'Action' => '*') }
       end
     end
   end

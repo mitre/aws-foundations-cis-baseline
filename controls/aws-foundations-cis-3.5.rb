@@ -1,13 +1,13 @@
-control "aws-foundations-cis-3.5" do
-  title "Ensure AWS Config is enabled in all regions "
+control 'aws-foundations-cis-3.5' do
+  title 'Ensure AWS Config is enabled in all regions '
   desc "AWS Config is a web service that performs configuration management of supported AWS
 resources within your account and delivers log files to you. The recorded information
 includes the configuration item (AWS resource), relationships between configuration
 items (AWS resources), any configuration changes between resources. It is recommended AWS
 Config be enabled in all regions. "
-  desc "rationale", "The AWS configuration item history captured by AWS Config enables security analysis,
+  desc 'rationale', "The AWS configuration item history captured by AWS Config enables security analysis,
 resource change tracking, and compliance auditing. "
-  desc "check", "Process to evaluate AWS Config configuration per region
+  desc 'check', "Process to evaluate AWS Config configuration per region
 
 **From Console:**
 
@@ -77,7 +77,7 @@ describe-configuration-recorder-status
 4. In the output, find recorders with
 `name` key matching the recorders that were evaluated in step 2. Ensure that they include
 `\"recording\": true` and `\"lastStatus\": \"SUCCESS\"` "
-  desc "fix", "To implement AWS Config configuration:
+  desc 'fix', "To implement AWS Config configuration:
 
 **From Console:**
 
@@ -138,16 +138,16 @@ the configuration recorder by running the following command:
 aws configservice
 start-configuration-recorder --configuration-recorder-name default
 ``` "
-  desc "impact", "It is recommended AWS Config be enabled in all regions. "
+  desc 'impact', 'It is recommended AWS Config be enabled in all regions. '
   impact 0.5
-  ref "https://docs.aws.amazon.com/cli/latest/reference/configservice/describe-configuration-recorder-status.html:https://docs.aws.amazon.com/cli/latest/reference/configservice/describe-configuration-recorders.html:https://docs.aws.amazon.com/config/latest/developerguide/gs-cli-prereq.html"
-  tag nist: ["CM-8"]
-  tag severity: "medium "
+  ref 'https://docs.aws.amazon.com/cli/latest/reference/configservice/describe-configuration-recorder-status.html:https://docs.aws.amazon.com/cli/latest/reference/configservice/describe-configuration-recorders.html:https://docs.aws.amazon.com/config/latest/developerguide/gs-cli-prereq.html'
+  tag nist: ['CM-8']
+  tag severity: 'medium '
   tag cis_controls: [
-    { "8" => ["1.1"] },
+    { '8' => ['1.1'] },
   ]
 
-  config_delivery_channels = input("config_delivery_channels")
+  config_delivery_channels = input('config_delivery_channels')
 
   describe aws_config_recorder do
     it { should exist }
@@ -162,8 +162,8 @@ start-configuration-recorder --configuration-recorder-name default
 
   if aws_config_delivery_channel.exists?
     describe aws_config_delivery_channel do
-      its("s3_bucket_name") { should cmp config_delivery_channels[:"#{input("default_aws_region")}"][:s3_bucket_name] }
-      its("sns_topic_arn") { should cmp config_delivery_channels[:"#{input("default_aws_region")}"][:sns_topic_arn] }
+      its('s3_bucket_name') { should cmp config_delivery_channels[:"#{input('default_aws_region')}"][:s3_bucket_name] }
+      its('sns_topic_arn') { should cmp config_delivery_channels[:"#{input('default_aws_region')}"][:sns_topic_arn] }
     end
   end
 end

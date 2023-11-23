@@ -1,12 +1,12 @@
-control "aws-foundations-cis-5.3" do
-  title "Ensure no security groups allow ingress from ::/0 to remote server administration ports "
+control 'aws-foundations-cis-5.3' do
+  title 'Ensure no security groups allow ingress from ::/0 to remote server administration ports '
   desc "Security groups provide stateful filtering of ingress and egress network traffic to AWS
 resources. It is recommended that no security group allows unrestricted ingress access to
 remote server administration ports, such as SSH to port `22` and RDP to port `3389`. "
-  desc "rationale",
+  desc 'rationale',
        "Public access to remote server administration ports, such as 22 and 3389, increases resource
 attack surface and unnecessarily raises the risk of resource compromise. "
-  desc "check",
+  desc 'check',
        "Perform the following to determine if the account is configured as prescribed:
 
 1. Login
@@ -24,7 +24,7 @@ administration ports for your environment and has a `Source` of `::/0`
 **Note:** A Port
 value of `ALL` or a port range such as `0-1024` are inclusive of port `22`, `3389`, and other
 remote server administration ports. "
-  desc "fix",
+  desc 'fix',
        "Perform the following to implement the prescribed state:
 
 1. Login to the AWS Management
@@ -42,17 +42,17 @@ following:
 update the Source field to a range other than ::/0, or, B) Click `Delete` to remove the
 offending inbound rule
 6. Click `Save rules` "
-  desc "impact",
+  desc 'impact',
        "When updating an existing environment, ensure that administrators have access to remote
 server administration ports through another mechanism before removing access by deleting
 the ::/0 inbound rule. "
   impact 0.5
-  ref "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security-groups.html#deleting-security-group-rule"
-  tag nist: ["CM-7(1)"]
-  tag severity: "medium "
-  tag cis_controls: [{ "7" => ["9.2"] }]
+  ref 'https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security-groups.html#deleting-security-group-rule'
+  tag nist: ['CM-7(1)']
+  tag severity: 'medium '
+  tag cis_controls: [{ '7' => ['9.2'] }]
 
-  describe "No Tests Defined Yet" do
-    skip "No Tests have been written for this control yet"
+  describe 'No Tests Defined Yet' do
+    skip 'No Tests have been written for this control yet'
   end
 end

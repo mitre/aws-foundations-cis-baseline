@@ -1,9 +1,9 @@
-control "aws-foundations-cis-2.1.3" do
-  title "Ensure all data in Amazon S3 has been discovered, classified and secured when required. "
+control 'aws-foundations-cis-2.1.3' do
+  title 'Ensure all data in Amazon S3 has been discovered, classified and secured when required. '
   desc "Amazon S3 buckets can contain sensitive data, that for security purposes should be
 discovered, monitored, classified and protected. Macie along with other 3rd party tools can
 automatically provide an inventory of Amazon S3 buckets. "
-  desc "rationale",
+  desc 'rationale',
        "Using a Cloud service or 3rd Party software to continuously monitor and automate the process
 of data discovery and classification for S3 buckets using machine learning and pattern
 matching is a strong defense in protecting that information.
@@ -11,7 +11,7 @@ matching is a strong defense in protecting that information.
 Amazon Macie is a fully
 managed data security and data privacy service that uses machine learning and pattern
 matching to discover and protect your sensitive data in AWS. "
-  desc "check",
+  desc 'check',
        "Perform the following steps to determine if Macie is running:
 
 **From Console:**
@@ -30,7 +30,7 @@ don't have a job setup and running then refer to the remediation procedure below
 
 If you
 are using a 3rd Party tool to manage and protect your s3 data you meet this recommendation. "
-  desc "fix",
+  desc 'fix',
        "Perform the steps below to enable and configure Amazon Macie
 
 **From Console:**
@@ -98,17 +98,17 @@ finding, choose any field other than the check box for the finding.
 If you are using a 3rd
 Party tool to manage and protect your s3 data, follow the Vendor documentation for
 implementing and configuring that tool. "
-  desc "impact",
+  desc 'impact',
        "There is a cost associated with using Amazon Macie. There is also typically a cost associated
 with 3rd Party tools that perform similar processes and protection. "
   impact 0.5
-  ref "https://aws.amazon.com/macie/getting-started/:https://docs.aws.amazon.com/workspaces/latest/adminguide/data-protection.html:https://docs.aws.amazon.com/macie/latest/user/data-classification.html"
-  tag nist: %w(CM-12 SI-12)
-  tag severity: "medium "
-  tag cis_controls: [{ "8" => ["3.1"] }]
+  ref 'https://aws.amazon.com/macie/getting-started/:https://docs.aws.amazon.com/workspaces/latest/adminguide/data-protection.html:https://docs.aws.amazon.com/macie/latest/user/data-classification.html'
+  tag nist: %w{CM-12 SI-12}
+  tag severity: 'medium '
+  tag cis_controls: [{ '8' => ['3.1'] }]
 
   if input('third_party_data_management_tool')
-    describe "Third-party tool in use" do
+    describe 'Third-party tool in use' do
       skip "Manual review necessary: third-party tool '#{input('third_party_data_management_tool')}' is expected to meet this recommendation; check its configuration according to vendor documentation"
     end
   else
