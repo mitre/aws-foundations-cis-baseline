@@ -103,12 +103,17 @@ Regions](https://docs.aws.amazon.com/general/latest/gr/rande-manage.html). "
   #   end
   # end
 
-  puts aws_regions.region_names
+  skipped_resources = input("exempt_regions")
 
   aws_regions.region_names.each do |region|
-    puts region
-    describe aws_iam_access_analyzers do
+    next if skipped_resources.include?(region)
+    describe aws_iam_access_analyzers(aws_region: region) do
       it { should exist }
+    end
+    unless skipped_resources.empty?
+      describe "Warning: Skipped Regions" do
+        skipped_resources.each { |region| skip "#{region} was Not Reviewed" }
+      end
     end
   end
 end
