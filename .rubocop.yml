@@ -1,0 +1,162 @@
+---
+AllCops:
+  Exclude:
+    - Gemfile
+    - Rakefile
+    - "test/**/*"
+    - "examples/**/*"
+    - "vendor/**/*"
+    - "lib/bundles/inspec-init/templates/**/*"
+    - .direnv/**/*
+  TargetRubyVersion: 2.6.3
+
+Layout/EmptyLinesAroundBlockBody:
+  Enabled: false
+Layout/HashAlignment:
+  Enabled: false
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+Layout/MultilineBlockLayout:
+  Enabled: false
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+Layout/SpaceAroundOperators:
+  Enabled: false
+Layout/ParameterAlignment:
+  Enabled: true
+Layout/LineLength:
+  Enabled: false
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+Lint/DeprecatedOpenSSLConstant:
+  Enabled: true
+Lint/MixedRegexpCaptureTypes:
+  Enabled: true
+Style/RedundantRegexpCharacterClass:
+  Enabled: false
+Style/RedundantRegexpEscape:
+  Enabled: false
+Lint/ParenthesesAsGroupedExpression:
+  Enabled: false
+Lint/ReturnInVoidContext:
+  Enabled: false
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - "test/integration/verify/controls/*"
+Lint/RaiseException:
+  Enabled: true
+Lint/StructNewOverride:
+  Enabled: true
+
+Lint/DuplicateBranch: # (new in 1.3)
+  Enabled: true
+Lint/DuplicateRegexpCharacterClassElement: # (new in 1.1)
+  Enabled: true
+Lint/EmptyBlock: # (new in 1.1)
+  Enabled: true
+Lint/EmptyClass: # (new in 1.3)
+  Enabled: true
+Lint/NoReturnInBeginEndBlocks: # (new in 1.2)
+  Enabled: true
+Lint/ToEnumArguments: # (new in 1.1)
+  Enabled: true
+Lint/UnmodifiedReduceAccumulator: # (new in 1.1)
+  Enabled: true
+
+Metrics/ClassLength:
+  Max: 300
+  Exclude:
+    - libraries/aws_ecs_task_definition.rb
+Metrics/MethodLength:
+  Max: 45
+  Exclude:
+    - libraries/aws_cloudfront_distribution.rb
+Metrics/BlockLength:
+  Max: 100
+Metrics/AbcSize:
+  Max: 75
+Metrics/BlockNesting:
+  Enabled: false
+Metrics/CyclomaticComplexity:
+  Max: 25
+Metrics/PerceivedComplexity:
+  Max: 25
+
+Naming/AccessorMethodName:
+  Enabled: false
+Naming/FileName:
+  Enabled: false
+Naming/PredicateName:
+  Enabled: false
+Naming/VariableNumber:
+  Enabled: false
+
+Style/BlockDelimiters:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
+Style/Encoding:
+  Enabled: true
+Style/NumericLiterals:
+  MinDigits: 10
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    "%": "{}"
+    "%i": ()
+    "%q": "{}"
+    "%Q": ()
+    "%r": "{}"
+    "%s": ()
+    "%w": "{}"
+    "%W": ()
+    "%x": ()
+Style/ClassAndModuleChildren:
+  Enabled: false
+Style/ConditionalAssignment:
+  Enabled: false
+Style/AndOr:
+  Enabled: false
+Style/Not:
+  Enabled: false
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: comma
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: comma
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: comma
+Style/NegatedIf:
+  Enabled: false
+Style/UnlessElse:
+  Enabled: false
+Style/RedundantBegin:
+  Enabled: false
+Style/IfUnlessModifier:
+  Enabled: false
+Style/RescueStandardError:
+  Enabled: false
+Style/ExponentialNotation:
+  Enabled: true
+Style/HashEachMethods:
+  Enabled: true
+Style/HashTransformKeys:
+  Enabled: false
+Style/HashTransformValues:
+  Enabled: true
+Style/HashSyntax:
+  Enabled: true
+Style/SlicingWithRange:
+  Enabled: true
+Style/ArgumentsForwarding: # (new in 1.1)
+  Enabled: true
+Style/CollectionCompact: # (new in 1.2)
+  Enabled: true
+Style/DocumentDynamicEvalDefinition: # (new in 1.1)
+  Enabled: true
+Style/NegatedIfElseCondition: # (new in 1.2)
+  Enabled: true
+Style/NilLambda: # (new in 1.3)
+  Enabled: true
+Style/SwapValues: # (new in 1.1)
+  Enabled: true
+Style/FrozenStringLiteralComment:
+  Enabled: false

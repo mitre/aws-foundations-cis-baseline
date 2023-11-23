@@ -1,10 +1,10 @@
-control "aws-foundations-cis-1.18" do
-  title "Ensure IAM instance roles are used for AWS resource access from instances "
+control 'aws-foundations-cis-1.18' do
+  title 'Ensure IAM instance roles are used for AWS resource access from instances '
   desc "AWS access from within AWS instances can be done by either encoding AWS keys into AWS API calls
 or by assigning the instance to a role which has an appropriate permissions policy for the
 required access. \"AWS Access\" means accessing the APIs of AWS in order to access AWS resources
 or manage AWS account resources. "
-  desc "rationale", "AWS IAM roles reduce the risks associated with sharing and rotating credentials that can be
+  desc 'rationale', "AWS IAM roles reduce the risks associated with sharing and rotating credentials that can be
 used outside of AWS itself. If credentials are compromised, they can be used from outside of
 the AWS account they give access to. In contrast, in order to leverage role permissions an
 attacker would need to gain and maintain access to a specific instance to use the privileges
@@ -15,7 +15,7 @@ applications or other hard to change mechanisms, then they are even more unlikel
 properly rotated due to service disruption risks. As time goes on, credentials that cannot be
 rotated are more likely to be known by an increasing number of individuals who no longer work
 for the organization owning the credentials. "
-  desc "check", "**From Console:**
+  desc 'check', "**From Console:**
 
 1. Sign in to the AWS Management Console and navigate to EC2 dashboard
 at `https://console.aws.amazon.com/ec2/`.
@@ -59,7 +59,7 @@ aws ec2 describe-instances --region <region-name> --instance-id
 If an IAM role is attached, the command output will show the IAM instance profile ARN and ID.
 
 4. Repeat steps 1 to 3 for each EC2 instance in your AWS account. "
-  desc "fix", "**From Console:**
+  desc 'fix', "**From Console:**
 
 1. Sign in to the AWS Management Console and navigate to EC2 dashboard
 at `https://console.aws.amazon.com/ec2/`.
@@ -106,22 +106,22 @@ aws ec2 describe-instances
 4. Repeat steps 1 to 3 for
 each EC2 instance in your AWS account that requires an IAM role to be attached. "
   impact 0.5
-  ref "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html:https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html"
-  tag nist: ["AC-2"]
-  tag severity: "medium "
+  ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html:https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html'
+  tag nist: ['AC-2']
+  tag severity: 'medium '
   tag cis_controls: [
-    { "8" => ["6.8"] },
+    { '8' => ['6.8'] },
   ]
-  
+
   ec2_instances_with_no_role = aws_ec2_instances.entries.select {
-    |instance| instance.iam_profile == nil || 
-    aws_iam_instance_profile(instance_profile_name: instance.iam_profile).roles.empty?
+    |instance| instance.iam_profile.nil? ||
+      aws_iam_instance_profile(instance_profile_name: instance.iam_profile).roles.empty?
   }
 
   fail_message = "EC2 Instances with no role:\t#{ec2_instances_with_no_role.map { |instance| instance.name }}"
 
-  describe "EC2 Instances" do
-    it "should have an attached role" do
+  describe 'EC2 Instances' do
+    it 'should have an attached role' do
       expect(ec2_instances_with_no_role).to be_empty, fail_message
     end
   end

@@ -1,15 +1,15 @@
-control "aws-foundations-cis-2.3.1" do
-  title "Ensure that encryption-at-rest is enabled for RDS Instances "
+control 'aws-foundations-cis-2.3.1' do
+  title 'Ensure that encryption-at-rest is enabled for RDS Instances '
   desc "Amazon RDS encrypted DB instances use the industry standard AES-256 encryption algorithm to
 encrypt your data on the server that hosts your Amazon RDS DB instances. After your data is
 encrypted, Amazon RDS handles authentication of access and decryption of your data
 transparently with a minimal impact on performance. "
-  desc "rationale",
+  desc 'rationale',
        "Databases are likely to hold sensitive and critical data, it is highly recommended to
 implement encryption in order to protect your data from unauthorized access or disclosure.
 With RDS encryption enabled, the data stored on the instance's underlying storage, the
 automated backups, read replicas, and snapshots, are all encrypted. "
-  desc "check",
+  desc 'check',
        "**From Console:**
 
 1. Login to the AWS Management Console and open the RDS dashboard at
@@ -51,7 +51,7 @@ aws rds describe-db-instances --region
 `False`, Encryption is not enabled for the selected RDS database instance.
 4. Repeat steps
 1 to 3 for auditing each RDS Instance and change Region to verify for other regions "
-  desc "fix",
+  desc 'fix',
        "**From Console:**
 
 1. Login to the AWS Management Console and open the RDS dashboard at
@@ -154,13 +154,13 @@ aws rds describe-db-instances
 'DBInstances[*].StorageEncrypted'
 ``` "
   impact 0.5
-  ref "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html:https://aws.amazon.com/blogs/database/selecting-the-right-encryption-options-for-amazon-rds-and-amazon-aurora-database-engines/#:~:text=With%20RDS%2Dencrypted%20resources%2C%20data"
-  ref "https://aws.amazon.com/rds/features/security/"
-  tag nist: %w[SC-28 SC-28(1)]
-  tag severity: "medium "
-  tag cis_controls: [{ "8" => ["3.11"] }]
+  ref 'https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html:https://aws.amazon.com/blogs/database/selecting-the-right-encryption-options-for-amazon-rds-and-amazon-aurora-database-engines/#:~:text=With%20RDS%2Dencrypted%20resources%2C%20data'
+  ref 'https://aws.amazon.com/rds/features/security/'
+  tag nist: %w{SC-28 SC-28(1)}
+  tag severity: 'medium '
+  tag cis_controls: [{ '8' => ['3.11'] }]
 
-  describe "No Tests Defined Yet" do
-    skip "No Tests have been written for this control yet"
+  describe 'No Tests Defined Yet' do
+    skip 'No Tests have been written for this control yet'
   end
 end
