@@ -1,14 +1,14 @@
-require "pry"
+require 'pry'
 
-control "aws-foundations-cis-5.6" do
-  title "Ensure that EC2 Metadata Service only allows IMDSv2 "
+control 'aws-foundations-cis-5.6' do
+  title 'Ensure that EC2 Metadata Service only allows IMDSv2 '
   desc "When enabling the Metadata Service on AWS EC2 instances, users have the option of using either
 Instance Metadata Service Version 1 (IMDSv1; a request/response method) or Instance
 Metadata Service Version 2 (IMDSv2; a session-oriented method). "
-  desc "rationale",
+  desc 'rationale',
        "Allowing Version 1 of the service may open EC2 instances to Server-Side Request Forgery
 (SSRF) attacks, so Amazon recommends utilizing Version 2 for better instance security. "
-  desc "check",
+  desc 'check',
        "From Console:
 1. Login to AWS Management Console and open the Amazon EC2 console using
 https://console.aws.amazon.com/ec2/
@@ -31,7 +31,7 @@ aws ec2 describe-instances
 \"Name=metadata-options.state\",\"Values=applied\" --query
 \"Reservations[*].Instances[*].\"
 ``` "
-  desc "fix",
+  desc 'fix',
        "From Console:
 1. Login to AWS Management Console and open the Amazon EC2 console using
 https://console.aws.amazon.com/ec2/
@@ -48,23 +48,23 @@ aws ec2 modify-instance-metadata-options
 --instance-id <instance_id> --http-tokens required
 ``` "
   impact 0.5
-  ref "https://aws.amazon.com/blogs/security/defense-in-depth-open-firewalls-reverse-proxies-ssrf-vulnerabilities-ec2-instance-metadata-service/:https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-instances.html"
-  tag nist: %w[SI-10 SC-8]
-  tag severity: "medium"
-  ref "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-IMDS-existing-instances.html"
+  ref 'https://aws.amazon.com/blogs/security/defense-in-depth-open-firewalls-reverse-proxies-ssrf-vulnerabilities-ec2-instance-metadata-service/:https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-instances.html'
+  tag nist: %w{SI-10 SC-8}
+  tag severity: 'medium'
+  ref 'https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-IMDS-existing-instances.html'
 
   if aws_ec2_instances.instance_ids.empty?
     impact 0.0
-    describe "This requirement is Non Applicable since no EC2 instances were found." do
-      skip "This requirement is Non Applicable since no EC2 instances were found."
+    describe 'This requirement is Non Applicable since no EC2 instances were found.' do
+      skip 'This requirement is Non Applicable since no EC2 instances were found.'
     end
   else
     aws_ec2_instances.instance_ids.each do |instance|
-      next if input("exempt_ec2s").include?(instance)
-      next if aws_ec2_instance(instance).stopped? && input("skip_stopped_ec2s")
+      next if input('exempt_ec2s').include?(instance)
+      next if aws_ec2_instance(instance).stopped? && input('skip_stopped_ec2s')
       describe aws_ec2_instance(instance) do
-        its("metadata_options.http_tokens") { should cmp "required" }
-        its("metadata_options.http_endpoint") { should cmp "enabled" }
+        its('metadata_options.http_tokens') { should cmp 'required' }
+        its('metadata_options.http_endpoint') { should cmp 'enabled' }
       end
     end
   end

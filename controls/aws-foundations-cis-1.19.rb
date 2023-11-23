@@ -1,5 +1,5 @@
-control "aws-foundations-cis-1.19" do
-  title "Ensure that all the expired SSL/TLS certificates stored in AWS IAM are removed "
+control 'aws-foundations-cis-1.19' do
+  title 'Ensure that all the expired SSL/TLS certificates stored in AWS IAM are removed '
   desc "To enable HTTPS connections to your website or application in AWS, you need an SSL/TLS server
 certificate. You can use ACM or IAM to store and deploy server certificates.
 Use IAM as a
@@ -9,12 +9,12 @@ IAM SSL certificate storage. IAM supports deploying server certificates in all r
 you must obtain your certificate from an external provider for use with AWS. You cannot upload
 an ACM certificate to IAM. Additionally, you cannot manage your certificates from the IAM
 Console. "
-  desc "rationale",
+  desc 'rationale',
        "Removing expired SSL/TLS certificates eliminates the risk that an invalid certificate will
 be deployed accidentally to a resource such as AWS Elastic Load Balancer (ELB), which can
 damage the credibility of the application/website behind the ELB. As a best practice, it is
 recommended to delete expired certificates. "
-  desc "check",
+  desc 'check',
        "**From Console:**
 
 Getting the certificates expiration information via AWS Management
@@ -68,7 +68,7 @@ command returns:
 ```
 This means that
 there are no expired certificates, It DOES NOT mean that no certificates exist. "
-  desc "fix",
+  desc 'fix',
        "**From Console:**
 
 Removing expired certificates via AWS Management Console is not
@@ -88,23 +88,23 @@ aws iam delete-server-certificate
 
 When the preceding command is
 successful, it does not return any output. "
-  desc "impact",
+  desc 'impact',
        "Deleting the certificate could have implications for your application if you are using an
 expired server certificate with Elastic Load Balancing, CloudFront, etc.
 One has to make
 configurations at respective services to ensure there is no interruption in application
 functionality. "
-  desc "default_value", "By default, expired certificates won't get deleted. "
+  desc 'default_value', "By default, expired certificates won't get deleted. "
   impact 0.5
-  ref "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_server-certs.html:https://docs.aws.amazon.com/cli/latest/reference/iam/delete-server-certificate.html"
-  tag nist: ["SI-12"]
-  tag severity: "medium "
-  tag cis_controls: [{ "8" => ["3.1"] }]
+  ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_server-certs.html:https://docs.aws.amazon.com/cli/latest/reference/iam/delete-server-certificate.html'
+  tag nist: ['SI-12']
+  tag severity: 'medium '
+  tag cis_controls: [{ '8' => ['3.1'] }]
 
   expired_certificates = aws_iam_server_certificates.where { expiration_date < DateTime.now }
 
-  describe "The list of all IAM server certificates" do
-    it "should not include expired certificates" do
+  describe 'The list of all IAM server certificates' do
+    it 'should not include expired certificates' do
       expect(expired_certificates.entries).to be_empty, "Expired certificates:\t#{expired_certificates.server_certificate_names}"
     end
   end

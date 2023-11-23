@@ -1,14 +1,14 @@
-control "aws-foundations-cis-1.21" do
+control 'aws-foundations-cis-1.21' do
   title "Ensure IAM users are managed centrally via identity federation or AWS Organizations for
 multi-account environments "
   desc "In multi-account environments, IAM user centralization facilitates greater user control.
 User access beyond the initial account is then provided via role assumption. Centralization
 of users can be accomplished through federation with an external identity provider or
 through the use of AWS Organizations. "
-  desc "rationale",
+  desc 'rationale',
        "Centralizing IAM user management to a single identity store reduces complexity and thus the
 likelihood of access management errors. "
-  desc "check",
+  desc 'check',
        "For multi-account AWS environments with an external identity provider...
 
 1. Determine
@@ -49,17 +49,17 @@ account
 6. Click `Users`
 7. Confirm that no IAM
 users representing individuals are present "
-  desc "fix",
+  desc 'fix',
        "The remediation procedure will vary based on the individual organization's implementation
 of identity federation and/or AWS Organizations with the acceptance criteria that no
 non-service IAM users, and non-root accounts, are present outside the account providing
 centralized IAM user management. "
   impact 0.5
-  tag nist: ["AC-2(1)"]
-  tag severity: "medium "
-  tag cis_controls: [{ "8" => ["5.6"] }]
+  tag nist: ['AC-2(1)']
+  tag severity: 'medium '
+  tag cis_controls: [{ '8' => ['5.6'] }]
 
-  describe "Manual Review" do
-    skip "Manual review - Examine all IAM roles on all accounts to determine if any of them represent individual people"
+  describe 'Manual Review' do
+    skip 'Manual review - Examine all IAM roles on all accounts to determine if any of them represent individual people'
   end
 end

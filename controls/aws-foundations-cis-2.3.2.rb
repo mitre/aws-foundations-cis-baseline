@@ -1,16 +1,16 @@
-control "aws-foundations-cis-2.3.2" do
-  title "Ensure Auto Minor Version Upgrade feature is Enabled for RDS Instances "
+control 'aws-foundations-cis-2.3.2' do
+  title 'Ensure Auto Minor Version Upgrade feature is Enabled for RDS Instances '
   desc "Ensure that RDS database instances have the Auto Minor Version Upgrade flag enabled in order
 to receive automatically minor engine upgrades during the specified maintenance window.
 So, RDS instances can get the new features, bug fixes, and security patches for their database
 engines. "
-  desc "rationale",
+  desc 'rationale',
        "AWS RDS will occasionally deprecate minor engine versions and provide new ones for an
 upgrade. When the last version number within the release is replaced, the version changed is
 considered minor. With Auto Minor Version Upgrade feature enabled, the version upgrades
 will occur automatically during the specified maintenance window so your RDS instances can
 get the new features, bug fixes, and security patches for their database engines. "
-  desc "check",
+  desc 'check',
        "**From Console:**
 
 1. Log in to the AWS management console and navigate to the RDS
@@ -48,7 +48,7 @@ aws rds describe-db-instances --region <regionName>
 4. The command output should return
 the feature current status. If the current status is set to `true`, the feature is enabled and
 the minor engine upgrades will be applied to the selected RDS instance. "
-  desc "fix",
+  desc 'fix',
        "**From Console:**
 
 1. Log in to the AWS management console and navigate to the RDS
@@ -103,12 +103,12 @@ aws rds describe-db-instances --region <regionName>
 the feature current status set to `true`, the feature is `enabled` and the minor engine
 upgrades will be applied to the selected RDS instance. "
   impact 0.5
-  ref "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_RDS_Managing.html:https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_UpgradeDBInstance.Upgrading.html:https://aws.amazon.com/rds/faqs/"
-  tag nist: ["SI-2(2)"]
-  tag severity: "medium "
-  tag cis_controls: [{ "8" => ["7.4"] }]
+  ref 'https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_RDS_Managing.html:https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_UpgradeDBInstance.Upgrading.html:https://aws.amazon.com/rds/faqs/'
+  tag nist: ['SI-2(2)']
+  tag severity: 'medium '
+  tag cis_controls: [{ '8' => ['7.4'] }]
 
-  describe "No Tests Defined Yet" do
-    skip "No Tests have been written for this control yet"
+  describe 'No Tests Defined Yet' do
+    skip 'No Tests have been written for this control yet'
   end
 end

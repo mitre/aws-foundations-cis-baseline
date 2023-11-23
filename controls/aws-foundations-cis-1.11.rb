@@ -1,4 +1,4 @@
-control "aws-foundations-cis-1.11" do
+control 'aws-foundations-cis-1.11' do
   title "Do not setup access keys during initial user setup for all IAM users that have a console
 password "
   desc "AWS console defaults to no check boxes selected when creating a new IAM user. When creating the
@@ -11,7 +11,7 @@ access key) for that user.
 
 AWS Management Console access: If the user needs to access the
 AWS Management Console, create a password for the user. "
-  desc "rationale", "Requiring the additional steps be taken by the user for programmatic access after their
+  desc 'rationale', "Requiring the additional steps be taken by the user for programmatic access after their
 profile has been created will give a stronger indication of intent that access keys are [a]
 necessary for their work and [b] once the access key is established on an account that the keys
 may be in use somewhere in the organization.
@@ -19,7 +19,7 @@ may be in use somewhere in the organization.
 **Note**: Even if it is known the user will
 need access keys, require them to create the keys themselves or put in a support ticket to have
 them created as a separate step from user creation. "
-  desc "check", "Perform the following to determine if access keys were created upon user creation and are
+  desc 'check', "Perform the following to determine if access keys were created upon user creation and are
 being used and rotated as prescribed:
 
 **From Console:**
@@ -71,7 +71,7 @@ anitha,true,true,2016-06-08T11:43:00+00:00,true,N/A
 3. For any user having
 `password_enabled` set to `true` AND `access_key_last_used_date` set to `N/A` refer to the
 remediation below. "
-  desc "fix", "Perform the following to delete access keys that do not pass the audit:
+  desc 'fix', "Perform the following to delete access keys that do not pass the audit:
 
 **From
 Console:**
@@ -96,25 +96,25 @@ aws
 iam delete-access-key --access-key-id <access-key-id-listed> --user-name
 <users-name>
 ``` "
-  desc "additional_information", 'Credential report does not appear to contain "Key Creation Date" '
+  desc 'additional_information', 'Credential report does not appear to contain "Key Creation Date" '
   impact 0.5
-  ref "https://docs.aws.amazon.com/cli/latest/reference/iam/delete-access-key.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html"
-  tag nist: ["AC-6"]
-  tag severity: "medium "
+  ref 'https://docs.aws.amazon.com/cli/latest/reference/iam/delete-access-key.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html'
+  tag nist: ['AC-6']
+  tag severity: 'medium '
   tag cis_controls: [
-    { "8" => ["3.3"] },
+    { '8' => ['3.3'] },
   ]
 
   if aws_iam_access_keys.where(active: true).entries.empty?
-    describe "Control skipped because no iam access keys were found" do
-      skip "This control is skipped since the aws_iam_access_keys resource returned an empty access key list"
+    describe 'Control skipped because no iam access keys were found' do
+      skip 'This control is skipped since the aws_iam_access_keys resource returned an empty access key list'
     end
   else
     aws_iam_access_keys.where(active: true).entries.each do |key|
       describe key.username do
         context key do
-          its("last_used_days_ago") { should_not be_nil }
-          its("created_with_user") { should be false }
+          its('last_used_days_ago') { should_not be_nil }
+          its('created_with_user') { should be false }
         end
       end
     end

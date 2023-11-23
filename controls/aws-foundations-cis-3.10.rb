@@ -1,14 +1,14 @@
-control "aws-foundations-cis-3.10" do
-  title "Ensure that Object-level logging for write events is enabled for S3 bucket "
+control 'aws-foundations-cis-3.10' do
+  title 'Ensure that Object-level logging for write events is enabled for S3 bucket '
   desc "S3 object-level API operations such as GetObject, DeleteObject, and PutObject are called
 data events. By default, CloudTrail trails don't log data events and so it is recommended to
 enable Object-level logging for S3 buckets. "
-  desc "rationale",
+  desc 'rationale',
        "Enabling object-level logging will help you meet data compliance requirements within your
 organization, perform comprehensive security analysis, monitor specific patterns of user
 behavior in your AWS account or take immediate actions on any object-level API activity
 within your S3 Buckets using Amazon CloudWatch Events. "
-  desc "check",
+  desc 'check',
        "**From Console:**
 
 1. Login to the AWS Management Console and navigate to CloudTrail
@@ -79,7 +79,7 @@ auditing each CloudTrail to determine if Data events for S3 are covered.
 If Multi-region is
 not set to true and the Data events does not show S3 defined as shown refer to the remediation
 procedure below. "
-  desc "fix",
+  desc 'fix',
        "**From Console:**
 
 1. Login to the AWS Management Console and navigate to S3 dashboard at
@@ -120,12 +120,12 @@ step 1 for each s3 bucket to update `object-level` logging of write events.
 region by updating the `--region` command parameter and perform the process for other
 regions. "
   impact 0.5
-  ref "https://docs.aws.amazon.com/AmazonS3/latest/user-guide/enable-cloudtrail-events.html"
-  tag nist: %w[AU-3 AU-3(1) AU-12]
-  tag severity: "medium "
-  tag cis_controls: [{ "8" => ["8.5"] }]
+  ref 'https://docs.aws.amazon.com/AmazonS3/latest/user-guide/enable-cloudtrail-events.html'
+  tag nist: %w{AU-3 AU-3(1) AU-12}
+  tag severity: 'medium '
+  tag cis_controls: [{ '8' => ['8.5'] }]
 
-  describe "No Tests Defined Yet" do
-    skip "No Tests have been written for this control yet"
+  describe 'No Tests Defined Yet' do
+    skip 'No Tests have been written for this control yet'
   end
 end

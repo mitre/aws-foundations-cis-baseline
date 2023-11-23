@@ -1,5 +1,5 @@
-control "aws-foundations-cis-4.7" do
-  title "Ensure disabling or scheduled deletion of customer created CMKs is monitored "
+control 'aws-foundations-cis-4.7' do
+  title 'Ensure disabling or scheduled deletion of customer created CMKs is monitored '
   desc "Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch
 Logs, or an external Security information and event management (SIEM) environment, and
 establishing corresponding metric filters and alarms.
@@ -7,14 +7,14 @@ establishing corresponding metric filters and alarms.
 It is recommended that a metric
 filter and alarm be established for customer created CMKs which have changed state to
 disabled or scheduled deletion. "
-  desc "rationale", "CloudWatch is an AWS native service that allows you to observe and monitor resources and
+  desc 'rationale', "CloudWatch is an AWS native service that allows you to observe and monitor resources and
 applications. CloudTrail Logs can also be sent to an external Security information and event
 management (SIEM) environment for monitoring and alerting.
 
 Data encrypted with
 disabled or deleted keys will no longer be accessible. Changes in the state of a CMK should be
 monitored to make sure the change is intentional. "
-  desc "check", "If you are using CloudTrails and CloudWatch, perform the following to ensure that there is at
+  desc 'check', "If you are using CloudTrails and CloudWatch, perform the following to ensure that there is at
 least one active multi-region CloudTrail with prescribed metric filters and alarms
 configured:
 
@@ -90,7 +90,7 @@ valid aws ARN.
 ```
 Example of valid \"SubscriptionArn\": \"arn:aws:sns:<region>:<aws_account_number>:<SnsTopicName>:<SubscriptionID>\"
 ``` "
-  desc "fix", "If you are using CloudTrails and CloudWatch, perform the following to setup the metric
+  desc 'fix', "If you are using CloudTrails and CloudWatch, perform the following to setup the metric
 filter, alarm, SNS topic, and subscription:
 
 1. Create a metric filter based on filter
@@ -138,24 +138,24 @@ aws cloudwatch put-metric-alarm --alarm-name
 --comparison-operator GreaterThanOrEqualToThreshold --evaluation-periods 1
 --namespace 'CISBenchmark' --alarm-actions <sns_topic_arn>
 ``` "
-  desc "additional_information", "Configuring log metric filter and alarm on Multi-region (global) CloudTrail
+  desc 'additional_information', "Configuring log metric filter and alarm on Multi-region (global) CloudTrail
 - ensures
 that activities from all regions (used as well as unused) are monitored
 - ensures that
 activities on all supported global services are monitored
 - ensures that all management
 events across all regions are monitored "
-  desc "impact", "Creation, storage, and management of CMK may create additional labor requirements compared
+  desc 'impact', "Creation, storage, and management of CMK may create additional labor requirements compared
 to the use of Provide Managed Keys. "
   impact 0.5
-  ref "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html:https://docs.aws.amazon.com/sns/latest/dg/SubscribeTopic.html"
-  tag nist: ["AU-6", "AU-6(1)", "AU-7(1)"]
-  tag severity: "medium "
+  ref 'https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html:https://docs.aws.amazon.com/sns/latest/dg/SubscribeTopic.html'
+  tag nist: ['AU-6', 'AU-6(1)', 'AU-7(1)']
+  tag severity: 'medium '
   tag cis_controls: [
-    { "8" => ["8.11"] },
+    { '8' => ['8.11'] },
   ]
 
-  pattern = "{ ($.eventSource = kms.amazonaws.com) && (($.eventName = DisableKey) || ($.eventName = ScheduleKeyDeletion)) }"
+  pattern = '{ ($.eventSource = kms.amazonaws.com) && (($.eventName = DisableKey) || ($.eventName = ScheduleKeyDeletion)) }'
 
   describe aws_cloudwatch_log_metric_filter(pattern: pattern) do
     it { should exist }
@@ -193,13 +193,13 @@ to the use of Provide Managed Keys. "
   if associated_metric_filter.exists?
     describe aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace) do
       it { should exist }
-      its("alarm_actions") { should_not be_empty }
+      its('alarm_actions') { should_not be_empty }
     end
 
     aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace).alarm_actions.each do |sns|
       describe aws_sns_topic(sns) do
         it { should exist }
-        its("confirmed_subscription_count") { should cmp >= 1 }
+        its('confirmed_subscription_count') { should cmp >= 1 }
       end
     end
   end

@@ -1,13 +1,13 @@
-control "aws-foundations-cis-1.13" do
-  title "Ensure there is only one active access key available for any single IAM user "
+control 'aws-foundations-cis-1.13' do
+  title 'Ensure there is only one active access key available for any single IAM user '
   desc "Access keys are long-term credentials for an IAM user or the AWS account 'root' user. You can
 use access keys to sign programmatic requests to the AWS CLI or AWS API (directly or using the
 AWS SDK) "
-  desc "rationale",
+  desc 'rationale',
        "Access keys are long-term credentials for an IAM user or the AWS account 'root' user. You can
 use access keys to sign programmatic requests to the AWS CLI or AWS API. One of the best ways to
 protect your account is to not allow users to have multiple access keys. "
-  desc "check",
+  desc 'check',
        "**From Console:**
 
 1. Sign in to the AWS Management Console and navigate to IAM dashboard
@@ -52,7 +52,7 @@ keys current state. If the `Status` property value for more than one IAM access 
 remediation below.
 
 - Repeat steps no. 2 and 3 for each IAM user in your AWS account. "
-  desc "fix",
+  desc 'fix',
        "**From Console:**
 
 1. Sign in to the AWS Management Console and navigate to IAM dashboard
@@ -106,16 +106,16 @@ recommendation.
 
 4. Repeat steps no. 1 – 3 for each IAM user in your AWS account. "
   impact 0.5
-  ref "https://docs.aws.amazon.com/general/latest/gr/aws-access-keys-best-practices.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html"
-  tag nist: ["AC-2"]
-  tag severity: "medium "
-  tag cis_controls: [{ "8" => ["5"] }]
+  ref 'https://docs.aws.amazon.com/general/latest/gr/aws-access-keys-best-practices.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html'
+  tag nist: ['AC-2']
+  tag severity: 'medium '
+  tag cis_controls: [{ '8' => ['5'] }]
 
   failing_users = aws_iam_users.where { access_keys.count > 1 }.usernames
   fail_message = "The following IAM users have more than one access key:\t#{failing_users}"
 
-  describe "AWS IAM users" do
-    it "should not have more than one access key" do
+  describe 'AWS IAM users' do
+    it 'should not have more than one access key' do
       expect(failing_users).to be_empty, fail_message
     end
   end

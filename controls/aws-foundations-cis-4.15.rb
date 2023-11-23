@@ -1,10 +1,10 @@
-control "aws-foundations-cis-4.15" do
-  title "Ensure AWS Organizations changes are monitored "
+control 'aws-foundations-cis-4.15' do
+  title 'Ensure AWS Organizations changes are monitored '
   desc "Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch
 Logs, and establishing corresponding metric filters and alarms. It is recommended that a
 metric filter and alarm be established for AWS Organizations changes made in the master AWS
 Account. "
-  desc "rationale",
+  desc 'rationale',
        "CloudWatch is an AWS native service that allows you to observe and monitor resources and
 applications. CloudTrail Logs can also be sent to an external Security information and event
 management (SIEM) environment for monitoring and alerting.
@@ -14,7 +14,7 @@ Organizations changes can help you prevent any unwanted, accidental or intention
 modifications that may lead to unauthorized access or other security breaches. This
 monitoring technique helps you to ensure that any unexpected changes performed within your
 AWS Organizations can be investigated and any unwanted changes can be rolled back. "
-  desc "check",
+  desc 'check',
        "If you are using CloudTrails and CloudWatch, perform the following:
 
 1. Ensure that there
@@ -99,7 +99,7 @@ Example of valid \"SubscriptionArn\":
 ```
 \"arn:aws:sns:<region>:<aws_account_number>:<SnsTopicName>:<SubscriptionID>\"
 ``` "
-  desc "fix",
+  desc 'fix',
        "If you are using CloudTrails and CloudWatch, perform the following to setup the metric
 filter, alarm, SNS topic, and subscription:
 
@@ -154,12 +154,12 @@ aws cloudwatch put-metric-alarm --alarm-name `<organizations_changes>`
 --namespace 'CISBenchmark' --alarm-actions <sns_topic_arn>
 ``` "
   impact 0.5
-  ref "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/organizations/latest/userguide/orgs_security_incident-response.html"
-  tag nist: %w[AU-6 AU-6(1) AU-7(1)]
-  tag severity: "medium "
-  tag cis_controls: [{ "8" => ["8.11"] }]
+  ref 'https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/organizations/latest/userguide/orgs_security_incident-response.html'
+  tag nist: %w{AU-6 AU-6(1) AU-7(1)}
+  tag severity: 'medium '
+  tag cis_controls: [{ '8' => ['8.11'] }]
 
-  describe "No Tests Defined Yet" do
-    skip "No Tests have been written for this control yet"
+  describe 'No Tests Defined Yet' do
+    skip 'No Tests have been written for this control yet'
   end
 end

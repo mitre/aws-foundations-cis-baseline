@@ -1,11 +1,11 @@
-control "aws-foundations-cis-1.6" do
+control 'aws-foundations-cis-1.6' do
   title "Ensure hardware MFA is enabled for the 'root' user account "
   desc "The 'root' user account is the most privileged user in an AWS account. MFA adds an extra layer of
 protection on top of a user name and password. With MFA enabled, when a user signs in to an AWS
 website, they will be prompted for their user name and password as well as for an
 authentication code from their AWS MFA device. For Level 2, it is recommended that the 'root'
 user account be protected with a hardware MFA. "
-  desc "rationale",
+  desc 'rationale',
        "A hardware MFA has a smaller attack surface than a virtual MFA. For example, a hardware MFA does
 not suffer the attack surface introduced by the mobile smartphone on which a virtual MFA
 resides.
@@ -14,7 +14,7 @@ resides.
 logistical device management issue. If this is the case, consider implementing this Level 2
 recommendation selectively to the highest security AWS accounts and the Level 1
 recommendation applied to the remaining accounts. "
-  desc "check",
+  desc 'check',
        "Perform the following to determine if the 'root' user account has a hardware MFA setup:
 
 1.
@@ -43,7 +43,7 @@ not compliant with this recommendation:
 
  `\"SerialNumber\":
 \"arn:aws:iam::_<aws_account_number>_:mfa/root-account-mfa-device\"` "
-  desc "fix",
+  desc 'fix',
        "Perform the following to establish a hardware MFA for the 'root' user account:
 
 1. Sign in
@@ -71,38 +71,33 @@ AWS account credentials to sign in, you must type a code from the hardware MFA
 device.
 
 Remediation for this recommendation is not available through AWS CLI. "
-  desc "additional_information",
+  desc 'additional_information',
        "IAM User account 'root' for us-gov cloud regions does not have console access. This control is
 not applicable for us-gov cloud regions. "
   impact 0.5
-  ref "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_physical.html#enable-hw-mfa-for-root"
-  tag nist: ["IA-2(1)"]
-  tag severity: "medium "
-  tag cis_controls: [{ "8" => ["6.5"] }]
+  ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_physical.html#enable-hw-mfa-for-root'
+  tag nist: ['IA-2(1)']
+  tag severity: 'medium '
+  tag cis_controls: [{ '8' => ['6.5'] }]
 
-  if input("disable_slow_controls")
-    describe "Skipping this long running test" do
-      skip "Generating a IAM Credential Report can take a while, so skipping it for now."
-    end
-  else
-    describe aws_iam_credential_report
-               .where(user: "<root_account>")
-               .entries
-               .first do
-      its("mfa_active") { should eq true }
-    end
+  only_if('Generating a IAM Credential Report can take a while, so skipping it for now.') {
+    input('disable_slow_controls')
+  }
+  # if input("disable_slow_controls")
+  #   describe "Skipping this long running test" do
+  #     skip "Generating a IAM Credential Report can take a while, so skipping it for now."
+  #   end
+  # else
+  describe aws_iam_credential_report.where(user: '<root_account>').entries.first do
+    its('mfa_active') { should eq true }
+  end
 
-      hardware_mfa_devices =
-        aws_iam_virtual_mfa_devices.where do
-          serial_number !~ /root-account-mfa-device$/
-        end
+  hardware_mfa_devices = aws_iam_virtual_mfa_devices.where(serial_number !~ /root-account-mfa-device$/)
 
-      describe "MFA devices" do
-        it "should include at least one hardware device (a device other than ARN 'arn:aws:iam::_<aws_account_number>_:mfa/root-account-mfa-device')" do
-          expect(hardware_mfa_devices.count).to be >= 1,
-          "No hardware MFA devices discovered"
-        end
-      end
+  describe 'MFA devices' do
+    it "should include at least one hardware device (a device other than ARN 'arn:aws:iam::_<aws_account_number>_:mfa/root-account-mfa-device')" do
+      expect(hardware_mfa_devices.count).to be >= 1, 'No hardware MFA devices discovered'
     end
   end
+  # end
 end
