@@ -153,6 +153,10 @@ aws s3api put-bucket-policy --bucket <bucket_name>
   tag severity: 'medium '
   tag cis_controls: [{ '8' => ['3.10'] }]
 
+  # TODO: add a bucket exception list
+  # review the aws-s3-bucket profile to see if you can borrow from that work
+  # specifically, the concurent work when there are 100k buckets
+
   s3_buckets = aws_s3_buckets.bucket_names
 
   failing_buckets = s3_buckets.filter { |bucket|

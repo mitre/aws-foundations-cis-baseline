@@ -107,6 +107,10 @@ delete-access-key
     { '8' => ['5'] },
   ]
 
+  only_if('The IAM Credential report takes a long time to generate.') do
+    !input('disable_slow_controls')
+  end
+
   aws_iam_credential_report.where(access_key_1_active: false).entries.each do |user|
     describe "Access key 1 disabled for user (#{user.user})" do
       skip "Test not applicable since user's (#{user.user}) access key 1 is disabled" # TODO: make this a single skip

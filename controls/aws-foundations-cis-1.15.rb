@@ -78,16 +78,14 @@ click Detach or Remove (depending on policy type) "
     { '8' => ['6.8'] },
   ]
 
-  if aws_iam_users.entries.empty?
-    describe 'Control skipped because no iam users were found' do
-      skip 'This control is skipped since the aws_iam_users resource returned an empty user list'
-    end
-  else
-    aws_iam_users.entries.each do |user|
-      describe aws_iam_user(user_name: user.username) do
-        its('inline_policy_names') { should be_empty }
-        its('attached_policy_names') { should be_empty }
-      end
+  only_if('No IAM Users were found') do
+    !aws_iam_users.entries.empty?
+  end
+
+  aws_iam_users.entries.each do |user|
+    describe aws_iam_user(user_name: user.username) do
+      its('inline_policy_names') { should be_empty }
+      its('attached_policy_names') { should be_empty }
     end
   end
 end

@@ -108,6 +108,10 @@ business and would likely be unused for more than 45 days. "
     { '8' => ['5.3'] },
   ]
 
+  only_if('The IAM Credential report takes a long time to generate.') do
+    !input('disable_slow_controls')
+  end
+
   aws_iam_credential_report.where(password_enabled: false).entries.each do |user|
     describe "Password disabled for user (#{user.user})" do
       skip "Test not applicable since user's (#{user.user}) password is disabled"

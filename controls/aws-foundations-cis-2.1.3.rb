@@ -107,15 +107,17 @@ with 3rd Party tools that perform similar processes and protection. "
   tag severity: 'medium '
   tag cis_controls: [{ '8' => ['3.1'] }]
 
-  if input('third_party_data_management_tool')
-    describe 'Third-party tool in use' do
-      skip "Manual review necessary: third-party tool '#{input('third_party_data_management_tool')}' is expected to meet this recommendation; check its configuration according to vendor documentation"
-    end
-  else
-    # TODO: create macie resource
-    describe aws_macie do
-      it { shoud be_enabled }
-      # TODO: need to define test pattern to ensure *all S3 buckets* are covered by macie
-    end
+  only_if("Manual review necessary: third-party tool #{input('third_party_data_management_tool')} is expected to meet this recommendation; check its configuration according to vendor documentation") {
+    !input('third_party_data_management_tool')
+  }
+  describe 'Third-party tool in use' do
+    skip "Manual review necessary: third-party tool '#{input('third_party_data_management_tool')}' is expected to meet this recommendation; check its configuration according to vendor documentation"
   end
+
+  # TODO: create macie resource
+  only_if { input('third_party_management_tool') }
+  # describe aws_macie do
+  #   it { shoud be_enabled }
+  # TODO: need to define test pattern to ensure *all S3 buckets* are covered by macie
+  # end
 end

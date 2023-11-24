@@ -1,3 +1,4 @@
+require 'pry'
 control 'aws-foundations-cis-1.4' do
   title "Ensure no 'root' user account access key exists "
   desc "The 'root' user account is the most privileged user in an AWS account. AWS Access Keys provide
@@ -66,9 +67,9 @@ us-gov cloud region. "
     { '8' => ['3.3'] },
   ]
 
-  only_if('Generating a IAM Credential Report can take a while, so skipping it for now.') {
-    input('disable_slow_controls')
-  }
+  only_if('The IAM Credential report takes a long time to generate.') do
+    !input('disable_slow_controls')
+  end
 
   describe 'The root account should not have active access keys.' do
     subject { aws_iam_credential_report.where(user: '<root_account>').entries.first }
