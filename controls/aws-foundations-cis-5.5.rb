@@ -60,13 +60,11 @@ route table. "
   aws_route_tables.route_table_ids.each do |route_table_id|
     aws_route_table(route_table_id).routes.each do |route|
       next unless route.key?(:vpc_peering_connection_id)
-
       describe route do
         its([:destination_cidr_block]) { should_not be nil }
       end
     end
     next unless aws_route_table(route_table_id).routes.none? { |route| route.key?(:vpc_peering_connection_id) }
-
     describe 'No routes with peering connection were found for the route table' do
       skip "No routes with peering connection were found for the route_table #{route_table_id}"
     end

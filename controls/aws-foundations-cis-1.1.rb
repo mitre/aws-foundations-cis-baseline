@@ -1,7 +1,5 @@
-require 'pry-byebug'
-
 control 'aws-foundations-cis-1.1' do
-  title 'Maintain current contact details '
+  title 'Maintain Primary Contact Details'
   desc "
     Ensure contact email and telephone details for AWS accounts are current and map to more than
     one individual in your organization.
@@ -59,6 +57,7 @@ control 'aws-foundations-cis-1.1' do
     Information`, choose `Edit`.
     8. For the fields that you want to change, type your updated
     information, and then choose `Update`. '
+
   impact 0.5
   ref 'https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/manage-account-payment.html#contact-info'
   tag nist: ['IR-6']

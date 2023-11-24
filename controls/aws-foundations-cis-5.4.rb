@@ -104,16 +104,14 @@ for each instance to communicate successfully. "
     { '8' => ['3.3'] },
   ]
 
-  if aws_vpcs.vpc_ids.empty?
-    describe 'Control skipped because no vpcs were found' do
-      skip 'This control is skipped since the aws_vpcs resource returned an empty vpc list'
-    end
-  else
-    aws_vpcs.vpc_ids.each do |vpc|
-      describe aws_security_group(group_name: 'default', vpc_id: vpc) do
-        its('inbound_rules') { should be_empty }
-        its('outbound_rules') { should be_empty }
-      end
+  only_applicable_if('The requirement is Not Applicable since no VPCs were Found.') do
+    aws_vpcs.exist?
+  end
+
+  aws_vpcs.vpc_ids.each do |vpc|
+    describe aws_security_group(group_name: 'default', vpc_id: vpc) do
+      its('inbound_rules') { should be_empty }
+      its('outbound_rules') { should be_empty }
     end
   end
 end

@@ -74,7 +74,9 @@ able to access the volumes. "
   tag severity: 'medium '
   tag cis_controls: [{ '8' => ['3.11'] }]
 
-  describe 'No Tests Defined Yet' do
-    skip 'No Tests have been written for this control yet'
+  aws_ebs_volumes.volume_ids.each do |volume_id|
+    describe aws_ebs_volume(volume_id) do
+      it { should be_encrypted }
+    end
   end
 end

@@ -93,17 +93,14 @@ Roles:
 
   attached_policies = aws_iam_policies.where { attachment_count > 0 }.policy_names
 
-  if attached_policies.empty?
-    impact 0.0
-    describe 'Control not applicable since no attached IAM policies were detected' do
-      skip 'Not applicable since no IAM policies were detected as attached to anything within this account.'
-    end
-  else
-    attached_policies.each do |policy|
-      describe "Attached Policies #{policy} allows full '*:*' privileges?" do
-        subject { aws_iam_policy(policy_name: policy) }
-        it { should_not have_statement('Effect' => 'Allow', 'Resource' => '*', 'Action' => '*') }
-      end
+  only_applicable_if('No IAM policies were detected as attached within this account.') do
+    !attached_policies.empty?
+  end
+
+  attached_policies.each do |policy|
+    describe "Attached Policies #{policy} allows full '*:*' privileges?" do
+      subject { aws_iam_policy(policy_name: policy) }
+      it { should_not have_statement('Effect' => 'Allow', 'Resource' => '*', 'Action' => '*') }
     end
   end
 end
