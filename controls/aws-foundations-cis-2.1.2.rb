@@ -1,5 +1,5 @@
 control 'aws-foundations-cis-2.1.2' do
-  title 'Ensure MFA Delete is enabled on S3 buckets '
+  title 'Ensure MFA Delete is enabled on all S3 buckets '
   desc "Once MFA Delete is enabled on your sensitive and classified S3 bucket it requires the user to
 have two forms of authentication. "
   desc 'rationale',
@@ -76,6 +76,10 @@ S3 buckets. "
   tag nist: ['AC-3']
   tag severity: 'medium '
   tag cis_controls: [{ '8' => ['3.3'] }]
+
+  # TODO:
+  #   - add bucket exempt list
+  #   - ensure you can handle 100k buckets
 
   describe 'No Tests Defined Yet' do
     skip 'No Tests have been written for this control yet'

@@ -2,16 +2,11 @@
 
 source 'https://rubygems.org'
 
+gem 'inspec', '~> 5.22.36'
+gem 'inspec-core'
 gem 'inspec-bin'
-gem 'inspec'
-gem 'kitchen-ec2'
 gem 'kitchen-inspec'
-gem 'kitchen-ansible'
-gem 'kitchen-sync'
-gem 'kitchen-vagrant'
-gem 'kitchen-docker'
 gem 'rake'
-gem 'cookstyle'
 gem 'rubocop'
 gem 'pry-byebug'
 gem 'aws-sdk-accessanalyzer'

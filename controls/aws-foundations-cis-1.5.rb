@@ -91,9 +91,10 @@ recommendation is not applicable for us-gov cloud regions. "
   tag severity: 'medium '
   tag cis_controls: [{ '8' => ['6.5'] }]
 
-  only_if('Generating a IAM Credential Report can take a while, so skipping it for now.') {
-    input('disable_slow_controls')
-  }
+  only_if('The IAM Credential report takes a long time to generate.') do
+    !input('disable_slow_controls')
+  end
+
   describe aws_iam_credential_report
     .where(user: '<root_account>')
     .entries

@@ -1,5 +1,5 @@
 control 'aws-foundations-cis-1.2' do
-  title 'Ensure security contact information is registered '
+  title 'Ensure urrent Security Contact is registered and up to date'
   desc "
     AWS provides customers with the option of specifying the contact information for account's
     security team. It is recommended that this information be provided.

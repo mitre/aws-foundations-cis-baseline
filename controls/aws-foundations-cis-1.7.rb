@@ -71,13 +71,12 @@ by implementing recommendation 3.3 Ensure a log metric filter and alarm exist fo
   tag cis_controls: [{ '8' => ['5.4'] }]
 
   # TODO: get last used key and last used date
-  # TODO: this is a slow control
 
-  if input('disable_slow_controls')
-    describe "Disabled by 'disable_slow_controls'" do
-      skip 'This control can take a long time to run because it collects the IAM Credential Report.'
-    end
-  elsif input('last_root_login_date')
+  only_if('The IAM Credential report takes a long time to generate.') do
+    !input('disable_slow_controls')
+  end
+
+  if input('last_root_login_date')
     last_root_login_date =
       DateTime.strptime(input('last_root_login_date').to_s, '%Y%m%d')
     credential_report = aws_iam_credential_report.where(user: '<root_account>')
