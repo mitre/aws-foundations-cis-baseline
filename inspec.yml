@@ -67,13 +67,19 @@ inputs:
   - name: exempt_buckets
     description: "list of buckets exempted from inspection"
     type: Array
-    value: []
+    value:
+      - ""
+
+  - name: single_bucket
+    description: "Name of the single bucket you want to be inspected"
+    type: String
+    value: ""
 
   - name: exempt_ec2s
     description: "list of ec2 exempted from inspection"
     type: Array
     value:
-      -
+      - ""
   - name: skip_stopped_ec2s
     description: "Ignore non-running ec2s durning verification"
     type: Boolean
@@ -82,12 +88,14 @@ inputs:
   - name: exempt_security_groups
     description: "list of security groups exempted from inspection"
     type: Array
-    value: []
+    value:
+      - ""
 
   - name: service_account_mfa_exceptions
     description: "list of service accounts which are exempt from the MFA requirement"
     type: Array
-    value: []
+    value:
+      - ""
 
   - name: config_delivery_channels
     description: "Config service settings"
@@ -111,21 +119,14 @@ inputs:
     type: Hash
     sensitive: true
     value:
-      # address_line_1: "123 Pine St"
-      # city: "Ashburn"
-      # country_code: "US"
-      # full_name: "Jane Doe"
       email_address: "me@you.com"
       phone_number: "555-557-6309"
-      postal_code: "12345"
 
   - name: security_contact
     description: "Account security contact information"
     type: Hash
     sensitive: true
     value:
-      # name: "John Smith"
-      # title: "Security Guy"
       phone_number: "555-857-6309"
       email_address: "me@you.com"
 
