@@ -53,8 +53,7 @@ aws s3 ls
 2. Using the list of
 buckets run this command on each of them:
 ```
-aws s3api get-bucket-policy --bucket
-<bucket_name> | grep aws:SecureTransport
+aws s3api get-bucket-policy --bucket <bucket_name> | grep aws:SecureTransport
 ```
 3. Confirm that `aws:SecureTransport`
 is set to false `aws:SecureTransport:false`
@@ -153,21 +152,35 @@ aws s3api put-bucket-policy --bucket <bucket_name>
   tag severity: 'medium '
   tag cis_controls: [{ '8' => ['3.10'] }]
 
-  # TODO: add a bucket exception list
-  # review the aws-s3-bucket profile to see if you can borrow from that work
-  # specifically, the concurent work when there are 100k buckets
+  # TODO: Review the aws-s3-bucket profile to see if you can borrow from that work specifically, the concurent work when there are 100k buckets
+  # TODO: Add reporting for 'skipped or exempt'? in passing as well - not sure if we can
+  # TODO: We could add another conditional expect list of just the exempt ones as the last block as 'skips?'
 
+  exempt_buckets = input('exempt_buckets')
   s3_buckets = aws_s3_buckets.bucket_names
+  failing_buckets = []
+  # passed_buckets = []
 
-  failing_buckets = s3_buckets.filter { |bucket|
-    aws_s3_bucket(bucket_name: bucket).bucket_policy.any? { |policy|
-      policy['condition']['Bool']['aws:SecureTransport'] == 'false'
+  only_applicable_if(' This control is Non Applicable since no S3 buckets were found.') { !s3_buckets.empty? or !(exempt_buckets - s3_buckets).empty? }
+
+  if input('single_bucket').present?
+    failing_buckets << input('single_bucket').to_s unless aws_s3_bucket(bucket_name: input('single_bucket')).has_secure_transport_enabled?
+    describe "The #{input('single_bucket')}" do
+      it 'explicitly disallows insecure (HTTP) requests by bucket policy' do
+        expect(failing_buckets).to be_empty, "Failing buckets:\t#{failing_buckets}"
+      end
+    end
+  else
+    failing_buckets = s3_buckets.select { |bucket|
+      next if exempt_buckets.include?(bucket)
+      !aws_s3_bucket(bucket_name: bucket).has_secure_transport_enabled?
     }
-  }
-
-  describe 'S3 buckets' do
-    it 'should all explicitly disallow insecure (HTTP) requests by bucket policy' do
-      expect(failing_buckets).to be_empty, "Failing buckets:\t#{failing_buckets}"
+    describe 'S3 buckets' do
+      it 'should all explicitly disallow insecure (HTTP) requests by bucket policy' do
+        failure_messsage = "Failing buckets:\n#{failing_buckets.join(", \n")}"
+        failure_messsage += "\nExempt buckets:\n\n#{exempt_buckets.join(", \n")}" if exempt_buckets.present?
+        expect(failing_buckets).to be_empty, failure_messsage
+      end
     end
   end
 end
