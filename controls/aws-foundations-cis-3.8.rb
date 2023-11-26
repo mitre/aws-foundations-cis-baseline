@@ -81,6 +81,7 @@ administrator. "
 
   aws_kms_keys.key_arns.each do |key|
     next unless aws_kms_key(key).enabled? && !aws_kms_key(key).managed_by_aws?
+    next if input('exempt_kms_keys').include?(key)
     describe aws_kms_key(key) do
       it { should have_rotation_enabled }
     end
