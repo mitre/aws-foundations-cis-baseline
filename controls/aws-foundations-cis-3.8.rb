@@ -87,7 +87,7 @@ administrator. "
     end
   end
 
-  if aws_kms_keys.key_arns.none? { |key| aws_kms_key(key).enabled? && !aws_kms_key(key).managed_by_aws? }
+  if aws_kms_keys.key_arns.none? { |key| aws_kms_key(key).enabled? && !aws_kms_key(key).managed_by_aws? && !input('exempt_kms_keys').include?(key) }
     describe 'Control skipped because no enabled kms keys were found' do
       skip 'This control is skipped since the aws_kms_keys resource returned an empty coustomer managed and enabled kms key list'
     end
