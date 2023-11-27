@@ -81,7 +81,31 @@ S3 buckets. "
   #   - add bucket exempt list
   #   - ensure you can handle 100k buckets
 
-  describe 'No Tests Defined Yet' do
-    skip 'No Tests have been written for this control yet'
+  exempt_buckets = input('exempt_buckets')
+  s3_buckets = aws_s3_buckets.bucket_names
+  failing_buckets = []
+  # passed_buckets = []
+
+  only_applicable_if('This control is Non Applicable since no unexempt S3 buckets were found.') { !s3_buckets.empty? or !(exempt_buckets - s3_buckets).empty? }
+
+  if input('single_bucket').present?
+    failing_buckets << input('single_bucket').to_s unless aws_s3_bucket(bucket_name: input('single_bucket')).versioning.mfa_delete == "Enabled"
+    describe "The #{input('single_bucket')}" do
+      it 'explicitly requires MFA to delete' do
+        expect(failing_buckets).to be_empty, "Failing buckets:\t#{failing_buckets}"
+      end
+    end
+  else
+    failing_buckets = s3_buckets.select { |bucket|
+      next if exempt_buckets.include?(bucket)
+      !aws_s3_bucket(bucket_name: bucket).versioning.exist?
+    }
+    describe 'S3 buckets' do
+      it 'should all explicitly require MFA to delete' do
+        failure_messsage = "Failing buckets:\n#{failing_buckets.join(", \n")}"
+        failure_messsage += "\nExempt buckets:\n\n#{exempt_buckets.join(", \n")}" if exempt_buckets.present?
+        expect(failing_buckets).to be_empty, failure_messsage
+      end
+    end
   end
 end
