@@ -57,6 +57,8 @@ route table. "
     { '8' => ['3.3'] },
   ]
 
+  only_if('This control is skipped since the aws_route_tables resource returned an empty route table list') { !aws_route_tables.route_table_ids.empty? }
+
   aws_route_tables.route_table_ids.each do |route_table_id|
     aws_route_table(route_table_id).routes.each do |route|
       next unless route.key?(:vpc_peering_connection_id)
@@ -67,11 +69,6 @@ route table. "
     next unless aws_route_table(route_table_id).routes.none? { |route| route.key?(:vpc_peering_connection_id) }
     describe 'No routes with peering connection were found for the route table' do
       skip "No routes with peering connection were found for the route_table #{route_table_id}"
-    end
-  end
-  if aws_route_tables.route_table_ids.empty?
-    describe 'Control skipped because no route tables were found' do
-      skip 'This control is skipped since the aws_route_tables resource returned an empty route table list'
     end
   end
 end
