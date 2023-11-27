@@ -161,8 +161,7 @@ aws s3api put-bucket-policy --bucket <bucket_name>
   failing_buckets = []
   # passed_buckets = []
 
-  # TODO: Does the logic condition here hold and could it be cleaner?
-  only_applicable_if('This control is Non Applicable since no S3 buckets were found.') { !s3_buckets.empty? or !(exempt_buckets - s3_buckets).empty? }
+  only_applicable_if('This control is Non Applicable since no unexempt S3 buckets were found.') { !s3_buckets.empty? or !(exempt_buckets - s3_buckets).empty? }
 
   if input('single_bucket').present?
     failing_buckets << input('single_bucket').to_s unless aws_s3_bucket(bucket_name: input('single_bucket')).has_secure_transport_enabled?
