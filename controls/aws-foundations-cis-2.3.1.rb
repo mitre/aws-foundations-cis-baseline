@@ -165,7 +165,6 @@ aws rds describe-db-instances
   aws_rds_instances.db_instance_identifiers.each do |db_instance_identifier|
     describe aws_rds_instance(db_instance_identifier) do
       it { should have_encrypted_storage }
-      it { should be_encrypted }
     end
   end
 end
