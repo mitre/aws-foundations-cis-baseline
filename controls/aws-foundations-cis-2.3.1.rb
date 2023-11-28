@@ -160,7 +160,12 @@ aws rds describe-db-instances
   tag severity: 'medium '
   tag cis_controls: [{ '8' => ['3.11'] }]
 
-  describe 'No Tests Defined Yet' do
-    skip 'No Tests have been written for this control yet'
+  # TODO: refactor the aws_rds_instances resource to use a real filtertable so we can make this more concise...?
+
+  aws_rds_instances.db_instance_identifiers.each do |db_instance_identifier|
+    describe aws_rds_instance(db_instance_identifier) do
+      it { should have_encrypted_storage }
+      it { should be_encrypted }
+    end
   end
 end
