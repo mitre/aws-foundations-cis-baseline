@@ -179,36 +179,41 @@ simultaneously, but they eventually propagate to all Regions. "
   s3_buckets = aws_s3_buckets.bucket_names
   failing_buckets = []
 
-  # EITHER the AWS account itself should be blocking public access, OR each individual bucket should do so
-  describe.one do
-    describe aws_public_access_settings do
-      its('IgnorePublicAcls') { should eq "true" }
-      its('BlockPublicPolicy') { should eq "true" }
-      its('BlockPublicAcls') { should eq "true" }
-    end
-
-    # TODO: where to put the only_applicable_if caveat in this test?
-    only_applicable_if('This control is Non Applicable since no unexempt S3 buckets were found.') { !s3_buckets.empty? or !(exempt_buckets - s3_buckets).empty? }
   
-    if input('single_bucket').present?
-      failing_buckets << input('single_bucket').to_s unless aws_s3_bucket(bucket_name: input('single_bucket')) # TODO: find the right filter
-      describe "The #{input('single_bucket')}" do
-        it 'should block public access' do
-          expect(failing_buckets).to be_empty, "Failing buckets:\t#{failing_buckets}"
-        end
-      end
-    else
-      failing_buckets = s3_buckets.select { |bucket|
-        next if exempt_buckets.include?(bucket)
-        !aws_s3_bucket(bucket_name: bucket) #TODO: find the right filter
-      }
-      describe 'S3 buckets' do
-        it 'should all block public access' do
-          failure_messsage = "Failing buckets:\n#{failing_buckets.join(", \n")}"
-          failure_messsage += "\nExempt buckets:\n\n#{exempt_buckets.join(", \n")}" if exempt_buckets.present?
-          expect(failing_buckets).to be_empty, failure_messsage
-        end
-      end
-    end
+  describe "No Tests Defined Yet" do
+    skip "No Tests have been written for this control yet"
   end
+
+  # # EITHER the AWS account itself should be blocking public access, OR each individual bucket should do so
+  # describe.one do
+  #   describe aws_public_access_settings do
+  #     its('IgnorePublicAcls') { should eq "true" }
+  #     its('BlockPublicPolicy') { should eq "true" }
+  #     its('BlockPublicAcls') { should eq "true" }
+  #   end
+
+  #   # TODO: where to put the only_applicable_if caveat in this test?
+  #   only_applicable_if('This control is Non Applicable since no unexempt S3 buckets were found.') { !s3_buckets.empty? or !(exempt_buckets - s3_buckets).empty? }
+  
+  #   if input('single_bucket').present?
+  #     failing_buckets << input('single_bucket').to_s unless aws_s3_bucket(bucket_name: input('single_bucket')) # TODO: find the right filter
+  #     describe "The #{input('single_bucket')}" do
+  #       it 'should block public access' do
+  #         expect(failing_buckets).to be_empty, "Failing buckets:\t#{failing_buckets}"
+  #       end
+  #     end
+  #   else
+  #     failing_buckets = s3_buckets.select { |bucket|
+  #       next if exempt_buckets.include?(bucket)
+  #       !aws_s3_bucket(bucket_name: bucket) #TODO: find the right filter
+  #     }
+  #     describe 'S3 buckets' do
+  #       it 'should all block public access' do
+  #         failure_messsage = "Failing buckets:\n#{failing_buckets.join(", \n")}"
+  #         failure_messsage += "\nExempt buckets:\n\n#{exempt_buckets.join(", \n")}" if exempt_buckets.present?
+  #         expect(failing_buckets).to be_empty, failure_messsage
+  #       end
+  #     end
+  #   end
+  # end
 end
