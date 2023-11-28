@@ -108,7 +108,9 @@ upgrades will be applied to the selected RDS instance. "
   tag severity: 'medium '
   tag cis_controls: [{ '8' => ['7.4'] }]
 
-  describe 'No Tests Defined Yet' do
-    skip 'No Tests have been written for this control yet'
+  aws_rds_instances.db_instance_identifiers.each do |db_instance_identifier|
+    describe aws_rds_instance(db_instance_identifier) do
+      its('auto_minor_version_upgrade') { should eq "true" }
+    end
   end
 end
