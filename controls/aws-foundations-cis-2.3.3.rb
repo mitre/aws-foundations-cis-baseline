@@ -206,7 +206,7 @@ each RDS instance provisioned in the current region.
       end
     end
   else  
-    failing_rds = aws_rds_instances.where { publicly_accessible == true }.db_instance_identifiers
+    failing_rds = aws_rds_instances.where { publicly_accessible == true }.db_instance_identifiers - exempt_rds
     describe 'RDS instances' do
       it 'should all not be public' do
         failure_messsage = "Failing RDS:\n#{failing_rds.join(", \n")}"
