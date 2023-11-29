@@ -108,9 +108,26 @@ upgrades will be applied to the selected RDS instance. "
   tag severity: 'medium '
   tag cis_controls: [{ '8' => ['7.4'] }]
 
-  aws_rds_instances.db_instance_identifiers.each do |db_instance_identifier|
-    describe aws_rds_instance(db_instance_identifier) do
-      its('auto_minor_version_upgrade') { should eq "true" }
+  exempt_rds = input('exempt_rds')
+  failing_rds = []
+  
+  only_applicable_if('This control is Non Applicable since no unexempt RDS instances were found.') { !aws_rds_instances.entries.empty? or !(exempt_rds - aws_rds_file_systems.db_instance_identifiers).empty? }
+
+  if input('single_rds').present?
+    failing_rds << input('single_rds').to_s unless aws_rds_instance(input('single_rds')).auto_minor_version_upgrade
+    describe "The #{input('single_rds')}" do
+      it 'should automatically upgrade minor versions' do
+        expect(failing_rds).to be_empty, "Failing RDS:\t#{failing_rds}"
+      end
+    end
+  else  
+    failing_rds = aws_rds_instances.where { auto_minor_version_upgrade != true }
+    describe 'RDS instances' do
+      it 'should all automatically upgrade minor versions' do
+        failure_messsage = "Failing RDS:\n#{failing_rds.join(", \n")}"
+        failure_messsage += "\nExempt RDS:\n\n#{exempt_rds.join(", \n")}" if exempt_rds.present?
+        expect(failing_rds).to be_empty, failure_messsage
+      end
     end
   end
 end
