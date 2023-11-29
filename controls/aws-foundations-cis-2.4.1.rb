@@ -140,7 +140,36 @@ AWS CLI, API, and SDKs. "
   tag severity: 'medium '
   tag cis_controls: [{ '8' => ['3.11'] }]
 
-  describe 'No Tests Defined Yet' do
+
+
+  exempt_efs = input('exempt_efs')
+  failing_efs = []
+  
+  only_applicable_if('This control is Non Applicable since no unexempt EFS were found.') { !aws_efs_file_systems.entries.empty? or !(exempt_efs - aws_efs_file_systems.entries).empty? }
+
+  if input('single_efs').present?
+    failing_efs << input('single_efs').to_s unless aws_efs_file_system(file_system_id: input('single_efs')).encrypted?
+    describe "The #{input('single_efs')}" do
+      it 'is encrypted' do
+        expect(failing_efs).to be_empty, "Failing EFS file systems:\t#{failing_efs}"
+      end
+    end
+  else
+    failing_efs = s3_efs.select { |efs|
+      next if exempt_efs.include?(efs)
+      !aws_efs_file_system(file_system_id: efs).encrypted?
+    }
+    describe 'EFS' do
+      it 'should all be encrypted' do
+        failure_messsage = "Failing EFS:\n#{failing_efs.join(", \n")}"
+        failure_messsage += "\nExempt EFS:\n\n#{exempt_efs.join(", \n")}" if exempt_efs.present?
+        expect(failing_efs).to be_empty, failure_messsage
+      end
+    end
+  end
+
+
+  describe "All EFS file systems" do
     skip 'No Tests have been written for this control yet'
   end
 end
