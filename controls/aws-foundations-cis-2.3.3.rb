@@ -192,7 +192,11 @@ each RDS instance provisioned in the current region.
   tag severity: 'medium '
   tag cis_controls: [{ '8' => ['3.3'] }]
 
-  describe 'No Tests Defined Yet' do
-    skip 'No Tests have been written for this control yet'
+  # TODO: check each attached subnet for public access or just this RDS?
+
+  aws_rds_instances.db_instance_identifiers.each do |db_instance_identifier|
+    describe aws_rds_instance(db_instance_identifier) do
+      it { should_not be_public }
+    end
   end
 end
