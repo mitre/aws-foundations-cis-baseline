@@ -163,7 +163,7 @@ aws rds describe-db-instances
   exempt_rds = input('exempt_rds')
   failing_rds = []
   
-  only_applicable_if('This control is Non Applicable since no unexempt RDS instances were found.') { !aws_rds_instances.entries.empty? or !(exempt_rds - aws_rds_file_systems.db_instance_identifiers).empty? }
+  only_applicable_if('This control is Non Applicable since no unexempt RDS instances were found.') { !aws_rds_instances.entries.empty? or !(exempt_rds - aws_rds_instances.db_instance_identifiers).empty? }
 
   if input('single_rds').present?
     failing_rds << input('single_rds').to_s unless aws_rds_instance(input('single_rds')).encrypted?
