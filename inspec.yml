@@ -86,6 +86,18 @@ inputs:
     type: Array
     value:
       - ""
+
+  - name: exempt_efs
+    description: "list of efs exempted from inspection"
+    type: Array
+    value:
+      - ""
+
+  - name: single_efs
+    description: "Name of the single EFS you want to be inspected"
+    type: String
+    value: ""
+
   - name: skip_stopped_ec2s
     description: "Ignore non-running ec2s durning verification"
     type: Boolean
