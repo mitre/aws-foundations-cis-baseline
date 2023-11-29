@@ -173,7 +173,7 @@ aws rds describe-db-instances
       end
     end
   else  
-    failing_rds = aws_rds_instances.where { storage_encrypted != true }
+    failing_rds = aws_rds_instances.where { storage_encrypted != true }.db_instance_identifiers
     describe 'RDS instances' do
       it 'should all be encrypted' do
         failure_messsage = "Failing RDS:\n#{failing_rds.join(", \n")}"

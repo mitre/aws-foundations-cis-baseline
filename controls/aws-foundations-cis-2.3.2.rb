@@ -121,7 +121,7 @@ upgrades will be applied to the selected RDS instance. "
       end
     end
   else  
-    failing_rds = aws_rds_instances.where { auto_minor_version_upgrade != true }
+    failing_rds = aws_rds_instances.where { auto_minor_version_upgrade != true }.db_instance_identifiers
     describe 'RDS instances' do
       it 'should all automatically upgrade minor versions' do
         failure_messsage = "Failing RDS:\n#{failing_rds.join(", \n")}"
