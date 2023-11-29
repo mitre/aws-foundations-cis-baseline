@@ -99,13 +99,13 @@ inputs:
     value: ""
 
   - name: exempt_rds
-    description: "list of rds instances exempted from inspection"
+    description: "list of RDS DB identifiers exempted from inspection"
     type: Array
     value:
       - ""
 
   - name: single_rds
-    description: "Name of the single RDS instance you want to be inspected"
+    description: "DB Identifier of the single RDS instance you want to be inspected"
     type: String
     value: ""
 
