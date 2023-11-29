@@ -140,12 +140,10 @@ AWS CLI, API, and SDKs. "
   tag severity: 'medium '
   tag cis_controls: [{ '8' => ['3.11'] }]
 
-
-
   exempt_efs = input('exempt_efs')
   failing_efs = []
   
-  only_applicable_if('This control is Non Applicable since no unexempt EFS were found.') { !aws_efs_file_systems.entries.empty? or !(exempt_efs - aws_efs_file_systems.entries).empty? }
+  only_applicable_if('This control is Non Applicable since no unexempt EFS were found.') { !aws_efs_file_systems.names.empty? or !(exempt_efs - aws_efs_file_systems.names).empty? }
 
   if input('single_efs').present?
     failing_efs << input('single_efs').to_s unless aws_efs_file_system(file_system_id: input('single_efs')).encrypted?
@@ -155,9 +153,9 @@ AWS CLI, API, and SDKs. "
       end
     end
   else
-    failing_efs = s3_efs.select { |efs|
-      next if exempt_efs.include?(efs)
-      !aws_efs_file_system(file_system_id: efs).encrypted?
+    failing_efs = aws_efs_file_systems.entries.select { |efs|
+      next if exempt_efs.include?(efs.id)
+      !aws_efs_file_system(file_system_id: efs.id).encrypted?
     }
     describe 'EFS' do
       it 'should all be encrypted' do
@@ -166,10 +164,5 @@ AWS CLI, API, and SDKs. "
         expect(failing_efs).to be_empty, failure_messsage
       end
     end
-  end
-
-
-  describe "All EFS file systems" do
-    skip 'No Tests have been written for this control yet'
   end
 end

@@ -98,6 +98,17 @@ inputs:
     type: String
     value: ""
 
+  - name: exempt_rds
+    description: "list of rds instances exempted from inspection"
+    type: Array
+    value:
+      - ""
+
+  - name: single_rds
+    description: "Name of the single RDS instance you want to be inspected"
+    type: String
+    value: ""
+
   - name: skip_stopped_ec2s
     description: "Ignore non-running ec2s durning verification"
     type: Boolean
