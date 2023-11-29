@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-gem 'inspec'
+gem 'inspec', '>= 6.0.0'
 gem 'inspec-core'
 gem 'inspec-bin'
 gem 'kitchen-inspec'
