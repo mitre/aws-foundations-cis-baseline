@@ -194,9 +194,11 @@ each RDS instance provisioned in the current region.
 
   # TODO: check each attached subnet for public access or just this RDS?
   exempt_rds = input('exempt_rds')
+  #TODO: Fix the plural resource to correctly return the empty array so we don't have to work around it.
+  active_rds = aws_rds_instances.db_instance_identifiers.nil? ? [] : aws_rds_instances.db_instance_identifiers 
   failing_rds = []
-  
-  only_applicable_if('This control is Non Applicable since no unexempt RDS instances were found.') { !aws_rds_instances.entries.empty? or !(exempt_rds - aws_rds_instances.db_instance_identifiers).empty? }
+
+  only_applicable_if("This control is Non Applicable. No 'non-exempt' RDS instances were found.") { aws_rds_instances.exist? or !(exempt_rds - active_rds).empty? }
 
   if input('single_rds').present?
     failing_rds << input('single_rds').to_s if aws_rds_instance(input('single_rds')).public?
