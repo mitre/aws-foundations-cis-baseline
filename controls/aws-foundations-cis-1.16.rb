@@ -91,9 +91,9 @@ Roles:
     { '8' => ['3.3'] },
   ]
 
-  attached_policies = aws_iam_policies.where { attachment_count > 0 }.policy_names
+  attached_policies = aws_iam_policies.where { attachment_count.positive? }.policy_names
 
-  only_applicable_if('No IAM policies were detected as attached within this account.') do
+  only_if('No IAM policies were detected as attached within this account.', impact: 0.0) do
     !attached_policies.empty?
   end
 
