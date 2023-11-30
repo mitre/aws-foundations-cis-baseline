@@ -86,10 +86,10 @@ S3 buckets. "
   failing_buckets = []
   # passed_buckets = []
 
-  only_applicable_if('This control is Non Applicable since no unexempt S3 buckets were found.') { !s3_buckets.empty? or !(exempt_buckets - s3_buckets).empty? }
+  only_if('This control is Non Applicable since no unexempt S3 buckets were found.', impact: 0.0) { !s3_buckets.empty? or !(exempt_buckets - s3_buckets).empty? }
 
   if input('single_bucket').present?
-    failing_buckets << input('single_bucket').to_s unless aws_s3_bucket(bucket_name: input('single_bucket')).versioning.mfa_delete == "Enabled"
+    failing_buckets << input('single_bucket').to_s unless aws_s3_bucket(bucket_name: input('single_bucket')).versioning.mfa_delete == 'Enabled'
     describe "The #{input('single_bucket')}" do
       it 'explicitly requires MFA to delete' do
         expect(failing_buckets).to be_empty, "Failing buckets:\t#{failing_buckets}"

@@ -179,9 +179,8 @@ simultaneously, but they eventually propagate to all Regions. "
   s3_buckets = aws_s3_buckets.bucket_names
   failing_buckets = []
 
-  
-  describe "No Tests Defined Yet" do
-    skip "No Tests have been written for this control yet"
+  describe 'No Tests Defined Yet' do
+    skip 'No Tests have been written for this control yet'
   end
 
   # # EITHER the AWS account itself should be blocking public access, OR each individual bucket should do so
@@ -191,10 +190,8 @@ simultaneously, but they eventually propagate to all Regions. "
   #     its('BlockPublicPolicy') { should eq "true" }
   #     its('BlockPublicAcls') { should eq "true" }
   #   end
+  #   only_if('This control is Non Applicable since no unexempt S3 buckets were found.', impact: 0.0) { !s3_buckets.empty? or !(exempt_buckets - s3_buckets).empty? }
 
-  #   # TODO: where to put the only_applicable_if caveat in this test?
-  #   only_applicable_if('This control is Non Applicable since no unexempt S3 buckets were found.') { !s3_buckets.empty? or !(exempt_buckets - s3_buckets).empty? }
-  
   #   if input('single_bucket').present?
   #     failing_buckets << input('single_bucket').to_s unless aws_s3_bucket(bucket_name: input('single_bucket')) # TODO: find the right filter
   #     describe "The #{input('single_bucket')}" do

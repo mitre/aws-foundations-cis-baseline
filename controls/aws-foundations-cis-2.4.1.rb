@@ -142,8 +142,8 @@ AWS CLI, API, and SDKs. "
 
   exempt_efs = input('exempt_efs')
   failing_efs = []
-  
-  only_applicable_if('This control is Non Applicable since no unexempt EFS were found.') { !aws_efs_file_systems.names.empty? or !(exempt_efs - aws_efs_file_systems.names).empty? }
+
+  only_if('This control is Non Applicable since no unexempt EFS were found.', impact: 0.0) { !aws_efs_file_systems.names.empty? or !(exempt_efs - aws_efs_file_systems.names).empty? }
 
   if input('single_efs').present?
     failing_efs << input('single_efs').to_s unless aws_efs_file_system(file_system_id: input('single_efs')).encrypted?

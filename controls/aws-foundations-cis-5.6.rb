@@ -53,7 +53,7 @@ aws ec2 modify-instance-metadata-options
   tag severity: 'medium'
   ref 'https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-IMDS-existing-instances.html'
 
-  only_applicable_if('This requirement is Non Applicable since no EC2 instances were found.') do
+  only_if('This requirement is Non Applicable since no EC2 instances were found.', impact: 0.0) do
     aws_ec2_instances.exist?
   end
 
