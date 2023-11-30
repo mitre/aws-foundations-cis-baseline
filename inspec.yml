@@ -52,8 +52,8 @@ inputs:
   - name: except_kms_keys
     description: "List of KMS keys exempted from inspection"
     type: Array
-    value:
-      - ""
+    value: []
+
 
   - name: aws_key_age
     description: "The maximum allowed key age"
@@ -73,8 +73,8 @@ inputs:
   - name: exempt_buckets
     description: "list of buckets exempted from inspection"
     type: Array
-    value:
-      - ""
+    value: []
+
 
   - name: single_bucket
     description: "Name of the single bucket you want to be inspected"
@@ -84,14 +84,12 @@ inputs:
   - name: exempt_ec2s
     description: "list of ec2 exempted from inspection"
     type: Array
-    value:
-      - ""
+    value: []
 
   - name: exempt_efs
     description: "list of efs exempted from inspection"
     type: Array
-    value:
-      - ""
+    value: []
 
   - name: single_efs
     description: "Name of the single EFS you want to be inspected"
@@ -101,8 +99,7 @@ inputs:
   - name: exempt_rds
     description: "list of RDS DB identifiers exempted from inspection"
     type: Array
-    value:
-      - ""
+    value: []
 
   - name: single_rds
     description: "DB Identifier of the single RDS instance you want to be inspected"
@@ -117,15 +114,13 @@ inputs:
   - name: exempt_security_groups
     description: "list of security groups exempted from inspection"
     type: Array
-    value:
-      - ""
+    value: []
 
   - name: service_account_mfa_exceptions
     description: "list of service accounts which are exempt from the MFA requirement"
     type: Array
-    value:
-      - ""
-
+    value: []
+    
   - name: config_delivery_channels
     description: "Config service settings"
     type: Hash
