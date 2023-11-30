@@ -109,11 +109,11 @@ upgrades will be applied to the selected RDS instance. "
   tag cis_controls: [{ '8' => ['7.4'] }]
 
   exempt_rds = input('exempt_rds')
-  #TODO: Fix the plural resource to correctly return the empty array so we don't have to work around it.
-  active_rds = aws_rds_instances.db_instance_identifiers.nil? ? [] : aws_rds_instances.db_instance_identifiers 
+  # TODO: Fix the plural resource to correctly return the empty array so we don't have to work around it.
+  active_rds = aws_rds_instances.db_instance_identifiers.nil? ? [] : aws_rds_instances.db_instance_identifiers
   failing_rds = []
 
-  only_applicable_if("This control is Non Applicable. No 'non-exempt' RDS instances were found.") { aws_rds_instances.exist? or !(exempt_rds - active_rds).empty? }
+  only_if("This control is Non Applicable. No 'non-exempt' RDS instances were found.", impact: 0.0) { aws_rds_instances.exist? or !(exempt_rds - active_rds).empty? }
 
   if input('single_rds').present?
     failing_rds << input('single_rds').to_s unless aws_rds_instance(input('single_rds')).auto_minor_version_upgrade
@@ -122,8 +122,8 @@ upgrades will be applied to the selected RDS instance. "
         expect(failing_rds).to be_empty, "Failing RDS:\t#{failing_rds}"
       end
     end
-  else  
-    failing_rds = aws_rds_instances.where { auto_minor_version_upgrade != true }.db_instance_identifiers  - exempt_rds
+  else
+    failing_rds = aws_rds_instances.where { auto_minor_version_upgrade != true }.db_instance_identifiers - exempt_rds
     describe 'RDS instances' do
       it 'should all automatically upgrade minor versions' do
         failure_messsage = "Failing RDS:\n#{failing_rds.join(", \n")}"

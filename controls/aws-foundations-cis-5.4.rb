@@ -104,7 +104,7 @@ for each instance to communicate successfully. "
     { '8' => ['3.3'] },
   ]
 
-  only_applicable_if('The requirement is Not Applicable since no VPCs were Found.') do
+  only_if('The requirement is Not Applicable since no VPCs were Found.', impact: 0.0) do
     aws_vpcs.exist?
   end
 
