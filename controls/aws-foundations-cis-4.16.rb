@@ -93,7 +93,11 @@ enable-security-hub --no-enable-default-standards
        "It is recommended AWS Security Hub be enabled in all regions. AWS Security Hub requires AWS
 Config to be enabled. "
   impact 0.5
-  ref "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-get-started.html:https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-enable.html#securityhub-enable-api:https://awscli.amazonaws.com/v2/documentation/api/latest/reference/securityhub/enable-security-hub.html"
+
+  ref "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-get-started.html"
+  ref "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-enable.html#securityhub-enable-api"
+  ref "https://awscli.amazonaws.com/v2/documentation/api/latest/reference/securityhub/enable-security-hub.html"
+
   tag nist: ["CM-6(1)"]
   tag severity: "medium "
   tag cis_controls: [{ "7" => ["11.3"] }]
@@ -106,9 +110,9 @@ Config to be enabled. "
 
   unsubscribed_regions = in_scope_regions.select { |region| not aws_securityhub(aws_region: region).subscribed? }
 
-  describe 'All non-exempt AWS Regions' do
-    it 'are subscribed to Security Hub' do
-      failure_message = "The following regions should subscribed to Security Hub: #{unsubscribed_regions.join(', ')}"
+  describe "All non-exempt AWS Regions" do
+    it "are subscribed to Security Hub" do
+      failure_message = "The following regions should subscribed to Security Hub: #{unsubscribed_regions.join(", ")}"
       expect(unsubscribed_regions).to be_empty, failure_message
     end
   end
