@@ -104,10 +104,13 @@ Config to be enabled. "
 
   only_if("This control is Not Applicable since no 'non-exempt' regions were found") { not in_scope_regions.presence.nil? }
 
-  in_scope_regions.each do |region|
-    describe "#{region}" do
-      subject { aws_securityhub(aws_region: region) }
-      it { should be_subscribed }
+  unsubscribed_regions = in_scope_regions.select { |region| not aws_securityhub(aws_region: region).subscribed? }
+  subscribed_regions = in_scope_regions.select { |region| aws_securityhub(aws_region: region).subscribed? }
+
+  describe 'All non-exempt AWS Regions' do
+    it 'are subscribed to Security Hub' do
+      failure_message = "The following regions should subscribed to Security Hub: #{unsubscribed_regions.join(', ')}"
+      expect(unsubscribed_regions).to be_empty, failure_message
     end
   end
   only_if { not input("exempt_regions").empty? }
