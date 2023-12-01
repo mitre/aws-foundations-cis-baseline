@@ -114,7 +114,8 @@ each EC2 instance in your AWS account that requires an IAM role to be attached. 
   ]
 
   ec2_instances_with_no_role = aws_ec2_instances.entries.select {
-    |instance| instance.iam_profile.nil? ||
+    |instance|
+    instance.iam_profile.nil? ||
       aws_iam_instance_profile(instance_profile_name: instance.iam_profile).roles.empty?
   }
 
