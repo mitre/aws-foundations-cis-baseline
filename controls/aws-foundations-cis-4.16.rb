@@ -1,5 +1,5 @@
 control "aws-foundations-cis-4.16" do
-  title "Ensure AWS Security Hub is enabled"
+  title "Ensure AWS Security Hub is enabled for each active region"
   desc "Security Hub collects security data from across AWS accounts, services, and supported
 third-party partner products and helps you analyze your security trends and identify the
 highest priority security issues. When you enable Security Hub, it begins to consume,
@@ -105,7 +105,7 @@ Config to be enabled. "
   only_if("This control is Not Applicable since no 'non-exempt' regions were found") { not in_scope_regions.presence.nil? }
 
   in_scope_regions.each do |region|
-    describe "Security Hub to be enabled in #{region}" do
+    describe "#{region}" do
       subject { aws_securityhub(aws_region: region) }
       it { should be_subscribed }
     end
