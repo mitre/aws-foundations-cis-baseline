@@ -57,13 +57,13 @@ unrestricted access to and control of all the resources in your account, includi
 information. "
   desc 'additional_information',
        "The 'root' user for us-gov cloud regions is not enabled by default. However, on request to AWS
-support, they can enable the 'root' user and grant access only through access-keys (CLI, API
-methods) for us-gov cloud region. If the 'root' user for us-gov cloud regions is enabled, this
-recommendation is applicable.
+        support, they can enable the 'root' user and grant access only through access-keys (CLI, API
+        methods) for us-gov cloud region. If the 'root' user for us-gov cloud regions is enabled, this
+        recommendation is applicable.
 
-Monitoring usage of the 'root' user can be accomplished
-by implementing recommendation 3.3 Ensure a log metric filter and alarm exist for usage of the
-'root' user. "
+        Monitoring usage of the 'root' user can be accomplished
+        by implementing recommendation 3.3 Ensure a log metric filter and alarm exist for usage of the
+        'root' user. "
   impact 0.5
   ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html:https://docs.aws.amazon.com/general/latest/gr/aws_tasks-that-require-root.html'
   tag nist: %w{AC-6(2) AC-6(5)}

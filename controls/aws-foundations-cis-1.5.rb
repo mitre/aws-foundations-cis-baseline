@@ -1,20 +1,20 @@
 control 'aws-foundations-cis-1.5' do
   title "Ensure MFA is enabled for the 'root' user account "
   desc "The 'root' user account is the most privileged user in an AWS account. Multi-factor
-Authentication (MFA) adds an extra layer of protection on top of a username and password. With
-MFA enabled, when a user signs in to an AWS website, they will be prompted for their username and
-password as well as for an authentication code from their AWS MFA device.
+        Authentication (MFA) adds an extra layer of protection on top of a username and password. With
+        MFA enabled, when a user signs in to an AWS website, they will be prompted for their username and
+        password as well as for an authentication code from their AWS MFA device.
 
-**Note:** When
-virtual MFA is used for 'root' accounts, it is recommended that the device used is NOT a
-personal device, but rather a dedicated mobile device (tablet or phone) that is managed to be
-kept charged and secured independent of any individual personal devices. (\"non-personal
-virtual MFA\") This lessens the risks of losing access to the MFA due to device loss, device
-trade-in or if the individual owning the device is no longer employed at the company. "
+        **Note:** When
+        virtual MFA is used for 'root' accounts, it is recommended that the device used is NOT a
+        personal device, but rather a dedicated mobile device (tablet or phone) that is managed to be
+        kept charged and secured independent of any individual personal devices. (\"non-personal
+        virtual MFA\") This lessens the risks of losing access to the MFA due to device loss, device
+        trade-in or if the individual owning the device is no longer employed at the company. "
   desc 'rationale',
        "Enabling MFA provides increased security for console access as it requires the
-authenticating principal to possess a device that emits a time-sensitive key and have
-knowledge of a credential. "
+        authenticating principal to possess a device that emits a time-sensitive key and have
+        knowledge of a credential. "
   desc 'check',
        "Perform the following to determine if the 'root' user account has MFA setup:
 

@@ -85,34 +85,26 @@ introduced prior to March 20, 2019 are enabled by default and cannot be disabled
 introduced after can be disabled by default. For more information on managing AWS Regions,
 please see AWS's [documentation on managing AWS
 Regions](https://docs.aws.amazon.com/general/latest/gr/rande-manage.html). "
+
   impact 0.5
   ref 'https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html:https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-getting-started.html:https://docs.aws.amazon.com/cli/latest/reference/accessanalyzer/get-analyzer.html:https://docs.aws.amazon.com/cli/latest/reference/accessanalyzer/create-analyzer.html'
   tag nist: ['AC-6']
   tag severity: 'medium '
   tag cis_controls: [{ '8' => ['3.3'] }]
 
-  # TODO: aws_iam_access_analyzer/s resource
+  all_regions = aws_regions.region_names
+  exempt_regions = input('exempt_regions')
+  in_scope_regions = all_regions - exempt_regions
 
-  # check for analyzers specficially within the region we are checking against CIS benchmark
-  # analyzers = aws_iam_access_analyzers.where { path ~= input('default_aws_region') }
-  # active_analyzers = analyzers.where( status: "ACTIVE" )
+  only_if("This control is Not Applicable since no 'non-exempt' regions were found") { not in_scope_regions.presence.nil? }
 
-  # describe "At least one access analyzer" do
-  #   it "should be active in the region" do
-  #     expect(active_analyzers.entries).to_not be_empty, "No active analyzer found in #{input('default_aws_region')}"
-  #   end
-  # end
-
-  skipped_resources = input('exempt_regions')
-
-  aws_regions.region_names.each do |region|
-    next if skipped_resources.include?(region)
+  in_scope_regions.each do |region|
     describe aws_iam_access_analyzers(aws_region: region) do
       it { should exist }
     end
-    next if skipped_resources.empty?
-    describe 'Warning: Skipped Regions' do
-      skipped_resources.each { |region| skip "#{region} was Not Reviewed" }
-    end
+  end
+  only_if { not input('exempt_regions').empty? }
+  describe 'Warning: Skipped Regions' do
+    exempt_regions.each { |skipped| skip "Exempt Region: #{skipped} was Not Reviewed" }
   end
 end
