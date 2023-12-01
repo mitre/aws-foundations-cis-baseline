@@ -105,7 +105,8 @@ Config to be enabled. "
   only_if("This control is Not Applicable since no 'non-exempt' regions were found") { not in_scope_regions.presence.nil? }
 
   in_scope_regions.each do |region|
-    describe aws_securityhub(aws_region: region) do
+    describe "Security Hub to be enabled in #{region}" do
+      subject { aws_securityhub(aws_region: region) }
       it { should be_subscribed }
     end
   end
