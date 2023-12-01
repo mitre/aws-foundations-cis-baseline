@@ -119,6 +119,11 @@ inputs:
     type: Array
     value: []
 
+  - name: single_trail
+    description: "Name of the single CloudTrail you want to be inspected"
+    type: String
+    value: ""
+
   - name: config_delivery_channels
     description: "Config service settings"
     type: Hash
