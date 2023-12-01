@@ -165,7 +165,7 @@ regions. "
     
     describe 'CloudTrail trails' do
       it 'should include at least one multi-region trail monitoring all S3' do
-        expect(trails_monitoring_all_s3).to_not be_empty, "No multi-region trails monitoring all S3 buckets were discovered"
+        expect(trails_monitoring_all_s3).to_not be_empty, "No multi-region trails monitoring all S3 bucket writes were discovered"
       end
     end
   end
