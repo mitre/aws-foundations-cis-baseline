@@ -6,7 +6,7 @@ copyright: "MITRE, 2023"
 copyright_email: "saf@groups.mitre.org"
 license: "Apache-2.0"
 summary: "InSpec Validation Profile for AWS Foundations CIS"
-version: 2.0.1
+version: 2.0.2
 inspec_version: ">= 4.0"
 supports:
   - platform: aws
@@ -19,12 +19,12 @@ depends:
 
 inputs:
   - name: disable_slow_controls
-    description: "Don't test controls that take a long time for now"
+    description: "Don't Run Long Running Controls (dev/testing only)"
     type: Boolean
     value: false
 
   - name: default_aws_region
-    description: "primary aws region your resources are deployed."
+    description: "Primary aws region your resources are deployed."
     type: String
     value: "us-east-1"
     sensitive: true
@@ -54,7 +54,6 @@ inputs:
     type: Array
     value: []
 
-
   - name: aws_key_age
     description: "The maximum allowed key age"
     type: Numeric
@@ -71,10 +70,9 @@ inputs:
     value: 90
 
   - name: exempt_buckets
-    description: "list of buckets exempted from inspection"
+    description: "List of buckets exempted from inspection"
     type: Array
     value: []
-
 
   - name: single_bucket
     description: "Name of the single bucket you want to be inspected"
@@ -82,12 +80,12 @@ inputs:
     value: ""
 
   - name: exempt_ec2s
-    description: "list of ec2 exempted from inspection"
+    description: "List of ec2 exempted from inspection"
     type: Array
     value: []
 
   - name: exempt_efs
-    description: "list of efs exempted from inspection"
+    description: "List of efs exempted from inspection"
     type: Array
     value: []
 
@@ -97,12 +95,12 @@ inputs:
     value: ""
 
   - name: exempt_rds
-    description: "list of RDS DB identifiers exempted from inspection"
+    description: "List of RDS DB identifiers exempted from inspection"
     type: Array
     value: []
 
   - name: single_rds
-    description: "DB Identifier of the single RDS instance you want to be inspected"
+    description: "Name of the single RDS instance you want to be inspected"
     type: String
     value: ""
 
@@ -112,15 +110,15 @@ inputs:
     value: false
 
   - name: exempt_security_groups
-    description: "list of security groups exempted from inspection"
+    description: "List of security groups exempted from inspection"
     type: Array
     value: []
 
   - name: service_account_mfa_exceptions
-    description: "list of service accounts which are exempt from the MFA requirement"
+    description: "List of service accounts from the MFA requirement"
     type: Array
     value: []
-    
+
   - name: config_delivery_channels
     description: "Config service settings"
     type: Hash
@@ -155,11 +153,12 @@ inputs:
       email_address: "me@you.com"
 
   - name: last_root_login_date
-    description: "Optional - last date that root account should have logged in, formatted year+month+date (ex. Jan 1, 1970 ==> 19700101)"
+    description: "(19700101) Last date that root account should have logged in."
     type: numeric
     value: 0
 
+  # see: 2.3.1
   - name: third_party_data_management_tool
-    description: "If you are using a data management tool other than Amazon Macie (see 2.1.3), indicate its name with this input"
+    description: "Name of the data management tool other than Amazon Macie"
     type: String
     value: ""
