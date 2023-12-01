@@ -99,7 +99,7 @@ Config to be enabled. "
   ref "https://awscli.amazonaws.com/v2/documentation/api/latest/reference/securityhub/enable-security-hub.html"
 
   tag nist: ["CM-6(1)"]
-  tag severity: "medium "
+  tag severity: "medium"
   tag cis_controls: [{ "7" => ["11.3"] }]
 
   all_regions = aws_regions.region_names
