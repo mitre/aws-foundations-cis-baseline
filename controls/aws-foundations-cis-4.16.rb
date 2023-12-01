@@ -102,7 +102,7 @@ Config to be enabled. "
   exempt_regions = input("exempt_regions")
   in_scope_regions = all_regions - exempt_regions
 
-  only_if("This control is Not Applicable since no 'non-exempt' regions were found") { not in_scope_regions.presence.nil? }
+  only_if("This control is Not Applicable since no 'non-exempt' regions were found", impact: 0.0) { not in_scope_regions.presence.nil? }
 
   unsubscribed_regions = in_scope_regions.select { |region| not aws_securityhub(aws_region: region).subscribed? }
 
