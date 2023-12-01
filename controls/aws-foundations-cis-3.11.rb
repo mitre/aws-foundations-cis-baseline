@@ -100,7 +100,48 @@ regions. "
   tag severity: 'medium '
   tag cis_controls: [{ '8' => ['8.5'] }]
 
-  describe 'No Tests Defined Yet' do
-    skip 'No Tests have been written for this control yet'
+  if input('single_trail').present?
+    single_trail = aws_cloudtrail_trail(input('single_trail'))
+    single_trail_is_monitoring_all_s3 = single_trail.event_selectors.any? { |es|
+      if !es.event_selectors.nil?
+        es.event_selectors.first.data_resources.any? { |dr|
+          dr.values == "arn:aws:s3"
+        }
+      else
+        es.advanced_event_selectors.first.field_selectors.any? { |fs|
+          fs.equals == ["AWS::S3::Object"]
+        }
+      end
+    }
+    describe "The #{input('single_trail')}" do
+      it 'is multi-region' do
+        expect(single_trail.is_multi_region_trail).to eq true
+      end
+      it 'is logging object-level read events for all S3 buckets' do
+        expect(single_trail_is_monitoring_all_s3).to eq true
+      end
+    end
+  else
+    trails_monitoring_all_s3 = aws_cloudtrail_trails.trail_arns.each do |trail_arn|
+      trail = aws_cloudtrail_trail(trail_arn)
+      trail_is_monitoring_all_s3 = trail.event_selectors.any? { |es|
+        if !es.event_selectors.nil?
+          es.event_selectors.first.data_resources.any? { |dr|
+            dr.values == "arn:aws:s3"
+          }
+        else
+          es.advanced_event_selectors.first.field_selectors.any? { |fs|
+            fs.equals == ["AWS::S3::Object"]
+          }
+        end
+      trail_arn if trail.is_multi_region_trail && trail_is_monitoring_all_s3
+    }
+    end
+    
+    describe 'CloudTrail trails' do
+      it 'should include at least one multi-region trail monitoring all S3' do
+        expect(trails_monitoring_all_s3).to_not be_empty, "No multi-region trails monitoring all S3 bucket reads were discovered"
+      end
+    end
   end
 end
