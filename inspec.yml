@@ -72,7 +72,8 @@ inputs:
   - name: exempt_buckets
     description: "List of buckets exempted from inspection"
     type: Array
-    value: []
+    value:
+      - "factor-test"
 
   - name: single_bucket
     description: "Name of the single bucket you want to be inspected"
