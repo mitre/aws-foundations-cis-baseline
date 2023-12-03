@@ -8,6 +8,6 @@ gem 'inspec-bin'
 gem 'kitchen-inspec'
 gem 'rake'
 gem 'rubocop'
-gem 'pry-byebug'
-gem 'aws-sdk-accessanalyzer'
 gem 'train-kubernetes'
+gem "train-aws", git: 'https://github.com/mitre/train-aws.git', branch: 'al/dep-updates'
+
