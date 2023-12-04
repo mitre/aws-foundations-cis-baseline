@@ -76,73 +76,6 @@ config_delivery_channels:
 
 ```
 
-## Generate Inputs
-
-The repo includes a script : generate_inputs.rb to generate part of the inputs required for the profile.
-The script will inspect aws regions: us-east-1, us-east-2, us-west-1, us-west-2 to generate the following input to STDOUT.
-
-```
-- config_delivery_channels
-```
-
-## Usage
-
-```
-# Set required ENV variables
-$ export AWS_ACCESS_KEY_ID=key-id
-$ export AWS_SECRET_ACCESS_KEY=access-key
-$ export AWS_SESSION_TOKEN=session_token
-$ export AWS_REGION=us-west-1
-
-# Run the `generate_inputs.rb`
-$ ruby generate_inputs.rb
-# The generated inputs __must be reviewed carefully__.
-# Only __valid__ channels should be placed in the inputs.yml file.
-```
-
-# Running This Baseline Directly from Github
-
-```
-# How to run
-inspec exec https://github.com/mitre/aws-foundations-cis-baseline/archive/master.tar.gz --target aws:// --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
-```
-
-### Different Run Options
-
-[Full exec options](https://docs.chef.io/inspec/cli/#options-3)
-
-## Running This Baseline from a local Archive copy
-
-If your runner is not always expected to have direct access to GitHub, use the following steps to create an archive bundle of this baseline and all of its dependent tests:
-
-(Git is required to clone the InSpec profile using the instructions below. Git can be downloaded from the [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) site.)
-
-When the **"runner"** host uses this profile baseline for the first time, follow these steps:
-
-```
-mkdir profiles
-cd profiles
-git clone https://github.com/mitre/aws-foundations-cis-baseline
-inspec archive aws-foundations-cis-baseline
-inspec exec <name of generated archive> --target aws:// --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
-```
-
-For every successive run, follow these steps to always have the latest version of this baseline:
-
-```
-cd aws-foundations-cis-baseline
-git pull
-cd ..
-inspec archive aws-foundations-cis-baseline --overwrite
-inspec exec <name of generated archive> --target aws:// --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
-```
-
-## Using Heimdall for Viewing the JSON Results
-
-The JSON results output file can be loaded into **[heimdall-lite](https://heimdall-lite.mitre.org/)** for a user-interactive, graphical view of the InSpec results.
-
-The JSON InSpec results file may also be loaded into a **[full heimdall server](https://github.com/mitre/heimdall)**, allowing for additional functionality such as to store and compare multiple profile runs.
-
 ## Benchmark Status
 
 | **Status** | **Reviewed** | **Recommendation** | **Uses Input**                                    |
@@ -212,10 +145,77 @@ The JSON InSpec results file may also be loaded into a **[full heimdall server](
 | Done       | Yes          | 5.5                | None                                              |
 | Done       | No           | 5.6                | skip_stopped_ec2                                  |
 
+## Generate Inputs
+
+The repo includes a script : generate_inputs.rb to generate part of the inputs required for the profile.
+The script will inspect aws regions: us-east-1, us-east-2, us-west-1, us-west-2 to generate the following input to STDOUT.
+
+```
+- config_delivery_channels
+```
+
+## Usage
+
+```
+# Set required ENV variables
+$ export AWS_ACCESS_KEY_ID=key-id
+$ export AWS_SECRET_ACCESS_KEY=access-key
+$ export AWS_SESSION_TOKEN=session_token
+$ export AWS_REGION=us-west-1
+
+# Run the `generate_inputs.rb`
+$ ruby generate_inputs.rb
+# The generated inputs __must be reviewed carefully__.
+# Only __valid__ channels should be placed in the inputs.yml file.
+```
+
+# Running This Baseline Directly from Github
+
+```
+# How to run
+inspec exec https://github.com/mitre/aws-foundations-cis-baseline/archive/master.tar.gz --target aws:// --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
+```
+
+### Different Run Options
+
+[Full exec options](https://docs.chef.io/inspec/cli/#options-3)
+
+## Running This Baseline from a local Archive copy
+
+If your runner is not always expected to have direct access to GitHub, use the following steps to create an archive bundle of this baseline and all of its dependent tests:
+
+(Git is required to clone the InSpec profile using the instructions below. Git can be downloaded from the [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) site.)
+
+When the **"runner"** host uses this profile baseline for the first time, follow these steps:
+
+```
+mkdir profiles
+cd profiles
+git clone https://github.com/mitre/aws-foundations-cis-baseline
+inspec archive aws-foundations-cis-baseline
+inspec exec <name of generated archive> --target aws:// --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
+```
+
+For every successive run, follow these steps to always have the latest version of this baseline:
+
+```
+cd aws-foundations-cis-baseline
+git pull
+cd ..
+inspec archive aws-foundations-cis-baseline --overwrite
+inspec exec <name of generated archive> --target aws:// --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
+```
+
+## Using Heimdall for Viewing the JSON Results
+
+The JSON results output file can be loaded into **[heimdall-lite](https://heimdall-lite.mitre.org/)** for a user-interactive, graphical view of the InSpec results.
+
+The JSON InSpec results file may also be loaded into a **[full heimdall server](https://github.com/mitre/heimdall)**, allowing for additional functionality such as to store and compare multiple profile runs.
+
 ## Authors
 
-- Rony Xavier - [rx294](https://github.com/rx294)
 - Aaron Lippold - [aaronlippold](https://github.com/aaronlippold)
+- Will Dower - [rx294](https://github.com/wdower)
 - Shivani Karikar - [karikarshivani](https://github.com/karikarshivani)
 
 ### Special Thanks
@@ -224,7 +224,7 @@ The JSON InSpec results file may also be loaded into a **[full heimdall server](
 
 ### NOTICE
 
-© 2018-2020 The MITRE Corporation.
+© 2018-2023 The MITRE Corporation.
 
 Approved for Public Release; Distribution Unlimited. Case Number 18-3678.
 
