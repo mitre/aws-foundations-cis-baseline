@@ -215,7 +215,7 @@ The JSON InSpec results file may also be loaded into a **[full heimdall server](
 ## Authors
 
 - Aaron Lippold - [aaronlippold](https://github.com/aaronlippold)
-- Will Dower - [rx294](https://github.com/wdower)
+- Will Dower - [wdower](https://github.com/wdower)
 - Shivani Karikar - [karikarshivani](https://github.com/karikarshivani)
 
 ### Special Thanks
