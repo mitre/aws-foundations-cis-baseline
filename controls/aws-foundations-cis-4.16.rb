@@ -1,16 +1,16 @@
-control "aws-foundations-cis-4.16" do
-  title "Ensure AWS Security Hub is enabled for each active region"
+control 'aws-foundations-cis-4.16' do
+  title 'Ensure AWS Security Hub is enabled for each active region'
   desc "Security Hub collects security data from across AWS accounts, services, and supported
 third-party partner products and helps you analyze your security trends and identify the
 highest priority security issues. When you enable Security Hub, it begins to consume,
 aggregate, organize, and prioritize findings from AWS services that you have enabled, such
 as Amazon GuardDuty, Amazon Inspector, and Amazon Macie. You can also enable integrations
 with AWS partner security products. "
-  desc "rationale",
+  desc 'rationale',
        "AWS Security Hub provides you with a comprehensive view of your security state in AWS and helps
 you check your environment against security industry standards and best practices -
 enabling you to quickly assess the security posture across your AWS accounts. "
-  desc "check",
+  desc 'check',
        "The process to evaluate AWS Security Hub configuration per region
 
 **From
@@ -56,7 +56,7 @@ An error occurred (InvalidAccessException) when
 calling the DescribeHub operation: Account <Account ID> is not subscribed to AWS Security
 Hub
 ``` "
-  desc "fix",
+  desc 'fix',
        "To grant the permissions required to enable Security Hub, attach the Security Hub managed
 policy AWSSecurityHubFullAccess to an IAM user, group, or role.
 
@@ -89,35 +89,35 @@ standards, include `--no-enable-default-standards`.
 aws securityhub
 enable-security-hub --no-enable-default-standards
 ``` "
-  desc "impact",
+  desc 'impact',
        "It is recommended AWS Security Hub be enabled in all regions. AWS Security Hub requires AWS
 Config to be enabled. "
   impact 0.5
 
-  ref "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-get-started.html"
-  ref "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-enable.html#securityhub-enable-api"
-  ref "https://awscli.amazonaws.com/v2/documentation/api/latest/reference/securityhub/enable-security-hub.html"
+  ref 'https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-get-started.html'
+  ref 'https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-enable.html#securityhub-enable-api'
+  ref 'https://awscli.amazonaws.com/v2/documentation/api/latest/reference/securityhub/enable-security-hub.html'
 
-  tag nist: ["CM-6(1)"]
-  tag severity: "medium"
-  tag cis_controls: [{ "7" => ["11.3"] }]
+  tag nist: ['CM-6(1)']
+  tag severity: 'medium'
+  tag cis_controls: [{ '7' => ['11.3'] }]
 
   all_regions = aws_regions.region_names
-  exempt_regions = input("exempt_regions")
+  exempt_regions = input('exempt_regions')
   in_scope_regions = all_regions - exempt_regions
 
   only_if("This control is Not Applicable since no 'non-exempt' regions were found", impact: 0.0) { not in_scope_regions.presence.nil? }
 
   unsubscribed_regions = in_scope_regions.select { |region| not aws_securityhub(aws_region: region).subscribed? }
 
-  describe "All non-exempt AWS Regions" do
-    it "are subscribed to Security Hub" do
-      failure_message = "The following regions should subscribed to Security Hub: #{unsubscribed_regions.join(", ")}"
+  describe 'All non-exempt AWS Regions' do
+    it 'are subscribed to Security Hub' do
+      failure_message = "The following regions should subscribed to Security Hub: #{unsubscribed_regions.join(', ')}"
       expect(unsubscribed_regions).to be_empty, failure_message
     end
   end
-  only_if { not input("exempt_regions").empty? }
-  describe "Warning: Skipped Regions" do
+  only_if { not input('exempt_regions').empty? }
+  describe 'Warning: Skipped Regions' do
     exempt_regions.each { |skipped| skip "Exempt Region: #{skipped} was Not Reviewed" }
   end
 end
