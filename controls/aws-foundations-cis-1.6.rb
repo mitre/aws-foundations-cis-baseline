@@ -95,5 +95,4 @@ not applicable for us-gov cloud regions. "
       expect(hardware_mfa_devices.count).to be >= 1, 'No hardware MFA devices discovered'
     end
   end
-  # end
 end
