@@ -201,16 +201,16 @@ The JSON InSpec results file may also be loaded into a **[full heimdall server](
 | Done       | No           | 4.10               | None                                              |
 | Done       | No           | 4.11               | None                                              |
 | Done       | No           | 4.12               | None                                              |
-|            |              | 4.13               |                                                   |
-|            |              | 4.14               |                                                   |
-|            |              | 4.15               |                                                   |
-|            |              | 4.16               |                                                   |
-|            |              | 5.1                |                                                   |
-|            |              | 5.2                |                                                   |
-|            |              | 5.3                |                                                   |
-|            |              | 5.4                |                                                   |
-|            |              | 5.5                |                                                   |
-|            |              | 5.6                |                                                   |
+| Done       | No           | 4.13               | None                                              |
+| Done       | No           | 4.14               | None                                              |
+| No         | No           | 4.15               | TBD                                               |
+| Done       | Yes          | 4.16               | exempt_regions                                    |
+| No         | No           | 5.1                | TBD                                               |
+| Done       | Yes          | 5.2                | None                                              |
+| No         | No           | 5.3                | TBD                                               |
+| Done       | Yes          | 5.4                | None                                              |
+| Done       | Yes          | 5.5                | None                                              |
+| Done       | No           | 5.6                | skip_stopped_ec2                                  |
 
 ## Authors
 
