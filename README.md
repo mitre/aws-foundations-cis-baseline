@@ -145,6 +145,8 @@ config_delivery_channels:
 | Done       | Yes          | 5.5                | None                                              |
 | Done       | No           | 5.6                | skip_stopped_ec2                                  |
 
+NEEDS RESOURCE/RESOURCE UPDATES: 2.1.3
+
 ## Generate Inputs
 
 The repo includes a script : generate_inputs.rb to generate part of the inputs required for the profile.
