@@ -120,8 +120,8 @@ config_delivery_channels:
 | Done       | Yes          | 3.7                | None                                              |
 | Done       | Yes          | 3.8                | exempt_kms_keys                                   |
 | Done       | Yes          | 3.9                | None                                              |
-| WIP        | Yes          | 3.10               | single_trail                                      |
-| WIP        | Yes          | 3.11               | single_trail                                      |
+| Done       | Yes          | 3.10               | single_trail                                      |
+| Done       | Yes          | 3.11               | single_trail                                      |
 | Done       | No           | 4.1                | None                                              |
 | Done       | No           | 4.2                | None                                              |
 | Done       | No           | 4.3                | None                                              |
