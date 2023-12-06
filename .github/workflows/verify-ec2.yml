@@ -17,12 +17,6 @@ jobs:
       RESULTS_FILE: inspec_results.json
       PROFILE_FILE: profile.json
       INPUT_FILE: testing.inputs.yml
-    #   KITCHEN_LOCAL_YAML: kitchen.ec2.yml
-    #   LC_ALL: "en_US.UTF-8"
-    # strategy:
-    #   matrix:
-    #     suite: ['vanilla', 'hardened']
-    #   fail-fast: false
     steps:
       - name: add needed packages
         run: sudo apt-get install -y jq
@@ -52,8 +46,6 @@ jobs:
           bundle update
       - name: Installed Inspec
         run: bundle exec inspec version
-      # - name: Installed InSpec Plugins
-      #   run: bundle exec inspec plugin list
       - name: Vendor the InSpec Profile
         run: bundle exec inspec vendor --overwrite
       # - name: Regenerate current `profile.json`
@@ -61,24 +53,21 @@ jobs:
       #     bundle exec inspec export . --format json | jq . > ${{ env.PROFILE_FILE }}
       - name: Lint the Inspec profile
         run: bundle exec inspec check .
-      # - name: Run kitchen test
-      #   run: bundle exec kitchen test --destroy=always ${{ matrix.suite }}-rhel-7 || true
       - name: Run the Profile
         run: |
           bundle install
           bundle update
-          bundle exec inspec exec . --target aws:// --input-file=${{ env.INPUT_FILE }} --reporter cli json:inspec_results.json --enhanced-outcomes --filter-empty-profiles || true
+          bundle exec inspec exec . --target aws:// --input-file=${{ env.INPUT_FILE }} --reporter cli json:${{ env.RESULTS_FILE }} --enhanced-outcomes --filter-empty-profiles || true
       - name: Save Test Result JSON
         uses: actions/upload-artifact@v3
         with:
-          path: |
-            inspec_results.json
+          path: ${{ env.RESULTS_FILE }}
 
-      - name: "Display our ${{ env.RESULTS_FILE }} results summary"
+      - name: Display our ${{ env.RESULTS_FILE }} results summary
         uses: mitre/saf_action@v1
         with:
           command_string: "view summary -i ${{ env.RESULTS_FILE }}"
-      - name: "Ensure the scan meets our ${{ env.RESULTS_FILE }} results threshold"
+      - name: Ensure ${{ env.RESULTS_FILE }} meets our results threshold
         uses: mitre/saf_action@v1
         with:
           command_string: "validate threshold -i ${{ env.RESULTS_FILE }} -F cis-foundations.threshold.yml"
