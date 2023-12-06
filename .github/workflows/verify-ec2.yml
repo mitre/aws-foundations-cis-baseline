@@ -41,16 +41,11 @@ jobs:
           ruby-version: "3.1"
       - name: Disable ri and rdoc
         run: 'echo "gem: --no-document" >> ~/.gemrc'
-      - run: |
-          bundle install
-          bundle update
+      - run: bundle install
       - name: Installed Inspec
         run: bundle exec inspec version
       - name: Vendor the InSpec Profile
         run: bundle exec inspec vendor --overwrite
-      # - name: Regenerate current `profile.json`
-      #   run: |
-      #     bundle exec inspec export . --format json | jq . > ${{ env.PROFILE_FILE }}
       - name: Lint the Inspec profile
         run: bundle exec inspec check .
       - name: Run the Profile
