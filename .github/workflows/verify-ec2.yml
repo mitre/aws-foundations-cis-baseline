@@ -47,7 +47,7 @@ jobs:
           ruby-version: "3.1"
       - name: Disable ri and rdoc
         run: 'echo "gem: --no-document" >> ~/.gemrc'
-      - run: | 
+      - run: |
           bundle install
           bundle update
       - name: Installed Inspec
@@ -67,13 +67,12 @@ jobs:
         run: |
           bundle install
           bundle update
-          bundle exec inspec exec . --target aws:// --input-file=${{ env.INPUT_FILE }} --reporter cli json:${{ env.RESULTS_FILE }} --enhanced-outcomes --filter-empty-profiles || true
+          bundle exec inspec exec . --target aws:// --input-file=${{ env.INPUT_FILE }} --reporter cli json:inspec_results.json --enhanced-outcomes --filter-empty-profiles || true
       - name: Save Test Result JSON
         uses: actions/upload-artifact@v3
         with:
           path: |
-            ${{ env.RESULTS_FILE }}
-            # ${{ env.PROFILE_FILE }}
+            inspec_results.json
 
       - name: "Display our ${{ env.RESULTS_FILE }} results summary"
         uses: mitre/saf_action@v1
