@@ -55,12 +55,19 @@ aws ec2 describe-instances
     aws_ec2_instances.exist?
   end
 
-  aws_ec2_instances.instance_ids.each do |instance|
-    next if input('exempt_ec2s').include?(instance)
-    next if aws_ec2_instance(instance).stopped? && input('skip_stopped_ec2s')
-    describe aws_ec2_instance(instance) do
-      its('metadata_options.http_tokens') { should cmp 'required' }
-      its('metadata_options.http_endpoint') { should cmp 'enabled' }
+  failing_ec2 = []
+  aws_ec2_instances.instance_ids.each do |instance_id|
+    instance = aws_ec2_instance(instance_id)
+    next if input('exempt_ec2s').include?(instance_id)
+    next if instance.stopped? && input('skip_stopped_ec2s')
+    next if instance.metadata_options.http_tokens == 'required'
+    next if instance.metadata_options.http_endpoint == 'enabled'
+    failing_ec2 += instance_id
+  end
+
+  describe "All EC2 Instances"
+    it "should only allow IMDSv2" do
+      expect(failing_ec2).to be_empty, "Failing EC2s:\t#{failing_ec2}"
     end
   end
 end
