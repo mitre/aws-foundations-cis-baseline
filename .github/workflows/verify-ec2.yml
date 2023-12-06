@@ -55,14 +55,15 @@ jobs:
         run: bundle exec inspec check .
       - name: Run the Profile
         run: |
-          bundle install
-          bundle update
           bundle exec inspec exec . --target aws:// --input-file=${{ env.INPUT_FILE }} --reporter cli json:${{ env.RESULTS_FILE }} --enhanced-outcomes --filter-empty-profiles || true
+          ls -alh
       - name: Save Test Result JSON
         uses: actions/upload-artifact@v3
         with:
-          path: ${{ env.RESULTS_FILE }}
-
+          path: |
+            ${{ env.RESULTS_FILE }}
+            ./${{ env.RESULTS_FILE }}
+            ./inspec_results.json
       - name: Display our ${{ env.RESULTS_FILE }} results summary
         uses: mitre/saf_action@v1
         with:
