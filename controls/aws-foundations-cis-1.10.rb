@@ -122,10 +122,7 @@ following alternative methods of MFA. "
   service_account_mfa_exceptions = input('service_account_mfa_exceptions')
 
   users_without_mfa =
-    aws_iam_users
-    .where(has_console_password: true)
-    .where(has_mfa_enabled: false)
-    .usernames
+    aws_iam_users.where(has_console_password: true).where(has_mfa_enabled: false).usernames
 
   if service_account_mfa_exceptions.compact.empty?
     describe 'The active IAM users that do not have MFA enabled', :sensitive do
