@@ -124,8 +124,8 @@ administrator. "
 
   only_if("No non-exempt customer managed KMS keys were discovered", impact: 0.0) { !customer_created_symmetric_cmk.empty? }
 
-  failing_keys = customer_created_symmetric_cmk.select { |key|
-    !aws_kms_key(key).has_rotation_enabled?
+  failing_keys = customer_created_symmetric_cmk.map { |key_id|
+    !aws_kms_key(key_id).has_rotation_enabled? ? aws_kms_key(key_id).display_name : nil
   }
 
   describe "All customer-managed KMS keys" do
