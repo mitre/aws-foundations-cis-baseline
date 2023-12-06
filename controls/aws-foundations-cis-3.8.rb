@@ -126,11 +126,11 @@ administrator. "
 
   failing_keys = customer_created_symmetric_cmk.map { |key_id|
     !aws_kms_key(key_id).has_rotation_enabled? ? aws_kms_key(key_id).display_name : nil
-  }
+  }.compact
 
   describe "All customer-managed KMS keys" do
     it "should have rotation enabled" do
-      expect(failing_keys).to be_empty, "Customer-managed KMS keys without rotation enabled:\t#{failing_keys}"
+      expect(failing_keys).to be_empty, "Customer-managed KMS keys without rotation enabled:\n#{failing_keys.join("\n- ")}"
     end
   end
 end
