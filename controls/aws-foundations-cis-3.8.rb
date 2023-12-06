@@ -130,7 +130,7 @@ administrator. "
 
   describe "All customer-managed KMS keys" do
     it "should have rotation enabled" do
-      expect(failing_keys).to be_empty, "Customer-managed KMS keys without rotation enabled:\n#{failing_keys.join("\n- ")}"
+      expect(failing_keys).to be_empty, "Customer-managed KMS keys without rotation enabled:\n\t- #{failing_keys.join("\n\t- ")}"
     end
   end
 end
