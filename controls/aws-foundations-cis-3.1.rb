@@ -109,6 +109,8 @@ https://docs.aws.amazon.com/AmazonS3/latest/dev/object-lifecycle-mgmt.html "
     { '8' => ['8.5'] },
   ]
 
+  #TODO: I have an uncaught exception
+
   describe aws_cloudtrail_trails do
     it { should exist }
   end

@@ -79,6 +79,45 @@ administrator. "
     { '8' => ['3.11'] },
   ]
 
+  # TODO: I am making this happen
+  # 
+#  bundle exec inspec exec . -t aws:// --reporter cli json:test.json --filter-empty-profiles --enhanced-outcomes --controls '/aws-foundations-cis-3.8/'     
+# [2023-12-06T00:54:41-05:00] WARN: Input 'exempt_kms_keys' does not have a value. Use --input-file or --input to provide a value for 'exempt_kms_keys' or specify a  value with `input('exempt_kms_keys', value: 'somevalue', ...)`.
+# [2023-12-06T00:54:41-05:00] WARN: Input 'exempt_kms_keys' does not have a value. Use --input-file or --input to provide a value for 'exempt_kms_keys' or specify a  value with `input('exempt_kms_keys', value: 'somevalue', ...)`.
+# [2023-12-06T00:54:41-05:00] WARN: Input 'exempt_kms_keys' does not have a value. Use --input-file or --input to provide a value for 'exempt_kms_keys' or specify a  value with `input('exempt_kms_keys', value: 'somevalue', ...)`.
+# [2023-12-06T00:54:41-05:00] WARN: Input 'exempt_kms_keys' does not have a value. Use --input-file or --input to provide a value for 'exempt_kms_keys' or specify a  value with `input('exempt_kms_keys', value: 'somevalue', ...)`.
+# [2023-12-06T00:54:41-05:00] WARN: Input 'exempt_kms_keys' does not have a value. Use --input-file or --input to provide a value for 'exempt_kms_keys' or specify a  value with `input('exempt_kms_keys', value: 'somevalue', ...)`.
+
+# Profile:   aws-foundations-cis-baseline (aws-foundations-cis-baseline)
+# Version:   2.0.2
+# Target:    aws://
+# Target ID: b91c5f76-58c3-5a19-a3cf-fa122b50e151
+
+#   N/R  aws-foundations-cis-3.8: Ensure rotation for customer created symmetric CMKs is enabled 
+#      ↺  This control is skipped since the aws_kms_keys resource returned an empty coustomer managed and enabled kms key list
+
+
+# Profile Summary: 0 successful controls, 0 control failures, 1 control not reviewed, 0 controls not applicable, 0 controls have error
+# Test Summary: 0 successful, 0 failures, 1 skipped
+# /Users/alippold/.rvm/gems/ruby-3.0.4/gems/activesupport-7.0.8/lib/active_support/core_ext/object/json.rb:60:in `respond_to?': stack level too deep (SystemStackError)
+#         from /Users/alippold/.rvm/gems/ruby-3.0.4/gems/activesupport-7.0.8/lib/active_support/core_ext/object/json.rb:60:in `as_json'
+#         from /Users/alippold/.rvm/gems/ruby-3.0.4/gems/activesupport-7.0.8/lib/active_support/core_ext/object/json.rb:61:in `as_json'
+#         from /Users/alippold/.rvm/gems/ruby-3.0.4/gems/activesupport-7.0.8/lib/active_support/core_ext/object/json.rb:61:in `as_json'
+#         from /Users/alippold/.rvm/gems/ruby-3.0.4/gems/activesupport-7.0.8/lib/active_support/core_ext/object/json.rb:61:in `as_json'
+#         from /Users/alippold/.rvm/gems/ruby-3.0.4/gems/activesupport-7.0.8/lib/active_support/core_ext/object/json.rb:61:in `as_json'
+#         from /Users/alippold/.rvm/gems/ruby-3.0.4/gems/activesupport-7.0.8/lib/active_support/core_ext/object/json.rb:61:in `as_json'
+#         from /Users/alippold/.rvm/gems/ruby-3.0.4/gems/activesupport-7.0.8/lib/active_support/core_ext/object/json.rb:61:in `as_json'
+#         from /Users/alippold/.rvm/gems/ruby-3.0.4/gems/activesupport-7.0.8/lib/active_support/core_ext/object/json.rb:61:in `as_json'
+#          ... 10904 levels...
+#         from /Users/alippold/.rvm/gems/ruby-3.0.4/bin/inspec:25:in `load'
+#         from /Users/alippold/.rvm/gems/ruby-3.0.4/bin/inspec:25:in `<main>'
+#         from /Users/alippold/.rvm/gems/ruby-3.0.4/bin/ruby_executable_hooks:22:in `eval'
+#         from /Users/alippold/.rvm/gems/ruby-3.0.4/bin/ruby_executable_hooks:22:in `<main>'
+#         
+#  This is causing the json reporter to die and not write a report
+
+# TODO: I also have uncaught exceptions
+
   aws_kms_keys.key_arns.each do |key|
     next unless aws_kms_key(key).enabled? && !aws_kms_key(key).managed_by_aws?
     next if input('exempt_kms_keys').include?(key)
