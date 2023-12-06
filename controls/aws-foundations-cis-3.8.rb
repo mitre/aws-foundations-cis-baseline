@@ -118,17 +118,19 @@ administrator. "
 
 # TODO: I also have uncaught exceptions
 
-  aws_kms_keys.key_arns.each do |key|
-    next unless aws_kms_key(key).enabled? && !aws_kms_key(key).managed_by_aws?
-    next if input('exempt_kms_keys').include?(key)
-    describe aws_kms_key(key) do
-      it { should have_rotation_enabled }
-    end
-  end
+  customer_created_symmetric_cmk = (aws_kms_keys.key_arns - input('exempt_kms_keys')).select { |key|
+    aws_kms_key(key).enabled? && !aws_kms_key(key).managed_by_aws?
+  }
 
-  if aws_kms_keys.key_arns.none? { |key| aws_kms_key(key).enabled? && !aws_kms_key(key).managed_by_aws? && !input('exempt_kms_keys').include?(key) }
-    describe 'Control skipped because no enabled kms keys were found' do
-      skip 'This control is skipped since the aws_kms_keys resource returned an empty coustomer managed and enabled kms key list'
+  only_if("No non-exempt customer managed KMS keys were discovered", impact: 0.0) { !customer_created_symmetric_cmk.empty? }
+
+  failing_keys = customer_created_symmetric_cmk.select { |key|
+    !aws_kms_key(key).is_rotation_enabled?
+  }
+
+  describe "All customer-managed KMS keys" do
+    it "should have rotation enabled" do
+      expect(failing_keys).to be_empty, "Customer-managed KMS keys without rotation enabled:\t#{failing_keys}"
     end
   end
 end
