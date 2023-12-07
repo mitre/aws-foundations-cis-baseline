@@ -107,12 +107,9 @@ with 3rd Party tools that perform similar processes and protection. "
   tag severity: 'medium '
   tag cis_controls: [{ '8' => ['3.1'] }]
 
-  # only_if("Manual review necessary: third-party tool #{input('third_party_data_management_tool')} is expected to meet this recommendation; check its configuration according to vendor documentation") {
-  #   !input('third_party_data_management_tool')
-  # }
-  describe 'Third-party tool in use' do
-    skip "Manual review necessary: third-party tool '#{input('third_party_data_management_tool')}' is expected to meet this recommendation; check its configuration according to vendor documentation"
-  end
+  only_if("Manual review necessary: third-party tool #{input('third_party_data_management_tool')} is expected to meet this recommendation; check its configuration according to vendor documentation") {
+    !input('third_party_data_management_tool').present?
+  }
   
   describe aws_macie do 
     it { should be_enabled }
