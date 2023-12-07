@@ -62,7 +62,6 @@ control "aws-foundations-cis-1.3" do
     skip "
       This control must be manually reviewed, AWS does not support validation of the 
       Security Challenge Questions in the AWS CLI or by an API.
-      
       Examine the root account's security challenge questions in the AWS Managment Console."
   end
 end
