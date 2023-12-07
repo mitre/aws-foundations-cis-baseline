@@ -1,15 +1,15 @@
-control 'aws-foundations-cis-1.2' do
-  title 'Ensure urrent Security Contact is registered and up to date'
+control "aws-foundations-cis-1.2" do
+  title "Ensure urrent Security Contact is registered and up to date"
   desc "
     AWS provides customers with the option of specifying the contact information for account's
     security team. It is recommended that this information be provided.
     "
-  desc 'rationale',
+  desc "rationale",
        "Specifying security-specific contact information will help ensure that security
     advisories sent by AWS reach the team in your organization that is best equipped to respond to
     them.
     "
-  desc 'check',
+  desc "check",
        "Perform the following to determine if security contact information is present:
 
     **From
@@ -33,7 +33,7 @@ control 'aws-foundations-cis-1.2' do
     ```
     2. Ensure proper
     contact information is specified for the `Security` contact. "
-  desc 'fix',
+  desc "fix",
        "Perform the following to establish security contact information:
 
     **From
@@ -62,13 +62,13 @@ control 'aws-foundations-cis-1.2' do
     more than one individual. "
 
   impact 0.5
-  tag nist: ['IR-6']
-  tag severity: 'medium '
-  tag cis_controls: [{ '8' => ['17.2'] }]
+  tag nist: ["IR-6"]
+  tag severity: "medium "
+  tag cis_controls: [{ "8" => ["17.2"] }]
 
   describe aws_security_contact, :sensitive do
     it { should be_configured }
-    its('email_address') { should cmp input('security_contact').email_address }
-    its('phone_number') { should cmp input('security_contact').phone_number }
+    its("email_address") { should cmp input("security_contact").email_address }
+    its("phone_number") { should cmp input("security_contact").phone_number }
   end
 end
