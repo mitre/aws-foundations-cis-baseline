@@ -83,14 +83,14 @@ administrator. "
     aws_kms_key(key).enabled? && !aws_kms_key(key).managed_by_aws?
   }
 
-  only_if("No non-exempt customer managed KMS keys were discovered", impact: 0.0) { !customer_created_symmetric_cmk.empty? }
+  only_if('No non-exempt customer managed KMS keys were discovered', impact: 0.0) { !customer_created_symmetric_cmk.empty? }
 
   failing_keys = customer_created_symmetric_cmk.map { |key_id|
-    !aws_kms_key(key_id).has_rotation_enabled? ? aws_kms_key(key_id).display_name : nil
+    aws_kms_key(key_id).has_rotation_enabled? ? nil : aws_kms_key(key_id).display_name
   }.compact
 
-  describe "All customer-managed KMS keys" do
-    it "should have rotation enabled" do
+  describe 'All customer-managed KMS keys' do
+    it 'should have rotation enabled' do
       expect(failing_keys).to be_empty, "Customer-managed KMS keys without rotation enabled:\n\t- #{failing_keys.join("\n\t- ")}"
     end
   end

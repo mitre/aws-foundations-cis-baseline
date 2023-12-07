@@ -65,8 +65,8 @@ aws ec2 describe-instances
     failing_ec2 += instance_id
   end
 
-  describe "All EC2 Instances" do
-    it "should only allow IMDSv2" do
+  describe 'All EC2 Instances' do
+    it 'should only allow IMDSv2' do
       expect(failing_ec2).to be_empty, "Failing EC2s:\t#{failing_ec2}"
     end
   end
