@@ -1,19 +1,21 @@
-control 'aws-foundations-cis-4.1' do
-  title 'Ensure unauthorized API calls are monitored '
+control "aws-foundations-cis-4.1" do
+  title "Ensure unauthorized API calls are monitored "
   desc "Real-time monitoring of API calls can be achieved by directing CloudTrail Logs to CloudWatch
 Logs, or an external Security information and event management (SIEM) environment, and
 establishing corresponding metric filters and alarms.
 
 It is recommended that a metric
 filter and alarm be established for unauthorized API calls. "
-  desc 'rationale', "Monitoring unauthorized API calls will help reduce time to detect malicious activity and can
+  desc "rationale",
+       "Monitoring unauthorized API calls will help reduce time to detect malicious activity and can
 alert you to a potential security incident.
 
 CloudWatch is an AWS native service that
 allows you to observe and monitor resources and applications. CloudTrail Logs can also be
 sent to an external Security information and event management (SIEM) environment for
 monitoring and alerting. "
-  desc 'check', "If you are using CloudTrails and CloudWatch, perform the following to ensure that there is at
+  desc "check",
+       "If you are using CloudTrails and CloudWatch, perform the following to ensure that there is at
 least one active multi-region CloudTrail with prescribed metric filters and alarms
 configured:
 
@@ -101,7 +103,8 @@ ARN.
 ```
 Example of valid \"SubscriptionArn\": \"arn:aws:sns:<region>:<aws_account_number>:<SnsTopicName>:<SubscriptionID>\"
 ``` "
-  desc 'fix', "If you are using CloudTrails and CloudWatch, perform the following to setup the metric
+  desc "fix",
+       "If you are using CloudTrails and CloudWatch, perform the following to setup the metric
 filter, alarm, SNS topic, and subscription:
 
 1. Create a metric filter based on filter
@@ -151,14 +154,16 @@ aws cloudwatch put-metric-alarm
 --comparison-operator GreaterThanOrEqualToThreshold --evaluation-periods 1
 --namespace \"CISBenchmark\" --alarm-actions <sns_topic_arn>
 ``` "
-  desc 'additional_information', "Configuring log metric filter and alarm on Multi-region (global) CloudTrail
+  desc "additional_information",
+       "Configuring log metric filter and alarm on Multi-region (global) CloudTrail
 - ensures
 that activities from all regions (used as well as unused) are monitored
 - ensures that
 activities on all supported global services are monitored
 - ensures that all management
 events across all regions are monitored "
-  desc 'impact', "This alert may be triggered by normal read-only console activities that attempt to
+  desc "impact",
+       "This alert may be triggered by normal read-only console activities that attempt to
 opportunistically gather optional information, but gracefully fail if they don't have
 permissions.
 
@@ -170,24 +175,28 @@ In some cases doing this may allow the users to actually view some areas of the
 system - any additional access given should be reviewed for alignment with the original
 limited IAM user intent. "
   impact 0.5
-  ref 'https://aws.amazon.com/sns/:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/sns/latest/dg/SubscribeTopic.html'
-  tag nist: ['AU-6', 'AU-6(1)', 'AU-7(1)']
-  tag severity: 'medium '
-  tag cis_controls: [
-    { '8' => ['8.11'] },
-  ]
+  ref "https://aws.amazon.com/sns/:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html:https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html:https://docs.aws.amazon.com/sns/latest/dg/SubscribeTopic.html"
+  tag nist: %w[AU-6 AU-6(1) AU-7(1)]
+  tag severity: "medium "
+  tag cis_controls: [{ "8" => ["8.11"] }]
 
-  pattern = '{ ($.errorCode = "*UnauthorizedOperation") || ($.errorCode = "AccessDenied*") }'
+  pattern =
+    '{ ($.errorCode = "*UnauthorizedOperation") || ($.errorCode = "AccessDenied*") }'
 
   describe aws_cloudwatch_log_metric_filter(pattern: pattern) do
     it { should exist }
   end
 
   # Find the log_group_name associated with the aws_cloudwatch_log_metric_filter that has the pattern
-  log_group_name = aws_cloudwatch_log_metric_filter(pattern: pattern).log_group_name
+  log_group_name =
+    aws_cloudwatch_log_metric_filter(pattern: pattern).log_group_name
 
   # Find cloudtrails associated with with `log_group_name` parsed above
-  associated_trails = aws_cloudtrail_trails.names.select { |x| aws_cloudtrail_trail(x).cloud_watch_logs_log_group_arn =~ /log-group:#{log_group_name}:/ }
+  associated_trails =
+    aws_cloudtrail_trails.names.select do |x|
+      aws_cloudtrail_trail(x).cloud_watch_logs_log_group_arn =~
+        /log-group:#{log_group_name}:/
+    end
 
   # Ensure log_group is associated atleast one cloudtrail
   describe "Cloudtrails associated with log-group: #{log_group_name}" do
@@ -207,21 +216,31 @@ limited IAM user intent. "
   end
 
   # Parse out `metric_name` and `metric_namespace` for the specified pattern.
-  associated_metric_filter = aws_cloudwatch_log_metric_filter(pattern: pattern, log_group_name: log_group_name)
+  associated_metric_filter =
+    aws_cloudwatch_log_metric_filter(
+      pattern: pattern,
+      log_group_name: log_group_name
+    )
   metric_name = associated_metric_filter.metric_name
   metric_namespace = associated_metric_filter.metric_namespace
 
   # Ensure aws_cloudwatch_alarm for the specified pattern meets requirements.
   if associated_metric_filter.exists?
-    describe aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace) do
+    describe aws_cloudwatch_alarm(
+               metric_name: metric_name,
+               metric_namespace: metric_namespace
+             ) do
       it { should exist }
-      its('alarm_actions') { should_not be_empty }
+      its("alarm_actions") { should_not be_empty }
     end
 
-    aws_cloudwatch_alarm(metric_name: metric_name, metric_namespace: metric_namespace).alarm_actions.each do |sns|
+    aws_cloudwatch_alarm(
+      metric_name: metric_name,
+      metric_namespace: metric_namespace
+    ).alarm_actions.each do |sns|
       describe aws_sns_topic(sns) do
         it { should exist }
-        its('confirmed_subscription_count') { should cmp >= 1 }
+        its("confirmed_subscription_count") { should cmp >= 1 }
       end
     end
   end
