@@ -77,9 +77,7 @@ S3 buckets. "
   tag severity: 'medium '
   tag cis_controls: [{ '8' => ['3.3'] }]
 
-  # TODO:
-  #   - add bucket exempt list
-  #   - ensure you can handle 100k buckets
+  # TODO: add bucket exempt list, ensure you can handle 100k buckets
 
   exempt_buckets = input('exempt_buckets')
   s3_buckets = aws_s3_buckets.bucket_names
