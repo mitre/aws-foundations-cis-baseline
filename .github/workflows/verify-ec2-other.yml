@@ -1,5 +1,5 @@
 ---
-name: CIS AWS Foundations v2.0.0
+name: CIS AWS Foundations v2.0.0 - Other
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   my-job:
-    name: Validate my profile
+    name: Validate the CIS AWS Benchmark v2.0
     runs-on: ubuntu-latest
     env:
       CHEF_LICENSE: accept-silent

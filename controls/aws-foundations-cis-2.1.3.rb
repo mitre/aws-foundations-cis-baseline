@@ -110,8 +110,8 @@ with 3rd Party tools that perform similar processes and protection. "
   only_if("Manual review necessary: third-party tool #{input('third_party_data_management_tool')} is expected to meet this recommendation; check its configuration according to vendor documentation") {
     !input('third_party_data_management_tool').present?
   }
-  
-  describe aws_macie do 
+
+  describe aws_macie do
     it { should be_enabled }
   end
 

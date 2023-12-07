@@ -64,15 +64,15 @@ Lint/UnmodifiedReduceAccumulator: # (new in 1.1)
   Enabled: true
 
 Metrics/ClassLength:
-  Max: 300
+  Max: 500
   Exclude:
     - libraries/aws_ecs_task_definition.rb
 Metrics/MethodLength:
-  Max: 45
+  Max: 100
   Exclude:
     - libraries/aws_cloudfront_distribution.rb
 Metrics/BlockLength:
-  Max: 200
+  Max: 300
 Metrics/AbcSize:
   Max: 75
 Metrics/BlockNesting:

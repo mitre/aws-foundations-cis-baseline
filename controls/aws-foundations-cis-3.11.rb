@@ -103,16 +103,16 @@ regions. "
   if input('single_trail').present?
     describe aws_cloudtrail_trail(input('single_trail')) do
       it { should be_multi_region_trail }
-      it { should be monitoring_read("AWS::S3::Object") }
+      it { should be monitoring_read('AWS::S3::Object') }
     end
   else
-    trails_monitoring_all_s3 = aws_cloudtrail_trails.trail_arns.select{ |trail_arn|
-      aws_cloudtrail_trail(trail_arn).is_multi_region_trail && 
-      aws_cloudtrail_trail(trail_arn).monitoring_read?("AWS::S3::Object")
+    trails_monitoring_all_s3 = aws_cloudtrail_trails.trail_arns.select { |trail_arn|
+      aws_cloudtrail_trail(trail_arn).is_multi_region_trail &&
+        aws_cloudtrail_trail(trail_arn).monitoring_read?('AWS::S3::Object')
     }
     describe 'CloudTrail trails' do
       it 'should include at least one multi-region trail monitoring all S3 reads' do
-        expect(trails_monitoring_all_s3).to_not be_empty, "No multi-region trails monitoring all S3 bucket reads were discovered"
+        expect(trails_monitoring_all_s3).to_not be_empty, 'No multi-region trails monitoring all S3 bucket reads were discovered'
       end
     end
   end
