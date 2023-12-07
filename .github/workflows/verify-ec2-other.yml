@@ -18,6 +18,7 @@ jobs:
       PROFILE_FILE: profile.json
       INPUT_FILE: other.inputs.yml
       THRESHOLD_FILE: other.threshold.yml
+      AWS_REGION: ${{ secrets.OTHER_AWS_REGION }}
     steps:
       - name: add needed packages
         run: sudo apt-get install -y jq
