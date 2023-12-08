@@ -53,8 +53,7 @@ jobs:
         run: bundle exec inspec check .
       - name: Run the Profile
         run: |
-          bundle exec inspec exec . --target aws:// --input-file=${{ env.INPUT_FILE }} --reporter cli json:${{ env.RESULTS_FILE }} --enhanced-outcomes --filter-empty-profiles --log-level error || true
-          ls -alh
+          bundle exec inspec exec . --target aws:// --input-file=${{ env.INPUT_FILE }} --reporter cli json:${{ env.RESULTS_FILE }} --enhanced-outcomes --filter-empty-profiles -l debug || true
       - name: Save Test Result JSON
         uses: actions/upload-artifact@v3
         with:
