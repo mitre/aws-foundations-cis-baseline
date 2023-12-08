@@ -141,13 +141,6 @@ file://<FileName.Json>
       describe aws_s3_bucket(bucket_name) do
         it { should have_access_logging_enabled }
       end
-    end
+    end if aws_cloudtrail_trails.exist?
   end
-
-  # Use this after skeletal aws_cloudtrail_trails is enhanced to expose s3_bucket_name
-  # aws_cloudtrail_trails.s3_bucket_name.uniq.each do |bucket|
-  #   describe aws_s3_bucket( bucket ) do
-  #     it{ should be_logging_enabled }
-  #   end
-  # end
 end
