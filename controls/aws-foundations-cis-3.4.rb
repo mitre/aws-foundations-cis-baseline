@@ -107,5 +107,5 @@ resource to manage CloudWatch Logs retention periods:
       its('cloud_watch_logs_log_group_arn') { should_not be_nil }
       its('delivered_logs_days_ago') { should cmp <= 1 }
     end
-  end
+  end if aws_cloudtrail_trails.exist?
 end

@@ -147,5 +147,5 @@ for more information. "
     describe aws_cloudtrail_trail(trail) do
       it { should be_encrypted }
     end
-  end
+  end if aws_cloudtrail_trails.exist?
 end
