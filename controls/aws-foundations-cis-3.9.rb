@@ -175,6 +175,8 @@ resource to manage CloudWatch Logs retention periods:
     { '8' => ['8.2'] },
   ]
 
+  only_if('This control is skipped since the aws_vpcs resource returned an empty vpc list', impact 0.0) { !aws_vpcs.vpc_ids.empty? }
+
   aws_vpcs.vpc_ids.each do |vpc|
     describe aws_vpc(vpc) do
       it { should be_flow_logs_enabled }
@@ -186,11 +188,6 @@ resource to manage CloudWatch Logs retention periods:
           its('flow_log_status') { should cmp 'ACTIVE' }
         end
       end
-    end
-  end
-  if aws_vpcs.vpc_ids.empty?
-    describe 'Control skipped because no vpcs were found' do
-      skip 'This control is skipped since the aws_vpcs resource returned an empty vpc list'
     end
   end
 end
