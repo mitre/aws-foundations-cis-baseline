@@ -121,7 +121,7 @@ each EC2 instance in your AWS account that requires an IAM role to be attached. 
 
   describe 'EC2 Instances' do
     it 'should have an attached role' do
-      expect(ec2_instances_with_no_role.count).to eq 0, fail_message
+      expect(ec2_instances_with_no_role.entries).to be_empty, fail_message
     end
   end
 end
