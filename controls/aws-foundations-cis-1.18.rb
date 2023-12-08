@@ -113,17 +113,15 @@ each EC2 instance in your AWS account that requires an IAM role to be attached. 
     { '8' => ['6.8'] },
   ]
 
-  ec2_instances_with_no_role = aws_ec2_instances.entries.select {
-    |instance|
-    instance.iam_profile.nil? ||
-      aws_iam_instance_profile(instance_profile_name: instance.iam_profile).roles.empty?
-  }
-
-  fail_message = "EC2 Instances with no role:\t#{ec2_instances_with_no_role.map(&:name)}"
+  only_if("Not Applicable - No EC2s discovered", impact: 0.0) { !aws_ec2_instances.exist? }
+  
+  ec2_instances_with_no_role = aws_ec2_instances.where{ !iam_profile.present? }
+  
+  fail_message = "EC2 Instances with no role:\t#{ec2_instances_with_no_role.instance_ids}"
 
   describe 'EC2 Instances' do
     it 'should have an attached role' do
-      expect(ec2_instances_with_no_role).to be_empty, fail_message
+      expect(ec2_instances_with_no_role.count).to eq 0, fail_message
     end
   end
 end
