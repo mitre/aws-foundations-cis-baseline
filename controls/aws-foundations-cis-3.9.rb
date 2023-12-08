@@ -175,7 +175,7 @@ resource to manage CloudWatch Logs retention periods:
     { '8' => ['8.2'] },
   ]
 
-  only_if('No VPCs discovered', impact 0.0) { !aws_vpcs.vpc_ids.empty? }
+  only_if('No VPCs discovered', impact: 0.0) { !aws_vpcs.vpc_ids.empty? }
 
   aws_vpcs.vpc_ids.each do |vpc_id|
     describe aws_flow_log(vpc_id: vpc_id) do
