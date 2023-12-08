@@ -113,13 +113,6 @@ Remove any `Statement` having an `Effect` set to `Allow` and a `Principal` set t
       describe aws_s3_bucket(bucket_name) do
         it { should_not be_public }
       end
-    end
-  end
-
-  # Use this after skeletal aws_cloudtrail_trails is enhanced to expose s3_bucket_name
-  # aws_cloudtrail_trails.s3_bucket_name.uniq.each do |bucket|
-  #   describe aws_s3_bucket( bucket ) do
-  #     it{ should_not be_public }
-  #   end
-  # end
+    end 
+  end if aws_cloudtrail_trails.exist?
 end
