@@ -33,6 +33,7 @@ jobs:
           aws-access-key-id: ${{ secrets.OTHER_AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.OTHER_AWS_SECRET }}
           aws-region: ${{ secrets.OTHER_AWS_REGION }}
+          audience: https://sts.${{ secrets.OTHER_AWS_REGION }}.amazonaws.com
 
       - name: Check out repository
         uses: actions/checkout@v3
@@ -53,7 +54,7 @@ jobs:
         run: bundle exec inspec check .
       - name: Run the Profile
         run: |
-          bundle exec inspec exec . --target aws:// --input-file=${{ env.INPUT_FILE }} --reporter cli json:${{ env.RESULTS_FILE }} --enhanced-outcomes --filter-empty-profiles -l debug || true
+          bundle exec inspec exec . --target aws:// --input-file=${{ env.INPUT_FILE }} --reporter cli json:${{ env.RESULTS_FILE }} --enhanced-outcomes --filter-empty-profiles || true
       - name: Save Test Result JSON
         uses: actions/upload-artifact@v3
         with:
