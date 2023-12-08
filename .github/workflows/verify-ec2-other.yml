@@ -19,6 +19,7 @@ jobs:
       INPUT_FILE: other.inputs.yml
       THRESHOLD_FILE: other.threshold.yml
       AWS_REGION: ${{ secrets.OTHER_AWS_REGION }}
+      AWSRB_DEBUG: true
     steps:
       - name: add needed packages
         run: sudo apt-get install -y jq
@@ -52,7 +53,7 @@ jobs:
         run: bundle exec inspec check .
       - name: Run the Profile
         run: |
-          bundle exec inspec exec . --target aws:// --input-file=${{ env.INPUT_FILE }} --reporter cli json:${{ env.RESULTS_FILE }} --enhanced-outcomes --filter-empty-profiles || true
+          bundle exec inspec exec . --target aws:// --input-file=${{ env.INPUT_FILE }} --reporter cli json:${{ env.RESULTS_FILE }} --enhanced-outcomes --filter-empty-profiles --log-level error || true
           ls -alh
       - name: Save Test Result JSON
         uses: actions/upload-artifact@v3
