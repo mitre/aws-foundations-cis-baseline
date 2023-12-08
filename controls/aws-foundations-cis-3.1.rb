@@ -109,17 +109,15 @@ https://docs.aws.amazon.com/AmazonS3/latest/dev/object-lifecycle-mgmt.html "
     { '8' => ['8.5'] },
   ]
 
-  # TODO: I have an uncaught exception
-
   describe aws_cloudtrail_trails do
     it { should exist }
   end
 
-  aws_cloudtrail_trails.names.each do |trail|
-    describe aws_cloudtrail_trail(trail) do
+  aws_cloudtrail_trails.trail_arns.each do |trail_arn|
+    describe aws_cloudtrail_trail(trail_arn) do
       it { should be_multi_region_trail }
       it { should be_logging }
       it { should have_event_selector_mgmt_events_rw_type_all }
     end
-  end
+  end if aws_cloudtrail_trails.exist?
 end
