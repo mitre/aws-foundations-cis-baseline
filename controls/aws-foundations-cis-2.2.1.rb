@@ -74,7 +74,7 @@ able to access the volumes. "
   tag severity: 'medium '
   tag cis_controls: [{ '8' => ['3.11'] }]
 
-  aws_regions.region_name.each do |name|
+  aws_regions.region_names.each do |name|
     describe aws_region(name) do
       it { should have_ebs_encryption_enabled }
     end
