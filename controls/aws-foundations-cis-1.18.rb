@@ -113,10 +113,10 @@ each EC2 instance in your AWS account that requires an IAM role to be attached. 
     { '8' => ['6.8'] },
   ]
 
-  only_if("Not Applicable - No EC2s discovered", impact: 0.0) { aws_ec2_instances.exist? }
-  
-  ec2_instances_with_no_role = aws_ec2_instances.where{ !iam_profile.present? }
-  
+  only_if('Not Applicable - No EC2s discovered', impact: 0.0) { aws_ec2_instances.exist? }
+
+  ec2_instances_with_no_role = aws_ec2_instances.where { !iam_profile.present? }
+
   fail_message = "EC2 Instances with no role:\n\t- #{ec2_instances_with_no_role.instance_ids.join("\n\t- ")}"
 
   describe 'EC2 Instances' do

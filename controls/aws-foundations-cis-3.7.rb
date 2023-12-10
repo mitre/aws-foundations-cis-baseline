@@ -143,9 +143,11 @@ for more information. "
     it { should exist }
   end
 
-  aws_cloudtrail_trails.trail_arns.each do |trail|
-    describe aws_cloudtrail_trail(trail) do
-      it { should be_encrypted }
+  if aws_cloudtrail_trails.exist?
+    aws_cloudtrail_trails.trail_arns.each do |trail|
+      describe aws_cloudtrail_trail(trail) do
+        it { should be_encrypted }
+      end
     end
-  end if aws_cloudtrail_trails.exist?
+  end
 end

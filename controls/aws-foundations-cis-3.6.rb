@@ -133,14 +133,16 @@ file://<FileName.Json>
 
   aws_cloudtrail_trails.trail_arns.each do |trail|
     bucket_name = aws_cloudtrail_trail(trail).s3_bucket_name
-    if input('exempt_buckets').include?(bucket_name)
-      describe 'Bucket not inspected because it is defined as an exception' do
-        skip "Bucket: #{bucket_name} not inspected because it is defined in exempt_buckets."
+    if aws_cloudtrail_trails.exist?
+      if input('exempt_buckets').include?(bucket_name)
+        describe 'Bucket not inspected because it is defined as an exception' do
+          skip "Bucket: #{bucket_name} not inspected because it is defined in exempt_buckets."
+        end
+      else
+        describe aws_s3_bucket(bucket_name) do
+          it { should have_access_logging_enabled }
+        end
       end
-    else
-      describe aws_s3_bucket(bucket_name) do
-        it { should have_access_logging_enabled }
-      end
-    end if aws_cloudtrail_trails.exist?
+    end
   end
 end
