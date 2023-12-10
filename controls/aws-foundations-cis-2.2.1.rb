@@ -69,10 +69,22 @@ volumes are **not** converted automatically. "
        "Losing access or removing the KMS key in use by the EBS volumes will result in no longer being
 able to access the volumes. "
   impact 0.5
-  ref 'https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html:https://aws.amazon.com/blogs/aws/new-opt-in-to-default-encryption-for-new-ebs-volumes/'
+  ref 'https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html'
+  ref 'https://aws.amazon.com/blogs/aws/new-opt-in-to-default-encryption-for-new-ebs-volumes/'
+
   tag nist: %w{SC-28 SC-28(1)}
   tag severity: 'medium '
   tag cis_controls: [{ '8' => ['3.11'] }]
+
+  ec2_instances_with_no_role = aws_ec2_instances.where { !iam_profile.present? }
+
+  fail_message = "EC2 Instances with no role:\n\t- #{ec2_instances_with_no_role.instance_ids.join("\n\t- ")}"
+
+  describe 'EC2 Instances' do
+    it 'should all have an attached role' do
+      expect(ec2_instances_with_no_role.entries).to be_empty, fail_message
+    end
+  end
 
   aws_regions.region_names.each do |name|
     describe aws_region(name) do
