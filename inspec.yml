@@ -33,6 +33,7 @@ inputs:
     description: "The AWS Regions exempted from inspection"
     type: Array
     value:
+      - us-west-1
       - us-east-2
       - us-west-2
       - eu-central-1
@@ -48,6 +49,21 @@ inputs:
       - ap-northeast-1
       - ap-northeast-2
       - ap-northeast-3
+
+    # 5.3
+  - name: exempt_ports
+    description: "List of ports that you wish to exclude from validation"
+    type: Array
+    value:
+      - 3389
+
+    # 5.3
+  - name: admin_access_ports
+    description:
+    type: Array
+    value:
+      - 22
+      - 3389
 
   - name: exempt_kms_keys
     description: "List of KMS keys exempted from inspection"
@@ -68,6 +84,11 @@ inputs:
     description: "The maximum allowed IAM account age"
     type: Numeric
     value: 90
+
+  - name: exempt_vpcs
+    description: "List of vpcs exempted from inspection"
+    type: Array
+    value: []
 
   - name: exempt_buckets
     description: "List of buckets exempted from inspection"
@@ -114,6 +135,12 @@ inputs:
     description: "List of security groups exempted from inspection"
     type: Array
     value: []
+
+  - name: exempt_sg_patterns
+    description: "An array of ruby regex patterns to exempt from evaluation"
+    type: Array
+    value:
+      - /kitchen-*/
 
   - name: service_account_mfa_exceptions
     description: "List of service accounts from the MFA requirement"

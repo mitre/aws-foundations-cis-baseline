@@ -52,7 +52,25 @@ the ::/0 inbound rule. "
   tag severity: 'medium '
   tag cis_controls: [{ '7' => ['9.2'] }]
 
-  describe 'No Tests Defined Yet' do
-    skip 'No Tests have been written for this control yet'
+  only_if('This control takes a long time to run, excluding due to "disable_slow_controls"') { !input('disable_slow_controls') }
+
+  active_ports = input('admin_access_ports') - input('exempt_ports')
+  active_regions = aws_regions.region_names - input('exempt_regions')
+  active_sgs = aws_security_groups.group_names - input('exempt_security_groups')
+  regexs = input('exempt_sg_patterns')
+  # TODO: see if the below link shows how we can delete all array elements that match so we can just update active_sgs
+
+  active_ports.each do |port|
+    active_regions.each do |region_name|
+      active_sgs.each do |sg_name|
+        describe aws_security_group(group_name: sg_name, aws_region: region_name) do
+          next if regexs.map(&:to_regexp).any? { |pattern| pattern.match?(_sg_name) }
+          it { should_not allow_in(port: port, ipv4_range: '0.0.0.0/0') }
+          it { should_not allow_in(port: port, ipv6_range: '::/0') }
+        end
+      end
+    end
   end
 end
+
+# https://discuss.elastic.co/t/ruby-filter-to-delete-array-element-with-regexp/197131
