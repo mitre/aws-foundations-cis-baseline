@@ -50,7 +50,35 @@ Click `Save` "
   tag severity: 'medium '
   tag cis_controls: [{ '7' => ['9.2'] }]
 
+  # TODO: entry_protocols: 6, 17, -1 => input(restricted_network_protocols)
+  # - nums will have to be documented to protocols
+  # - see /etc/something....
+  # NOTE: aws_network_acls.table.map { |x| x[:entries_protocols] }
+  # NOTE: aws_network_acls.table.map { |x| x[:entries_protocols] }.reduce(:+).uniq
+  # NOTE: aws_network_acls.where { entries_cidr_blocks.include?('0.0.0.0/0') }.where { entries_protocols.include?('-1') }
+  # NOTE: we may have less lopping then in 5.2, 5.3, 5/4
+
+  # require 'pry'
+  # binding.pry
+
   describe 'No Tests Defined Yet' do
-    skip 'No Tests have been written for this control yet'
+    skip "No Tests have been written for this control yet \n\n\t The bulk of what you need is in the comments"
   end
+  # describe aws_network_acls.where { entries_cidr_blocks.include?('0.0.0.0/0') } do |network_acl_id|
+  # describe aws_network_acl(network_acl_id: network_acl_id) do
+  #   it { should have_ingress }
+  #   it { should have_ingress(cidr_block: '10.3.0.0/18', rule_action: 'allow') }
+  #   it { should have_ingress(rule_action: 'allow') }
+  #   it { should have_ingress(cidr_block: '10.3.0.0/18') }
+  # end
+
+  # aws_network_acls.where{ entries_cidr_blocks.include?('0.0.0.0/0') }.network_acl_ids.each do |network_acl_id|
+  #   require 'pry' ; binding.pry
+  #   describe aws_network_acl(network_acl_id) do
+  #     its('entries_protocols.uniq') { should_not include '6' }
+  #     # its('egress_rule_number_100.protocol') { should eq '6' }
+  #     # its('egress_rule_number_100.rule_action') { should eq 'allow' }
+  #   end
+  # end
+
 end
