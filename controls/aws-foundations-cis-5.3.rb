@@ -56,16 +56,17 @@ the ::/0 inbound rule. "
 
   active_ports = input('admin_access_ports') - input('exempt_ports')
   active_regions = aws_regions.region_names - input('exempt_regions')
+  active_regions = [input('default_aws_region')] if input('ignore_other_regions')
   active_sgs = aws_security_groups.group_names - input('exempt_security_groups')
   regexs = input('exempt_sg_patterns')
   # TODO: see if the below link shows how we can delete all array elements that match so we can just update active_sgs
+  # TODO: add a concpet of 'default_region_only' as a turnary statement on active_region
 
   active_ports.each do |port|
     active_regions.each do |region_name|
       active_sgs.each do |sg_name|
         describe aws_security_group(group_name: sg_name, aws_region: region_name) do
-          next if regexs.map(&:to_regexp).any? { |pattern| pattern.match?(_sg_name) }
-          it { should_not allow_in(port: port, ipv4_range: '0.0.0.0/0') }
+          next if regexs.map(&:to_regexp).any? { |pattern| pattern.match?(sg_name) }
           it { should_not allow_in(port: port, ipv6_range: '::/0') }
         end
       end
