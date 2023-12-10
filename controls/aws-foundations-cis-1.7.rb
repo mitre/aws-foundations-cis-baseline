@@ -87,7 +87,7 @@ information. "
       DateTime.strptime(input('last_root_login_date').to_s, '%Y%m%d')
     describe 'The root user' do
       it "should not have logged in via password since #{last_root_login_date.strftime('%Y%m%d')}" do
-        expect(credential_report.password_last_used.first).to eq('N/A',).or eq('no_information').or be <= last_root_login_date
+        expect(credential_report.password_last_used.first).to eq('N/A').or eq('no_information').or be <= last_root_login_date
       end
       it "should not have logged in via an access key (key 1) since #{last_root_login_date.strftime('%Y%m%d')}" do
         expect(credential_report.access_key_1_last_used_date.first).to eq(

@@ -20,10 +20,12 @@ engineering - discovering the minimum ports required by systems in the environme
 the VPC flow logging recommendation in this benchmark is not adopted as a permanent security
 measure, it should be used during any period of discovery and engineering for least
 privileged security groups. "
-  desc 'rationale', "Configuring all VPC default security groups to restrict all traffic will encourage least
+  desc 'rationale',
+       "Configuring all VPC default security groups to restrict all traffic will encourage least
 privilege security group development and mindful placement of AWS resources into security
 groups which will in-turn reduce the exposure of those resources. "
-  desc 'check', "Perform the following to determine if the account is configured as prescribed:
+  desc 'check',
+       "Perform the following to determine if the account is configured as prescribed:
 
 Security
 Group State
@@ -56,7 +58,8 @@ group.
 https://console.aws.amazon.com/ec2/v2/home
 6. In the filter column type 'Security
 Group ID : < security group id from #4 >' "
-  desc 'fix', "Security Group Members
+  desc 'fix',
+       "Security Group Members
 
 Perform the following to implement the prescribed state:
 
@@ -91,7 +94,8 @@ Recommended:
 IAM groups allow you to edit the \"name\" field. After remediating
 default groups rules for all VPCs in all regions, edit this field to add text similar to \"DO NOT
 USE. DO NOT ADD RULES\" "
-  desc 'impact', "Implementing this recommendation in an existing VPC containing operating resources
+  desc 'impact',
+       "Implementing this recommendation in an existing VPC containing operating resources
 requires extremely careful migration planning as the default security groups are likely to
 be enabling many ports that are unknown. Enabling VPC flow logging (of accepts) in an existing
 environment that is known to be breach free will reveal the current pattern of ports being used
@@ -100,16 +104,16 @@ for each instance to communicate successfully. "
   ref 'https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html:https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security-groups.html#default-security-group'
   tag nist: ['AC-3']
   tag severity: 'medium '
-  tag cis_controls: [
-    { '8' => ['3.3'] },
-  ]
+  tag cis_controls: [{ '8' => ['3.3'] }]
 
-  only_if('The requirement is Not Applicable since no VPCs were Found.', impact: 0.0) do
-    aws_vpcs.exist?
-  end
+  only_if(
+    'The requirement is Not Applicable since no VPCs were Found.',
+    impact: 0.0,
+  ) { aws_vpcs.exist? }
 
   aws_vpcs.vpc_ids.each do |vpc|
     describe aws_security_group(group_name: 'default', vpc_id: vpc) do
+      next if input('exempt_vpcs').include?(vpc)
       its('inbound_rules') { should be_empty }
       its('outbound_rules') { should be_empty }
     end
