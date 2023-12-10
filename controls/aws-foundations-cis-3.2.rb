@@ -69,9 +69,11 @@ validate-logs --trail-arn <trail_arn> --start-time <start_time> --end-time
     it { should exist }
   end
 
-  aws_cloudtrail_trails.trail_arns.each do |trail|
-    describe aws_cloudtrail_trail(trail) do
-      it { should be_log_file_validation_enabled }
+  if aws_cloudtrail_trails.exist?
+    aws_cloudtrail_trails.trail_arns.each do |trail|
+      describe aws_cloudtrail_trail(trail) do
+        it { should be_log_file_validation_enabled }
+      end
     end
-  end if aws_cloudtrail_trails.exist?
+  end
 end
