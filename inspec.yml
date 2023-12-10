@@ -18,22 +18,30 @@ depends:
     branch: al_resource_updates
 
 inputs:
+  # 5.2, 5.3
   - name: disable_slow_controls
     description: "Don't Run Long Running Controls (dev/testing only)"
     type: Boolean
     value: false
 
+  # 5.2, 5.3
   - name: default_aws_region
     description: "Primary aws region your resources are deployed."
     type: String
     value: "us-east-1"
     sensitive: true
 
+  # 5.2, 5.3
+  - name: ignore_other_regions
+    description: "Ignore all regions except your 'default_aws_region'"
+    type: Boolean
+    value: false
+
+  # 5.2, 5.3
   - name: exempt_regions
     description: "The AWS Regions exempted from inspection"
     type: Array
     value:
-      - us-west-1
       - us-east-2
       - us-west-2
       - eu-central-1
@@ -50,14 +58,13 @@ inputs:
       - ap-northeast-2
       - ap-northeast-3
 
-    # 5.3
+  # 5.2, 5.3
   - name: exempt_ports
     description: "List of ports that you wish to exclude from validation"
     type: Array
-    value:
-      - 3389
+    value: []
 
-    # 5.3
+  # 5.2, 5.3
   - name: admin_access_ports
     description:
     type: Array
@@ -130,17 +137,18 @@ inputs:
     description: "Ignore non-running ec2s durning verification"
     type: Boolean
     value: false
-
+  
+  # 5.2, 5.3
   - name: exempt_security_groups
     description: "List of security groups exempted from inspection"
     type: Array
     value: []
 
+  # 5.2, 5.3
   - name: exempt_sg_patterns
     description: "An array of ruby regex patterns to exempt from evaluation"
     type: Array
-    value:
-      - /kitchen-*/
+    value: []
 
   - name: service_account_mfa_exceptions
     description: "List of service accounts from the MFA requirement"
