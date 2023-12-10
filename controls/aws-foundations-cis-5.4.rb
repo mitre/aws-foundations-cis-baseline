@@ -106,14 +106,14 @@ for each instance to communicate successfully. "
   tag severity: 'medium '
   tag cis_controls: [{ '8' => ['3.3'] }]
 
-  only_if(
-    'The requirement is Not Applicable since no VPCs were Found.',
-    impact: 0.0,
-  ) { aws_vpcs.exist? }
+  only_if('The requirement is Not Applicable since no VPCs were Found.', impact: 0.0) do
+    aws_vpcs.exist?
+  end
 
+  exempt_vpcs = input('exempt_vpcs')
   aws_vpcs.vpc_ids.each do |vpc|
     describe aws_security_group(group_name: 'default', vpc_id: vpc) do
-      next if input('exempt_vpcs').include?(vpc)
+      next if exempt_vpcs.include?(vpc)
       its('inbound_rules') { should be_empty }
       its('outbound_rules') { should be_empty }
     end
