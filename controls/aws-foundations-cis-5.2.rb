@@ -63,6 +63,7 @@ the 0.0.0.0/0 inbound rule. "
   regexs = input('exempt_sg_patterns')
   # TODO: see if the below link shows how we can delete all array elements that match so we can just update active_sgs
   # TODO: add a concpet of 'default_region_only' as a turnary statement on active_region
+  # TODO: the 5.x series also needs to check for the 'ALL' - verify the resource is smart enough
 
   active_ports.each do |port|
     active_regions.each do |region_name|
@@ -74,6 +75,7 @@ the 0.0.0.0/0 inbound rule. "
       end
     end
   end
+  # TODO: verify that the above is a more complete version of what was here before
   # exempt_security_groups = input('exempt_security_groups')
 
   # aws_security_groups.group_ids.each do |group_id|
