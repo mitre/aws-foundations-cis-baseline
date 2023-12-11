@@ -19,10 +19,10 @@ jobs:
       INPUT_FILE: other.inputs.yml
       THRESHOLD_FILE: other.threshold.yml
       AWS_REGION: ${{ secrets.OTHER_AWS_REGION }}
-      AWSRB_DEBUG: true
+      HEIMDALL_URL: https://heimdall-demo.mitre.org
     steps:
       - name: add needed packages
-        run: sudo apt-get install -y jq
+        run: sudo apt-get install -y jq curl 
       - name: Configure AWS credentials
         env:
           AWS_REGION: ${{ secrets.OTHER_AWS_REGION }}
@@ -68,3 +68,8 @@ jobs:
         uses: mitre/saf_action@v1
         with:
           command_string: "validate threshold -i ${{ env.RESULTS_FILE }} -F ${{ env.THRESHOLD_FILE }}"
+
+      - name: Upload to Heimdall
+        run: | 
+          curl -# -F data=@${{ env.RESULTS_FILE }} -F "filename=${{ env.RESULTS_FILE}}" -F "public=true" -F "evaluationTags=${{github.sha}},${{ github.repository }},${{ github.workflow }}" -H "Authorization: Api-Key ${{ secrets.HEIMDALL_UPLOAD_KEY }}" "${{ env.HEIMDALL_URL }}/evaluations"
+  
