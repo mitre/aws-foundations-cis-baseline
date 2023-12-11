@@ -20,7 +20,7 @@ jobs:
       HEIMDALL_URL: https://heimdall-demo.mitre.org
     steps:
       - name: add needed packages
-        run: sudo apt-get install -y jq
+        run: sudo apt-get install -y jq curl
       - name: Configure AWS credentials
         env:
           AWS_SG_ID: ${{ secrets.SAF_AWS_SG_ID }}
@@ -68,4 +68,4 @@ jobs:
       
       - name: Upload to Heimdall
         run: |
-          curl -# -F data=@${{ env.RESULTS_FILE }} -F "filename=${{ env.RESULTS_FILE}}" -F "public=true" -F "evaluationTags=${{github.sha}},${{ github.repository }},${{ github.workflow }}" -H "Authorization: Api-Key ${{ secrets.HEIMDALL_UPLOAD_KEY }}" "${{ env.HEIMDALL_URL }}/evaluations"
+          curl -# -s -F data=@${{ env.RESULTS_FILE }} -F "filename=${{ env.RESULTS_FILE}}" -F "public=true" -F "evaluationTags=${{github.sha}},${{ github.repository }},${{ github.workflow }}" -H "Authorization: Api-Key ${{ secrets.HEIMDALL_UPLOAD_KEY }}" "${{ env.HEIMDALL_URL }}/evaluations"
