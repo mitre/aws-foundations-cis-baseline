@@ -71,5 +71,5 @@ jobs:
 
       - name: Upload to Heimdall
         run: | 
-          curl -# -F data=@${{ env.RESULTS_FILE }} -F "filename=${{ env.RESULTS_FILE}}" -F "public=true" -F "evaluationTags=${{github.sha}},${{ github.repository }},${{ github.workflow }}" -H "Authorization: Api-Key ${{ secrets.HEIMDALL_UPLOAD_KEY }}" "${{ env.HEIMDALL_URL }}/evaluations"
+          curl -# -s -F data=@${{ env.RESULTS_FILE }} -F "filename=${{ env.RESULTS_FILE}}" -F "public=true" -F "evaluationTags=${{github.sha}},${{ github.repository }},${{ github.workflow }}" -H "Authorization: Api-Key ${{ secrets.HEIMDALL_UPLOAD_KEY }}" "${{ env.HEIMDALL_URL }}/evaluations"
   
