@@ -14,7 +14,7 @@ jobs:
     env:
       CHEF_LICENSE: accept-silent
       CHEF_LICENSE_KEY: ${{ secrets.SAF_CHEF_LICENSE_KEY }}
-      RESULTS_FILE: other_inspec_results.json
+      RESULTS_FILE: ${{ github.sha }}-other_inspec_results.json
       PROFILE_FILE: profile.json
       INPUT_FILE: other.inputs.yml
       THRESHOLD_FILE: other.threshold.yml
@@ -59,9 +59,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           path: |
-            ${{ env.RESULTS_FILE }}
             ./${{ env.RESULTS_FILE }}
-            ./inspec_results.json
       - name: Display our ${{ env.RESULTS_FILE }} results summary
         uses: mitre/saf_action@v1
         with:
