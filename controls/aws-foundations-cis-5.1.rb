@@ -61,24 +61,17 @@ Click `Save` "
   # require 'pry'
   # binding.pry
 
-  describe 'No Tests Defined Yet' do
-    skip "No Tests have been written for this control yet \n\n\t The bulk of what you need is in the comments"
+  # TODO: add in exemptions, addt'l management ports, only_if if all acls are empty
+  # add loop INSIDE ACL describe block
+
+
+  aws_network_acls.where { entries_cidr_blocks.include?('0.0.0.0/0') }.network_acl_ids.each do |network_acl_id|
+    describe aws_network_acl(network_acl_id: network_acl_id) do
+      it { should_not have_acl_entry_value(cidr_block: '0.0.0.0/0', rule_action: 'allow', protocol: 'ALL') }
+      it { should_not have_acl_entry_value(cidr_block: '0.0.0.0/0', rule_action: 'allow', protocol: 6) }
+      # it { should_not have_acl_entry_value(cidr_block: '0.0.0.0/0', rule_action: 'allow', protocol: 17) }
+      # it { should_not have_acl_entry_value(cidr_block: '0.0.0.0/0', rule_action: 'allow', protocol: 22) }
+      # it { should_not have_acl_entry_value(cidr_block: '0.0.0.0/0', rule_action: 'allow', protocol: 3389) }
+    end
   end
-  # describe aws_network_acls.where { entries_cidr_blocks.include?('0.0.0.0/0') } do |network_acl_id|
-  # describe aws_network_acl(network_acl_id: network_acl_id) do
-  #   it { should have_ingress }
-  #   it { should have_ingress(cidr_block: '10.3.0.0/18', rule_action: 'allow') }
-  #   it { should have_ingress(rule_action: 'allow') }
-  #   it { should have_ingress(cidr_block: '10.3.0.0/18') }
-  # end
-
-  # aws_network_acls.where{ entries_cidr_blocks.include?('0.0.0.0/0') }.network_acl_ids.each do |network_acl_id|
-  #   require 'pry' ; binding.pry
-  #   describe aws_network_acl(network_acl_id) do
-  #     its('entries_protocols.uniq') { should_not include '6' }
-  #     # its('egress_rule_number_100.protocol') { should eq '6' }
-  #     # its('egress_rule_number_100.rule_action') { should eq 'allow' }
-  #   end
-  # end
-
 end
