@@ -55,13 +55,14 @@ Click `Save` "
   only_if("No non-exempt network ACLs with a 0.0.0.0/0 CIDR block entry were discovered") { !acls.empty? }
 
   acls.each do |network_acl_id|
+    acl = aws_network_acl(network_acl_id: network_acl_id).acls
     input('remote_management_port_ranges').each do |pr| 
-      describe aws_network_acl(network_acl_id: network_acl_id).where { cidr_block == "0.0.0.0/0" && rule_action == "allow" && port_range == pr }  do
+      describe acl.where { cidr_block == "0.0.0.0/0" && rule_action == "allow" && port_range == pr }  do
         it { should_not exist }
       end
     end
     input('remote_management_protocols').each do |p|
-      describe aws_network_acl(network_acl_id: network_acl_id).where { cidr_block == "0.0.0.0/0" && rule_action == "allow" && protocol == p }  do
+      describe acl.where { cidr_block == "0.0.0.0/0" && rule_action == "allow" && protocol == p }  do
         it { should_not exist }
       end
     end

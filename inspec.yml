@@ -13,7 +13,7 @@ supports:
 
 depends:
   - name: inspec-aws
-    # path: ../inspec-aws
+    # path: /workspaces/inspec-aws
     git: https://github.com/mitre/inspec-aws.git
     branch: al_resource_updates
 
@@ -159,6 +159,21 @@ inputs:
     description: "Name of the single CloudTrail you want to be inspected"
     type: String
     value: ""
+
+  - name: exempt_acl_ids
+    description: "IDs of network ACLs to exempt from evaluation"
+    type: Array
+    value: []
+
+  - name: remote_management_port_ranges
+    description: "Port ranges used in the environment for remote access management (can be given as a single integer or as a Ruby range with double-period syntax, ex 1..1024)"
+    type: Array
+    value: [22, 3389]
+
+  - name: remote_management_protocols
+    description: "Protocols used in the environment for remote access management (note AWS parses '-1' as 'all')"
+    type: Array
+    value: [6, 17, -1]
 
   - name: config_delivery_channels
     description: "Config service settings"
