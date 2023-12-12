@@ -50,19 +50,19 @@ Click `Save` "
   tag severity: 'medium '
   tag cis_controls: [{ '7' => ['9.2'] }]
 
-  acls = aws_network_acls.where { entries_cidr_blocks.include?("0.0.0.0/0") }.network_acl_ids - input('exempt_acl_ids')
+  acls = aws_network_acls.where { entries_cidr_blocks.include?('0.0.0.0/0') }.network_acl_ids - input('exempt_acl_ids')
 
-  only_if("No non-exempt network ACLs with a 0.0.0.0/0 CIDR block entry were discovered") { !acls.empty? }
+  only_if('No non-exempt network ACLs with a 0.0.0.0/0 CIDR block entry were discovered') { !acls.empty? }
 
   acls.each do |network_acl_id|
     acl = aws_network_acl(network_acl_id: network_acl_id).acls
-    input('remote_management_port_ranges').each do |pr| 
-      describe acl.where { cidr_block == "0.0.0.0/0" && rule_action == "allow" && port_range == pr }  do
+    input('remote_management_port_ranges').each do |pr|
+      describe acl.where { cidr_block == '0.0.0.0/0' && rule_action == 'allow' && port_range == pr } do
         it { should_not exist }
       end
     end
     input('remote_management_protocols').each do |p|
-      describe acl.where { cidr_block == "0.0.0.0/0" && rule_action == "allow" && protocol == p }  do
+      describe acl.where { cidr_block == '0.0.0.0/0' && rule_action == 'allow' && protocol == p } do
         it { should_not exist }
       end
     end

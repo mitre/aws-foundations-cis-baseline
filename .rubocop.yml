@@ -42,7 +42,7 @@ Lint/ReturnInVoidContext:
   Enabled: false
 Lint/AmbiguousBlockAssociation:
   Exclude:
-    - "test/integration/verify/controls/*"
+    - "controls/*"
 Lint/RaiseException:
   Enabled: true
 Lint/StructNewOverride:
