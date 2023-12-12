@@ -50,28 +50,20 @@ Click `Save` "
   tag severity: 'medium '
   tag cis_controls: [{ '7' => ['9.2'] }]
 
-  # TODO: entry_protocols: 6, 17, -1 => input(restricted_network_protocols)
-  # - nums will have to be documented to protocols
-  # - see /etc/something....
-  # NOTE: aws_network_acls.table.map { |x| x[:entries_protocols] }
-  # NOTE: aws_network_acls.table.map { |x| x[:entries_protocols] }.reduce(:+).uniq
-  # NOTE: aws_network_acls.where { entries_cidr_blocks.include?('0.0.0.0/0') }.where { entries_protocols.include?('-1') }
-  # NOTE: we may have less lopping then in 5.2, 5.3, 5/4
+  acls = aws_network_acls.where { entries_cidr_blocks.include?("0.0.0.0/0") }.network_acl_ids - input('exempt_acl_ids')
 
-  # require 'pry'
-  # binding.pry
+  only_if("No non-exempt network ACLs with a 0.0.0.0/0 CIDR block entry were discovered") { !acls.empty? }
 
-  # TODO: add in exemptions, addt'l management ports, only_if if all acls are empty
-  # add loop INSIDE ACL describe block
-
-
-  aws_network_acls.where { entries_cidr_blocks.include?('0.0.0.0/0') }.network_acl_ids.each do |network_acl_id|
-    describe aws_network_acl(network_acl_id: network_acl_id) do
-      it { should_not have_acl_entry_value(cidr_block: '0.0.0.0/0', rule_action: 'allow', protocol: 'ALL') }
-      it { should_not have_acl_entry_value(cidr_block: '0.0.0.0/0', rule_action: 'allow', protocol: 6) }
-      # it { should_not have_acl_entry_value(cidr_block: '0.0.0.0/0', rule_action: 'allow', protocol: 17) }
-      # it { should_not have_acl_entry_value(cidr_block: '0.0.0.0/0', rule_action: 'allow', protocol: 22) }
-      # it { should_not have_acl_entry_value(cidr_block: '0.0.0.0/0', rule_action: 'allow', protocol: 3389) }
+  acls.each do |network_acl_id|
+    input('remote_management_port_ranges').each do |pr| 
+      describe aws_network_acl(network_acl_id: network_acl_id).where { cidr_block == "0.0.0.0/0" && rule_action == "allow" && port_range == pr }  do
+        it { should_not exist }
+      end
+    end
+    input('remote_management_protocols').each do |p|
+      describe aws_network_acl(network_acl_id: network_acl_id).where { cidr_block == "0.0.0.0/0" && rule_action == "allow" && protocol == p }  do
+        it { should_not exist }
+      end
     end
   end
 end
