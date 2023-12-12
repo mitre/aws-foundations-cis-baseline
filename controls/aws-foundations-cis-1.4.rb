@@ -1,4 +1,3 @@
-require 'pry'
 control 'aws-foundations-cis-1.4' do
   title "Ensure no 'root' user account access key exists "
   desc "The 'root' user account is the most privileged user in an AWS account. AWS Access Keys provide
