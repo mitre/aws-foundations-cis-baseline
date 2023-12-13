@@ -57,6 +57,7 @@ the 0.0.0.0/0 inbound rule. "
   only_if('This control takes a long time to run, excluding due to "disable_slow_controls"') { !input('disable_slow_controls') }
 
   active_ports = input('remote_management_port_ranges') - input('exempt_ports')
+  active_protocols = input('remote_management_protocols') - input('exempt_protocols')
   active_regions = aws_regions.region_names - input('exempt_regions')
   active_regions = [input('default_aws_region')] if input('ignore_other_regions')
   active_sgs = aws_security_groups.group_names - input('exempt_security_groups')
@@ -66,7 +67,7 @@ the 0.0.0.0/0 inbound rule. "
   # TODO: the 5.x series also needs to check for the 'ALL' - verify the resource is smart enough
 
   only_if("No non-exempt security groups discovered", impact: 0.0) { !active_sgs.empty? }
-  
+
   active_regions.each do |region_name|
     active_sgs.each do |sg_name|
       active_ports.each do |port|
@@ -75,23 +76,12 @@ the 0.0.0.0/0 inbound rule. "
           it { should_not allow_in(port: port, ipv4_range: '0.0.0.0/0') }
         end
       end
+      active_protocols.each do |protocol|
+        describe aws_security_group(group_name: sg_name, aws_region: region_name) do
+          next if regexs.map(&:to_regexp).any? { |pattern| pattern.match?(sg_name) }
+          it { should_not allow_in(protocol: protocol.to_s, ipv4_range: '0.0.0.0/0') }
+        end
+      end
     end
   end
-  # TODO: verify that the above is a more complete version of what was here before
-  # exempt_security_groups = input('exempt_security_groups')
-
-  # aws_security_groups.group_ids.each do |group_id|
-  #   if exempt_security_groups.include?(group_id)
-  #     describe 'Security Group was not inspected because it is defined as an exception' do
-  #       skip "Security Group:: #{group_id} was not inspected because it is defined in exempt_security_groups."
-  #     end
-  #   end
-
-  #   next if exempt_security_groups.include?(group_id)
-
-  #   describe aws_security_group(group_id) do
-  #     it { should_not allow_in(port: 22, ipv4_range: '0.0.0.0/0') }
-  #     it { should_not allow_in(port: 3389, ipv4_range: '0.0.0.0/0') }
-  #   end
-  # end
 end
