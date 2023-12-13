@@ -60,7 +60,12 @@ inputs:
 
   # 5.2, 5.3
   - name: exempt_ports
-    description: "List of ports that you wish to exclude from validation"
+    description: "List of ports that you wish to exclude from validation (allow connections from these ports)"
+    type: Array
+    value: []
+  
+  - name: exempt_protocols
+    description: "List of protocols that you wish to exclude from validation (allow connections over these protocols)"
     type: Array
     value: []
 
