@@ -84,6 +84,6 @@ including customer managed policies. "
 
   describe aws_iam_policy(policy_name: 'AWSSupportAccess') do
     it { should exist }
-    it { should be_attached }
+    its('attached_roles') { should_not be_empty }
   end
 end
