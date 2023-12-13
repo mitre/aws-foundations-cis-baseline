@@ -54,7 +54,7 @@ the ::/0 inbound rule. "
 
   only_if('This control takes a long time to run, excluding due to "disable_slow_controls"') { !input('disable_slow_controls') }
 
-  active_ports = input('admin_access_ports') - input('exempt_ports')
+  active_ports = input('remote_management_port_ranges') - input('exempt_ports')
   active_regions = aws_regions.region_names - input('exempt_regions')
   active_regions = [input('default_aws_region')] if input('ignore_other_regions')
   active_sgs = aws_security_groups.group_names - input('exempt_security_groups')
