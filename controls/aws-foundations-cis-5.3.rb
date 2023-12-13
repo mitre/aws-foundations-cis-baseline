@@ -62,6 +62,8 @@ the ::/0 inbound rule. "
   # TODO: see if the below link shows how we can delete all array elements that match so we can just update active_sgs
   # TODO: add a concpet of 'default_region_only' as a turnary statement on active_region
 
+  only_if("No non-exempt security groups discovered", impact: 0.0) { !active_sgs.empty? }
+
   active_ports.each do |port|
     active_regions.each do |region_name|
       active_sgs.each do |sg_name|
