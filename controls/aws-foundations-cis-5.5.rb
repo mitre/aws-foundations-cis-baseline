@@ -57,9 +57,11 @@ route table. "
     { '8' => ['3.3'] },
   ]
 
-  only_if('This control is skipped since the aws_route_tables resource returned an empty route table list', impact: 0.0) { !aws_route_tables.route_table_ids.empty? }
+  routes = aws_route_tables.route_table_ids - inputs('exempt_routes')
 
-  aws_route_tables.route_table_ids.each do |route_table_id|
+  only_if('No non-exempt route tables were discovered', impact: 0.0) { !routes.empty? }
+
+  routes.each do |route_table_id|
     aws_route_table(route_table_id).routes.each do |route|
       next unless route.key?(:vpc_peering_connection_id)
       describe route do

@@ -62,9 +62,6 @@ the 0.0.0.0/0 inbound rule. "
   active_regions = [input('default_aws_region')] if input('ignore_other_regions')
   active_sgs = aws_security_groups.group_names - input('exempt_security_groups')
   regexs = input('exempt_sg_patterns')
-  # TODO: see if the below link shows how we can delete all array elements that match so we can just update active_sgs
-  # TODO: add a concpet of 'default_region_only' as a turnary statement on active_region
-  # TODO: the 5.x series also needs to check for the 'ALL' - verify the resource is smart enough
 
   only_if("No non-exempt security groups discovered", impact: 0.0) { !active_sgs.empty? }
 
