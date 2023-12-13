@@ -169,6 +169,10 @@ events across all regions are monitored "
   tag cis_controls: [
     { '8' => ['8.11'] },
   ]
+  
+  only_if("Inputs indicate environment should be using something other than AWS CloudTrail and AWS CloudWatch for real-time monitoring of API calls. Manual review of the monitoring system required.") {
+    !input('third_party_api_monitoring_tool')
+  }
 
   pattern = '{ ($.eventName = CreateVpc) || ($.eventName = DeleteVpc) || ($.eventName = ModifyVpcAttribute) || ($.eventName = AcceptVpcPeeringConnection) || ($.eventName = CreateVpcPeeringConnection) || ($.eventName = DeleteVpcPeeringConnection) || ($.eventName = RejectVpcPeeringConnection) || ($.eventName = AttachClassicLinkVpc) || ($.eventName = DetachClassicLinkVpc) || ($.eventName = DisableVpcClassicLink) || ($.eventName = EnableVpcClassicLink) }'
 

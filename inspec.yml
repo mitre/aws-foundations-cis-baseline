@@ -58,12 +58,13 @@ inputs:
       - ap-northeast-2
       - ap-northeast-3
 
-  # 5.2, 5.3
+  # 5.1, 5.2, 5.3
   - name: exempt_ports
     description: "List of ports that you wish to exclude from validation (allow connections from these ports)"
     type: Array
     value: []
-  
+
+  # 5.1, 5.2, 5.3
   - name: exempt_protocols
     description: "List of protocols that you wish to exclude from validation (allow connections over these protocols)"
     type: Array
@@ -71,6 +72,11 @@ inputs:
 
   - name: exempt_kms_keys
     description: "List of KMS keys exempted from inspection"
+    type: Array
+    value: []
+
+  - name: exempt_routes
+    description: "List of route tables exempted from inspection"
     type: Array
     value: []
 
