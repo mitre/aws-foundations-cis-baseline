@@ -65,9 +65,11 @@ the 0.0.0.0/0 inbound rule. "
   # TODO: add a concpet of 'default_region_only' as a turnary statement on active_region
   # TODO: the 5.x series also needs to check for the 'ALL' - verify the resource is smart enough
 
-  active_ports.each do |port|
-    active_regions.each do |region_name|
-      active_sgs.each do |sg_name|
+  only_if("No non-exempt security groups discovered", impact: 0.0) { !active_sgs.empty? }
+  
+  active_regions.each do |region_name|
+    active_sgs.each do |sg_name|
+      active_ports.each do |port|
         describe aws_security_group(group_name: sg_name, aws_region: region_name) do
           next if regexs.map(&:to_regexp).any? { |pattern| pattern.match?(sg_name) }
           it { should_not allow_in(port: port, ipv4_range: '0.0.0.0/0') }
