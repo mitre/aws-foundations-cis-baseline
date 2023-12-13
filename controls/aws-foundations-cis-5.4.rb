@@ -110,10 +110,9 @@ for each instance to communicate successfully. "
     aws_vpcs.exist?
   end
 
-  exempt_vpcs = input('exempt_vpcs')
-  aws_vpcs.vpc_ids.each do |vpc|
-    describe aws_security_group(group_name: 'default', vpc_id: vpc) do
-      next if exempt_vpcs.include?(vpc)
+  in_scope_vpcs = aws_vpcs.vpc_ids - input('exempt_vpcs')
+  in_scope_vpcs.each do |vpc_id|
+    describe aws_security_group(group_name: 'default', vpc_id: vpc_id) do
       its('inbound_rules') { should be_empty }
       its('outbound_rules') { should be_empty }
     end

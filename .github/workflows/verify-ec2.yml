@@ -14,9 +14,10 @@ jobs:
     env:
       CHEF_LICENSE: accept-silent
       CHEF_LICENSE_KEY: ${{ secrets.SAF_CHEF_LICENSE_KEY }}
-      RESULTS_FILE: ${{ github.sha }}-inspec_results.json
+      RESULTS_FILE: ${{ github.sha::7 }}-inspec_results.json
       PROFILE_FILE: profile.json
-      INPUT_FILE: testing.inputs.yml
+      INPUT_FILE: default.inputs.yml
+      THRESHOLD_FILE: default.threshold.yml
       HEIMDALL_URL: https://heimdall-demo.mitre.org
     steps:
       - name: add needed packages
@@ -64,7 +65,7 @@ jobs:
       - name: Ensure ${{ env.RESULTS_FILE }} meets our results threshold
         uses: mitre/saf_action@v1
         with:
-          command_string: "validate threshold -i ${{ env.RESULTS_FILE }} -F cis-foundations.threshold.yml"
+          command_string: "validate threshold -i ${{ env.RESULTS_FILE }} -F ${{ env.THRESHOLD_FILE }}"
       
       - name: Upload to Heimdall
         run: |
