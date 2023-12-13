@@ -14,14 +14,24 @@ jobs:
     env:
       CHEF_LICENSE: accept-silent
       CHEF_LICENSE_KEY: ${{ secrets.SAF_CHEF_LICENSE_KEY }}
-      RESULTS_FILE: ${{ github.sha::7 }}-inspec_results.json
+      RESULTS_FILE: inspec_results.json
       PROFILE_FILE: profile.json
       INPUT_FILE: default.inputs.yml
       THRESHOLD_FILE: default.threshold.yml
       HEIMDALL_URL: https://heimdall-demo.mitre.org
     steps:
+      - name: Set short git commit SHA
+        id: vars
+        run: |
+          calculatedSha=$(git rev-parse --short ${{ github.sha }})
+          echo "COMMIT_SHORT_SHA=$calculatedSha" >> $GITHUB_ENV
+
+      - name: Confirm git commit SHA output
+        run: echo ${{ env.COMMIT_SHORT_SHA }}
+
       - name: add needed packages
         run: sudo apt-get install -y jq curl
+
       - name: Configure AWS credentials
         env:
           AWS_SG_ID: ${{ secrets.SAF_AWS_SG_ID }}
@@ -35,38 +45,51 @@ jobs:
 
       - name: Check out repository
         uses: actions/checkout@v3
+
       - name: Clone full repository so we can push
         run: git fetch --prune --unshallow
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.1"
+          
       - name: Disable ri and rdoc
         run: 'echo "gem: --no-document" >> ~/.gemrc'
-      - run: bundle install
+
+      - name: Bundle Install
+        run: bundle install
+
       - name: Installed Inspec
         run: bundle exec inspec version
+
       - name: Vendor the InSpec Profile
         run: bundle exec inspec vendor --overwrite
+
       - name: Lint the Inspec profile
         run: bundle exec inspec check .
+
       - name: Run the Profile
         run: |
-          bundle exec inspec exec . --target aws:// --input-file=${{ env.INPUT_FILE }} --reporter cli json:${{ env.RESULTS_FILE }} --enhanced-outcomes --filter-empty-profiles || true
+          bundle exec inspec exec . --target aws:// --input-file=${{ env.INPUT_FILE }} --reporter cli json:${{ env.COMMIT_SHORT_SHA }}-${{ env.RESULTS_FILE }} --enhanced-outcomes --filter-empty-profiles || true
+
       - name: Save Test Result JSON
         uses: actions/upload-artifact@v3
         with:
+          name: ${{ github.workflow }}-${{ env.COMMIT_SHORT_SHA }}-results
           path: |
-            ./${{ env.RESULTS_FILE }}
-      - name: Display our ${{ env.RESULTS_FILE }} results summary
+            ./${{ env.COMMIT_SHORT_SHA }}-${{ env.RESULTS_FILE }}
+
+      - name: Display our ${{ env.COMMIT_SHORT_SHA }}-${{ env.RESULTS_FILE }} results summary
         uses: mitre/saf_action@v1
         with:
-          command_string: "view summary -i ${{ env.RESULTS_FILE }}"
-      - name: Ensure ${{ env.RESULTS_FILE }} meets our results threshold
+          command_string: "view summary -i ${{ env.COMMIT_SHORT_SHA }}-${{ env.RESULTS_FILE }}"
+
+      - name: Ensure ${{ env.COMMIT_SHORT_SHA }}-${{ env.RESULTS_FILE }} meets our results threshold
         uses: mitre/saf_action@v1
         with:
-          command_string: "validate threshold -i ${{ env.RESULTS_FILE }} -F ${{ env.THRESHOLD_FILE }}"
+          command_string: "validate threshold -i ${{ env.COMMIT_SHORT_SHA }}-${{ env.RESULTS_FILE }} -F ${{ env.THRESHOLD_FILE }}"
       
       - name: Upload to Heimdall
         run: |
-          curl -# -s -F data=@${{ env.RESULTS_FILE }} -F "filename=${{ env.RESULTS_FILE}}" -F "public=true" -F "evaluationTags=${{github.sha}},${{ github.repository }},${{ github.workflow }}" -H "Authorization: Api-Key ${{ secrets.HEIMDALL_UPLOAD_KEY }}" "${{ env.HEIMDALL_URL }}/evaluations"
+          curl -# -s -F data=@${{ env.COMMIT_SHORT_SHA }}-${{ env.RESULTS_FILE }} -F "filename=${{ env.COMMIT_SHORT_SHA }}-${{ env.RESULTS_FILE}}" -F "public=true" -F "evaluationTags=${{ env.COMMIT_SHORT_SHA }},${{ github.repository }},${{ github.workflow }}" -H "Authorization: Api-Key ${{ secrets.HEIMDALL_UPLOAD_KEY }}" "${{ env.HEIMDALL_URL }}/evaluations"
