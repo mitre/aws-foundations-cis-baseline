@@ -21,17 +21,9 @@ jobs:
       AWS_REGION: ${{ secrets.OTHER_AWS_REGION }}
       HEIMDALL_URL: https://heimdall-demo.mitre.org
     steps:
-      - name: Set short git commit SHA
-        id: vars
-        run: |
-          calculatedSha=$(git rev-parse --short ${{ github.sha }})
-          echo "COMMIT_SHORT_SHA=$calculatedSha" >> $GITHUB_ENV
-
-      - name: Confirm git commit SHA output
-        run: echo ${{ env.COMMIT_SHORT_SHA }}
-
       - name: add needed packages
         run: sudo apt-get install -y jq curl 
+
       - name: Configure AWS credentials
         env:
           AWS_REGION: ${{ secrets.OTHER_AWS_REGION }}
@@ -49,6 +41,15 @@ jobs:
 
       - name: Clone full repository so we can push
         run: git fetch --prune --unshallow
+
+      - name: Set short git commit SHA
+        id: vars
+        run: |
+          calculatedSha=$(git rev-parse --short ${{ github.sha }})
+          echo "COMMIT_SHORT_SHA=$calculatedSha" >> $GITHUB_ENV
+
+      - name: Confirm git commit SHA output
+        run: echo ${{ env.COMMIT_SHORT_SHA }}
         
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
