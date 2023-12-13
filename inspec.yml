@@ -226,3 +226,9 @@ inputs:
     description: "Name of the data management tool other than Amazon Macie"
     type: String
     value: ""
+
+  # see: 4.1.5
+  - name: third_party_api_monitoring_tool
+    description: "Name of the API call monitoring tool other than AWS CloudTrail/AWS CloudWatch"
+    type: String
+    value: ""
