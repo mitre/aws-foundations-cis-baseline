@@ -64,14 +64,6 @@ inputs:
     type: Array
     value: []
 
-  # 5.2, 5.3
-  - name: admin_access_ports
-    description:
-    type: Array
-    value:
-      - 22
-      - 3389
-
   - name: exempt_kms_keys
     description: "List of KMS keys exempted from inspection"
     type: Array
@@ -168,12 +160,17 @@ inputs:
   - name: remote_management_port_ranges
     description: "Port ranges used in the environment for remote access management (can be given as a single integer or as a Ruby range with double-period syntax, ex 1..1024)"
     type: Array
-    value: [22, 3389]
+    value:
+      - 22
+      - 3389
 
   - name: remote_management_protocols
     description: "Protocols used in the environment for remote access management (note AWS parses '-1' as 'all')"
     type: Array
-    value: [6, 17, -1]
+    value:
+      - 6
+      - 17
+      - -1
 
   - name: config_delivery_channels
     description: "Config service settings"
