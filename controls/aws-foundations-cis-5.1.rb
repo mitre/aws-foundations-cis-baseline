@@ -56,7 +56,7 @@ Click `Save` "
   active_protocols = input('remote_management_protocols') - input('exempt_protocols')
   acls = aws_network_acls.where { entries_cidr_blocks.include?('0.0.0.0/0') }.network_acl_ids - input('exempt_acl_ids')
 
-  only_if('No non-exempt network ACLs with a 0.0.0.0/0 CIDR block entry were discovered', impact 0.0) { !acls.empty? }
+  only_if('No non-exempt network ACLs with a 0.0.0.0/0 CIDR block entry were discovered', impact: 0.0) { !acls.empty? }
 
   acls.each do |network_acl_id|
     acl = aws_network_acl(network_acl_id: network_acl_id).acls
