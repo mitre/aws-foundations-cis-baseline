@@ -57,7 +57,7 @@ route table. "
     { '8' => ['3.3'] },
   ]
 
-  routes = aws_route_tables.route_table_ids - inputs('exempt_routes')
+  routes = aws_route_tables.route_table_ids - input('exempt_routes')
 
   only_if('No non-exempt route tables were discovered', impact: 0.0) { !routes.empty? }
 
