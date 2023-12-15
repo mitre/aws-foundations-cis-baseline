@@ -1,6 +1,5 @@
 ---
 error:
-  total:
-    max: 2
+  total: 0
 compliance:
-  min: 0
+  min: 10
