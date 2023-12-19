@@ -111,14 +111,9 @@ with 3rd Party tools that perform similar processes and protection. "
     !input('third_party_data_management_tool').present?
   }
 
-  describe aws_macie do
-    it { should be_enabled }
-  end
+  only_if("Amazon Macie unavailable in GovCloud; please manually review AWS account to determine if a third party data management tool is present") { aws_sts_caller_identity.govcloud? }
 
-  # TODO: create macie resource
-  # only_if { input('third_party_management_tool') }
-  # describe aws_macie do
-  #   it { shoud be_enabled }
-  # TODO: need to define test pattern to ensure *all S3 buckets* are covered by macie
-  # end
+  describe "Manual Review" do
+    skip "Manual review of Amazon Macie configuration in the AWS console is required"
+  end
 end
