@@ -77,12 +77,9 @@ S3 buckets. "
   tag severity: 'medium '
   tag cis_controls: [{ '8' => ['3.3'] }]
 
-  # TODO: add bucket exempt list, ensure you can handle 100k buckets
-
   exempt_buckets = input('exempt_buckets')
   s3_buckets = aws_s3_buckets.bucket_names
   failing_buckets = []
-  # passed_buckets = []
 
   only_if('This control is Non Applicable since no unexempt S3 buckets were found.', impact: 0.0) { !s3_buckets.empty? or !(exempt_buckets - s3_buckets).empty? }
 
