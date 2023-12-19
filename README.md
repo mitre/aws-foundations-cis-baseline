@@ -212,7 +212,7 @@ third_party_api_monitoring_tool: ""
 | Done       | Yes          | 1.2                | security_contact                                  |
 | Manual     | Yes          | 1.3                | None                                              |
 | Done       | Yes          | 1.4                | disable_slow_controls                             |
-| Done       | No           | 1.5                | disable_slow_controls                             |
+| Done       | Yes          | 1.5                | disable_slow_controls                             |
 | Done       | Yes          | 1.6                | disable_slow_controls                             |
 | Done       | Yes          | 1.7                | disable_slow_controls<br>last_root_login_date<br> |
 | Done       | Yes          | 1.8                | None                                              |
@@ -231,6 +231,8 @@ third_party_api_monitoring_tool: ""
 | Manual     | Yes          | 1.21               | None                                              |
 | Done       | Yes          | 1.22               | None                                              |
 | Done       | Yes          | 2.1.1              | exempt_buckets<br>single_bucket                   |
+| Done       | Yes          | 2.1.2              | exempt_buckets<br>single_bucket                   |
+
 | Done       | No           | 2.1.2              | exempt_buckets<br>single_bucket                   |
 | Done       | No           | 2.1.3              | third_party_management_tool<br>exempt_buckets     |
 | Done       | Yes          | 2.1.4              | exempt_buckets                                    |
@@ -241,39 +243,41 @@ third_party_api_monitoring_tool: ""
 | Done       | Yes          | 2.4.1              | exempt_efs<br>single_efs                          |
 | Done       | Yes          | 3.1                | None                                              |
 | Done       | Yes          | 3.2                | None                                              |
-| No         | No           | 3.3                | None                                              |
+| Done       | Yes          | 3.3                | None                                              |
 | Done       | Yes          | 3.4                | None                                              |
 | Done       | Yes          | 3.5                | config_delivery_channels                          |
-| Done       | No           | 3.6                | None                                              |
+| Done       | Yes          | 3.6                | exempt_buckets                                    |
 | Done       | Yes          | 3.7                | None                                              |
 | Done       | Yes          | 3.8                | exempt_kms_keys                                   |
 | Done       | Yes          | 3.9                | None                                              |
 | Done       | Yes          | 3.10               | single_trail                                      |
 | Done       | Yes          | 3.11               | single_trail                                      |
-| Done       | No           | 4.1                | None                                              |
-| Done       | No           | 4.2                | None                                              |
-| Done       | No           | 4.3                | None                                              |
-| Done       | No           | 4.4                | None                                              |
-| Done       | No           | 4.5                | None                                              |
-| Done       | No           | 4.6                | None                                              |
-| Done       | No           | 4.7                | None                                              |
-| Done       | No           | 4.8                | None                                              |
-| Done       | No           | 4.9                | None                                              |
-| Done       | No           | 4.10               | None                                              |
-| Done       | No           | 4.11               | None                                              |
-| Done       | No           | 4.12               | None                                              |
-| Done       | No           | 4.13               | None                                              |
-| Done       | No           | 4.14               | None                                              |
-| No         | No           | 4.15               | TBD                                               |
+| Done       | Yes          | 4.1                | None                                              |
+| Done       | Yes          | 4.2                | None                                              |
+| Done       | Yes          | 4.3                | None                                              |
+| Done       | Yes          | 4.4                | None                                              |
+| Done       | Yes          | 4.5                | None                                              |
+| Done       | Yes          | 4.6                | None                                              |
+| Done       | Yes          | 4.7                | None                                              |
+| Done       | Yes          | 4.8                | None                                              |
+| Done       | Yes          | 4.9                | None                                              |
+| Done       | Yes          | 4.10               | None                                              |
+| Done       | Yes          | 4.11               | None                                              |
+| Done       | Yes          | 4.12               | None                                              |
+| Done       | Yes          | 4.13               | None                                              |
+| Done       | Yes          | 4.14               | third_party_api_monitoring_tool                   |
+| Done       | Yes          | 4.15               | third_party_api_monitoring_tool                   |
 | Done       | Yes          | 4.16               | exempt_regions                                    |
-| No         | No           | 5.1                | TBD                                               |
-| Done       | Yes          | 5.2                | None                                              |
-| No         | No           | 5.3                | TBD                                               |
-| Done       | Yes          | 5.4                | None                                              |
-| Done       | Yes          | 5.5                | None                                              |
-| Done       | No           | 5.6                | skip_stopped_ec2                                  |
+| No         | Yes          | 5.1                | disable_slow_controls<br>remote_management_port_ranges<br>exempt_ports<br>exempt_protocols<br>remote_management_protocols<br>exempt_acl_ids|
+| Done       | Yes          | 5.2                | disable_slow_controls<br>default_aws_region<br>ignore_other_regions<br>exempt_regions<br>remote_management_port_ranges<br>exempt_ports<br>exempt_protocols<br>remote_management_protocols<br>exempt_security_groups<br>exempt_sg_patterns|
+| Done       | Yes          | 5.3                |disable_slow_controls<br>default_aws_region<br>ignore_other_regions<br>exempt_regions<br>remote_management_port_ranges<br>exempt_ports<br>exempt_protocols<br>remote_management_protocols<br>exempt_security_groups<br>exempt_sg_patterns|
+| Done       | Yes          | 5.4                | exempt_vpcs                                       |
+| Done       | Yes          | 5.5                | exempt_routes                                     |
+| Done       | Yes          | 5.6                | skip_stopped_ec2<br>exempt_ec2s                   |
 
-NEEDS RESOURCE/RESOURCE UPDATES: 2.1.3
+### Manual Checks
+
+Note that not all controls in the CIS Benchmarks can be done automatically. This profile will mark the output of those controls as "skipped." Be sure to manually review any skipped controls, and if desired, use the MITRE SAF CLI's [Attestation](https://saf-cli.mitre.org/#attest) feature to save your manual attestations into the same file as your automated test results.
 
 ## Generate Inputs
 
