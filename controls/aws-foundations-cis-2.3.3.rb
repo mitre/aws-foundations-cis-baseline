@@ -192,9 +192,7 @@ each RDS instance provisioned in the current region.
   tag severity: 'medium '
   tag cis_controls: [{ '8' => ['3.3'] }]
 
-  # TODO: check each attached subnet for public access or just this RDS?
   exempt_rds = input('exempt_rds')
-  # TODO: Fix the plural resource to correctly return the empty array so we don't have to work around it.
   active_rds = aws_rds_instances.db_instance_identifiers.nil? ? [] : aws_rds_instances.db_instance_identifiers
   failing_rds = []
 
