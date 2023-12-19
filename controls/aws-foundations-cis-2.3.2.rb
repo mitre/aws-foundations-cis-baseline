@@ -109,7 +109,6 @@ upgrades will be applied to the selected RDS instance. "
   tag cis_controls: [{ '8' => ['7.4'] }]
 
   exempt_rds = input('exempt_rds')
-  # TODO: Fix the plural resource to correctly return the empty array so we don't have to work around it.
   active_rds = aws_rds_instances.db_instance_identifiers.nil? ? [] : aws_rds_instances.db_instance_identifiers
   failing_rds = []
 

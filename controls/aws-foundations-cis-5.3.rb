@@ -59,8 +59,6 @@ the ::/0 inbound rule. "
   active_regions = [input('default_aws_region')] if input('ignore_other_regions')
   active_sgs = aws_security_groups.group_names - input('exempt_security_groups')
   regexs = input('exempt_sg_patterns')
-  # TODO: see if the below link shows how we can delete all array elements that match so we can just update active_sgs
-  # TODO: add a concpet of 'default_region_only' as a turnary statement on active_region
 
   only_if("No non-exempt security groups discovered", impact: 0.0) { !active_sgs.empty? }
 
@@ -75,5 +73,3 @@ the ::/0 inbound rule. "
     end
   end
 end
-
-# https://discuss.elastic.co/t/ruby-filter-to-delete-array-element-with-regexp/197131
