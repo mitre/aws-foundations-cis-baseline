@@ -27,7 +27,7 @@ You will need to ensure your AWS CLI environment has the right system environmen
 
 ### Notes on MFA
 
-In any AWS MFA enabled environment - you need to use `derived credentials` to use the CLI. Your default `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` will not satisfy the MFA Policies in AWS environments.
+In any AWS MFA enabled environment, you will need to use `derived credentials` to use the CLI. Your default `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` will not satisfy the MFA Policies in AWS environments.
 
 - The AWS documentation is here: https://docs.aws.amazon.com/cli/latest/reference/sts/get-session-token.html
 - The AWS profile documentation is here: https://docs.aws.amazon.com/cli/latest/userguide/cli-multiple-profiles.html
@@ -41,25 +41,135 @@ b. Then export the `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `AWS_SESSION
 
 ## Tailoring to Your Environment
 
-The following inputs must be configured in an inputs ".yml" file for the profile to run correctly for your specific environment. More information about InSpec inputs can be found in the [InSpec Profile Documentation](https://www.inspec.io/docs/reference/profiles/).
+InSpec uses _inputs_, given in input files passed to the InSpec executable, to tailor profiles to run against specific environments. More information about InSpec inputs can be found in the [InSpec Profile Documentation](https://www.inspec.io/docs/reference/profiles/).
 
-```
-- Primary aws region (2.5)
+The `inspec.yml` metadata file at the root of this profile includes default values for each input. Any input that you do not explicitly set will be set to these defaults. 
+
+An example inputs file, recorded in YAML format, is given below, with comments to explain the purpose of each input and which controls it is used in (note that '[]' represents an empty list in YAML format).
+
+```yaml
+# Flag to disable some of the longer-running controls (do not enable in production)
+# controls disabled by this flag: 1.4, 1.5, 1.6, 1.7, 1.12, 1.14, 5.1, 5.2, 5.3
+disable_slow_controls: false
+
+# Primary aws region (3.5, 5.2, 5.3)
 default_aws_region: 'us-east-1'
 
-- List of **documented service accounts** which are exempt from the MFA requirement (1.2)
+# Flag to force the profile to only test the default region in AWS -- useful if your entire environment is in one region
+ignore_other_regions: false
+
+# List of regions exempted from inspection (1.20, 4.16, 5.2)
+exempt_regions:
+  - us-east-2
+  - us-west-2
+  - eu-central-1
+  - eu-west-1
+  - eu-west-2
+  - eu-west-3
+  - eu-north-1
+  - ap-south-1
+  - ap-southeast-2
+  - ap-southeast-1
+  - sa-east-1
+  - ca-central-1
+  - ap-northeast-1
+  - ap-northeast-2
+  - ap-northeast-3
+
+# List of ports that you wish to exclude from validation (allow connections from these ports)
+# (5.1, 5.2, 5.3)
+exempt_ports:
+  - 3389
+
+# List of protocols that you wish to exclude from validation (allow connections over these protocols)
+# (Note that AWS uses '-1' to indicate ALL)
+# (5.1, 5.2, 5.3)
+exempt_protocols:
+  - 17
+
+# List of KMS Keys exempted from inspection (3.8)
+exempt_kms_keys:
+  - "kms_key_name"
+  - ...
+
+# List of route table IDs exempted from inspection (5.5)
+exempt_routes:
+  - "route_id"
+  - ...
+
+# List of vpc IDs exempted from inspection (5.4)
+exempt_vpcs:
+  - "vpc_id"
+  - ...
+
+# List of S3 buckets exempted from inspection (2.1.1, 2.1.2, 2.1.4, 3.3, 3.6)
+exempt_buckets:
+  - "exception_bucket_name"
+  - ...
+
+# If you only want to inspect a single S3 bucket, give its name here (2.1.1, 2.1.2)
+single_bucket: ""
+
+# List of EC2 instances exempted from inspection (5.6)
+exempt_ec2s:
+  - "exception_ec2_name"
+  - ...
+
+# List of EFS exempted from inspection (2.4.1)
+exempt_efs:
+  - "exception_efs_name"
+  - ...
+
+# If you only want to inspect a single EFS, give its name here (2.4.1)
+single_efs: ""
+
+# List of RDS DB identifiers exempted from inspection (2.3.1, 2.3.2, 2.3.3)
+exempt_rds:
+  - "exception_rds_name"
+  - ...
+
+# If you only want to inspect a single RDS DB, give its name here (2.3.1, 2.3.2, 2.3.3)
+single_rds: ""
+
+# Flag to ignore non-running EC2s during inspection
+skip_stopped_ec2s: false
+
+# List of security groups exempted from inspection (5.2, 5.3)
+exempt_security_groups: 
+  - "exception_security_group_name"
+  - ...
+
+  # List of ruby regex patterns to exempt from evaluation (5.2, 5.3)
+exempt_sg_patterns: 
+  - /exempt-sg/
+  - ...
+
+# List of **documented service accounts** which are exempt from the MFA requirement (1.10)
 service_account_mfa_exceptions:
   - user1
   - user2
   - ...
 
-- List of buckets exempted from inspection (2.3, 2.6)
-exempt_buckets: ["exception_bucket_name"]
+# You can specify one single CloudTrail name to inspect instead of all of them (3.10, 3.11)
+single_trail: []
 
-- List of security groups exempted from inspection (4.1, 4.2)
-exempt_security_groups: ["exception_security_group_name"]
+# IDs of network ACLs to exempt from evaluation (5.1)
+exempt_acl_ids: []
 
-- Config service list and settings in all relevant regions (2.5)
+# Port ranges used in the environment for remote access management
+# Can be given as a single integer or as a Ruby range with double-period syntax, ex 1..1024
+# (5.1, 5.2, 5.3)
+remote_management_port_ranges:
+  - 22
+
+# Protocols used in the environment for remote access management (5.1, 5.2)
+# (Note that AWS defines '-1' as equivalent to ALL)
+remote_management_protocols:
+  - 17
+  - -1
+
+# Config service list and settings in all relevant regions (3.5)
+# (Note that this value can be found by running the `generate_inputs.rb` script)
 config_delivery_channels:
   us-east-1:
     s3_bucket_name: "s3_bucket_name_value"
@@ -74,6 +184,24 @@ config_delivery_channels:
     s3_bucket_name: "s3_bucket_name_value"
     sns_topic_arn: "sns_topic_arn_value"
 
+# Email and Phone number of primary PoC for this AWS environment (1.1)
+primary_contact:
+  phone_number: "555-857-6309"
+  email_address: "me@you.com"
+  
+# Email and Phone number of security PoC for this AWS environment (1.2)
+primary_contact:
+  phone_number: "555-857-6309"
+  email_address: "me@you.com"
+
+# The last data on which the root account should have logged in, given in YYYYMMDD (1.7)
+last_root_login_date: 20231201
+
+# If your environment is monitoring stored data via a tool OTHER THAN AWS Macie, specify its name here  (2.1.3)
+third_party_data_management_tool: ""
+
+# If your environment is monitoring API call via tools OTHER THAN AWS CloudTrail and Cloudwatch, specify its name here (4.14, 4.15)
+third_party_api_monitoring_tool: ""
 ```
 
 ## Benchmark Status

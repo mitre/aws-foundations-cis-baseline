@@ -18,26 +18,22 @@ depends:
     branch: al_resource_updates
 
 inputs:
-  # 5.2, 5.3
   - name: disable_slow_controls
     description: "Don't Run Long Running Controls (dev/testing only)"
     type: Boolean
     value: false
 
-  # 5.2, 5.3
   - name: default_aws_region
     description: "Primary aws region your resources are deployed."
     type: String
     value: "us-east-1"
     sensitive: true
 
-  # 5.2, 5.3
   - name: ignore_other_regions
     description: "Ignore all regions except your 'default_aws_region'"
     type: Boolean
     value: false
 
-  # 5.2, 5.3
   - name: exempt_regions
     description: "The AWS Regions exempted from inspection"
     type: Array
@@ -58,13 +54,11 @@ inputs:
       - ap-northeast-2
       - ap-northeast-3
 
-  # 5.1, 5.2, 5.3
   - name: exempt_ports
     description: "List of ports that you wish to exclude from validation (allow connections from these ports)"
     type: Array
     value: []
 
-  # 5.1, 5.2, 5.3
   - name: exempt_protocols
     description: "List of protocols that you wish to exclude from validation (allow connections over these protocols)"
     type: Array
@@ -79,11 +73,6 @@ inputs:
     description: "List of route tables exempted from inspection"
     type: Array
     value: []
-
-  - name: aws_key_age
-    description: "The maximum allowed key age"
-    type: Numeric
-    value: 90
 
   - name: pwd_length
     description: "Required password length"
@@ -141,13 +130,11 @@ inputs:
     type: Boolean
     value: false
   
-  # 5.2, 5.3
   - name: exempt_security_groups
     description: "List of security groups exempted from inspection"
     type: Array
     value: []
 
-  # 5.2, 5.3
   - name: exempt_sg_patterns
     description: "An array of ruby regex patterns to exempt from evaluation"
     type: Array
@@ -221,13 +208,11 @@ inputs:
     type: numeric
     value: 20231209
 
-  # see: 2.3.1
   - name: third_party_data_management_tool
     description: "Name of the data management tool other than Amazon Macie"
     type: String
     value: ""
 
-  # see: 4.1.5
   - name: third_party_api_monitoring_tool
     description: "Name of the API call monitoring tool other than AWS CloudTrail/AWS CloudWatch"
     type: String
