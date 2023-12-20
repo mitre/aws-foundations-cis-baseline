@@ -1,6 +1,6 @@
 # aws-foundations-cis-baseline
 
-InSpec profile to validate the secure configuration of Amazon Web Services against [CIS'](https://www.cisecurity.org/cis-benchmarks/) Amazon Web Services Foundations Benchmark Version 2.0.0 - 06-28-2023
+InSpec profile to validate the secure configuration of Amazon Web Services against [CIS Amazon Web Services Foundations Benchmark Version 2.0.0](https://www.cisecurity.org/cis-benchmarks/) - 06-28-2023
 
 ## Getting Started
 
@@ -12,11 +12,11 @@ The latest versions and installation options are available at the [InSpec](http:
 
 This baseline also requires the AWS Command Line Interface (CLI) which is available at the [AWS CLI](https://aws.amazon.com/cli/) site (at least version 2.x).
 
-### Minimum Permissions needed to Run this Profile
+## Minimum AWS IAM API Permissions needed to Run the Profile
 
 The IAM account used to run this profile against the AWS environment needs to attached through a group or role with at least `AWS IAM "ReadOnlyAccess" Managed Policy`
 
-### Getting MFA Aware AWS Access, Secret and Session Tokens
+## Getting MFA Aware AWS Access, Secret and Session Tokens
 
 You will need to ensure your AWS CLI environment has the right system environment variables set with your AWS region and credentials and session token to use the AWS CLI and InSpec resources in the AWS environment. InSpec supports the following standard AWS variables:
 
@@ -43,7 +43,7 @@ b. Then export the `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `AWS_SESSION
 
 This profile uses InSpec Inputs to make the tests more flexible. You are able to provide inputs at runtime either via the cli or via YAML files to help the profile work best in your deployment.
 
-#### **_Do not change the inputs in the `inspec.yml` file_**
+### **_Do not change the inputs in the `inspec.yml` file_**
 
 The `inputs` defined in the `inspec.yml` file are the shared inputs for the **profile and defaults for the profile**.
 
@@ -292,7 +292,7 @@ third_party_api_monitoring_tool: ""
 | Done       | Yes          | 5.5                | exempt_routes                                     |
 | Done       | Yes          | 5.6                | skip_stopped_ec2<br>exempt_ec2s                   |
 
-### Manual Checks
+## Manual Checks
 
 Note that not all controls in the CIS Benchmarks can be done automatically. This profile will mark the output of those controls as "skipped." Be sure to manually review any skipped controls, and if desired, use the MITRE SAF CLI's [Attestation](https://saf-cli.mitre.org/#attest) feature to save your manual attestations into the same file as your automated test results.
 
@@ -308,7 +308,7 @@ The script will inspect the avalible aws regions for the AWS Account running the
 
 You should add this data to your `my_inputs.yml` and
 
-## Usage
+# Usage
 
 ```
 # Set required ENV variables
@@ -330,13 +330,15 @@ $ ruby generate_inputs.rb
 inspec exec https://github.com/mitre/aws-foundations-cis-baseline/archive/master.tar.gz --target aws:// --input-file=<./path/my_inpupts.yml> --reporter=cli json:<path/name_of_your_output_file.json>
 ```
 
-### Different Run Options
+## Different Run Options
+
+Please review the following documentation 
 
 [Full exec options](https://docs.chef.io/inspec/cli/#options-3)
 
-## Running This Baseline from a local Archive copy
+### Diconnected & Local Archive Execution
 
-If your runner is not always expected to have direct access to GitHub, use the following steps to create an archive bundle of this baseline and all of its dependent tests:
+If your runner is not always expected to have direct access to the network, use the following steps to create an archive bundle of this baseline and all of its dependent tests:
 
 (Git is required to clone the InSpec profile using the instructions below. Git can be downloaded from the [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) site.)
 

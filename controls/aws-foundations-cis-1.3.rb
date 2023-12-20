@@ -54,9 +54,9 @@ control 'aws-foundations-cis-1.3' do
   tag severity: 'medium '
   tag cis_controls: [{ '8' => ['17.2'] }]
 
-  # only_if('AWS GovCloud only allows you to Manually view Account information, please review this requirement in the AWS GovCloud Console.') {
-  #   !aws_sts_caller_identity.govcloud?
-  # }
+  only_if('AWS GovCloud only allows you to Manually view Account information, please review this requirement in the AWS GovCloud Console.') {
+    !aws_sts_caller_identity.govcloud?
+  }
 
   describe 'Requirement must be tested manually' do
     skip "
