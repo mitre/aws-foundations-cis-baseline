@@ -3,6 +3,7 @@ name: Update Major Release Tag
 on:
   release:
     types: [created]
+  workflow_dispatch:
 
 jobs:
   movetag:
@@ -10,12 +11,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
     - name: Get major version num and update tag
       run: |
         VERSION=${GITHUB_REF#refs/tags/}
         MAJOR=${VERSION%%.*}
-        git config --global user.name 'YOUR NAME HERE'
-        git config --global user.email 'USERNAME@users.noreply.github.com'
+        git config --global user.name ${{ vars.SAF_GITHUB_USER_NAME }}
+        git config --global user.email ${{ vars.SAF_GITHUB_USER_EMAIL }}
         git tag -fa ${MAJOR} -m "Update major version tag"
         git push origin ${MAJOR} --force
