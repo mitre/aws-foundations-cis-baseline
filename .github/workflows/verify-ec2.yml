@@ -4,6 +4,7 @@ name: CIS AWS Foundations v2.0.0
 on:
   push:
     branches:
+      - master
       - main
   pull_request:
 
@@ -53,7 +54,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.1"
-          
+
       - name: Disable ri and rdoc
         run: 'echo "gem: --no-document" >> ~/.gemrc'
 
