@@ -4,6 +4,7 @@ name: CIS AWS Foundations v2.0.0 - Other
 on:
   push:
     branches:
+      - master
       - main
   pull_request:
 
