@@ -82,6 +82,10 @@ jobs:
           path: |
             ./${{ env.COMMIT_SHORT_SHA }}-${{ env.RESULTS_FILE }}
 
+      - name: Upload to Heimdall
+        run: | 
+          curl -# -s -F data=@${{ env.COMMIT_SHORT_SHA }}-${{ env.RESULTS_FILE }} -F "filename=${{ env.COMMIT_SHORT_SHA }}-${{ env.RESULTS_FILE}}" -F "public=true" -F "evaluationTags=${{ env.COMMIT_SHORT_SHA }},${{ github.repository }},${{ github.workflow }}" -H "Authorization: Api-Key ${{ secrets.HEIMDALL_UPLOAD_KEY }}" "${{ env.HEIMDALL_URL }}/evaluations"
+
       - name: Display our ${{ env.COMMIT_SHORT_SHA }}-${{ env.RESULTS_FILE }} results summary
         uses: mitre/saf_action@v1
         with:
@@ -92,7 +96,3 @@ jobs:
         with:
           command_string: "validate threshold -i ${{ env.COMMIT_SHORT_SHA }}-${{ env.RESULTS_FILE }} -F ${{ env.THRESHOLD_FILE }}"
 
-      - name: Upload to Heimdall
-        run: | 
-          curl -# -s -F data=@${{ env.COMMIT_SHORT_SHA }}-${{ env.RESULTS_FILE }} -F "filename=${{ env.COMMIT_SHORT_SHA }}-${{ env.RESULTS_FILE}}" -F "public=true" -F "evaluationTags=${{ env.COMMIT_SHORT_SHA }},${{ github.repository }},${{ github.workflow }}" -H "Authorization: Api-Key ${{ secrets.HEIMDALL_UPLOAD_KEY }}" "${{ env.HEIMDALL_URL }}/evaluations"
-  
