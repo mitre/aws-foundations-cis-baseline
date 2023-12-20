@@ -10,4 +10,3 @@ gem 'rake'
 gem 'rubocop'
 gem 'rubocop-rake'
 gem "train-aws", git: 'https://github.com/mitre/train-aws.git', branch: 'al/dep-updates'
-

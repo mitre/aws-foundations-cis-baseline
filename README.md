@@ -327,7 +327,7 @@ $ ruby generate_inputs.rb
 
 ```shell
 # How to run
-inspec exec https://github.com/mitre/aws-foundations-cis-baseline/archive/master.tar.gz --target aws:// --input-file=<./path/my_inpupts.yml> --reporter=cli json:<path/name_of_your_output_file.json>
+bundle exec inspec exec https://github.com/mitre/aws-foundations-cis-baseline --target aws:// --input-file=<./path/my_inpupts.yml> --reporter=cli json:<path/name_of_your_output_file.json>
 ```
 
 ## Different Run Options
@@ -348,8 +348,9 @@ When the **"runner"** host uses this profile baseline for the first time, follow
 mkdir profiles
 cd profiles
 git clone https://github.com/mitre/aws-foundations-cis-baseline
-inspec archive aws-foundations-cis-baseline
-inspec exec <name of generated archive> --target aws:// --input-file=<path/my_inputs.yml> --reporter=cli json:<path/name_of_your_output_file.json>
+bundle install ( or update if you have already done an install )
+bundle exec inspec archive aws-foundations-cis-baseline
+bundle exec inspec exec <name of generated archive> --target aws:// --input-file=<path/my_inputs.yml> --reporter=cli json:<path/name_of_your_output_file.json>
 ```
 
 For every successive run, follow these steps to always have the latest version of this baseline:
@@ -358,8 +359,9 @@ For every successive run, follow these steps to always have the latest version o
 cd aws-foundations-cis-baseline
 git pull
 cd ..
-inspec archive aws-foundations-cis-baseline --overwrite
-inspec exec <name of generated archive> --target aws:// --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
+bundle install
+bundle exec inspec archive aws-foundations-cis-baseline --overwrite
+bundle exec inspec exec <name of generated archive> --target aws:// --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
 ```
 
 ## Using Heimdall for Viewing the JSON Results
