@@ -60,7 +60,7 @@ the ::/0 inbound rule. "
   active_sgs = aws_security_groups.group_names - input('exempt_security_groups')
   regexs = input('exempt_sg_patterns')
 
-  only_if("No non-exempt security groups discovered", impact: 0.0) { !active_sgs.empty? }
+  only_if('No non-exempt security groups discovered', impact: 0.0) { !active_sgs.empty? }
 
   active_ports.each do |port|
     active_regions.each do |region_name|

@@ -51,7 +51,7 @@ Click `Save` "
   tag cis_controls: [{ '7' => ['9.2'] }]
 
   only_if('This control takes a long time to run, excluding due to "disable_slow_controls"') { !input('disable_slow_controls') }
-  
+
   active_ports = input('remote_management_port_ranges') - input('exempt_ports')
   active_protocols = input('remote_management_protocols') - input('exempt_protocols')
   acls = aws_network_acls.where { entries_cidr_blocks.include?('0.0.0.0/0') }.network_acl_ids - input('exempt_acl_ids')
