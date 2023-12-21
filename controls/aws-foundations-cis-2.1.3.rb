@@ -111,7 +111,7 @@ with 3rd Party tools that perform similar processes and protection. "
     !input('third_party_data_management_tool').present?
   }
 
-  only_if("Amazon Macie unavailable in GovCloud; please manually review AWS account to determine if a third party data management tool is present") { !aws_sts_caller_identity.govcloud? }
+  only_if('Amazon Macie unavailable in GovCloud; please manually review AWS account to determine if a third party data management tool is present') { !aws_sts_caller_identity.govcloud? }
 
   expected_monitored_buckets = aws_s3_buckets.bucket_names - input('exempt_buckets')
 
