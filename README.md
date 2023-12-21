@@ -249,8 +249,6 @@ third_party_api_monitoring_tool: ""
 | Done       | Yes          | 1.22               | None                                              |
 | Done       | Yes          | 2.1.1              | exempt_buckets<br>single_bucket                   |
 | Done       | Yes          | 2.1.2              | exempt_buckets<br>single_bucket                   |
-
-| Done       | No           | 2.1.2              | exempt_buckets<br>single_bucket                   |
 | Done       | No           | 2.1.3              | third_party_management_tool<br>exempt_buckets     |
 | Done       | Yes          | 2.1.4              | exempt_buckets                                    |
 | Done       | Yes          | 2.2.1              | None                                              |
