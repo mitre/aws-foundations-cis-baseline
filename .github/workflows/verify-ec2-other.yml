@@ -77,7 +77,7 @@ jobs:
           bundle exec inspec exec . --target aws:// --input-file=${{ env.INPUT_FILE }} --reporter cli json:${{ env.COMMIT_SHORT_SHA }}-${{ env.RESULTS_FILE }} --enhanced-outcomes --filter-empty-profiles || true
 
       - name: Save Test Result JSON
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.workflow }}-${{ env.COMMIT_SHORT_SHA }}-results
           path: |
