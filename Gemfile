@@ -2,9 +2,12 @@
 
 source 'https://rubygems.org'
 
-gem 'inspec', '>= 6.6.0'
-gem 'inspec-core'
-gem 'inspec-bin'
+# Cinc Auditor: the community (unlicensed) build of InSpec, from the Cinc gem server
+source 'https://rubygems.cinc.sh' do
+  gem 'cinc-auditor-bin'
+  gem 'inspec', '>= 6.6.0'
+  gem 'inspec-core'
+end
 gem 'kitchen-inspec'
 gem 'rake'
 gem 'rubocop'
