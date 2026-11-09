@@ -1,6 +1,7 @@
 aws*
 inspec-aws
 *.lock
+!Gemfile.lock
 *.gem
 *.rbc
 *results.json

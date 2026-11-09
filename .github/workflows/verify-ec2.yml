@@ -53,7 +53,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.1"
+          ruby-version: "4.0.9"
 
       - name: Disable ri and rdoc
         run: 'echo "gem: --no-document" >> ~/.gemrc'
@@ -62,17 +62,17 @@ jobs:
         run: bundle install
 
       - name: Installed Inspec
-        run: bundle exec inspec version
+        run: bundle exec cinc-auditor version
 
       - name: Vendor the InSpec Profile
-        run: bundle exec inspec vendor --overwrite
+        run: bundle exec cinc-auditor vendor --overwrite
 
       - name: Lint the Inspec profile
-        run: bundle exec inspec check .
+        run: bundle exec cinc-auditor check .
 
       - name: Run the Profile
         run: |
-          bundle exec inspec exec . --target aws:// --input-file=${{ env.INPUT_FILE }} --reporter cli json:${{ env.COMMIT_SHORT_SHA }}-${{ env.RESULTS_FILE }} --enhanced-outcomes --filter-empty-profiles || true
+          bundle exec cinc-auditor exec . --target aws:// --input-file=${{ env.INPUT_FILE }} --reporter cli json:${{ env.COMMIT_SHORT_SHA }}-${{ env.RESULTS_FILE }} --enhanced-outcomes --filter-empty-profiles || true
 
       - name: Save Test Result JSON
         uses: actions/upload-artifact@v4

@@ -325,7 +325,7 @@ $ ruby generate_inputs.rb
 
 ```shell
 # How to run
-bundle exec inspec exec https://github.com/mitre/aws-foundations-cis-baseline --target aws:// --input-file=<./path/my_inpupts.yml> --reporter=cli json:<path/name_of_your_output_file.json>
+bundle exec cinc-auditor exec https://github.com/mitre/aws-foundations-cis-baseline --target aws:// --input-file=<./path/my_inpupts.yml> --reporter=cli json:<path/name_of_your_output_file.json>
 ```
 
 ## Different Run Options
@@ -347,8 +347,8 @@ mkdir profiles
 cd profiles
 git clone https://github.com/mitre/aws-foundations-cis-baseline
 bundle install ( or update if you have already done an install )
-bundle exec inspec archive aws-foundations-cis-baseline
-bundle exec inspec exec <name of generated archive> --target aws:// --input-file=<path/my_inputs.yml> --reporter=cli json:<path/name_of_your_output_file.json>
+bundle exec cinc-auditor archive aws-foundations-cis-baseline
+bundle exec cinc-auditor exec <name of generated archive> --target aws:// --input-file=<path/my_inputs.yml> --reporter=cli json:<path/name_of_your_output_file.json>
 ```
 
 For every successive run, follow these steps to always have the latest version of this baseline:
@@ -358,8 +358,8 @@ cd aws-foundations-cis-baseline
 git pull
 cd ..
 bundle install
-bundle exec inspec archive aws-foundations-cis-baseline --overwrite
-bundle exec inspec exec <name of generated archive> --target aws:// --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
+bundle exec cinc-auditor archive aws-foundations-cis-baseline --overwrite
+bundle exec cinc-auditor exec <name of generated archive> --target aws:// --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
 ```
 
 ## Using Heimdall for Viewing the JSON Results
